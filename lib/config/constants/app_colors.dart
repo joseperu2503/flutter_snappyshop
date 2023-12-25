@@ -16,4 +16,6 @@ class AppColors {
   static const Color textArsenic = Color(0xFF3E424B);
   static const Color textCoolBlack = Color(0xFF07255B);
   static const Color textCultured = Color(0xFFF4F6FA);
+
+  static const Color error = Color(0xFFF04438);
 }

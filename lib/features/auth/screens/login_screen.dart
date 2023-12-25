@@ -1,38 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_eshop/config/constants/app_colors.dart';
+import 'package:flutter_eshop/features/auth/providers/login_provider.dart';
+import 'package:flutter_eshop/features/auth/widgets/input_email.dart';
+import 'package:flutter_eshop/features/auth/widgets/input_password.dart';
+import 'package:flutter_eshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_eshop/features/shared/widgets/checkbox.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 58,
-        title: Row(
-          children: [
-            Container(
-              width: 46,
-              height: 46,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.primaryCultured,
-              ),
-              child: TextButton(
-                onPressed: () {},
-                child: SvgPicture.asset(
-                  'assets/icons/arrow-back.svg',
-                  width: 24,
-                  height: 24,
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-      body: CustomScrollView(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final loginState = ref.watch(loginProvider);
+
+    return Layout1(
+      child: CustomScrollView(
         slivers: [
           SliverFillRemaining(
             hasScrollBody: false,
@@ -93,34 +76,11 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryCultured,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: TextFormField(
-                      style: const TextStyle(
-                        color: AppColors.textYankeesBlue,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        height: 22 / 14,
-                      ),
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(borderSide: BorderSide.none),
-                        isDense: true,
-                        hintText: 'Your email',
-                        hintStyle: TextStyle(
-                          color: AppColors.textArsenic,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          height: 22 / 14,
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 15,
-                        ),
-                      ),
-                    ),
+                  InputEmail(
+                    value: loginState.email,
+                    onChanged: (value) {
+                      ref.read(loginProvider.notifier).changeEmail(value);
+                    },
                   ),
                   const SizedBox(
                     height: 14,
@@ -138,34 +98,11 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryCultured,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: TextFormField(
-                      style: const TextStyle(
-                        color: AppColors.textYankeesBlue,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        height: 22 / 14,
-                      ),
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(borderSide: BorderSide.none),
-                        isDense: true,
-                        hintText: 'Password',
-                        hintStyle: TextStyle(
-                          color: AppColors.textArsenic,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          height: 22 / 14,
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 15,
-                        ),
-                      ),
-                    ),
+                  InputPassword(
+                    value: loginState.password,
+                    onChanged: (value) {
+                      ref.read(loginProvider.notifier).changePassword(value);
+                    },
                   ),
                   const SizedBox(
                     height: 16,
