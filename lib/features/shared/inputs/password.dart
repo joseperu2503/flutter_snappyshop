@@ -6,7 +6,7 @@ enum PasswordError { empty }
 // Extend FormzInput and provide the input type and error type.
 class Password extends FormzInput<String, PasswordError> {
   // Call super.pure to represent an unmodified form input.
-  const Password.pure() : super.pure('');
+  const Password.pure(String value) : super.pure(value);
 
   // Call super.dirty to represent a modified form input.
   const Password.dirty(String value) : super.dirty(value);

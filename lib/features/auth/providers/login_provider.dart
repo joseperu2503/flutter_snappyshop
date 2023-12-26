@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_eshop/config/router/app_router.dart';
 import 'package:flutter_eshop/features/auth/models/login_response.dart';
-import 'package:flutter_eshop/features/auth/services/login_service.dart';
+import 'package:flutter_eshop/features/auth/services/auth_service.dart';
 import 'package:flutter_eshop/features/shared/inputs/email.dart';
 import 'package:flutter_eshop/features/shared/inputs/password.dart';
 import 'package:flutter_eshop/features/shared/models/service_exception.dart';
@@ -17,7 +17,7 @@ final loginProvider = StateNotifierProvider<LoginNotifier, LoginState>((ref) {
 });
 
 class LoginNotifier extends StateNotifier<LoginState> {
-  final GoRouter router = appRouter;
+  // final GoRouter router = appRouter;
 
   LoginNotifier(this.ref) : super(LoginState());
   final StateNotifierProviderRef ref;
@@ -37,7 +37,7 @@ class LoginNotifier extends StateNotifier<LoginState> {
     ref.read(loaderProvider.notifier).showLoader();
 
     try {
-      final LoginResponse loginResponse = await LoginService.login(
+      final LoginResponse loginResponse = await AuthService.login(
         email: state.email.value,
         password: state.password.value,
       );
@@ -45,8 +45,7 @@ class LoginNotifier extends StateNotifier<LoginState> {
       await keyValueStorageService.setKeyValue<String>(
           'token', loginResponse.accessToken);
 
-      print('login correcto');
-      appRouter.go('/inicio-sesion/portafolio');
+      ref.read(goRouterProvider).go('/products');
     } on ServiceException catch (e) {
       print(e.message);
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
@@ -77,8 +76,8 @@ class LoginState {
   final Password password;
 
   LoginState({
-    this.email = const Email.pure(),
-    this.password = const Password.pure(),
+    this.email = const Email.pure('joseperu2503@gmail.com'),
+    this.password = const Password.pure('12345678'),
   });
 
   LoginState copyWith({
