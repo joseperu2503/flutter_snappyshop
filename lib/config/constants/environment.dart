@@ -5,6 +5,5 @@ class Environment {
     await dotenv.load(fileName: ".env");
   }
 
-  static String urlBase =
-      dotenv.env['URL_BASE'] ?? 'No esta configurado el URL_BASE';
+  static String urlBase = dotenv.env['URL_BASE'] ?? 'No URL_BASE';
 }

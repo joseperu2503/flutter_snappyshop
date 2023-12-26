@@ -13,6 +13,7 @@ class Api {
       onRequest: (options, handler) async {
         final token = await keyValueStorageService.getKeyValue<String>('token');
         options.headers['Authorization'] = 'Bearer $token';
+        options.headers['Accept'] = 'application/json';
 
         return handler.next(options);
       },

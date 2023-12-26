@@ -1,14 +1,10 @@
 import 'package:formz/formz.dart';
 
 // Define input validation errors
-enum PasswordError { empty, length, format }
+enum PasswordError { empty }
 
 // Extend FormzInput and provide the input type and error type.
 class Password extends FormzInput<String, PasswordError> {
-  static final RegExp passwordRegExp = RegExp(
-    r'(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$',
-  );
-
   // Call super.pure to represent an unmodified form input.
   const Password.pure() : super.pure('');
 
@@ -21,12 +17,6 @@ class Password extends FormzInput<String, PasswordError> {
     if (displayError == PasswordError.empty) {
       return 'This field is required';
     }
-    if (displayError == PasswordError.length) {
-      return 'Minimum 6 characters required';
-    }
-    if (displayError == PasswordError.format) {
-      return 'Must contain an uppercase letter, lowercase letters, and a number';
-    }
 
     return null;
   }
@@ -35,8 +25,6 @@ class Password extends FormzInput<String, PasswordError> {
   @override
   PasswordError? validator(String value) {
     if (value.isEmpty || value.trim().isEmpty) return PasswordError.empty;
-    if (value.length < 6) return PasswordError.length;
-    if (!passwordRegExp.hasMatch(value)) return PasswordError.format;
 
     return null;
   }

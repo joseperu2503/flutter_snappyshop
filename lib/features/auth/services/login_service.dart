@@ -6,7 +6,7 @@ import 'package:flutter_eshop/features/shared/models/service_exception.dart';
 final api = Api();
 
 class LoginService {
-  static Future<LoginResponse> iniciarSesion({
+  static Future<LoginResponse> login({
     required String email,
     required String password,
   }) async {

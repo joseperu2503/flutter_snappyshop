@@ -140,7 +140,9 @@ class LoginScreen extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        ref.read(loginProvider.notifier).login();
+                      },
                       child: const Text(
                         'Log In',
                         style: TextStyle(
