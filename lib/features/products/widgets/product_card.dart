@@ -9,30 +9,41 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: Column(
-        children: [
-          SizedBox(
-            height: 250,
-            child: Center(
-              child: _ImageViewer(images: product.images),
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        SizedBox(
+          height: 200,
+          child: Center(
+            child: _ImageViewer(images: product.images),
           ),
-          Text(
-            product.name,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: AppColors.textCoolBlack,
-              height: 1.2,
-              leadingDistribution: TextLeadingDistribution.even,
-            ),
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+        ),
+        Text(
+          product.name,
+          style: const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+            color: AppColors.textCoolBlack,
+            height: 1.4,
+            leadingDistribution: TextLeadingDistribution.even,
           ),
-        ],
-      ),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        Text(
+          '\$${product.price.toStringAsFixed(2)}',
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: AppColors.textCoolBlack,
+            height: 1.1,
+            leadingDistribution: TextLeadingDistribution.even,
+          ),
+        ),
+      ],
     );
   }
 }
