@@ -21,8 +21,11 @@ class Api {
     _dioBase.interceptors.add(interceptor);
   }
 
-  Future<Response> get(String path) async {
-    return _dioBase.get(path);
+  Future<Response> get(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    return _dioBase.get(path, queryParameters: queryParameters);
   }
 
   Future<Response> post(String path, {required Object data}) async {

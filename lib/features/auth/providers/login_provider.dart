@@ -10,7 +10,6 @@ import 'package:flutter_eshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_eshop/features/shared/services/key_value_storage_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
-import 'package:go_router/go_router.dart';
 
 final loginProvider = StateNotifierProvider<LoginNotifier, LoginState>((ref) {
   return LoginNotifier(ref);
