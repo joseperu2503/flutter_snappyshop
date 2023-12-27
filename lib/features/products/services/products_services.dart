@@ -19,4 +19,14 @@ class ProductsService {
       throw ServiceException('An error occurred while loading the products.');
     }
   }
+
+  static Future<Product> getProductDetail({required String productId}) async {
+    try {
+      final response = await api.get('/products/$productId');
+
+      return Product.fromJson(response.data);
+    } catch (e) {
+      throw ServiceException('An error occurred while loading the product.');
+    }
+  }
 }

@@ -39,7 +39,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
             children: [
               const ListTile(
                 title: Text('Account Information'),
-                leading: Icon(Icons.info_outline),
+                leading: Icon(Icons.person_2_outlined),
               ),
               const ListTile(
                 title: Text('Password'),

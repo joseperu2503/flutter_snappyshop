@@ -7,8 +7,8 @@ class AppColors {
   static const Color primaryCultured = Color(0xFFF4F6FA);
 
   //Secondary color
-  static const Color mangoTango = Color(0xFFE0144C);
-  static const Color pastelRed = Color(0xFFFF6264);
+  static const Color secondaryMangoTango = Color(0xFFE0144C);
+  static const Color secondaryPastelRed = Color(0xFFFF6264);
   static const Color white = Color(0xFFFFFFFF);
 
   //Text color
@@ -16,6 +16,8 @@ class AppColors {
   static const Color textArsenic = Color(0xFF3E424B);
   static const Color textCoolBlack = Color(0xFF07255B);
   static const Color textCultured = Color(0xFFF4F6FA);
+
+  static const Color star = Color(0xFFFF7A45);
 
   static const Color error = Color(0xFFF04438);
 }

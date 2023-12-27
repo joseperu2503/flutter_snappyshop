@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_eshop/config/constants/app_colors.dart';
 import 'package:flutter_eshop/features/products/models/products_response.dart';
+import 'package:go_router/go_router.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -9,41 +10,46 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        SizedBox(
-          height: 200,
-          child: Center(
-            child: _ImageViewer(images: product.images),
+    return GestureDetector(
+      onTap: () {
+        context.push('/product/${product.id}');
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(
+            height: 200,
+            child: Center(
+              child: _ImageViewer(images: product.images),
+            ),
           ),
-        ),
-        Text(
-          product.name,
-          style: const TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-            color: AppColors.textCoolBlack,
-            height: 1.4,
-            leadingDistribution: TextLeadingDistribution.even,
+          Text(
+            product.name,
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: AppColors.textCoolBlack,
+              height: 1.4,
+              leadingDistribution: TextLeadingDistribution.even,
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        ),
-        const SizedBox(
-          height: 8,
-        ),
-        Text(
-          '\$${product.price.toStringAsFixed(2)}',
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textCoolBlack,
-            height: 1.1,
-            leadingDistribution: TextLeadingDistribution.even,
+          const SizedBox(
+            height: 8,
           ),
-        ),
-      ],
+          Text(
+            '\$${product.price.toStringAsFixed(2)}',
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textCoolBlack,
+              height: 1.1,
+              leadingDistribution: TextLeadingDistribution.even,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
