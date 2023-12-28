@@ -80,8 +80,8 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
             child: Container(
               padding: const EdgeInsets.only(
                 top: 4,
-                right: 16,
-                left: 16,
+                right: 24,
+                left: 24,
                 bottom: 8,
               ),
               child: Column(
@@ -98,7 +98,61 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                     ),
                   ),
                   const SizedBox(
-                    height: 14,
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 50,
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: AppColors.primaryCultured,
+                          ),
+                          child: const Row(
+                            children: [
+                              Icon(
+                                Icons.search,
+                                color: AppColors.textArsenic,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'Search...',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.textCoolBlack,
+                                  height: 22 / 14,
+                                  leadingDistribution:
+                                      TextLeadingDistribution.even,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: AppColors.primaryPearlAqua,
+                        ),
+                        child: const Icon(
+                          Icons.tune,
+                          color: AppColors.textCultured,
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
                   ),
                   const Text(
                     'Choose Brand',
@@ -106,56 +160,58 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                       color: AppColors.textCoolBlack,
-                      height: 22 / 16,
+                      height: 1.1,
                       leadingDistribution: TextLeadingDistribution.even,
                     ),
                   ),
                   const SizedBox(
-                    height: 14,
-                  ),
-                  SizedBox(
-                    height: 40,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        final brand = productsState.brands[index];
-                        return Container(
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryCultured,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Center(
-                            child: Text(
-                              brand.name,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.textCoolBlack,
-                                height: 22 / 16,
-                                leadingDistribution:
-                                    TextLeadingDistribution.even,
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                      separatorBuilder: (context, index) {
-                        return const SizedBox(
-                          width: 10,
-                        );
-                      },
-                      itemCount: productsState.brands.length,
-                    ),
+                    height: 15,
                   ),
                 ],
               ),
             ),
           ),
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 40,
+              child: ListView.separated(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  final brand = productsState.brands[index];
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryCultured,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Center(
+                      child: Text(
+                        brand.name,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.textCoolBlack,
+                          height: 22 / 16,
+                          leadingDistribution: TextLeadingDistribution.even,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return const SizedBox(
+                    width: 10,
+                  );
+                },
+                itemCount: productsState.brands.length,
+              ),
+            ),
+          ),
           SliverPadding(
             padding: const EdgeInsets.only(
-              left: 16,
-              right: 16,
+              left: 24,
+              right: 24,
               bottom: 56,
             ),
             sliver: SliverGrid(
