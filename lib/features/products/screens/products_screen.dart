@@ -4,6 +4,7 @@ import 'package:flutter_eshop/features/auth/providers/auth_provider.dart';
 import 'package:flutter_eshop/features/products/providers/products_provider.dart';
 import 'package:flutter_eshop/features/products/widgets/product_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class ProductsScreen extends ConsumerStatefulWidget {
   const ProductsScreen({super.key});
@@ -111,7 +112,9 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                 color: AppColors.primaryCultured,
               ),
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.push('/cart');
+                },
                 child: const Icon(
                   Icons.shopping_bag_outlined,
                   color: AppColors.textYankeesBlue,

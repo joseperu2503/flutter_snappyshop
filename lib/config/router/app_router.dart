@@ -1,6 +1,7 @@
 import 'package:flutter_eshop/features/auth/screens/login_screen.dart';
 import 'package:flutter_eshop/features/auth/screens/register_screen.dart';
 import 'package:flutter_eshop/features/auth/services/auth_service.dart';
+import 'package:flutter_eshop/features/products/screens/cart_screen.dart';
 import 'package:flutter_eshop/features/products/screens/product_screen.dart';
 import 'package:flutter_eshop/features/products/screens/products_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -41,6 +42,10 @@ final goRouterProvider = Provider((ref) {
         builder: (context, state) => ProductScreen(
           productId: state.pathParameters['id'] ?? 'no-id',
         ),
+      ),
+      GoRoute(
+        path: '/cart',
+        builder: (context, state) => const CartScreen(),
       ),
     ],
   );
