@@ -1,3 +1,4 @@
+import 'package:flutter_eshop/features/auth/screens/home_screen.dart';
 import 'package:flutter_eshop/features/auth/screens/login_screen.dart';
 import 'package:flutter_eshop/features/auth/screens/register_screen.dart';
 import 'package:flutter_eshop/features/auth/services/auth_service.dart';
@@ -17,22 +18,26 @@ final goRouterProvider = Provider((ref) {
   }
 
   return GoRouter(
-    initialLocation: '/login',
+    initialLocation: '/',
     routes: [
-      ///* Auth Routes
+      // Auth Routes
       GoRoute(
-        path: '/login',
-        builder: (context, state) => const LoginScreen(),
+        path: '/',
+        builder: (context, state) => const HomeScreen(),
         redirect: (context, state) async {
           return externalRedirect();
         },
+      ),
+      GoRoute(
+        path: '/login',
+        builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
         path: '/register',
         builder: (context, state) => const RegisterScreen(),
       ),
 
-      ///* Product Routes
+      // Product Routes
       GoRoute(
         path: '/products',
         builder: (context, state) => const ProductsScreen(),

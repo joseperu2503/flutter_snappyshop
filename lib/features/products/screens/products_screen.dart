@@ -165,7 +165,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                     ),
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 10,
                   ),
                 ],
               ),
