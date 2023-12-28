@@ -29,4 +29,14 @@ class ProductsService {
       throw ServiceException('An error occurred while loading the product.');
     }
   }
+
+  static Future<List<Brand>> getBrands() async {
+    try {
+      final response = await api.get('/brands');
+
+      return List<Brand>.from(response.data.map((x) => Brand.fromJson(x)));
+    } catch (e) {
+      throw ServiceException('An error occurred while loading the brands.');
+    }
+  }
 }

@@ -16,9 +16,21 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
   ProductsNotifier(this.ref) : super(ProductsState());
   final StateNotifierProviderRef ref;
 
-  getProducts() async {
+  getDashboardData() async {
     ref.read(loaderProvider.notifier).showLoader();
 
+    try {
+      await Future.wait([
+        getProducts(),
+        getBrands(),
+      ]);
+    } on ServiceException catch (e) {
+      ref.read(snackbarProvider.notifier).showSnackbar(e.message);
+    }
+    ref.read(loaderProvider.notifier).dismissLoader();
+  }
+
+  Future<void> getProducts() async {
     try {
       final ProductsResponse response =
           await ProductsService.getProducts(page: 1);
@@ -26,10 +38,19 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
         products: response.data,
       );
     } on ServiceException catch (e) {
-      ref.read(snackbarProvider.notifier).showSnackbar(e.message);
+      throw ServiceException(e.message);
     }
+  }
 
-    ref.read(loaderProvider.notifier).dismissLoader();
+  Future<void> getBrands() async {
+    try {
+      final response = await ProductsService.getBrands();
+      state = state.copyWith(
+        brands: response,
+      );
+    } on ServiceException catch (e) {
+      throw ServiceException(e.message);
+    }
   }
 
   getProduct({required String productId}) async {
@@ -52,18 +73,23 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
 
 class ProductsState {
   final List<Product> products;
+  final List<Brand> brands;
+
   final Map<String, Product> productDetails;
   ProductsState({
     this.products = const [],
+    this.brands = const [],
     this.productDetails = const {},
   });
 
   ProductsState copyWith({
     List<Product>? products,
+    List<Brand>? brands,
     Map<String, Product>? productDetails,
   }) =>
       ProductsState(
         products: products ?? this.products,
+        brands: brands ?? this.brands,
         productDetails: productDetails ?? this.productDetails,
       );
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_eshop/config/constants/app_colors.dart';
-import 'package:flutter_eshop/features/auth/providers/auth_provider.dart';
 import 'package:flutter_eshop/features/products/providers/products_provider.dart';
+import 'package:flutter_eshop/features/products/widgets/custom_drawer.dart';
 import 'package:flutter_eshop/features/products/widgets/product_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -18,7 +18,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      ref.read(productsProvider.notifier).getProducts();
+      ref.read(productsProvider.notifier).getDashboardData();
     });
   }
 
@@ -29,57 +29,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
     final productsState = ref.watch(productsProvider);
     return Scaffold(
       key: scaffoldKey,
-      drawer: Drawer(
-        backgroundColor: AppColors.white,
-        child: Container(
-          padding: const EdgeInsets.only(
-            top: 80,
-            bottom: 80,
-          ),
-          child: Column(
-            children: [
-              const ListTile(
-                title: Text('Account Information'),
-                leading: Icon(Icons.person_2_outlined),
-              ),
-              const ListTile(
-                title: Text('Password'),
-                leading: Icon(Icons.lock_outline_rounded),
-              ),
-              const ListTile(
-                title: Text('Order'),
-                leading: Icon(Icons.shopping_bag_outlined),
-              ),
-              const ListTile(
-                title: Text('My Cards'),
-                leading: Icon(Icons.credit_card_outlined),
-              ),
-              const ListTile(
-                title: Text('Wishlist'),
-                leading: Icon(Icons.favorite_outline),
-              ),
-              const ListTile(
-                title: Text('Settings'),
-                leading: Icon(Icons.settings_outlined),
-              ),
-              const Spacer(),
-              ListTile(
-                title: const Text(
-                  'Logout',
-                  style: TextStyle(color: AppColors.error),
-                ),
-                leading: const Icon(
-                  Icons.logout,
-                  color: AppColors.error,
-                ),
-                onTap: () {
-                  ref.read(authProvider.notifier).logout();
-                },
-              )
-            ],
-          ),
-        ),
-      ),
+      drawer: const CustomDrawer(),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.white,
@@ -134,10 +84,10 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                 left: 16,
                 bottom: 8,
               ),
-              child: const Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
+                  const Text(
                     'Hi Jose Luis',
                     style: TextStyle(
                       fontSize: 24,
@@ -145,6 +95,57 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                       color: AppColors.textCoolBlack,
                       height: 32 / 24,
                       leadingDistribution: TextLeadingDistribution.even,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 14,
+                  ),
+                  const Text(
+                    'Choose Brand',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.textCoolBlack,
+                      height: 22 / 16,
+                      leadingDistribution: TextLeadingDistribution.even,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 14,
+                  ),
+                  SizedBox(
+                    height: 40,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        final brand = productsState.brands[index];
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryCultured,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Center(
+                            child: Text(
+                              brand.name,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.textCoolBlack,
+                                height: 22 / 16,
+                                leadingDistribution:
+                                    TextLeadingDistribution.even,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(
+                          width: 10,
+                        );
+                      },
+                      itemCount: productsState.brands.length,
                     ),
                   ),
                 ],
