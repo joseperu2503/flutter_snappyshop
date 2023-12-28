@@ -22,8 +22,8 @@ class LoginScreen extends ConsumerWidget {
             child: Container(
               padding: const EdgeInsets.only(
                 top: 4,
-                right: 16,
-                left: 16,
+                right: 24,
+                left: 24,
                 bottom: 8,
               ),
               child: Column(
@@ -48,7 +48,7 @@ class LoginScreen extends ConsumerWidget {
                     child: Container(
                       constraints: const BoxConstraints(maxWidth: 300),
                       child: const Text(
-                        'Please enter your email or log in with social accounts',
+                        'Please enter your data to continue',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -74,7 +74,7 @@ class LoginScreen extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(
-                    height: 8,
+                    height: 4,
                   ),
                   InputEmail(
                     value: loginState.email,
@@ -83,7 +83,7 @@ class LoginScreen extends ConsumerWidget {
                     },
                   ),
                   const SizedBox(
-                    height: 14,
+                    height: 16,
                   ),
                   const Text(
                     'Password',
@@ -96,7 +96,7 @@ class LoginScreen extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(
-                    height: 8,
+                    height: 4,
                   ),
                   InputPassword(
                     value: loginState.password,

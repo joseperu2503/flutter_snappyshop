@@ -34,10 +34,32 @@ class AuthService {
     }
   }
 
+  static Future<LoginResponse> register({
+    required String name,
+    required String email,
+    required String password,
+    required String confirmPassword,
+  }) async {
+    try {
+      Map<String, dynamic> form = {
+        "name": name,
+        "email": email,
+        "password": password,
+        "confirmPassword": confirmPassword,
+      };
+
+      final response = await api.post('/register', data: form);
+
+      return LoginResponse.fromJson(response.data);
+    } catch (e) {
+      throw ServiceException('An error occurred while trying to register.');
+    }
+  }
+
   static Future<bool> verifyToken() async {
     final token = await KeyValueStorageService().getKeyValue<String>('token');
 
-    if(token == null) return false;
+    if (token == null) return false;
 
     Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
 

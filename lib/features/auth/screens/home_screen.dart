@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_eshop/config/constants/app_colors.dart';
 import 'package:flutter_eshop/features/shared/widgets/custom_button.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -33,24 +34,29 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 8,
+              height: 12,
             ),
-            const Text(
-              'Explore the latest trends and discover exclusive deals all in one place',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: AppColors.textArsenic,
-                height: 1.3,
-                leadingDistribution: TextLeadingDistribution.even,
+            Container(
+              constraints: const BoxConstraints(
+                maxWidth: 300,
               ),
-              textAlign: TextAlign.center,
+              child: const Text(
+                'Explore the latest trends and discover exclusive deals all in one place',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.textArsenic,
+                  height: 1.3,
+                  leadingDistribution: TextLeadingDistribution.even,
+                ),
+                textAlign: TextAlign.center,
+              ),
             ),
             const SizedBox(
               height: 64,
             ),
-            const CustomButton(
-              child: Text(
+            CustomButton(
+              child: const Text(
                 'Sign Up',
                 style: TextStyle(
                   fontSize: 16,
@@ -60,6 +66,9 @@ class HomeScreen extends StatelessWidget {
                   leadingDistribution: TextLeadingDistribution.even,
                 ),
               ),
+              onPressed: () {
+                context.push('/register');
+              },
             ),
             const SizedBox(
               height: 16,
@@ -71,7 +80,9 @@ class HomeScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.push('/login');
+                },
                 style: TextButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
