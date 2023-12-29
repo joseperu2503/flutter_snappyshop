@@ -46,6 +46,9 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
       final ProductsResponse response = await ProductsService.getProducts(
         page: state.page,
         categoryId: state.filter?.category?.id,
+        brandId: state.filter?.category?.id,
+        minPrice: state.filter?.minPrice,
+        maxPrice: state.filter?.maxPrice,
       );
       state = state.copyWith(
         products: [...state.products, ...response.data],

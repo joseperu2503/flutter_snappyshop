@@ -9,11 +9,17 @@ final api = Api();
 class ProductsService {
   static Future<ProductsResponse> getProducts({
     int page = 1,
-    int? categoryId,
+    required int? categoryId,
+    required int? brandId,
+    required String? minPrice,
+    required String? maxPrice,
   }) async {
     Map<String, dynamic> queryParameters = {
       "page": page,
       "category_id": categoryId,
+      "brand_id": brandId,
+      "min_price": minPrice,
+      "max_price": maxPrice,
     };
 
     try {

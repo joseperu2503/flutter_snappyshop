@@ -169,6 +169,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                           onPressed: () {
                             showModalBottomSheet(
                               context: context,
+                              isScrollControlled: true,
                               builder: (context) {
                                 return FilterBottomSheet(
                                   filter: productsState.filter,

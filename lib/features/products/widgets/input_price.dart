@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_eshop/config/constants/app_colors.dart';
 
 class InputPrice extends StatefulWidget {
@@ -25,7 +26,7 @@ class _InputPriceState extends State<InputPrice> {
 
     _focusNode.addListener(() {
       if (!_focusNode.hasFocus) {
-        widget.onChanged(widget.value);
+        widget.onChanged(formatStringWithTwoDecimals(widget.value));
       }
     });
   }
@@ -75,7 +76,6 @@ class _InputPriceState extends State<InputPrice> {
               decoration: const InputDecoration(
                 border: OutlineInputBorder(borderSide: BorderSide.none),
                 isDense: true,
-                hintText: 'Your email',
                 hintStyle: TextStyle(
                   color: AppColors.textArsenic,
                   fontSize: 14,
@@ -87,15 +87,48 @@ class _InputPriceState extends State<InputPrice> {
                   vertical: 15,
                 ),
               ),
-              keyboardType: TextInputType.emailAddress,
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                MontoFormatter(),
+              ],
               controller: controller,
               onChanged: (value) {
                 widget.onChanged(value);
               },
+              focusNode: _focusNode,
             ),
           ),
         ],
       ),
     );
   }
+}
+
+class MontoFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    try {
+      final text = newValue.text;
+      if (text.isEmpty) return newValue;
+      double.parse(text); // Valida que sea un número
+      if (text.contains('.') && text.split('.')[1].length > 2) {
+        return oldValue; // Más de 2 decimales
+      }
+      return newValue;
+    } catch (e) {
+      return oldValue; // No se puede analizar como un número
+    }
+  }
+}
+
+String formatStringWithTwoDecimals(String input) {
+  if (input.isEmpty) return input;
+  // Convierte la cadena de entrada a un número
+  double number = double.tryParse(input) ?? 0.0;
+
+  // Formatea el número con exactamente dos decimales
+  String formattedString = number.toStringAsFixed(2);
+
+  return formattedString;
 }
