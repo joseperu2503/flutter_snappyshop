@@ -53,6 +53,12 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
         page: state.page + 1,
       );
     } on ServiceException catch (e) {
+      state = state.copyWith(
+        loadingProducts: false,
+      );
+      if (withSpinner) {
+        ref.read(snackbarProvider.notifier).showSnackbar(e.message);
+      }
       throw ServiceException(e.message);
     }
 

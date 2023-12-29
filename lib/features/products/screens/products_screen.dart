@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_eshop/config/constants/app_colors.dart';
-import 'package:flutter_eshop/features/products/models/filter.dart';
 import 'package:flutter_eshop/features/products/providers/products_provider.dart';
 import 'package:flutter_eshop/features/products/widgets/custom_drawer.dart';
 import 'package:flutter_eshop/features/products/widgets/filter_bottom_sheet.dart';
@@ -168,7 +167,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                             foregroundColor: Colors.white60,
                           ),
                           onPressed: () {
-                            showModalBottomSheet<Filter?>(
+                            showModalBottomSheet(
                               context: context,
                               builder: (context) {
                                 return FilterBottomSheet(
