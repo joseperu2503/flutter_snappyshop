@@ -25,7 +25,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
 
     try {
       await Future.wait([
-        getProducts(),
+        getProducts(withSpinner: false),
         getBrands(),
         getCategories(),
       ]);
@@ -35,18 +35,30 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
     ref.read(loaderProvider.notifier).dismissLoader();
   }
 
-  Future<void> getProducts() async {
+  Future<void> getProducts({bool withSpinner = true}) async {
+    if (state.page > state.totalPages || state.loadingProducts) return;
+
+    state = state.copyWith(
+      loadingProducts: withSpinner,
+    );
+
     try {
       final ProductsResponse response = await ProductsService.getProducts(
-        page: 1,
+        page: state.page,
         categoryId: state.filter?.category?.id,
       );
       state = state.copyWith(
-        products: response.data,
+        products: [...state.products, ...response.data],
+        totalPages: response.meta.lastPage,
+        page: state.page + 1,
       );
     } on ServiceException catch (e) {
       throw ServiceException(e.message);
     }
+
+    state = state.copyWith(
+      loadingProducts: false,
+    );
   }
 
   Future<void> getBrands() async {
@@ -90,9 +102,11 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
 
   changeFilter(Filter? filter) {
     state = state.copyWith(
+      products: [],
+      page: 1,
       filter: () => filter,
     );
-    getDashboardData();
+    getProducts();
   }
 }
 
@@ -102,6 +116,9 @@ class ProductsState {
   final List<Category> categories;
   final Filter? filter;
   final Map<String, Product> productDetails;
+  final int page;
+  final int totalPages;
+  final bool loadingProducts;
 
   ProductsState({
     this.products = const [],
@@ -109,6 +126,9 @@ class ProductsState {
     this.categories = const [],
     this.productDetails = const {},
     this.filter,
+    this.page = 1,
+    this.totalPages = 1,
+    this.loadingProducts = false,
   });
 
   ProductsState copyWith({
@@ -117,6 +137,9 @@ class ProductsState {
     List<Category>? categories,
     Map<String, Product>? productDetails,
     ValueGetter<Filter?>? filter,
+    int? page,
+    int? totalPages,
+    bool? loadingProducts,
   }) =>
       ProductsState(
         products: products ?? this.products,
@@ -124,5 +147,8 @@ class ProductsState {
         categories: categories ?? this.categories,
         productDetails: productDetails ?? this.productDetails,
         filter: filter != null ? filter() : this.filter,
+        page: page ?? this.page,
+        totalPages: totalPages ?? this.totalPages,
+        loadingProducts: loadingProducts ?? this.loadingProducts,
       );
 }

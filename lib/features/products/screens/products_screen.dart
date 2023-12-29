@@ -19,11 +19,24 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
   @override
   void initState() {
     super.initState();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels + 400 >=
+          scrollController.position.maxScrollExtent) {
+        ref.read(productsProvider.notifier).getProducts();
+      }
+    });
     Future.microtask(() {
       ref.read(productsProvider.notifier).getDashboardData();
     });
   }
 
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  final ScrollController scrollController = ScrollController();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -77,6 +90,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
         ),
       ),
       body: CustomScrollView(
+        controller: scrollController,
         slivers: [
           SliverToBoxAdapter(
             child: Container(
@@ -249,7 +263,17 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                 mainAxisExtent: 280,
               ),
             ),
-          )
+          ),
+          if (productsState.loadingProducts)
+            const SliverToBoxAdapter(
+              child: Center(
+                child: SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            )
         ],
       ),
     );
