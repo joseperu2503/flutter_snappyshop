@@ -109,12 +109,12 @@ class FilterBottomSheetState extends ConsumerState<FilterBottomSheet> {
                         borderRadius: BorderRadius.circular(20),
                         side: BorderSide(
                           color: selected
-                              ? AppColors.secondaryMangoTango
+                              ? AppColors.secondaryPastelRed
                               : AppColors.textCoolBlack.withOpacity(0.3),
                         ),
                       ),
                       backgroundColor: selected
-                          ? AppColors.secondaryMangoTango
+                          ? AppColors.secondaryPastelRed
                           : Colors.transparent,
                     ),
                     child: Text(
