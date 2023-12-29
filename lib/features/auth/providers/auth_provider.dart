@@ -14,7 +14,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
   logout() async {
     await keyValueStorageService.removeKey('token');
 
-    ref.read(goRouterProvider).go('/login');
+    ref.read(goRouterProvider).go('/');
   }
 }
 
