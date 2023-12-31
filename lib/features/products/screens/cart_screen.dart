@@ -6,6 +6,7 @@ import 'package:flutter_eshop/features/products/widgets/image_viewer.dart';
 import 'package:flutter_eshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_eshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class CartScreen extends ConsumerWidget {
   const CartScreen({super.key});
@@ -20,10 +21,10 @@ class CartScreen extends ConsumerWidget {
           horizontal: 16,
           vertical: 16,
         ),
-        child: const Column(
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
+            const Row(
               children: [
                 Text(
                   'Total',
@@ -48,11 +49,11 @@ class CartScreen extends ConsumerWidget {
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 14,
             ),
             CustomButton(
-              child: Text(
+              child: const Text(
                 'Checkout',
                 style: TextStyle(
                   fontSize: 16,
@@ -62,6 +63,9 @@ class CartScreen extends ConsumerWidget {
                   leadingDistribution: TextLeadingDistribution.even,
                 ),
               ),
+              onPressed: () {
+                context.push('/order-confirmed');
+              },
             )
           ],
         ),
