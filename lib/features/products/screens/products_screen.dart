@@ -118,34 +118,39 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                   Row(
                     children: [
                       Expanded(
-                        child: Container(
-                          height: 50,
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: AppColors.primaryCultured,
-                          ),
-                          child: const Row(
-                            children: [
-                              Icon(
-                                Icons.search,
-                                color: AppColors.textArsenic,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                'Search...',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.textCoolBlack,
-                                  height: 22 / 14,
-                                  leadingDistribution:
-                                      TextLeadingDistribution.even,
+                        child: GestureDetector(
+                          onTap: () {
+                            context.push('/search');
+                          },
+                          child: Container(
+                            height: 50,
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: AppColors.primaryCultured,
+                            ),
+                            child: const Row(
+                              children: [
+                                Icon(
+                                  Icons.search,
+                                  color: AppColors.textArsenic,
                                 ),
-                              )
-                            ],
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  'Search...',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColors.textCoolBlack,
+                                    height: 22 / 14,
+                                    leadingDistribution:
+                                        TextLeadingDistribution.even,
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),

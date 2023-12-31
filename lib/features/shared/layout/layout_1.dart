@@ -8,10 +8,12 @@ class Layout1 extends StatelessWidget {
     super.key,
     required this.child,
     this.bottomNavigationBar,
+    this.title,
   });
 
   final Widget child;
   final Widget? bottomNavigationBar;
+  final String? title;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +42,22 @@ class Layout1 extends StatelessWidget {
                   height: 24,
                 ),
               ),
+            ),
+            const Spacer(),
+            if (title != null)
+              Text(
+                title!,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textYankeesBlue,
+                  leadingDistribution: TextLeadingDistribution.even,
+                ),
+              ),
+            const Spacer(),
+            const SizedBox(
+              width: 46,
+              height: 46,
             )
           ],
         ),
