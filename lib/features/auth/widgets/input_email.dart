@@ -75,6 +75,7 @@ class _InputEmailState extends State<InputEmail> {
         onChanged: (value) {
           widget.onChanged(Email.dirty(value));
         },
+        focusNode: _focusNode,
       ),
     );
   }

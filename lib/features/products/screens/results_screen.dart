@@ -82,34 +82,39 @@ class ResultsScreen extends ConsumerWidget {
                 child: Row(
                   children: [
                     Expanded(
-                      child: Container(
-                        height: 50,
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: AppColors.primaryCultured,
-                        ),
-                        child: const Row(
-                          children: [
-                            Icon(
-                              Icons.search,
-                              color: AppColors.textArsenic,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              'camara de accion',
-                              style: TextStyle(
-                                color: AppColors.textYankeesBlue,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                height: 22 / 14,
-                                leadingDistribution:
-                                    TextLeadingDistribution.even,
+                      child: GestureDetector(
+                        onTap: () {
+                          context.pop();
+                        },
+                        child: Container(
+                          height: 50,
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: AppColors.primaryCultured,
+                          ),
+                          child: const Row(
+                            children: [
+                              Icon(
+                                Icons.search,
+                                color: AppColors.textArsenic,
                               ),
-                            )
-                          ],
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'camara de accion',
+                                style: TextStyle(
+                                  color: AppColors.textYankeesBlue,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  height: 22 / 14,
+                                  leadingDistribution:
+                                      TextLeadingDistribution.even,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),

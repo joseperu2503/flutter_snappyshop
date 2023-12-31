@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_eshop/config/constants/app_colors.dart';
+import 'package:flutter_eshop/features/products/widgets/input_search.dart';
 import 'package:flutter_eshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -17,6 +18,8 @@ class SearchScreen extends ConsumerWidget {
       'GoPro Hero 11',
     ];
 
+    final FocusNode _focusNode = FocusNode();
+
     return Layout1(
       title: 'Search',
       child: CustomScrollView(
@@ -28,37 +31,9 @@ class SearchScreen extends ConsumerWidget {
                 left: 24,
                 right: 24,
               ),
-              child: Column(
+              child: const Column(
                 children: [
-                  Container(
-                    height: 50,
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: AppColors.primaryCultured,
-                    ),
-                    child: const Row(
-                      children: [
-                        Icon(
-                          Icons.search,
-                          color: AppColors.textArsenic,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Search a product...',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.textCoolBlack,
-                            height: 22 / 14,
-                            leadingDistribution: TextLeadingDistribution.even,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
+                  InputSearch(),
                 ],
               ),
             ),
