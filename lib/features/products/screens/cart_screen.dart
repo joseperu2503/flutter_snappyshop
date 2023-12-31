@@ -16,6 +16,7 @@ class CartScreen extends ConsumerWidget {
     final productsState = ref.watch(productsProvider);
 
     return Layout1(
+      title: 'Cart',
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(
           horizontal: 16,
@@ -72,24 +73,8 @@ class CartScreen extends ConsumerWidget {
       ),
       child: CustomScrollView(
         slivers: [
-          const SliverToBoxAdapter(
-            child: Column(
-              children: [
-                Text(
-                  'Cart',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textYankeesBlue,
-                    height: 32 / 24,
-                    leadingDistribution: TextLeadingDistribution.even,
-                  ),
-                )
-              ],
-            ),
-          ),
           SliverPadding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(24),
             sliver: SliverList.separated(
               itemBuilder: (context, index) {
                 final product = productsState.products[index];
