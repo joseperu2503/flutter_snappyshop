@@ -244,6 +244,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
           ),
           SliverPadding(
             padding: const EdgeInsets.only(
+              top: 24,
               left: 24,
               right: 24,
               bottom: 56,
@@ -258,9 +259,9 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
               ),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 8,
-                mainAxisExtent: 280,
+                crossAxisSpacing: 15,
+                mainAxisSpacing: 20,
+                mainAxisExtent: 210,
               ),
             ),
           ),

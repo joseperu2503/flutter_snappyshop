@@ -29,6 +29,7 @@ class Product {
   final bool freeShipping;
   final User user;
   final DateTime createdAt;
+  final int? discount;
 
   Product({
     required this.id,
@@ -45,6 +46,7 @@ class Product {
     required this.freeShipping,
     required this.user,
     required this.createdAt,
+    required this.discount,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
@@ -65,6 +67,7 @@ class Product {
         freeShipping: json["free_shipping"],
         user: User.fromJson(json["user"]),
         createdAt: DateTime.parse(json["created_at"]),
+        discount: json["discount"],
       );
 }
 

@@ -16,6 +16,7 @@ class AppColors {
   static const Color textArsenic = Color(0xFF3E424B);
   static const Color textCoolBlack = Color(0xFF07255B);
   static const Color textCultured = Color(0xFFF4F6FA);
+  static const Color gray = Color(0xFF8B8B8B);
 
   static const Color star = Color(0xFFFF7A45);
 

@@ -10,6 +10,10 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double price = product.discount == null
+        ? product.price
+        : (product.price * (1 - product.discount! / 100));
+
     return GestureDetector(
       onTap: () {
         context.push('/product/${product.id}');
@@ -17,11 +21,46 @@ class ProductCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(
-            height: 200,
-            child: Center(
-              child: _ImageViewer(images: product.images),
-            ),
+          Stack(
+            children: [
+              Container(
+                height: 140,
+                decoration: BoxDecoration(
+                  color: AppColors.primaryCultured,
+                  borderRadius: BorderRadiusDirectional.circular(15),
+                ),
+                child: Center(
+                  child: SizedBox(
+                    width: 120,
+                    child: _ImageViewer(images: product.images),
+                  ),
+                ),
+              ),
+              if (product.discount != null)
+                Positioned(
+                  top: 10,
+                  left: 16,
+                  child: Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                        color: AppColors.secondaryMangoTango,
+                        borderRadius: BorderRadiusDirectional.circular(50)),
+                    child: Text(
+                      '${product.discount}% Off',
+                      style: const TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.white,
+                        height: 1,
+                        leadingDistribution: TextLeadingDistribution.even,
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(
+            height: 8,
           ),
           Text(
             product.name,
@@ -38,15 +77,34 @@ class ProductCard extends StatelessWidget {
           const SizedBox(
             height: 8,
           ),
-          Text(
-            '\$${product.price.toStringAsFixed(2)}',
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: AppColors.secondaryPastelRed,
-              height: 1.1,
-              leadingDistribution: TextLeadingDistribution.even,
-            ),
+          Row(
+            children: [
+              Text(
+                '\$${price.toStringAsFixed(2)}',
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.secondaryPastelRed,
+                  height: 1.1,
+                  leadingDistribution: TextLeadingDistribution.even,
+                ),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              if (product.discount != null)
+                Text(
+                  '\$${product.price.toStringAsFixed(2)}',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.gray,
+                    height: 1.1,
+                    decoration: TextDecoration.lineThrough,
+                    leadingDistribution: TextLeadingDistribution.even,
+                  ),
+                ),
+            ],
           ),
         ],
       ),
@@ -62,34 +120,29 @@ class _ImageViewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (images.isEmpty) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Image.asset(
-          'assets/images/no-image.jpg',
-          fit: BoxFit.cover,
-        ),
+      return Icon(
+        Icons.image_not_supported,
+        color: AppColors.textYankeesBlue.withOpacity(0.5),
+        size: 40,
       );
     }
 
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: Image.network(
-        images[0],
-        loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) {
-            return child;
-          } else {
-            return Center(
-              child: CircularProgressIndicator(
-                value: loadingProgress.expectedTotalBytes != null
-                    ? loadingProgress.cumulativeBytesLoaded /
-                        (loadingProgress.expectedTotalBytes ?? 1)
-                    : null,
-              ),
-            );
-          }
-        },
-      ),
+    return Image.network(
+      images[0],
+      loadingBuilder: (context, child, loadingProgress) {
+        if (loadingProgress == null) {
+          return child;
+        } else {
+          return Center(
+            child: CircularProgressIndicator(
+              value: loadingProgress.expectedTotalBytes != null
+                  ? loadingProgress.cumulativeBytesLoaded /
+                      (loadingProgress.expectedTotalBytes ?? 1)
+                  : null,
+            ),
+          );
+        }
+      },
     );
   }
 }
