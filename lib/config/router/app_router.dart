@@ -6,6 +6,7 @@ import 'package:flutter_eshop/features/products/screens/cart_screen.dart';
 import 'package:flutter_eshop/features/products/screens/order_confirmed_screen.dart';
 import 'package:flutter_eshop/features/products/screens/product_screen.dart';
 import 'package:flutter_eshop/features/products/screens/products_screen.dart';
+import 'package:flutter_eshop/features/products/screens/results_screen.dart';
 import 'package:flutter_eshop/features/products/screens/search_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -61,6 +62,10 @@ final goRouterProvider = Provider((ref) {
       GoRoute(
         path: '/search',
         builder: (context, state) => const SearchScreen(),
+      ),
+      GoRoute(
+        path: '/results',
+        builder: (context, state) => const ResultsScreen(),
       ),
     ],
   );

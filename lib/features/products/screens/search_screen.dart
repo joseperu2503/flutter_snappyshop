@@ -70,7 +70,9 @@ class SearchScreen extends ConsumerWidget {
                 final result = results[index];
                 return ListTile(
                   title: Text(result),
-                  onTap: () {},
+                  onTap: () {
+                    context.push('/results');
+                  },
                   trailing: const Icon(
                     Icons.arrow_forward_ios_outlined,
                     color: AppColors.textArsenic,
