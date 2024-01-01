@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_eshop/features/products/models/brand.dart';
-import 'package:flutter_eshop/features/products/models/filter.dart';
 import 'package:flutter_eshop/features/products/models/products_response.dart';
 import 'package:flutter_eshop/features/products/models/category.dart';
 import 'package:flutter_eshop/features/products/services/products_services.dart';
@@ -45,10 +43,6 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
     try {
       final ProductsResponse response = await ProductsService.getProducts(
         page: state.page,
-        categoryId: state.filter?.category?.id,
-        brandId: state.filter?.category?.id,
-        minPrice: state.filter?.minPrice,
-        maxPrice: state.filter?.maxPrice,
       );
       state = state.copyWith(
         products: [...state.products, ...response.data],
@@ -108,22 +102,12 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
       ref.read(loaderProvider.notifier).dismissLoader();
     }
   }
-
-  changeFilter(Filter? filter) {
-    state = state.copyWith(
-      products: [],
-      page: 1,
-      filter: () => filter,
-    );
-    getProducts();
-  }
 }
 
 class ProductsState {
   final List<Product> products;
   final List<Brand> brands;
   final List<Category> categories;
-  final Filter? filter;
   final Map<String, Product> productDetails;
   final int page;
   final int totalPages;
@@ -134,7 +118,6 @@ class ProductsState {
     this.brands = const [],
     this.categories = const [],
     this.productDetails = const {},
-    this.filter,
     this.page = 1,
     this.totalPages = 1,
     this.loadingProducts = false,
@@ -145,7 +128,6 @@ class ProductsState {
     List<Brand>? brands,
     List<Category>? categories,
     Map<String, Product>? productDetails,
-    ValueGetter<Filter?>? filter,
     int? page,
     int? totalPages,
     bool? loadingProducts,
@@ -155,7 +137,6 @@ class ProductsState {
         brands: brands ?? this.brands,
         categories: categories ?? this.categories,
         productDetails: productDetails ?? this.productDetails,
-        filter: filter != null ? filter() : this.filter,
         page: page ?? this.page,
         totalPages: totalPages ?? this.totalPages,
         loadingProducts: loadingProducts ?? this.loadingProducts,

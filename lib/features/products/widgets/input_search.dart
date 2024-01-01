@@ -2,16 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_eshop/config/constants/app_colors.dart';
 
 class InputSearch extends StatefulWidget {
-  const InputSearch({super.key, required this.focusNode});
+  const InputSearch({
+    super.key,
+    required this.focusNode,
+    required this.value,
+    required this.onChanged,
+  });
 
   final FocusNode focusNode;
+  final String value;
+  final void Function(String value) onChanged;
+
   @override
   State<InputSearch> createState() => _InputSearchState();
 }
 
 class _InputSearchState extends State<InputSearch> {
+  final TextEditingController controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    controller.value = controller.value.copyWith(
+      text: widget.value,
+      selection: TextSelection.collapsed(
+        offset: controller.selection.end,
+      ),
+    );
+
     return Container(
       height: 50,
       padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -52,8 +69,12 @@ class _InputSearchState extends State<InputSearch> {
                 ),
               ),
               keyboardType: TextInputType.emailAddress,
-              onChanged: (value) {},
               focusNode: widget.focusNode,
+              controller: controller,
+              onChanged: (value) {
+                widget.onChanged(value);
+              },
+              textInputAction: TextInputAction.search,
             ),
           ),
         ],

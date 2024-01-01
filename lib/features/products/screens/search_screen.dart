@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_eshop/config/constants/app_colors.dart';
-import 'package:flutter_eshop/features/products/providers/products_provider.dart';
+import 'package:flutter_eshop/features/products/providers/search_provider.dart';
 import 'package:flutter_eshop/features/products/widgets/filter_bottom_sheet.dart';
 import 'package:flutter_eshop/features/products/widgets/input_search.dart';
 import 'package:flutter_eshop/features/products/widgets/product_card.dart';
@@ -23,6 +23,9 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
   void initState() {
     _focusNode.requestFocus();
     super.initState();
+    Future.microtask(() {
+      ref.read(searchProvider.notifier).initState();
+    });
   }
 
   @override
@@ -33,7 +36,15 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final productsState = ref.watch(productsProvider);
+    final searchState = ref.watch(searchProvider);
+    final showResults = searchState.filter?.brand != null ||
+        searchState.filter?.category != null ||
+        (searchState.filter?.maxPrice != null &&
+            searchState.filter?.maxPrice != '') ||
+        (searchState.filter?.minPrice != null &&
+            searchState.filter?.minPrice != '') ||
+        (searchState.filter?.search != null &&
+            searchState.filter?.search != '');
 
     return VisibilityDetector(
       key: const Key('myWidgetKey'),
@@ -111,6 +122,12 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                       Expanded(
                         child: InputSearch(
                           focusNode: _focusNode,
+                          value: searchState.filter?.search ?? '',
+                          onChanged: (value) {
+                            ref
+                                .read(searchProvider.notifier)
+                                .changeSearch(value);
+                          },
                         ),
                       ),
                       const SizedBox(
@@ -136,7 +153,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                               isScrollControlled: true,
                               builder: (context) {
                                 return FilterBottomSheet(
-                                  filter: productsState.filter,
+                                  filter: searchState.filter,
                                 );
                               },
                             );
@@ -162,45 +179,48 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                   // ignore: prefer_const_constructors
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: const [
-                      Text(
-                        'Results:',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textCoolBlack,
-                          height: 1.1,
-                          leadingDistribution: TextLeadingDistribution.even,
+                    children: [
+                      if (showResults)
+                        const Text(
+                          'Results:',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textCoolBlack,
+                            height: 1.1,
+                            leadingDistribution: TextLeadingDistribution.even,
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ),
               ),
-              SliverPadding(
-                padding: const EdgeInsets.only(
-                  top: 16,
-                  left: 24,
-                  right: 24,
-                  bottom: 56,
-                ),
-                sliver: SliverGrid(
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      final product = productsState.products[index];
-                      return ProductCard(product: product);
-                    },
-                    childCount: productsState.products.length,
+              if (showResults)
+                SliverPadding(
+                  padding: const EdgeInsets.only(
+                    top: 16,
+                    left: 24,
+                    right: 24,
+                    bottom: 56,
                   ),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 15,
-                    mainAxisSpacing: 20,
-                    mainAxisExtent: 210,
+                  sliver: SliverGrid(
+                    delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        final product = searchState.products[index];
+                        return ProductCard(product: product);
+                      },
+                      childCount: searchState.products.length,
+                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 15,
+                      mainAxisSpacing: 20,
+                      mainAxisExtent: 210,
+                    ),
                   ),
                 ),
-              ),
-              if (productsState.loadingProducts)
+              if (searchState.loadingProducts)
                 const SliverToBoxAdapter(
                   child: Center(
                     child: SizedBox(

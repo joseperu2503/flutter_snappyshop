@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_eshop/config/constants/app_colors.dart';
 import 'package:flutter_eshop/features/products/models/filter.dart';
 import 'package:flutter_eshop/features/products/providers/products_provider.dart';
+import 'package:flutter_eshop/features/products/providers/search_provider.dart';
 import 'package:flutter_eshop/features/products/widgets/input_price.dart';
 import 'package:flutter_eshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_eshop/features/shared/widgets/custom_text_button.dart';
@@ -36,6 +37,7 @@ class FilterBottomSheetState extends ConsumerState<FilterBottomSheet> {
     brand: null,
     minPrice: '',
     maxPrice: '',
+    search: '',
   );
 
   @override
@@ -233,7 +235,7 @@ class FilterBottomSheetState extends ConsumerState<FilterBottomSheet> {
                     ),
                     onPressed: () {
                       setState(() {
-                        filter = Filter(
+                        filter = filter.copyWith(
                           category: null,
                           brand: null,
                           minPrice: '',
@@ -259,7 +261,7 @@ class FilterBottomSheetState extends ConsumerState<FilterBottomSheet> {
                       ),
                     ),
                     onPressed: () {
-                      ref.read(productsProvider.notifier).changeFilter(filter);
+                      ref.read(searchProvider.notifier).changeFilter(filter);
                       context.pop();
                     },
                   ),
