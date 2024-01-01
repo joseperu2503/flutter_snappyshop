@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_eshop/features/products/models/filter.dart';
 import 'package:flutter_eshop/features/products/models/products_response.dart';
@@ -34,12 +36,11 @@ class SearchNotifier extends StateNotifier<SearchState> {
   }
 
   Future<void> searchProducts() async {
-    if (state.page > state.totalPages || state.loadingProducts) return;
-
     state = state.copyWith(
       loadingProducts: true,
     );
 
+    final filter = state.filter;
     try {
       final ProductsResponse response = await ProductsService.getProducts(
         page: state.page,
@@ -49,18 +50,29 @@ class SearchNotifier extends StateNotifier<SearchState> {
         maxPrice: state.filter?.maxPrice,
         search: state.filter?.search,
       );
-      state = state.copyWith(
-        products: [...state.products, ...response.data],
-        totalPages: response.meta.lastPage,
-        page: state.page + 1,
-      );
-    } on ServiceException catch (e) {
-      ref.read(snackbarProvider.notifier).showSnackbar(e.message);
-    }
 
-    state = state.copyWith(
-      loadingProducts: false,
-    );
+      if (filter == state.filter) {
+        state = state.copyWith(
+          products: [...state.products, ...response.data],
+          totalPages: response.meta.lastPage,
+          page: state.page + 1,
+        );
+      }
+    } on ServiceException catch (e) {
+      if (filter == state.filter) {
+        ref.read(snackbarProvider.notifier).showSnackbar(e.message);
+      }
+    }
+    if (filter == state.filter) {
+      state = state.copyWith(
+        loadingProducts: false,
+      );
+    }
+  }
+
+  loadMoreProducts() {
+    if (state.page > state.totalPages || state.loadingProducts) return;
+    searchProducts();
   }
 
   changeFilter(Filter? filter) {
@@ -72,15 +84,40 @@ class SearchNotifier extends StateNotifier<SearchState> {
     searchProducts();
   }
 
+  Timer? _debounceTimer;
+
   changeSearch(String search) {
+    if (search == '') {
+      state = state.copyWith(
+        loadingProducts: false,
+        products: [],
+        page: 1,
+        filter: () => state.filter?.copyWith(
+          search: search,
+        ),
+      );
+      return;
+    }
+
     state = state.copyWith(
+      loadingProducts: true,
       products: [],
       page: 1,
-      filter: () => state.filter!.copyWith(
+      filter: () => state.filter?.copyWith(
         search: search,
       ),
     );
-    searchProducts();
+
+    final filter = state.filter;
+
+    if (_debounceTimer?.isActive ?? false) _debounceTimer?.cancel();
+    _debounceTimer = Timer(
+      const Duration(milliseconds: 1000),
+      () {
+        if (filter != state.filter) return;
+        searchProducts();
+      },
+    );
   }
 }
 

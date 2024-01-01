@@ -18,6 +18,7 @@ class SearchScreen extends ConsumerStatefulWidget {
 
 class SearchScreenState extends ConsumerState<SearchScreen> {
   final FocusNode _focusNode = FocusNode();
+  final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
@@ -26,18 +27,26 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
     Future.microtask(() {
       ref.read(searchProvider.notifier).initState();
     });
+    scrollController.addListener(() {
+      if (scrollController.position.pixels + 400 >=
+          scrollController.position.maxScrollExtent) {
+        ref.read(searchProvider.notifier).loadMoreProducts();
+      }
+    });
   }
 
   @override
   void dispose() {
     _focusNode.dispose();
+    scrollController.dispose();
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final searchState = ref.watch(searchProvider);
-    final showResults = searchState.filter?.brand != null ||
+    final hasFilter = searchState.filter?.brand != null ||
         searchState.filter?.category != null ||
         (searchState.filter?.maxPrice != null &&
             searchState.filter?.maxPrice != '') ||
@@ -45,6 +54,12 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
             searchState.filter?.minPrice != '') ||
         (searchState.filter?.search != null &&
             searchState.filter?.search != '');
+    final showResults = !searchState.loadingProducts &&
+        hasFilter &&
+        searchState.products.isNotEmpty;
+    final noResults = !searchState.loadingProducts &&
+        hasFilter &&
+        searchState.products.isEmpty;
 
     return VisibilityDetector(
       key: const Key('myWidgetKey'),
@@ -57,6 +72,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
         backgroundColor: AppColors.white,
         body: SafeArea(
           child: CustomScrollView(
+            controller: scrollController,
             slivers: [
               SliverAppBar(
                 scrolledUnderElevation: 0,
@@ -169,19 +185,19 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                 ),
                 pinned: true,
               ),
-              SliverToBoxAdapter(
-                child: Container(
-                  padding: const EdgeInsets.only(
-                    top: 16,
-                    left: 24,
-                    right: 24,
-                  ),
-                  // ignore: prefer_const_constructors
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      if (showResults)
-                        const Text(
+              if (showResults)
+                SliverToBoxAdapter(
+                  child: Container(
+                    padding: const EdgeInsets.only(
+                      top: 16,
+                      left: 24,
+                      right: 24,
+                    ),
+                    // ignore: prefer_const_constructors
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: const [
+                        Text(
                           'Results:',
                           style: TextStyle(
                             fontSize: 18,
@@ -191,10 +207,53 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                             leadingDistribution: TextLeadingDistribution.even,
                           ),
                         ),
+                      ],
+                    ),
+                  ),
+                ),
+              if (noResults)
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 80,
+                      ),
+                      const Icon(
+                        Icons.search,
+                        size: 80,
+                        color: AppColors.textArsenic,
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        'No Results for "${searchState.filter?.search}"',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textCoolBlack,
+                          height: 1.1,
+                          leadingDistribution: TextLeadingDistribution.even,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      Text(
+                        'Check the spelling or try a new search',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.textCoolBlack.withOpacity(0.6),
+                          height: 1.1,
+                          leadingDistribution: TextLeadingDistribution.even,
+                        ),
+                      ),
                     ],
                   ),
                 ),
-              ),
               if (showResults)
                 SliverPadding(
                   padding: const EdgeInsets.only(
