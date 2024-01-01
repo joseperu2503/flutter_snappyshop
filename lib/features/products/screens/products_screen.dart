@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_eshop/config/constants/app_colors.dart';
 import 'package:flutter_eshop/features/products/providers/products_provider.dart';
 import 'package:flutter_eshop/features/products/widgets/custom_drawer.dart';
-import 'package:flutter_eshop/features/products/widgets/filter_bottom_sheet.dart';
 import 'package:flutter_eshop/features/products/widgets/product_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -115,80 +114,39 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            context.push('/search');
-                          },
-                          child: Container(
-                            height: 50,
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: AppColors.primaryCultured,
-                            ),
-                            child: const Row(
-                              children: [
-                                Icon(
-                                  Icons.search,
-                                  color: AppColors.textArsenic,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  'Search...',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.textCoolBlack,
-                                    height: 22 / 14,
-                                    leadingDistribution:
-                                        TextLeadingDistribution.even,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
+                  GestureDetector(
+                    onTap: () {
+                      context.push('/search');
+                    },
+                    child: Container(
+                      height: 50,
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: AppColors.primaryCultured,
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: AppColors.primaryPearlAqua,
-                        ),
-                        child: TextButton(
-                          style: TextButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                      child: const Row(
+                        children: [
+                          Icon(
+                            Icons.search,
+                            color: AppColors.textArsenic,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'Search...',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.textCoolBlack,
+                              height: 22 / 14,
+                              leadingDistribution: TextLeadingDistribution.even,
                             ),
-                            foregroundColor: Colors.white60,
-                          ),
-                          onPressed: () {
-                            showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              builder: (context) {
-                                return FilterBottomSheet(
-                                  filter: productsState.filter,
-                                );
-                              },
-                            );
-                          },
-                          child: const Icon(
-                            Icons.tune,
-                            color: AppColors.textCultured,
-                          ),
-                        ),
-                      )
-                    ],
+                          )
+                        ],
+                      ),
+                    ),
                   ),
                   const SizedBox(
                     height: 20,
@@ -196,8 +154,8 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                   const Text(
                     'Choose Brand',
                     style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
                       color: AppColors.textCoolBlack,
                       height: 1.1,
                       leadingDistribution: TextLeadingDistribution.even,
@@ -211,45 +169,68 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
             ),
           ),
           SliverToBoxAdapter(
-            child: SizedBox(
-              height: 40,
-              child: ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  final brand = productsState.brands[index];
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryCultured,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Center(
-                      child: Text(
-                        brand.name,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.textCoolBlack,
-                          height: 22 / 16,
-                          leadingDistribution: TextLeadingDistribution.even,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(
+                  height: 40,
+                  child: ListView.separated(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      final brand = productsState.brands[index];
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryCultured,
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                      ),
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Center(
+                          child: Text(
+                            brand.name,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.textCoolBlack,
+                              height: 22 / 16,
+                              leadingDistribution: TextLeadingDistribution.even,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(
+                        width: 10,
+                      );
+                    },
+                    itemCount: productsState.brands.length,
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(
+                    top: 24,
+                    right: 24,
+                    left: 24,
+                    bottom: 0,
+                  ),
+                  child: const Text(
+                    'Popular',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textCoolBlack,
+                      height: 1.1,
+                      leadingDistribution: TextLeadingDistribution.even,
                     ),
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return const SizedBox(
-                    width: 10,
-                  );
-                },
-                itemCount: productsState.brands.length,
-              ),
+                  ),
+                ),
+              ],
             ),
           ),
           SliverPadding(
             padding: const EdgeInsets.only(
-              top: 24,
+              top: 16,
               left: 24,
               right: 24,
               bottom: 56,
