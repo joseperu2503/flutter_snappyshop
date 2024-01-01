@@ -3,6 +3,7 @@ import 'package:flutter_eshop/config/constants/app_colors.dart';
 import 'package:flutter_eshop/features/products/models/products_response.dart';
 import 'package:flutter_eshop/features/products/providers/products_provider.dart';
 import 'package:flutter_eshop/features/products/widgets/product_card_2.dart';
+import 'package:flutter_eshop/features/shared/widgets/back_button.dart';
 import 'package:flutter_eshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -37,6 +38,9 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
     final productsState = ref.watch(productsProvider);
     final Product? product = productsState.productDetails[widget.productId];
     final size = MediaQuery.of(context).size;
+    final double price = product?.discount == null
+        ? product?.price ?? 1
+        : ((product?.price ?? 1) * (1 - (product?.discount ?? 1) / 100));
 
     if (product == null) return Container();
 
@@ -46,33 +50,17 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
           horizontal: 16,
           vertical: 16,
         ),
-        child: const Row(
-          children: [
-            CustomButton(
-              width: 52,
-              child: Icon(
-                Icons.add_shopping_cart_rounded,
-                color: AppColors.textCultured,
-              ),
+        child: const CustomButton(
+          child: Text(
+            'Add to cart',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: AppColors.textCultured,
+              height: 22 / 16,
+              leadingDistribution: TextLeadingDistribution.even,
             ),
-            SizedBox(
-              width: 20,
-            ),
-            Expanded(
-              child: CustomButton(
-                child: Text(
-                  'Buy Now',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.textCultured,
-                    height: 22 / 16,
-                    leadingDistribution: TextLeadingDistribution.even,
-                  ),
-                ),
-              ),
-            )
-          ],
+          ),
         ),
       ),
       body: SafeArea(
@@ -80,21 +68,45 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
           physics: const ClampingScrollPhysics(),
           slivers: [
             SliverAppBar(
+              titleSpacing: 0,
+              title: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Row(
+                  children: [
+                    const CustomBackButton(),
+                    const Spacer(),
+                    Container(
+                      width: 46,
+                      height: 46,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.primaryCultured,
+                      ),
+                      child: TextButton(
+                        onPressed: () {},
+                        child: const Icon(Icons.favorite_outline_rounded),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              scrolledUnderElevation: 0,
+              automaticallyImplyLeading: false,
+              pinned: true,
               backgroundColor: Colors.white,
               expandedHeight: size.height * 0.4,
               foregroundColor: Colors.white,
               flexibleSpace: FlexibleSpaceBar(
                 background: Stack(
                   children: [
-                    Center(
-                      child: Image.network(
-                        product.images[0],
-                        fit: BoxFit.cover,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress != null) return const SizedBox();
-
-                          return child;
-                        },
+                    Container(
+                      width: double.maxFinite,
+                      color: AppColors.primaryCultured,
+                      child: Center(
+                        child: Image.network(
+                          product.images[0],
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ],
@@ -105,8 +117,8 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
               hasScrollBody: false,
               child: Container(
                 padding: const EdgeInsets.only(
-                  left: 16,
-                  right: 16,
+                  left: 24,
+                  right: 24,
                   top: 20,
                   bottom: 40,
                 ),
@@ -117,9 +129,9 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                       product.name,
                       style: const TextStyle(
                         fontSize: 20,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w600,
                         color: AppColors.textYankeesBlue,
-                        height: 1.2,
+                        height: 1.1,
                         leadingDistribution: TextLeadingDistribution.even,
                       ),
                     ),
@@ -127,11 +139,10 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                       height: 8,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          '\$${product.price.toStringAsFixed(2)}',
+                          '\$${price.toStringAsFixed(2)}',
                           style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
@@ -140,25 +151,51 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                             leadingDistribution: TextLeadingDistribution.even,
                           ),
                         ),
-                        const Row(
-                          children: [
-                            Icon(
-                              Icons.star_rounded,
-                              color: AppColors.star,
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        if (product.discount != null)
+                          Text(
+                            '\$${product.price.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.gray,
+                              height: 1.6,
+                              decoration: TextDecoration.lineThrough,
+                              leadingDistribution: TextLeadingDistribution.even,
                             ),
-                            Text(
-                              '4,2',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.textArsenic,
-                                height: 22 / 14,
-                                leadingDistribution:
-                                    TextLeadingDistribution.even,
+                          ),
+                        const Spacer(),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryCultured,
+                            borderRadius: BorderRadiusDirectional.circular(50),
+                          ),
+                          child: const Row(
+                            children: [
+                              Icon(
+                                Icons.star_rounded,
+                                color: AppColors.star,
                               ),
-                            ),
-                          ],
-                        )
+                              Text(
+                                '4,2',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.textArsenic,
+                                  height: 22 / 14,
+                                  leadingDistribution:
+                                      TextLeadingDistribution.even,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                     const SizedBox(
@@ -219,7 +256,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                         },
                         itemCount: productsState.products.length,
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

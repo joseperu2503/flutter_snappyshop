@@ -47,44 +47,48 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.white,
         forceMaterialTransparency: true,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              width: 46,
-              height: 46,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.primaryCultured,
-              ),
-              child: TextButton(
-                onPressed: () {
-                  scaffoldKey.currentState?.openDrawer();
-                },
-                child: const Icon(
-                  Icons.menu,
-                  color: AppColors.textYankeesBlue,
+        titleSpacing: 0,
+        title: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                width: 46,
+                height: 46,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.primaryCultured,
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    scaffoldKey.currentState?.openDrawer();
+                  },
+                  child: const Icon(
+                    Icons.menu,
+                    color: AppColors.textYankeesBlue,
+                  ),
                 ),
               ),
-            ),
-            Container(
-              width: 46,
-              height: 46,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.primaryCultured,
-              ),
-              child: TextButton(
-                onPressed: () {
-                  context.push('/cart');
-                },
-                child: const Icon(
-                  Icons.shopping_bag_outlined,
-                  color: AppColors.textYankeesBlue,
+              Container(
+                width: 46,
+                height: 46,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.primaryCultured,
                 ),
-              ),
-            )
-          ],
+                child: TextButton(
+                  onPressed: () {
+                    context.push('/cart');
+                  },
+                  child: const Icon(
+                    Icons.shopping_bag_outlined,
+                    color: AppColors.textYankeesBlue,
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
       body: CustomScrollView(

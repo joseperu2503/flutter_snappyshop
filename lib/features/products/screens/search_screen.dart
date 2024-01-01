@@ -4,9 +4,8 @@ import 'package:flutter_eshop/features/products/providers/search_provider.dart';
 import 'package:flutter_eshop/features/products/widgets/filter_bottom_sheet.dart';
 import 'package:flutter_eshop/features/products/widgets/input_search.dart';
 import 'package:flutter_eshop/features/products/widgets/product_card.dart';
+import 'package:flutter_eshop/features/shared/widgets/back_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
@@ -78,30 +77,15 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                 scrolledUnderElevation: 0,
                 backgroundColor: AppColors.white,
                 automaticallyImplyLeading: false,
+                titleSpacing: 0,
                 title: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 24),
                   color: AppColors.white,
-                  child: Row(
+                  child: const Row(
                     children: [
-                      Container(
-                        width: 46,
-                        height: 46,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.primaryCultured,
-                        ),
-                        child: TextButton(
-                          onPressed: () {
-                            context.pop();
-                          },
-                          child: SvgPicture.asset(
-                            'assets/icons/arrow-back.svg',
-                            width: 24,
-                            height: 24,
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                      const Text(
+                      CustomBackButton(),
+                      Spacer(),
+                      Text(
                         'Search',
                         style: TextStyle(
                           fontSize: 18,
@@ -110,8 +94,8 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                           leadingDistribution: TextLeadingDistribution.even,
                         ),
                       ),
-                      const Spacer(),
-                      const SizedBox(
+                      Spacer(),
+                      SizedBox(
                         width: 46,
                         height: 46,
                       )

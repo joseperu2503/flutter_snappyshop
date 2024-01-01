@@ -43,8 +43,9 @@ class ProductCard extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
-                        color: AppColors.secondaryMangoTango,
-                        borderRadius: BorderRadiusDirectional.circular(50)),
+                      color: AppColors.secondaryMangoTango,
+                      borderRadius: BorderRadiusDirectional.circular(50),
+                    ),
                     child: Text(
                       '${product.discount}% Off',
                       style: const TextStyle(
