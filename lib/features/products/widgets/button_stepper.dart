@@ -2,13 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_eshop/config/constants/app_colors.dart';
 
 class ButtonStepper extends StatelessWidget {
-  const ButtonStepper({super.key});
+  const ButtonStepper({
+    super.key,
+    required this.value,
+    required this.onAdd,
+    required this.onRemove,
+  });
+
+  final int value;
+  final void Function() onAdd;
+  final void Function() onRemove;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 90,
-      height: 35,
+      width: 110,
+      height: 45,
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
         color: AppColors.white,
@@ -16,39 +25,48 @@ class ButtonStepper extends StatelessWidget {
       ),
       child: Row(
         children: [
-          GestureDetector(
-            child: const Text(
-              '-',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w300,
-                color: AppColors.secondaryMangoTango,
-                height: 1,
-                leadingDistribution: TextLeadingDistribution.even,
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                onRemove();
+              },
+              child: const Text(
+                '-',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.secondaryMangoTango,
+                  height: 1,
+                  leadingDistribution: TextLeadingDistribution.even,
+                ),
               ),
             ),
           ),
-          const Spacer(),
-          const Text(
-            '1',
-            style: TextStyle(
-              fontSize: 12,
+          Text(
+            value.toString(),
+            style: const TextStyle(
+              fontSize: 14,
               fontWeight: FontWeight.w600,
               color: AppColors.textYankeesBlue,
-              height: 22 / 12,
+              height: 22 / 14,
               leadingDistribution: TextLeadingDistribution.even,
             ),
           ),
-          const Spacer(),
-          GestureDetector(
-            child: const Text(
-              '+',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w300,
-                color: AppColors.secondaryMangoTango,
-                height: 1,
-                leadingDistribution: TextLeadingDistribution.even,
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                onAdd();
+              },
+              child: const Text(
+                '+',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.secondaryMangoTango,
+                  height: 1,
+                  leadingDistribution: TextLeadingDistribution.even,
+                ),
+                textAlign: TextAlign.end,
               ),
             ),
           ),

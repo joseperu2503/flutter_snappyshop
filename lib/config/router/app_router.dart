@@ -19,6 +19,14 @@ final goRouterProvider = Provider((ref) {
     return null;
   }
 
+  internalRedirect() async {
+    final token = await AuthService.verifyToken();
+    if (token) {
+      return null;
+    }
+    return '/';
+  }
+
   return GoRouter(
     initialLocation: '/',
     routes: [
@@ -33,34 +41,55 @@ final goRouterProvider = Provider((ref) {
       GoRoute(
         path: '/login',
         builder: (context, state) => const LoginScreen(),
+        redirect: (context, state) async {
+          return externalRedirect();
+        },
       ),
       GoRoute(
         path: '/register',
         builder: (context, state) => const RegisterScreen(),
+        redirect: (context, state) async {
+          return externalRedirect();
+        },
       ),
 
       // Product Routes
       GoRoute(
         path: '/products',
         builder: (context, state) => const ProductsScreen(),
+        redirect: (context, state) async {
+          return internalRedirect();
+        },
       ),
       GoRoute(
         path: '/product/:id',
         builder: (context, state) => ProductScreen(
           productId: state.pathParameters['id'] ?? 'no-id',
         ),
+        redirect: (context, state) async {
+          return internalRedirect();
+        },
       ),
       GoRoute(
         path: '/cart',
         builder: (context, state) => const CartScreen(),
+        redirect: (context, state) async {
+          return internalRedirect();
+        },
       ),
       GoRoute(
         path: '/order-confirmed',
         builder: (context, state) => const OrderConfirmedScreen(),
+        redirect: (context, state) async {
+          return internalRedirect();
+        },
       ),
       GoRoute(
         path: '/search',
         builder: (context, state) => const SearchScreen(),
+        redirect: (context, state) async {
+          return internalRedirect();
+        },
       ),
     ],
   );

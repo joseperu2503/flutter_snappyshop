@@ -79,7 +79,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                 automaticallyImplyLeading: false,
                 titleSpacing: 0,
                 title: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
                   color: AppColors.white,
                   child: const Row(
                     children: [
@@ -177,10 +177,9 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                       left: 24,
                       right: 24,
                     ),
-                    // ignore: prefer_const_constructors
-                    child: Column(
+                    child: const Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: const [
+                      children: [
                         Text(
                           'Results:',
                           style: TextStyle(

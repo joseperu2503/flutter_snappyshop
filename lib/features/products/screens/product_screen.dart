@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_eshop/config/constants/app_colors.dart';
 import 'package:flutter_eshop/features/products/models/products_response.dart';
+import 'package:flutter_eshop/features/products/providers/cart_provider.dart';
 import 'package:flutter_eshop/features/products/providers/products_provider.dart';
 import 'package:flutter_eshop/features/products/widgets/product_card_2.dart';
 import 'package:flutter_eshop/features/shared/widgets/back_button.dart';
@@ -36,6 +37,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
   @override
   Widget build(BuildContext context) {
     final productsState = ref.watch(productsProvider);
+
     final Product? product = productsState.productDetails[widget.productId];
     final size = MediaQuery.of(context).size;
     final double price = product?.discount == null
@@ -50,8 +52,8 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
           horizontal: 16,
           vertical: 16,
         ),
-        child: const CustomButton(
-          child: Text(
+        child: CustomButton(
+          child: const Text(
             'Add to cart',
             style: TextStyle(
               fontSize: 16,
@@ -61,6 +63,9 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
               leadingDistribution: TextLeadingDistribution.even,
             ),
           ),
+          onPressed: () {
+            ref.read(cartProvider.notifier).addToCart(product);
+          },
         ),
       ),
       body: SafeArea(
