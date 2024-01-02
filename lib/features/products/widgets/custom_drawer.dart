@@ -1,13 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_eshop/config/constants/app_colors.dart';
 import 'package:flutter_eshop/features/auth/providers/auth_provider.dart';
+import 'package:flutter_eshop/features/products/providers/cart_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class CustomDrawer extends ConsumerWidget {
   const CustomDrawer({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final cartState = ref.watch(cartProvider);
+    int numProducts = 0;
+
+    if (cartState.cart != null) {
+      if (cartState.cart!.products.isNotEmpty) {
+        numProducts = cartState.cart!.products
+            .map((product) => product.quantity)
+            .reduce((sum, quantity) => sum + quantity);
+      } else {
+        numProducts = 0;
+      }
+    } else {
+      numProducts = 0;
+    }
+
     return Drawer(
       elevation: 0,
       backgroundColor: AppColors.white,
@@ -79,10 +96,35 @@ class CustomDrawer extends ConsumerWidget {
               title: Text('Password'),
               leading: Icon(Icons.lock_outline_rounded),
             ),
-            const ListTile(
-              contentPadding: EdgeInsetsDirectional.symmetric(horizontal: 24),
-              title: Text('Order'),
-              leading: Icon(Icons.shopping_bag_outlined),
+            ListTile(
+              contentPadding:
+                  const EdgeInsetsDirectional.symmetric(horizontal: 24),
+              title: const Text('Cart'),
+              leading: const Icon(Icons.shopping_bag_outlined),
+              trailing: numProducts > 0
+                  ? Container(
+                      width: 30,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          color: AppColors.primaryPearlAqua,
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Center(
+                        child: Text(
+                          numProducts.toString(),
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.white,
+                            leadingDistribution: TextLeadingDistribution.even,
+                          ),
+                        ),
+                      ),
+                    )
+                  : null,
+              onTap: () {
+                context.pop();
+                context.push('/cart');
+              },
             ),
             const ListTile(
               contentPadding: EdgeInsetsDirectional.symmetric(horizontal: 24),

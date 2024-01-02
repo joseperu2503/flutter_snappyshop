@@ -3,6 +3,7 @@ import 'package:flutter_eshop/config/constants/app_colors.dart';
 import 'package:flutter_eshop/features/products/models/products_response.dart';
 import 'package:flutter_eshop/features/products/providers/cart_provider.dart';
 import 'package:flutter_eshop/features/products/providers/products_provider.dart';
+import 'package:flutter_eshop/features/products/widgets/cart_button.dart';
 import 'package:flutter_eshop/features/products/widgets/product_card_2.dart';
 import 'package:flutter_eshop/features/shared/widgets/back_button.dart';
 import 'package:flutter_eshop/features/shared/widgets/custom_button.dart';
@@ -52,20 +53,53 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
           horizontal: 16,
           vertical: 16,
         ),
-        child: CustomButton(
-          child: const Text(
-            'Add to cart',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: AppColors.textCultured,
-              height: 22 / 16,
-              leadingDistribution: TextLeadingDistribution.even,
+        child: Row(
+          children: [
+            Container(
+              height: 52,
+              width: 52,
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                  color: AppColors.primaryPearlAqua,
+                ),
+              ),
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  foregroundColor: AppColors.primaryPearlAqua,
+                ),
+                onPressed: () {},
+                child: const Icon(
+                  Icons.favorite_outline_rounded,
+                  color: AppColors.primaryPearlAqua,
+                ),
+              ),
             ),
-          ),
-          onPressed: () {
-            ref.read(cartProvider.notifier).addToCart(product);
-          },
+            const SizedBox(
+              width: 10,
+            ),
+            Expanded(
+              child: CustomButton(
+                child: const Text(
+                  'Add to cart',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.textCultured,
+                    height: 22 / 16,
+                    leadingDistribution: TextLeadingDistribution.even,
+                  ),
+                ),
+                onPressed: () {
+                  ref.read(cartProvider.notifier).addToCart(product);
+                },
+              ),
+            ),
+          ],
         ),
       ),
       body: SafeArea(
@@ -76,22 +110,12 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
               titleSpacing: 0,
               title: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
+                // ignore: prefer_const_constructors
                 child: Row(
-                  children: [
-                    const CustomBackButton(),
-                    const Spacer(),
-                    Container(
-                      width: 46,
-                      height: 46,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppColors.primaryCultured,
-                      ),
-                      child: TextButton(
-                        onPressed: () {},
-                        child: const Icon(Icons.favorite_outline_rounded),
-                      ),
-                    ),
+                  children: const [
+                    CustomBackButton(),
+                    Spacer(),
+                    CartButton(),
                   ],
                 ),
               ),

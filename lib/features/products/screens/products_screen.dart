@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_eshop/config/constants/app_colors.dart';
+import 'package:flutter_eshop/features/products/providers/cart_provider.dart';
 import 'package:flutter_eshop/features/products/providers/products_provider.dart';
+import 'package:flutter_eshop/features/products/widgets/cart_button.dart';
 import 'package:flutter_eshop/features/products/widgets/custom_drawer.dart';
 import 'package:flutter_eshop/features/products/widgets/product_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,7 +26,9 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
       }
     });
     Future.microtask(() {
+      ref.read(cartProvider.notifier).initState();
       ref.read(productsProvider.notifier).getDashboardData();
+      ref.read(cartProvider.notifier).getCart();
     });
   }
 
@@ -70,23 +74,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                   ),
                 ),
               ),
-              Container(
-                width: 46,
-                height: 46,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.primaryCultured,
-                ),
-                child: TextButton(
-                  onPressed: () {
-                    context.push('/cart');
-                  },
-                  child: const Icon(
-                    Icons.shopping_bag_outlined,
-                    color: AppColors.textYankeesBlue,
-                  ),
-                ),
-              )
+              const CartButton(),
             ],
           ),
         ),

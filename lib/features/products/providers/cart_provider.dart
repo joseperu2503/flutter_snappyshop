@@ -31,7 +31,7 @@ class CartNotifier extends StateNotifier<CartState> {
     ref.read(loaderProvider.notifier).showLoader();
 
     try {
-      getCartService();
+      await getCartService();
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
     }
@@ -85,7 +85,7 @@ class CartNotifier extends StateNotifier<CartState> {
     if (state.cart == null) return;
     ref.read(loaderProvider.notifier).showLoader();
     try {
-      updateCartService();
+      await updateCartService();
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
     }

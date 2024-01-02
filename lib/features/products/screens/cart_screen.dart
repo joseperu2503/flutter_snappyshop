@@ -6,6 +6,7 @@ import 'package:flutter_eshop/features/products/widgets/image_viewer.dart';
 import 'package:flutter_eshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_eshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 class CartScreen extends ConsumerStatefulWidget {
@@ -19,19 +20,17 @@ class CartScreenState extends ConsumerState<CartScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      ref.read(cartProvider.notifier).initState();
-      ref.read(cartProvider.notifier).getCart();
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     final cartState = ref.watch(cartProvider);
+    final emptyCart = !(cartState.cart != null &&
+        (cartState.cart?.products ?? []).isNotEmpty);
 
     return Layout1(
       title: 'Cart',
-      bottomNavigationBar: (cartState.cart != null)
+      bottomNavigationBar: !emptyCart
           ? Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: 16,
@@ -93,7 +92,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
           : null,
       child: CustomScrollView(
         slivers: [
-          if (cartState.cart != null)
+          if (!emptyCart)
             SliverPadding(
               padding: const EdgeInsets.all(24),
               sliver: SliverList.separated(
@@ -224,6 +223,51 @@ class CartScreenState extends ConsumerState<CartScreen> {
                 itemCount: cartState.cart?.products.length,
               ),
             ),
+          if (emptyCart)
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 100,
+                  ),
+                  SvgPicture.asset(
+                    'assets/icons/empty_cart.svg',
+                    width: 200,
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  const Text(
+                    'your cart is empty',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textYankeesBlue,
+                      height: 32 / 24,
+                      leadingDistribution: TextLeadingDistribution.even,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  SizedBox(
+                    width: 280,
+                    child: Text(
+                      'Looks like you haven’t made your choice yet let’s shop!',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.textArsenic.withOpacity(0.7),
+                        height: 22 / 14,
+                        leadingDistribution: TextLeadingDistribution.even,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            )
         ],
       ),
     );
