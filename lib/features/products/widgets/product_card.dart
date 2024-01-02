@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_eshop/config/constants/app_colors.dart';
 import 'package:flutter_eshop/features/products/models/products_response.dart';
+import 'package:flutter_eshop/features/products/widgets/image_viewer.dart';
 import 'package:go_router/go_router.dart';
 
 class ProductCard extends StatelessWidget {
@@ -32,7 +33,10 @@ class ProductCard extends StatelessWidget {
                 child: Center(
                   child: SizedBox(
                     width: 120,
-                    child: _ImageViewer(images: product.images),
+                    child: ImageViewer(
+                      images: product.images,
+                      radius: 0,
+                    ),
                   ),
                 ),
               ),
@@ -109,41 +113,6 @@ class ProductCard extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _ImageViewer extends StatelessWidget {
-  final List<String> images;
-
-  const _ImageViewer({required this.images});
-
-  @override
-  Widget build(BuildContext context) {
-    if (images.isEmpty) {
-      return Icon(
-        Icons.image_not_supported,
-        color: AppColors.textYankeesBlue.withOpacity(0.5),
-        size: 40,
-      );
-    }
-
-    return Image.network(
-      images[0],
-      loadingBuilder: (context, child, loadingProgress) {
-        if (loadingProgress == null) {
-          return child;
-        } else {
-          return Center(
-            child: CircularProgressIndicator(
-              value: loadingProgress.expectedTotalBytes != null
-                  ? loadingProgress.cumulativeBytesLoaded /
-                      (loadingProgress.expectedTotalBytes ?? 1)
-                  : null,
-            ),
-          );
-        }
-      },
     );
   }
 }

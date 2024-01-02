@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_eshop/config/constants/app_colors.dart';
 
 class ImageViewer extends StatelessWidget {
   const ImageViewer({
@@ -13,12 +14,10 @@ class ImageViewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (images.isEmpty) {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(radius),
-        child: Image.asset(
-          'assets/images/no-image.jpg',
-          fit: BoxFit.cover,
-        ),
+      return Icon(
+        Icons.image_not_supported,
+        color: AppColors.textYankeesBlue.withOpacity(0.5),
+        size: 40,
       );
     }
 
