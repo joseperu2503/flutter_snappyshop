@@ -2,6 +2,7 @@ import 'package:flutter_eshop/features/auth/screens/home_screen.dart';
 import 'package:flutter_eshop/features/auth/screens/login_screen.dart';
 import 'package:flutter_eshop/features/auth/screens/register_screen.dart';
 import 'package:flutter_eshop/features/auth/services/auth_service.dart';
+import 'package:flutter_eshop/features/products/screens/brand_screen.dart';
 import 'package:flutter_eshop/features/products/screens/cart_screen.dart';
 import 'package:flutter_eshop/features/products/screens/order_confirmed_screen.dart';
 import 'package:flutter_eshop/features/products/screens/product_screen.dart';
@@ -87,6 +88,15 @@ final goRouterProvider = Provider((ref) {
       GoRoute(
         path: '/search',
         builder: (context, state) => const SearchScreen(),
+        redirect: (context, state) async {
+          return internalRedirect();
+        },
+      ),
+      GoRoute(
+        path: '/brand/:id',
+        builder: (context, state) => BrandScreen(
+          brandId: state.pathParameters['id'] ?? 'no-id',
+        ),
         redirect: (context, state) async {
           return internalRedirect();
         },

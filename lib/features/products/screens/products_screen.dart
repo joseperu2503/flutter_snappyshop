@@ -171,21 +171,27 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       final brand = productsState.brands[index];
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryCultured,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Center(
-                          child: Text(
-                            brand.name,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.textCoolBlack,
-                              height: 22 / 16,
-                              leadingDistribution: TextLeadingDistribution.even,
+                      return GestureDetector(
+                        onTap: () {
+                          context.push('/brand/${brand.id}');
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryCultured,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Center(
+                            child: Text(
+                              brand.name,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.textCoolBlack,
+                                height: 22 / 16,
+                                leadingDistribution:
+                                    TextLeadingDistribution.even,
+                              ),
                             ),
                           ),
                         ),
