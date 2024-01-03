@@ -9,6 +9,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 0,
+        backgroundColor: AppColors.white,
+      ),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
