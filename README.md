@@ -16,3 +16,8 @@ los cambios del splashscreen no se ven reflejados cuando se lanza la aplicacion 
 para cambiar nombre de la app
 
 flutter pub run rename_app:main all="SnappyShop"
+
+
+para compilar el apk
+
+flutter build apk --release
