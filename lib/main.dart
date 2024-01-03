@@ -3,10 +3,13 @@ import 'package:flutter_eshop/config/constants/environment.dart';
 import 'package:flutter_eshop/config/router/app_router.dart';
 import 'package:flutter_eshop/config/theme/app_theme.dart';
 import 'package:flutter_eshop/features/shared/widgets/services.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
   await Environment.initEnvironment();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(
     const ProviderScope(
       child: MainApp(),
