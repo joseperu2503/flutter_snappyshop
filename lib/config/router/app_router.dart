@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_eshop/features/auth/screens/home_screen.dart';
 import 'package:flutter_eshop/features/auth/screens/login_screen.dart';
 import 'package:flutter_eshop/features/auth/screens/register_screen.dart';
@@ -26,27 +27,75 @@ Future<String?> internalRedirect() async {
   return '/';
 }
 
+Widget transition({
+  required BuildContext context,
+  required Animation animation,
+  required Widget child,
+}) {
+  const begin = Offset(1.0, 0.0);
+  const end = Offset.zero;
+  const curve = Curves.easeInOut;
+
+  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+  var offsetAnimation = animation.drive(tween);
+
+  var fadeTween = Tween(begin: 0.7, end: 1.0);
+  var fadeAnimation = animation.drive(fadeTween);
+
+  return FadeTransition(
+    opacity: fadeAnimation,
+    child: SlideTransition(position: offsetAnimation, child: child),
+  );
+}
+
 final appRouter = GoRouter(
   initialLocation: '/',
   routes: [
     // Auth Routes
     GoRoute(
       path: '/',
-      builder: (context, state) => const HomeScreen(),
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const HomeScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return transition(
+                animation: animation, context: context, child: child);
+          },
+        );
+      },
       redirect: (context, state) async {
         return externalRedirect();
       },
     ),
     GoRoute(
       path: '/login',
-      builder: (context, state) => const LoginScreen(),
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const LoginScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return transition(
+                animation: animation, context: context, child: child);
+          },
+        );
+      },
       redirect: (context, state) async {
         return externalRedirect();
       },
     ),
     GoRoute(
       path: '/register',
-      builder: (context, state) => const RegisterScreen(),
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const RegisterScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return transition(
+                animation: animation, context: context, child: child);
+          },
+        );
+      },
       redirect: (context, state) async {
         return externalRedirect();
       },
@@ -55,46 +104,100 @@ final appRouter = GoRouter(
     // Product Routes
     GoRoute(
       path: '/products',
-      builder: (context, state) => const ProductsScreen(),
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const ProductsScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return transition(
+                animation: animation, context: context, child: child);
+          },
+        );
+      },
       redirect: (context, state) async {
         return internalRedirect();
       },
     ),
     GoRoute(
       path: '/product/:id',
-      builder: (context, state) => ProductScreen(
-        productId: state.pathParameters['id'] ?? 'no-id',
-      ),
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: ProductScreen(
+            productId: state.pathParameters['id'] ?? 'no-id',
+          ),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return transition(
+                animation: animation, context: context, child: child);
+          },
+        );
+      },
       redirect: (context, state) async {
         return internalRedirect();
       },
     ),
     GoRoute(
       path: '/cart',
-      builder: (context, state) => const CartScreen(),
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const CartScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return transition(
+                animation: animation, context: context, child: child);
+          },
+        );
+      },
       redirect: (context, state) async {
         return internalRedirect();
       },
     ),
     GoRoute(
       path: '/order-confirmed',
-      builder: (context, state) => const OrderConfirmedScreen(),
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const OrderConfirmedScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return transition(
+                animation: animation, context: context, child: child);
+          },
+        );
+      },
       redirect: (context, state) async {
         return internalRedirect();
       },
     ),
     GoRoute(
       path: '/search',
-      builder: (context, state) => const SearchScreen(),
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const SearchScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return transition(
+                animation: animation, context: context, child: child);
+          },
+        );
+      },
       redirect: (context, state) async {
         return internalRedirect();
       },
     ),
     GoRoute(
       path: '/brand/:id',
-      builder: (context, state) => BrandScreen(
-        brandId: state.pathParameters['id'] ?? 'no-id',
-      ),
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: BrandScreen(
+            brandId: state.pathParameters['id'] ?? 'no-id',
+          ),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return transition(
+                animation: animation, context: context, child: child);
+          },
+        );
+      },
       redirect: (context, state) async {
         return internalRedirect();
       },
