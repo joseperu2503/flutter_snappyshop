@@ -30,47 +30,50 @@ class PriceFilterButton extends ConsumerWidget {
                 : ''))
         : 'Price';
 
-    return FilledButton(
-      onPressed: () {
-        FocusManager.instance.primaryFocus?.unfocus();
-        showModalBottomSheet(
-          backgroundColor: AppColors.white,
-          elevation: 0,
-          showDragHandle: false,
-          isScrollControlled: true,
-          context: context,
-          builder: (context) {
-            return _PriceBottomSheet(
-              filter: searchState.filter,
-            );
-          },
-        );
-      },
-      style: FilledButton.styleFrom(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 10,
+    return SizedBox(
+      height: 45,
+      child: FilledButton(
+        onPressed: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+          showModalBottomSheet(
+            backgroundColor: AppColors.white,
+            elevation: 0,
+            showDragHandle: false,
+            isScrollControlled: true,
+            context: context,
+            builder: (context) {
+              return _PriceBottomSheet(
+                filter: searchState.filter,
+              );
+            },
+          );
+        },
+        style: FilledButton.styleFrom(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 10,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: BorderSide(
+              color: hasFilter
+                  ? AppColors.secondaryMangoTango
+                  : AppColors.textCoolBlack.withOpacity(0.7),
+            ),
+          ),
+          backgroundColor: Colors.transparent,
         ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-          side: BorderSide(
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
             color: hasFilter
                 ? AppColors.secondaryMangoTango
                 : AppColors.textCoolBlack.withOpacity(0.7),
+            height: 1.1,
+            leadingDistribution: TextLeadingDistribution.even,
           ),
-        ),
-        backgroundColor: Colors.transparent,
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-          color: hasFilter
-              ? AppColors.secondaryMangoTango
-              : AppColors.textCoolBlack.withOpacity(0.7),
-          height: 1.1,
-          leadingDistribution: TextLeadingDistribution.even,
         ),
       ),
     );
