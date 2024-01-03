@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_eshop/config/api/api.dart';
+import 'package:flutter_eshop/config/router/app_router.dart';
+import 'package:flutter_eshop/features/auth/models/auth_user.dart';
 import 'package:flutter_eshop/features/auth/models/login_response.dart';
 import 'package:flutter_eshop/features/shared/models/service_exception.dart';
 import 'package:flutter_eshop/features/shared/services/key_value_storage_service.dart';
@@ -74,5 +76,20 @@ class AuthService {
       return false;
     }
     return true;
+  }
+
+  logout() async {
+    await KeyValueStorageService().removeKey('token');
+    appRouter.go('/');
+  }
+
+  static Future<AuthUser> getUser() async {
+    try {
+      final response = await api.get('/me');
+
+      return AuthUser.fromJson(response.data);
+    } catch (e) {
+      throw ServiceException('An error occurred while loading the user.');
+    }
   }
 }

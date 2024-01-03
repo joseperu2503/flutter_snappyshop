@@ -48,7 +48,7 @@ class RegisterNotifier extends StateNotifier<RegisterState> {
         confirmPassword: state.confirmPassword.value,
       );
 
-      ref.read(goRouterProvider).go('/');
+      appRouter.go('/');
       ref
           .read(snackbarProvider.notifier)
           .showSnackbar('User registered successfully');

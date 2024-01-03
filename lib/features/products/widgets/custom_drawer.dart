@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_eshop/config/constants/app_colors.dart';
 import 'package:flutter_eshop/features/auth/providers/auth_provider.dart';
+import 'package:flutter_eshop/features/auth/services/auth_service.dart';
 import 'package:flutter_eshop/features/products/providers/cart_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +13,7 @@ class CustomDrawer extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final cartState = ref.watch(cartProvider);
     int numProducts = 0;
+    final authState = ref.watch(authProvider);
 
     if (cartState.cart != null) {
       if (cartState.cart!.products.isNotEmpty) {
@@ -51,13 +53,13 @@ class CustomDrawer extends ConsumerWidget {
                   const SizedBox(
                     width: 12,
                   ),
-                  const Expanded(
+                  Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Jose Luis Perez',
-                          style: TextStyle(
+                          '${authState.user?.name}',
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
                             color: AppColors.textYankeesBlue,
@@ -66,8 +68,8 @@ class CustomDrawer extends ConsumerWidget {
                           ),
                         ),
                         Text(
-                          'joseperu2503@gmail.com',
-                          style: TextStyle(
+                          '${authState.user?.email}',
+                          style: const TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.w400,
                             color: AppColors.textArsenic,
@@ -154,7 +156,7 @@ class CustomDrawer extends ConsumerWidget {
                 color: AppColors.error,
               ),
               onTap: () {
-                ref.read(authProvider.notifier).logout();
+                AuthService().logout();
               },
             )
           ],

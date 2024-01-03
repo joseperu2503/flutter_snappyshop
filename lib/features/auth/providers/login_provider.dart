@@ -44,7 +44,7 @@ class LoginNotifier extends StateNotifier<LoginState> {
       await keyValueStorageService.setKeyValue<String>(
           'token', loginResponse.accessToken);
 
-      ref.read(goRouterProvider).go('/products');
+      appRouter.go('/products');
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
     }

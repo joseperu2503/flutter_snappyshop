@@ -1,6 +1,9 @@
-import 'package:flutter_eshop/config/router/app_router.dart';
-import 'package:flutter_eshop/features/shared/services/key_value_storage_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_eshop/features/auth/models/auth_user.dart';
+import 'package:flutter_eshop/features/auth/services/auth_service.dart';
+import 'package:flutter_eshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_eshop/features/shared/models/service_exception.dart';
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   return AuthNotifier(ref);
@@ -9,26 +12,31 @@ final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
 class AuthNotifier extends StateNotifier<AuthState> {
   AuthNotifier(this.ref) : super(AuthState());
   final StateNotifierProviderRef ref;
-  final keyValueStorageService = KeyValueStorageService();
 
-  logout() async {
-    await keyValueStorageService.removeKey('token');
+  Future<void> getUser() async {
+    try {
+      final AuthUser user = await AuthService.getUser();
 
-    ref.read(goRouterProvider).go('/');
+      state = state.copyWith(
+        user: () => user,
+      );
+    } on ServiceException catch (e) {
+      ref.read(snackbarProvider.notifier).showSnackbar(e.message);
+    }
   }
 }
 
 class AuthState {
-  final bool authenticated;
+  final AuthUser? user;
 
   AuthState({
-    this.authenticated = false,
+    this.user,
   });
 
   AuthState copyWith({
-    bool? authenticated,
+    ValueGetter<AuthUser?>? user,
   }) =>
       AuthState(
-        authenticated: authenticated ?? this.authenticated,
+        user: user != null ? user() : this.user,
       );
 }

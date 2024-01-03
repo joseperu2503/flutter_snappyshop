@@ -1,3 +1,4 @@
+import 'package:flutter_eshop/features/auth/providers/auth_provider.dart';
 import 'package:flutter_eshop/features/products/models/brand.dart';
 import 'package:flutter_eshop/features/products/models/products_response.dart';
 import 'package:flutter_eshop/features/products/models/category.dart';
@@ -28,6 +29,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
         getBrands(),
         getCategories(),
         ref.read(searchProvider.notifier).getFilterData(),
+        ref.read(authProvider.notifier).getUser(),
       ]);
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);

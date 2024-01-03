@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_eshop/config/constants/app_colors.dart';
+import 'package:flutter_eshop/features/auth/providers/auth_provider.dart';
 import 'package:flutter_eshop/features/products/providers/cart_provider.dart';
 import 'package:flutter_eshop/features/products/providers/products_provider.dart';
 import 'package:flutter_eshop/features/products/widgets/cart_button.dart';
@@ -44,6 +45,8 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
   @override
   Widget build(BuildContext context) {
     final productsState = ref.watch(productsProvider);
+    final authState = ref.watch(authProvider);
+
     return Scaffold(
       key: scaffoldKey,
       drawer: const CustomDrawer(),
@@ -93,9 +96,9 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Text(
-                    'Hi Jose Luis',
-                    style: TextStyle(
+                  Text(
+                    'Hi ${authState.user?.name ?? ''}',
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w700,
                       color: AppColors.textCoolBlack,
