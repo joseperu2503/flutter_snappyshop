@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_eshop/features/products/models/filter.dart';
+import 'package:flutter_eshop/features/products/models/filter_response.dart';
 import 'package:flutter_eshop/features/products/models/products_response.dart';
 import 'package:flutter_eshop/features/products/services/products_services.dart';
 import 'package:flutter_eshop/features/shared/models/service_exception.dart';
@@ -22,8 +23,8 @@ class SearchNotifier extends StateNotifier<SearchState> {
   initState() {
     state = state.copyWith(
       filter: () => Filter(
-        category: null,
-        brand: null,
+        categoryId: null,
+        brandId: null,
         minPrice: '',
         maxPrice: '',
         search: '',
@@ -44,8 +45,8 @@ class SearchNotifier extends StateNotifier<SearchState> {
     try {
       final ProductsResponse response = await ProductsService.getProducts(
         page: state.page,
-        categoryId: state.filter?.category?.id,
-        brandId: state.filter?.category?.id,
+        categoryId: state.filter?.categoryId,
+        brandId: state.filter?.brandId,
         minPrice: state.filter?.minPrice,
         maxPrice: state.filter?.maxPrice,
         search: state.filter?.search,
@@ -119,6 +120,18 @@ class SearchNotifier extends StateNotifier<SearchState> {
       },
     );
   }
+
+  Future<void> getFilterData() async {
+    try {
+      final response = await ProductsService.getFilterData();
+      state = state.copyWith(
+        brands: response.brands,
+        categories: response.categories,
+      );
+    } on ServiceException catch (e) {
+      throw ServiceException(e.message);
+    }
+  }
 }
 
 class SearchState {
@@ -127,6 +140,8 @@ class SearchState {
   final int page;
   final int totalPages;
   final bool loadingProducts;
+  final List<BrandFilter> brands;
+  final List<CategoryFilter> categories;
 
   SearchState({
     this.products = const [],
@@ -134,6 +149,8 @@ class SearchState {
     this.page = 1,
     this.totalPages = 1,
     this.loadingProducts = false,
+    this.brands = const [],
+    this.categories = const [],
   });
 
   SearchState copyWith({
@@ -142,6 +159,8 @@ class SearchState {
     int? page,
     int? totalPages,
     bool? loadingProducts,
+    List<BrandFilter>? brands,
+    List<CategoryFilter>? categories,
   }) =>
       SearchState(
         products: products ?? this.products,
@@ -149,5 +168,7 @@ class SearchState {
         page: page ?? this.page,
         totalPages: totalPages ?? this.totalPages,
         loadingProducts: loadingProducts ?? this.loadingProducts,
+        brands: brands ?? this.brands,
+        categories: categories ?? this.categories,
       );
 }

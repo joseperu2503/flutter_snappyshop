@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_eshop/config/constants/app_colors.dart';
 import 'package:flutter_eshop/features/products/models/filter.dart';
-import 'package:flutter_eshop/features/products/providers/products_provider.dart';
 import 'package:flutter_eshop/features/products/providers/search_provider.dart';
 import 'package:flutter_eshop/features/products/widgets/input_price.dart';
 import 'package:flutter_eshop/features/shared/widgets/custom_button.dart';
@@ -33,8 +32,8 @@ class FilterBottomSheetState extends ConsumerState<FilterBottomSheet> {
   }
 
   Filter filter = Filter(
-    category: null,
-    brand: null,
+    categoryId: null,
+    brandId: null,
     minPrice: '',
     maxPrice: '',
     search: '',
@@ -42,7 +41,7 @@ class FilterBottomSheetState extends ConsumerState<FilterBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final productsState = ref.watch(productsProvider);
+    final searchState = ref.watch(searchProvider);
 
     return Padding(
       padding:
@@ -91,14 +90,14 @@ class FilterBottomSheetState extends ConsumerState<FilterBottomSheet> {
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
-                  final category = productsState.categories[index];
-                  final selected = category.id == filter.category?.id;
+                  final category = searchState.categories[index];
+                  final selected = category.id == filter.categoryId;
 
                   return FilledButton(
                     onPressed: () {
                       setState(() {
                         filter = filter.copyWith(
-                          category: () => category,
+                          categoryId: () => category.id,
                         );
                       });
                     },
@@ -138,7 +137,7 @@ class FilterBottomSheetState extends ConsumerState<FilterBottomSheet> {
                     width: 10,
                   );
                 },
-                itemCount: productsState.categories.length,
+                itemCount: searchState.categories.length,
               ),
             ),
             const SizedBox(
@@ -236,8 +235,8 @@ class FilterBottomSheetState extends ConsumerState<FilterBottomSheet> {
                     onPressed: () {
                       setState(() {
                         filter = filter.copyWith(
-                          category: null,
-                          brand: null,
+                          categoryId: null,
+                          brandId: null,
                           minPrice: '',
                           maxPrice: '',
                         );

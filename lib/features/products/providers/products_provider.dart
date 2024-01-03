@@ -1,6 +1,7 @@
 import 'package:flutter_eshop/features/products/models/brand.dart';
 import 'package:flutter_eshop/features/products/models/products_response.dart';
 import 'package:flutter_eshop/features/products/models/category.dart';
+import 'package:flutter_eshop/features/products/providers/search_provider.dart';
 import 'package:flutter_eshop/features/products/services/products_services.dart';
 import 'package:flutter_eshop/features/shared/models/service_exception.dart';
 import 'package:flutter_eshop/features/shared/providers/loader_provider.dart';
@@ -26,6 +27,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
         getProducts(withSpinner: false),
         getBrands(),
         getCategories(),
+        ref.read(searchProvider.notifier).getFilterData(),
       ]);
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);

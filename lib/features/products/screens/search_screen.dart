@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_eshop/config/constants/app_colors.dart';
 import 'package:flutter_eshop/features/products/providers/search_provider.dart';
+import 'package:flutter_eshop/features/products/widgets/brand_filter.dart';
+import 'package:flutter_eshop/features/products/widgets/category_filter.dart';
 import 'package:flutter_eshop/features/products/widgets/filter_bottom_sheet.dart';
 import 'package:flutter_eshop/features/products/widgets/input_search.dart';
 import 'package:flutter_eshop/features/products/widgets/product_card.dart';
@@ -45,8 +47,8 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     final searchState = ref.watch(searchProvider);
-    final hasFilter = searchState.filter?.brand != null ||
-        searchState.filter?.category != null ||
+    final hasFilter = searchState.filter?.brandId != null ||
+        searchState.filter?.categoryId != null ||
         (searchState.filter?.maxPrice != null &&
             searchState.filter?.maxPrice != '') ||
         (searchState.filter?.minPrice != null &&
@@ -109,63 +111,86 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                 automaticallyImplyLeading: false,
                 scrolledUnderElevation: 0,
                 titleSpacing: 0,
-                toolbarHeight: 90,
-                title: Container(
-                  padding: const EdgeInsets.only(
-                    top: 24,
-                    left: 24,
-                    right: 24,
-                    bottom: 16,
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: InputSearch(
-                          focusNode: _focusNode,
-                          value: searchState.filter?.search ?? '',
-                          onChanged: (value) {
-                            ref
-                                .read(searchProvider.notifier)
-                                .changeSearch(value);
-                          },
-                        ),
+                toolbarHeight: 135,
+                title: Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.only(
+                        top: 24,
+                        left: 24,
+                        right: 24,
+                        bottom: 16,
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: AppColors.primaryPearlAqua,
-                        ),
-                        child: TextButton(
-                          style: TextButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: InputSearch(
+                              focusNode: _focusNode,
+                              value: searchState.filter?.search ?? '',
+                              onChanged: (value) {
+                                ref
+                                    .read(searchProvider.notifier)
+                                    .changeSearch(value);
+                              },
                             ),
-                            foregroundColor: Colors.white60,
                           ),
-                          onPressed: () {
-                            showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              builder: (context) {
-                                return FilterBottomSheet(
-                                  filter: searchState.filter,
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: AppColors.primaryPearlAqua,
+                            ),
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                foregroundColor: Colors.white60,
+                              ),
+                              onPressed: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  builder: (context) {
+                                    return FilterBottomSheet(
+                                      filter: searchState.filter,
+                                    );
+                                  },
                                 );
                               },
-                            );
-                          },
-                          child: const Icon(
-                            Icons.tune,
-                            color: AppColors.textCultured,
+                              child: const Icon(
+                                Icons.tune,
+                                color: AppColors.textCultured,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 45,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: const [
+                          SizedBox(
+                            width: 24,
                           ),
-                        ),
-                      )
-                    ],
-                  ),
+                          CategoryFilterButton(),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          BrandFilter(),
+                          SizedBox(
+                            width: 24,
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
                 pinned: true,
               ),
