@@ -23,6 +23,7 @@ class MainApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
+      title: 'SnappyShop',
       routerConfig: appRouter,
       debugShowCheckedModeBanner: false,
       builder: (context, child) {
