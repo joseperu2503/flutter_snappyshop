@@ -88,18 +88,6 @@ class SearchNotifier extends StateNotifier<SearchState> {
   Timer? _debounceTimer;
 
   changeSearch(String search) {
-    if (search == '') {
-      state = state.copyWith(
-        loadingProducts: false,
-        products: [],
-        page: 1,
-        filter: () => state.filter?.copyWith(
-          search: search,
-        ),
-      );
-      return;
-    }
-
     state = state.copyWith(
       loadingProducts: true,
       products: [],

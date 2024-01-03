@@ -14,40 +14,58 @@ class CategoryFilterButton extends ConsumerWidget {
     final CategoryFilter categoryFilter = searchState.categories.firstWhere(
         (category) => category.id == searchState.filter?.categoryId);
 
-    return FilledButton(
-      onPressed: () {
-        FocusManager.instance.primaryFocus?.unfocus();
-        showModalBottomSheet(
-          backgroundColor: AppColors.white,
-          elevation: 0,
-          showDragHandle: false,
-          context: context,
-          builder: (context) {
-            return const _CategoryBottomSheet();
-          },
-        );
-      },
-      style: FilledButton.styleFrom(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 10,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-          side: BorderSide(
-            color: AppColors.textCoolBlack.withOpacity(0.3),
+    return SizedBox(
+      height: 45,
+      child: FilledButton(
+        onPressed: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+          showModalBottomSheet(
+            backgroundColor: AppColors.white,
+            elevation: 0,
+            showDragHandle: false,
+            context: context,
+            builder: (context) {
+              return const _CategoryBottomSheet();
+            },
+          );
+        },
+        style: FilledButton.styleFrom(
+          padding: const EdgeInsets.only(
+            left: 20,
+            right: 10,
           ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: BorderSide(
+              color: categoryFilter.id != null
+                  ? AppColors.secondaryMangoTango
+                  : AppColors.textCoolBlack.withOpacity(0.3),
+            ),
+          ),
+          backgroundColor: Colors.transparent,
         ),
-        backgroundColor: Colors.transparent,
-      ),
-      child: Text(
-        categoryFilter.name,
-        style: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-          color: AppColors.textCoolBlack.withOpacity(0.7),
-          height: 1.1,
-          leadingDistribution: TextLeadingDistribution.even,
+        child: Row(
+          children: [
+            Text(
+              categoryFilter.name,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: categoryFilter.id != null
+                    ? AppColors.secondaryMangoTango
+                    : AppColors.textCoolBlack.withOpacity(0.7),
+                height: 1.1,
+                leadingDistribution: TextLeadingDistribution.even,
+              ),
+            ),
+            Icon(
+              Icons.arrow_drop_down_rounded,
+              color: categoryFilter.id != null
+                  ? AppColors.secondaryMangoTango
+                  : AppColors.textCoolBlack.withOpacity(0.7),
+              size: 30,
+            ),
+          ],
         ),
       ),
     );
@@ -92,7 +110,9 @@ class CategoryBottomSheetState extends ConsumerState<_CategoryBottomSheet> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.pop();
+                  },
                   icon: const Icon(Icons.close),
                   color: AppColors.textYankeesBlue,
                 )

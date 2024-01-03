@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_eshop/config/constants/app_colors.dart';
 import 'package:flutter_eshop/features/products/providers/search_provider.dart';
-import 'package:flutter_eshop/features/products/widgets/brand_filter.dart';
-import 'package:flutter_eshop/features/products/widgets/category_filter.dart';
-import 'package:flutter_eshop/features/products/widgets/filter_bottom_sheet.dart';
+import 'package:flutter_eshop/features/products/widgets/brand_filter_button.dart';
+import 'package:flutter_eshop/features/products/widgets/category_filter_button.dart';
 import 'package:flutter_eshop/features/products/widgets/input_search.dart';
+import 'package:flutter_eshop/features/products/widgets/price_filter_button.dart';
 import 'package:flutter_eshop/features/products/widgets/product_card.dart';
 import 'package:flutter_eshop/features/shared/widgets/back_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,6 +27,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
     super.initState();
     Future.microtask(() {
       ref.read(searchProvider.notifier).initState();
+      ref.read(searchProvider.notifier).loadMoreProducts();
     });
     scrollController.addListener(() {
       if (scrollController.position.pixels + 400 >=
@@ -47,20 +48,10 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     final searchState = ref.watch(searchProvider);
-    final hasFilter = searchState.filter?.brandId != null ||
-        searchState.filter?.categoryId != null ||
-        (searchState.filter?.maxPrice != null &&
-            searchState.filter?.maxPrice != '') ||
-        (searchState.filter?.minPrice != null &&
-            searchState.filter?.minPrice != '') ||
-        (searchState.filter?.search != null &&
-            searchState.filter?.search != '');
-    final showResults = !searchState.loadingProducts &&
-        hasFilter &&
-        searchState.products.isNotEmpty;
-    final noResults = !searchState.loadingProducts &&
-        hasFilter &&
-        searchState.products.isEmpty;
+
+    final showResults = searchState.products.isNotEmpty;
+    final noResults =
+        !searchState.loadingProducts && searchState.products.isEmpty;
 
     return VisibilityDetector(
       key: const Key('myWidgetKey'),
@@ -111,64 +102,22 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                 automaticallyImplyLeading: false,
                 scrolledUnderElevation: 0,
                 titleSpacing: 0,
-                toolbarHeight: 135,
+                toolbarHeight: 131,
                 title: Column(
                   children: [
                     Container(
                       padding: const EdgeInsets.only(
-                        top: 24,
+                        top: 8,
                         left: 24,
                         right: 24,
                         bottom: 16,
                       ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: InputSearch(
-                              focusNode: _focusNode,
-                              value: searchState.filter?.search ?? '',
-                              onChanged: (value) {
-                                ref
-                                    .read(searchProvider.notifier)
-                                    .changeSearch(value);
-                              },
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Container(
-                            width: 50,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: AppColors.primaryPearlAqua,
-                            ),
-                            child: TextButton(
-                              style: TextButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                foregroundColor: Colors.white60,
-                              ),
-                              onPressed: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  builder: (context) {
-                                    return FilterBottomSheet(
-                                      filter: searchState.filter,
-                                    );
-                                  },
-                                );
-                              },
-                              child: const Icon(
-                                Icons.tune,
-                                color: AppColors.textCultured,
-                              ),
-                            ),
-                          )
-                        ],
+                      child: InputSearch(
+                        focusNode: _focusNode,
+                        value: searchState.filter?.search ?? '',
+                        onChanged: (value) {
+                          ref.read(searchProvider.notifier).changeSearch(value);
+                        },
                       ),
                     ),
                     SizedBox(
@@ -183,13 +132,20 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                           SizedBox(
                             width: 10,
                           ),
-                          BrandFilter(),
+                          BrandFilterButton(),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          PriceFilterButton(),
                           SizedBox(
                             width: 24,
                           ),
                         ],
                       ),
-                    )
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
                   ],
                 ),
                 pinned: true,
@@ -198,7 +154,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                 SliverToBoxAdapter(
                   child: Container(
                     padding: const EdgeInsets.only(
-                      top: 16,
+                      top: 8,
                       left: 24,
                       right: 24,
                     ),
@@ -220,41 +176,28 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                   ),
                 ),
               if (noResults)
-                SliverFillRemaining(
+                const SliverFillRemaining(
                   hasScrollBody: false,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const SizedBox(
+                      SizedBox(
                         height: 80,
                       ),
-                      const Icon(
+                      Icon(
                         Icons.search,
                         size: 80,
                         color: AppColors.textArsenic,
                       ),
-                      const SizedBox(
+                      SizedBox(
                         height: 8,
                       ),
                       Text(
-                        'No Results for "${searchState.filter?.search}"',
-                        style: const TextStyle(
+                        'No Results',
+                        style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
                           color: AppColors.textCoolBlack,
-                          height: 1.1,
-                          leadingDistribution: TextLeadingDistribution.even,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 4,
-                      ),
-                      Text(
-                        'Check the spelling or try a new search',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.textCoolBlack.withOpacity(0.6),
                           height: 1.1,
                           leadingDistribution: TextLeadingDistribution.even,
                         ),
@@ -268,7 +211,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                     top: 16,
                     left: 24,
                     right: 24,
-                    bottom: 56,
+                    bottom: 20,
                   ),
                   sliver: SliverGrid(
                     delegate: SliverChildBuilderDelegate(
@@ -287,13 +230,31 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                     ),
                   ),
                 ),
-              if (searchState.loadingProducts)
-                const SliverToBoxAdapter(
+              if (searchState.loadingProducts && searchState.products.isEmpty)
+                const SliverFillRemaining(
+                  hasScrollBody: false,
                   child: Center(
                     child: SizedBox(
                       width: 40,
                       height: 40,
                       child: CircularProgressIndicator(),
+                    ),
+                  ),
+                ),
+              if (searchState.loadingProducts &&
+                  searchState.products.isNotEmpty)
+                SliverToBoxAdapter(
+                  child: Container(
+                    padding: const EdgeInsets.only(
+                      top: 10,
+                      bottom: 40,
+                    ),
+                    child: const Center(
+                      child: SizedBox(
+                        width: 40,
+                        height: 40,
+                        child: CircularProgressIndicator(),
+                      ),
                     ),
                   ),
                 )
