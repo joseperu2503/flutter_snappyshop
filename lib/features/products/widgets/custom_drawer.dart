@@ -99,16 +99,6 @@ class CustomDrawer extends ConsumerWidget {
             ListTile(
               contentPadding:
                   const EdgeInsetsDirectional.symmetric(horizontal: 24),
-              title: const Text('Password'),
-              leading: const Icon(Icons.lock_outline_rounded),
-              onTap: () {
-                context.pop();
-                context.push('/change-password');
-              },
-            ),
-            ListTile(
-              contentPadding:
-                  const EdgeInsetsDirectional.symmetric(horizontal: 24),
               title: const Text('Cart'),
               leading: const Icon(Icons.shopping_bag_outlined),
               trailing: numProducts > 0
@@ -145,6 +135,16 @@ class CustomDrawer extends ConsumerWidget {
               contentPadding: EdgeInsetsDirectional.symmetric(horizontal: 24),
               title: Text('Wishlist'),
               leading: Icon(Icons.favorite_outline),
+            ),
+            ListTile(
+              contentPadding:
+                  const EdgeInsetsDirectional.symmetric(horizontal: 24),
+              title: const Text('Change Password'),
+              leading: const Icon(Icons.lock_outline_rounded),
+              onTap: () {
+                context.pop();
+                context.push('/change-password');
+              },
             ),
             const ListTile(
               contentPadding: EdgeInsetsDirectional.symmetric(horizontal: 24),
