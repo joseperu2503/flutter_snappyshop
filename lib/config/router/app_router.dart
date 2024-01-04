@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_eshop/features/user/screens/change_password_screen.dart';
 import 'package:flutter_eshop/features/auth/screens/home_screen.dart';
 import 'package:flutter_eshop/features/auth/screens/login_screen.dart';
 import 'package:flutter_eshop/features/auth/screens/register_screen.dart';
@@ -192,6 +193,22 @@ final appRouter = GoRouter(
           child: BrandScreen(
             brandId: state.pathParameters['id'] ?? 'no-id',
           ),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return transition(
+                animation: animation, context: context, child: child);
+          },
+        );
+      },
+      redirect: (context, state) async {
+        return internalRedirect();
+      },
+    ),
+    GoRoute(
+      path: '/password',
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const ChangePasswordScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return transition(
                 animation: animation, context: context, child: child);

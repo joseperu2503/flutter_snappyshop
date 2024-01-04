@@ -22,6 +22,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       );
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
+      throw ServiceException(e.message);
     }
   }
 }
