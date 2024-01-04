@@ -17,13 +17,16 @@ class AuthNotifier extends StateNotifier<AuthState> {
     try {
       final AuthUser user = await AuthService.getUser();
 
-      state = state.copyWith(
-        user: () => user,
-      );
+      setuser(user);
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
-      throw ServiceException(e.message);
     }
+  }
+
+  setuser(AuthUser user) {
+    state = state.copyWith(
+      user: () => user,
+    );
   }
 }
 

@@ -9,34 +9,28 @@ import 'package:flutter_eshop/features/user/services/user_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
 
-final personalDataProvider =
-    StateNotifierProvider<PersonalDataNotifier, PersonalDataState>((ref) {
-  return PersonalDataNotifier(ref);
+final accountInformationProvider =
+    StateNotifierProvider<AccountInformationNotifier, AccountInformationState>(
+        (ref) {
+  return AccountInformationNotifier(ref);
 });
 
-class PersonalDataNotifier extends StateNotifier<PersonalDataState> {
-  PersonalDataNotifier(this.ref) : super(PersonalDataState());
+class AccountInformationNotifier
+    extends StateNotifier<AccountInformationState> {
+  AccountInformationNotifier(this.ref) : super(AccountInformationState());
   final StateNotifierProviderRef ref;
 
   initData() async {
-    ref.read(loaderProvider.notifier).showLoader();
-    try {
-      await ref.read(authProvider.notifier).getUser();
-      state = state.copyWith(
-        name: Name.pure(ref.read(authProvider).user?.name ?? ''),
-        email: Email.pure(ref.read(authProvider).user?.email ?? ''),
-      );
-      ref.read(loaderProvider.notifier).dismissLoader();
-    } on ServiceException catch (e) {
-      ref.read(loaderProvider.notifier).dismissLoader();
-      ref.read(snackbarProvider.notifier).showSnackbar(e.message);
-      throw ServiceException(e.message);
-    }
+    state = state.copyWith(
+      name: Name.pure(ref.read(authProvider).user?.name ?? ''),
+      email: Email.pure(ref.read(authProvider).user?.email ?? ''),
+      showButton: false,
+    );
   }
 
   submit() async {
     FocusManager.instance.primaryFocus?.unfocus();
-    final name = Name.dirty(state.email.value);
+    final name = Name.dirty(state.name.value);
     final email = Email.dirty(state.email.value);
 
     state = state.copyWith(
@@ -48,13 +42,14 @@ class PersonalDataNotifier extends StateNotifier<PersonalDataState> {
     ref.read(loaderProvider.notifier).showLoader();
 
     try {
-      await UserService.changePersonalData(
+      final response = await UserService.changePersonalData(
         email: state.email.value,
         name: state.name.value,
         userId: ref.read(authProvider).user?.id,
       );
-
-      await initData();
+      ref.read(authProvider.notifier).setuser(response.data);
+      initData();
+      ref.read(snackbarProvider.notifier).showSnackbar(response.message);
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
     }
@@ -65,31 +60,37 @@ class PersonalDataNotifier extends StateNotifier<PersonalDataState> {
   changeName(Name name) {
     state = state.copyWith(
       name: name,
+      showButton: true,
     );
   }
 
   changeEmail(Email email) {
     state = state.copyWith(
       email: email,
+      showButton: true,
     );
   }
 }
 
-class PersonalDataState {
+class AccountInformationState {
   final Name name;
   final Email email;
+  final bool showButton;
 
-  PersonalDataState({
+  AccountInformationState({
     this.name = const Name.pure(''),
     this.email = const Email.pure(''),
+    this.showButton = false,
   });
 
-  PersonalDataState copyWith({
+  AccountInformationState copyWith({
     Name? name,
     Email? email,
+    bool? showButton,
   }) =>
-      PersonalDataState(
+      AccountInformationState(
         name: name ?? this.name,
         email: email ?? this.email,
+        showButton: showButton ?? this.showButton,
       );
 }

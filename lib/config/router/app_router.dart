@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_eshop/features/user/screens/account_information_screen.dart';
 import 'package:flutter_eshop/features/user/screens/change_password_screen.dart';
 import 'package:flutter_eshop/features/auth/screens/home_screen.dart';
 import 'package:flutter_eshop/features/auth/screens/login_screen.dart';
@@ -204,11 +205,27 @@ final appRouter = GoRouter(
       },
     ),
     GoRoute(
-      path: '/password',
+      path: '/change-password',
       pageBuilder: (context, state) {
         return CustomTransitionPage(
           key: state.pageKey,
           child: const ChangePasswordScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return transition(
+                animation: animation, context: context, child: child);
+          },
+        );
+      },
+      redirect: (context, state) async {
+        return internalRedirect();
+      },
+    ),
+    GoRoute(
+      path: '/account-information',
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const AccountInformationScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return transition(
                 animation: animation, context: context, child: child);

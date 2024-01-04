@@ -91,7 +91,10 @@ class CustomDrawer extends ConsumerWidget {
                   const EdgeInsetsDirectional.symmetric(horizontal: 24),
               title: const Text('Account Information'),
               leading: const Icon(Icons.person_2_outlined),
-              onTap: () {},
+              onTap: () {
+                context.pop();
+                context.push('/account-information');
+              },
             ),
             ListTile(
               contentPadding:
@@ -100,7 +103,7 @@ class CustomDrawer extends ConsumerWidget {
               leading: const Icon(Icons.lock_outline_rounded),
               onTap: () {
                 context.pop();
-                context.push('/password');
+                context.push('/change-password');
               },
             ),
             ListTile(
