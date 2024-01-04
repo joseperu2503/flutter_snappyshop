@@ -20,13 +20,13 @@ class InputPassword extends StatefulWidget {
 class _InputPasswordState extends State<InputPassword> {
   final TextEditingController controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
-  bool showText = false;
+  bool showPassword = false;
 
   @override
   void initState() {
     super.initState();
     setState(() {
-      showText = false;
+      showPassword = false;
     });
     _focusNode.addListener(() {
       if (!_focusNode.hasFocus) {
@@ -51,32 +51,50 @@ class _InputPasswordState extends State<InputPassword> {
     );
     return TextFieldContainer(
       errorMessage: widget.value.errorMessage,
-      child: TextFormField(
-        style: const TextStyle(
-          color: AppColors.textYankeesBlue,
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
-          height: 22 / 14,
-        ),
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(borderSide: BorderSide.none),
-          isDense: true,
-          hintText: 'Password',
-          hintStyle: TextStyle(
-            color: AppColors.textArsenic,
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-            height: 22 / 14,
+      child: Row(
+        children: [
+          Expanded(
+            child: TextFormField(
+              style: const TextStyle(
+                color: AppColors.textYankeesBlue,
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                height: 22 / 14,
+              ),
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(borderSide: BorderSide.none),
+                isDense: true,
+                hintText: 'Password',
+                hintStyle: TextStyle(
+                  color: AppColors.textArsenic.withOpacity(0.5),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  height: 22 / 14,
+                ),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 15,
+                ),
+              ),
+              controller: controller,
+              onChanged: (value) {
+                widget.onChanged(Password.dirty(value));
+              },
+              obscureText: !showPassword,
+            ),
           ),
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: 20,
-            vertical: 15,
-          ),
-        ),
-        controller: controller,
-        onChanged: (value) {
-          widget.onChanged(Password.dirty(value));
-        },
+          IconButton(
+            onPressed: () {
+              setState(() {
+                showPassword = !showPassword;
+              });
+            },
+            icon: Icon(
+              showPassword ? Icons.visibility : Icons.visibility_off,
+              color: AppColors.textArsenic.withOpacity(0.9),
+            ),
+          )
+        ],
       ),
     );
   }

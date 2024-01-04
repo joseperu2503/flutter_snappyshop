@@ -117,9 +117,8 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
               padding: const EdgeInsets.symmetric(
                 horizontal: 24,
               ),
-              // ignore: prefer_const_constructors
-              child: Row(
-                children: const [
+              child: const Row(
+                children: [
                   CustomBackButton(),
                   Spacer(),
                   CartButton(),

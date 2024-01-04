@@ -58,17 +58,17 @@ class _InputNameState extends State<InputName> {
           fontWeight: FontWeight.w400,
           height: 22 / 14,
         ),
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(borderSide: BorderSide.none),
+        decoration: InputDecoration(
+          border: const OutlineInputBorder(borderSide: BorderSide.none),
           isDense: true,
           hintText: 'Password',
           hintStyle: TextStyle(
-            color: AppColors.textArsenic,
+            color: AppColors.textArsenic.withOpacity(0.5),
             fontSize: 14,
             fontWeight: FontWeight.w400,
             height: 22 / 14,
           ),
-          contentPadding: EdgeInsets.symmetric(
+          contentPadding: const EdgeInsets.symmetric(
             horizontal: 20,
             vertical: 15,
           ),
