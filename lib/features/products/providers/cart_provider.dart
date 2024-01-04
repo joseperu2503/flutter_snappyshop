@@ -77,8 +77,8 @@ class CartNotifier extends StateNotifier<CartState> {
     if (state.cart == null) return;
     state = state.copyWith(
       cart: () => state.cart?.removeProductAtIndex(index),
-      showUpdateBtn: true,
     );
+    updateCart();
   }
 
   updateCart() async {
