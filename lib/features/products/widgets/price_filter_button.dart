@@ -58,7 +58,7 @@ class PriceFilterButton extends ConsumerWidget {
             side: BorderSide(
               color: hasFilter
                   ? AppColors.secondaryMangoTango
-                  : AppColors.textCoolBlack.withOpacity(0.7),
+                  : AppColors.textCoolBlack.withOpacity(0.3),
             ),
           ),
           backgroundColor: Colors.transparent,
