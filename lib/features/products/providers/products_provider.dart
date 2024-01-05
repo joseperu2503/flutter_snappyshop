@@ -109,6 +109,32 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
       ref.read(loaderProvider.notifier).dismissLoader();
     }
   }
+
+  setFavoriteProduct(bool isFavorite, int productId) {
+    final List<Product> products = state.products.map((product) {
+      if (product.id == productId) {
+        product = product.copyWith(
+          isFavorite: isFavorite,
+        );
+      }
+      return product;
+    }).toList();
+
+    if (state.productDetails[productId.toString()] != null) {
+      final productDetails = state.productDetails.map((key, product) {
+        if (key == productId.toString()) {
+          return MapEntry(key, product.copyWith(isFavorite: isFavorite));
+        }
+        return MapEntry(key, product);
+      });
+
+      state = state.copyWith(
+        productDetails: productDetails,
+      );
+    }
+
+    state = state.copyWith(products: products);
+  }
 }
 
 class ProductsState {

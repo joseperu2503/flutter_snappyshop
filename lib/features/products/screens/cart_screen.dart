@@ -228,9 +228,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
               hasScrollBody: false,
               child: Column(
                 children: [
-                  const SizedBox(
-                    height: 100,
-                  ),
+                  const Spacer(),
                   SvgPicture.asset(
                     'assets/icons/empty_cart.svg',
                     width: 200,
@@ -265,6 +263,28 @@ class CartScreenState extends ConsumerState<CartScreen> {
                       textAlign: TextAlign.center,
                     ),
                   ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: CustomButton(
+                      child: const Text(
+                        'Start shopping',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.textCultured,
+                          height: 22 / 16,
+                          leadingDistribution: TextLeadingDistribution.even,
+                        ),
+                      ),
+                      onPressed: () {
+                        context.go('/products');
+                      },
+                    ),
+                  ),
+                  const Spacer(),
                 ],
               ),
             )

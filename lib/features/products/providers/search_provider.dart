@@ -120,6 +120,19 @@ class SearchNotifier extends StateNotifier<SearchState> {
       throw ServiceException(e.message);
     }
   }
+
+  setFavoriteProduct(bool isFavorite, int productId) {
+    final List<Product> products = state.products.map((product) {
+      if (product.id == productId) {
+        product = product.copyWith(
+          isFavorite: isFavorite,
+        );
+      }
+      return product;
+    }).toList();
+
+    state = state.copyWith(products: products);
+  }
 }
 
 class SearchState {

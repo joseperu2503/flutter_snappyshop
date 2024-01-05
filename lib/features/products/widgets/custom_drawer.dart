@@ -131,10 +131,15 @@ class CustomDrawer extends ConsumerWidget {
               title: Text('My Cards'),
               leading: Icon(Icons.credit_card_outlined),
             ),
-            const ListTile(
-              contentPadding: EdgeInsetsDirectional.symmetric(horizontal: 24),
-              title: Text('Wishlist'),
-              leading: Icon(Icons.favorite_outline),
+            ListTile(
+              contentPadding:
+                  const EdgeInsetsDirectional.symmetric(horizontal: 24),
+              title: const Text('Wishlist'),
+              leading: const Icon(Icons.favorite_outline),
+              onTap: () {
+                context.pop();
+                context.push('/whishlist');
+              },
             ),
             ListTile(
               contentPadding:

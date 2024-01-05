@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_eshop/features/products/screens/wishlist_screen.dart';
 import 'package:flutter_eshop/features/user/screens/account_information_screen.dart';
 import 'package:flutter_eshop/features/user/screens/change_password_screen.dart';
 import 'package:flutter_eshop/features/auth/screens/home_screen.dart';
@@ -176,6 +177,22 @@ final appRouter = GoRouter(
         return CustomTransitionPage(
           key: state.pageKey,
           child: const SearchScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return transition(
+                animation: animation, context: context, child: child);
+          },
+        );
+      },
+      redirect: (context, state) async {
+        return internalRedirect();
+      },
+    ),
+    GoRoute(
+      path: '/whishlist',
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const WishlistScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return transition(
                 animation: animation, context: context, child: child);

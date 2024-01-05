@@ -30,6 +30,7 @@ class Product {
   final User user;
   final DateTime createdAt;
   final int? discount;
+  final bool isFavorite;
 
   Product({
     required this.id,
@@ -47,6 +48,7 @@ class Product {
     required this.user,
     required this.createdAt,
     required this.discount,
+    required this.isFavorite,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
@@ -68,7 +70,46 @@ class Product {
         user: User.fromJson(json["user"]),
         createdAt: DateTime.parse(json["created_at"]),
         discount: json["discount"],
+        isFavorite: json["is_favorite"],
       );
+
+  Product copyWith({
+    int? id,
+    String? name,
+    String? description,
+    double? price,
+    int? stock,
+    List<String>? images,
+    _Brand? brand,
+    _Category? category,
+    List<String>? colors,
+    List<Size>? sizes,
+    List<Gender>? genders,
+    bool? freeShipping,
+    User? user,
+    DateTime? createdAt,
+    int? discount,
+    bool? isFavorite,
+  }) {
+    return Product(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      price: price ?? this.price,
+      stock: stock ?? this.stock,
+      images: images ?? this.images,
+      brand: brand ?? this.brand,
+      category: category ?? this.category,
+      colors: colors ?? this.colors,
+      sizes: sizes ?? this.sizes,
+      genders: genders ?? this.genders,
+      freeShipping: freeShipping ?? this.freeShipping,
+      user: user ?? this.user,
+      createdAt: createdAt ?? this.createdAt,
+      discount: discount ?? this.discount,
+      isFavorite: isFavorite ?? this.isFavorite,
+    );
+  }
 }
 
 class User {

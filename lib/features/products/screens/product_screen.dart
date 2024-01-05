@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_eshop/config/constants/app_colors.dart';
 import 'package:flutter_eshop/features/products/models/products_response.dart';
 import 'package:flutter_eshop/features/products/providers/cart_provider.dart';
+import 'package:flutter_eshop/features/products/providers/favorite_products_provider.dart';
 import 'package:flutter_eshop/features/products/providers/products_provider.dart';
+import 'package:flutter_eshop/features/products/services/products_services.dart';
 import 'package:flutter_eshop/features/products/widgets/cart_button.dart';
 import 'package:flutter_eshop/features/products/widgets/image_viewer.dart';
 import 'package:flutter_eshop/features/products/widgets/product_card.dart';
+import 'package:flutter_eshop/features/shared/models/service_exception.dart';
+import 'package:flutter_eshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_eshop/features/shared/widgets/back_button.dart';
 import 'package:flutter_eshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,8 +27,6 @@ class ProductScreen extends ConsumerStatefulWidget {
 }
 
 class ProductScreenState extends ConsumerState<ProductScreen> {
-  Product? product;
-
   @override
   void initState() {
     super.initState();
@@ -33,6 +35,32 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
       ref
           .read(productsProvider.notifier)
           .getProduct(productId: widget.productId);
+    });
+  }
+
+  bool loadingFavorite = false;
+
+  toggleFavorite(Product? product) async {
+    if (loadingFavorite || product == null) return;
+    setState(() {
+      loadingFavorite = true;
+    });
+    try {
+      final response = await ProductsService.toggleFavoriteProduct(
+        isFavorite: !product.isFavorite,
+        productId: product.id,
+      );
+
+      ref
+          .read(favoriteProductsProvider.notifier)
+          .setFavoriteProduct(response.data, product.id);
+      ref.read(snackbarProvider.notifier).showSnackbar(response.message);
+    } on ServiceException catch (e) {
+      ref.read(snackbarProvider.notifier).showSnackbar(e.message);
+    }
+
+    setState(() {
+      loadingFavorite = false;
     });
   }
 
@@ -78,11 +106,28 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                   ),
                   foregroundColor: AppColors.primaryPearlAqua,
                 ),
-                onPressed: () {},
-                child: const Icon(
-                  Icons.favorite_outline_rounded,
-                  color: AppColors.primaryPearlAqua,
-                ),
+                onPressed: loadingFavorite
+                    ? null
+                    : () {
+                        toggleFavorite(product);
+                      },
+                child: loadingFavorite
+                    ? const Center(
+                        child: SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: AppColors.primaryPearlAqua,
+                          ),
+                        ),
+                      )
+                    : Icon(
+                        product.isFavorite
+                            ? Icons.favorite_rounded
+                            : Icons.favorite_outline_rounded,
+                        color: AppColors.primaryPearlAqua,
+                      ),
               ),
             ),
             const SizedBox(

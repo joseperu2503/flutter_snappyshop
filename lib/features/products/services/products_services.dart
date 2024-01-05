@@ -3,6 +3,7 @@ import 'package:flutter_eshop/features/products/models/brand.dart';
 import 'package:flutter_eshop/features/products/models/category.dart';
 import 'package:flutter_eshop/features/products/models/filter_response.dart';
 import 'package:flutter_eshop/features/products/models/products_response.dart';
+import 'package:flutter_eshop/features/products/models/toggle_favorite_response.dart';
 import 'package:flutter_eshop/features/shared/models/service_exception.dart';
 
 final api = Api();
@@ -73,6 +74,41 @@ class ProductsService {
       return FilterResponse.fromJson(response.data);
     } catch (e) {
       throw ServiceException('An error occurred while loading the filters.');
+    }
+  }
+
+  static Future<ProductsResponse> getMyFavoriteProducts({
+    int page = 1,
+  }) async {
+    Map<String, dynamic> queryParameters = {
+      "page": page,
+    };
+
+    try {
+      final response = await api.get('/my-favorite-products',
+          queryParameters: queryParameters);
+
+      return ProductsResponse.fromJson(response.data);
+    } catch (e) {
+      throw ServiceException('An error occurred while loading the products.');
+    }
+  }
+
+  static Future<ToggleFavoriteResponse> toggleFavoriteProduct({
+    required bool isFavorite,
+    required int productId,
+  }) async {
+    Map<String, dynamic> form = {
+      "is_favorite": isFavorite,
+      "product_id": productId,
+    };
+
+    try {
+      final response = await api.post('/toggle-favorite-product', data: form);
+
+      return ToggleFavoriteResponse.fromJson(response.data);
+    } catch (e) {
+      throw ServiceException('An error occurred while setting up the product.');
     }
   }
 }
