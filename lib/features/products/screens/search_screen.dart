@@ -112,12 +112,19 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                         right: 24,
                         bottom: 16,
                       ),
-                      child: InputSearch(
-                        focusNode: _focusNode,
-                        value: searchState.filter?.search ?? '',
-                        onChanged: (value) {
-                          ref.read(searchProvider.notifier).changeSearch(value);
-                        },
+                      child: Hero(
+                        tag: 'searchTag',
+                        child: Material(
+                          child: InputSearch(
+                            focusNode: _focusNode,
+                            value: searchState.filter?.search ?? '',
+                            onChanged: (value) {
+                              ref
+                                  .read(searchProvider.notifier)
+                                  .changeSearch(value);
+                            },
+                          ),
+                        ),
                       ),
                     ),
                     SizedBox(
