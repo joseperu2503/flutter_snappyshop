@@ -22,7 +22,6 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
 
   void _getToken() async {
     if (state.status != AuthorizationStatus.authorized) return;
-
     final token = await messaging.getToken();
     print(token);
   }

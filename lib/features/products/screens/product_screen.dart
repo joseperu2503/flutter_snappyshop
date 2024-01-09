@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
 import 'package:flutter_snappyshop/features/products/providers/cart_provider.dart';
@@ -36,6 +37,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
           .read(productsProvider.notifier)
           .getProduct(productId: widget.productId);
     });
+    FlutterNativeSplash.remove();
   }
 
   bool loadingFavorite = false;

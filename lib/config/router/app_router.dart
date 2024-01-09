@@ -138,6 +138,13 @@ final appRouter = GoRouter(
       redirect: (context, state) async {
         return internalRedirect();
       },
+      onExit: (context) {
+        //para cuando la notificacion redirija a esta vista directamente
+        if (!context.canPop()) {
+          context.go('/products');
+        }
+        return true;
+      },
     ),
     GoRoute(
       path: '/cart',
