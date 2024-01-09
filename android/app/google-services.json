@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "267778652600",
+    "project_id": "snappyshop-727fd",
+    "storage_bucket": "snappyshop-727fd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:267778652600:android:f0eac006dfe9092127b74d",
+        "android_client_info": {
+          "package_name": "com.joseperezgil.snappyshop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD48m6H97Mk0DPzeTCzzLUw3Ft1uyVZgQE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,16 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/features/shared/providers/loader_provider.dart';
+import 'package:flutter_snappyshop/features/shared/providers/notifications_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_snappyshop/features/shared/services/snackbar_service.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class Services extends ConsumerWidget {
+class Services extends ConsumerStatefulWidget {
   const Services({super.key, required this.child});
   final Widget child;
 
   @override
-  Widget build(BuildContext context, ref) {
+  ServicesState createState() => ServicesState();
+}
+
+class ServicesState extends ConsumerState<Services> {
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      ref.read(notificationsProvider.notifier).initialStatusCheck();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final loader = ref.watch(loaderProvider);
 
     ref.listen(snackbarProvider, (previous, next) {
@@ -24,7 +38,7 @@ class Services extends ConsumerWidget {
 
     return Stack(
       children: [
-        child,
+        widget.child,
         if (loader.loading) const Loader(),
       ],
     );

@@ -11,6 +11,8 @@ dependencies:
   badges: ^3.1.2
   change_app_package_name: ^1.1.0
   dio: ^5.4.0
+  firebase_core: ^2.24.2
+  firebase_messaging: ^14.7.10
   flutter:
     sdk: flutter
   flutter_dotenv: ^5.1.0
