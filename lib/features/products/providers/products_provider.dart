@@ -93,6 +93,17 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
     }
   }
 
+  setProduct(Product product) {
+    if (state.productDetails[product.id.toString()] == null) {
+      state = state.copyWith(
+        productDetails: {
+          ...state.productDetails,
+          product.id.toString(): product
+        },
+      );
+    }
+  }
+
   getProduct({required String productId}) async {
     if (state.productDetails[productId] == null) {
       ref.read(loaderProvider.notifier).showLoader();
