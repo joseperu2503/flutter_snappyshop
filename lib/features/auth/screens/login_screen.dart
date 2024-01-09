@@ -7,11 +7,24 @@ import 'package:flutter_eshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_eshop/features/shared/widgets/checkbox.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoginScreen extends ConsumerWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  LoginScreenState createState() => LoginScreenState();
+}
+
+class LoginScreenState extends ConsumerState<LoginScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      ref.read(loginProvider.notifier).initData();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final loginState = ref.watch(loginProvider);
 
     return Layout1(

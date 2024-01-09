@@ -8,11 +8,24 @@ import 'package:flutter_eshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_eshop/features/shared/widgets/checkbox.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RegisterScreen extends ConsumerWidget {
+class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  RegisterScreenState createState() => RegisterScreenState();
+}
+
+class RegisterScreenState extends ConsumerState<RegisterScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      ref.read(registerProvider.notifier).initData();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final registerState = ref.watch(registerProvider);
 
     return Layout1(
@@ -125,7 +138,7 @@ class RegisterScreen extends ConsumerWidget {
                     height: 4,
                   ),
                   InputPassword(
-                    value: registerState.password,
+                    value: registerState.confirmPassword,
                     onChanged: (value) {
                       ref
                           .read(registerProvider.notifier)

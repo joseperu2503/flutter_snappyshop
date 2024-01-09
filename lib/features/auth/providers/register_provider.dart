@@ -17,11 +17,18 @@ final registerProvider =
 });
 
 class RegisterNotifier extends StateNotifier<RegisterState> {
-  // final GoRouter router = appRouter;
-
   RegisterNotifier(this.ref) : super(RegisterState());
   final StateNotifierProviderRef ref;
   final keyValueStorageService = KeyValueStorageService();
+
+  initData() {
+    state = state.copyWith(
+      name: const Name.pure(''),
+      email: const Email.pure(''),
+      password: const Password.pure(''),
+      confirmPassword: const Password.pure(''),
+    );
+  }
 
   register() async {
     FocusManager.instance.primaryFocus?.unfocus();

@@ -16,11 +16,15 @@ final loginProvider = StateNotifierProvider<LoginNotifier, LoginState>((ref) {
 });
 
 class LoginNotifier extends StateNotifier<LoginState> {
-  // final GoRouter router = appRouter;
-
   LoginNotifier(this.ref) : super(LoginState());
   final StateNotifierProviderRef ref;
   final keyValueStorageService = KeyValueStorageService();
+
+  initData() {
+    state = state.copyWith(
+        email: const Email.pure('joseperu2503@gmail.com'),
+        password: const Password.pure('12345678'));
+  }
 
   login() async {
     FocusManager.instance.primaryFocus?.unfocus();
@@ -70,8 +74,8 @@ class LoginState {
   final Password password;
 
   LoginState({
-    this.email = const Email.pure('joseperu2503@gmail.com'),
-    this.password = const Password.pure('12345678'),
+    this.email = const Email.pure(''),
+    this.password = const Password.pure(''),
   });
 
   LoginState copyWith({

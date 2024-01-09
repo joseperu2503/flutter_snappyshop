@@ -81,6 +81,7 @@ class _InputPasswordState extends State<InputPassword> {
                 widget.onChanged(Password.dirty(value));
               },
               obscureText: !showPassword,
+              focusNode: _focusNode,
             ),
           ),
           IconButton(

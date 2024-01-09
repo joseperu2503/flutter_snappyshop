@@ -61,7 +61,7 @@ class _InputNameState extends State<InputName> {
         decoration: InputDecoration(
           border: const OutlineInputBorder(borderSide: BorderSide.none),
           isDense: true,
-          hintText: 'Password',
+          hintText: 'Name',
           hintStyle: TextStyle(
             color: AppColors.textArsenic.withOpacity(0.5),
             fontSize: 14,
@@ -77,6 +77,7 @@ class _InputNameState extends State<InputName> {
         onChanged: (value) {
           widget.onChanged(Name.dirty(value));
         },
+        focusNode: _focusNode,
       ),
     );
   }
