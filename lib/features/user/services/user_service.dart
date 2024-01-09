@@ -1,7 +1,7 @@
-import 'package:flutter_eshop/config/api/api.dart';
-import 'package:flutter_eshop/features/shared/models/service_exception.dart';
-import 'package:flutter_eshop/features/user/models/change_password_response.dart';
-import 'package:flutter_eshop/features/user/models/change_personal_data_response.dart';
+import 'package:flutter_snappyshop/config/api/api.dart';
+import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
+import 'package:flutter_snappyshop/features/user/models/change_password_response.dart';
+import 'package:flutter_snappyshop/features/user/models/change_personal_data_response.dart';
 
 final api = Api();
 

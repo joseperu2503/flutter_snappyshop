@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_eshop/config/constants/app_colors.dart';
-import 'package:flutter_eshop/features/products/models/products_response.dart';
-import 'package:flutter_eshop/features/products/providers/cart_provider.dart';
-import 'package:flutter_eshop/features/products/providers/favorite_products_provider.dart';
-import 'package:flutter_eshop/features/products/providers/products_provider.dart';
-import 'package:flutter_eshop/features/products/services/products_services.dart';
-import 'package:flutter_eshop/features/products/widgets/cart_button.dart';
-import 'package:flutter_eshop/features/products/widgets/image_viewer.dart';
-import 'package:flutter_eshop/features/products/widgets/product_card.dart';
-import 'package:flutter_eshop/features/shared/models/service_exception.dart';
-import 'package:flutter_eshop/features/shared/providers/snackbar_provider.dart';
-import 'package:flutter_eshop/features/shared/widgets/back_button.dart';
-import 'package:flutter_eshop/features/shared/widgets/custom_button.dart';
+import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/features/products/models/products_response.dart';
+import 'package:flutter_snappyshop/features/products/providers/cart_provider.dart';
+import 'package:flutter_snappyshop/features/products/providers/favorite_products_provider.dart';
+import 'package:flutter_snappyshop/features/products/providers/products_provider.dart';
+import 'package:flutter_snappyshop/features/products/services/products_services.dart';
+import 'package:flutter_snappyshop/features/products/widgets/cart_button.dart';
+import 'package:flutter_snappyshop/features/products/widgets/image_viewer.dart';
+import 'package:flutter_snappyshop/features/products/widgets/product_card.dart';
+import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
+import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/back_button.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductScreen extends ConsumerStatefulWidget {

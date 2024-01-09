@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_eshop/config/constants/app_colors.dart';
-import 'package:flutter_eshop/features/shared/widgets/back_button.dart';
+import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/back_button.dart';
 
 class Layout1 extends StatelessWidget {
   const Layout1({

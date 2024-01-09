@@ -1,4 +1,4 @@
-import 'package:flutter_eshop/features/products/models/products_response.dart';
+import 'package:flutter_snappyshop/features/products/models/products_response.dart';
 
 class Cart {
   final double totalAmount;

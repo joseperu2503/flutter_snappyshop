@@ -1,10 +1,10 @@
-import 'package:flutter_eshop/config/api/api.dart';
-import 'package:flutter_eshop/features/products/models/brand.dart';
-import 'package:flutter_eshop/features/products/models/category.dart';
-import 'package:flutter_eshop/features/products/models/filter_response.dart';
-import 'package:flutter_eshop/features/products/models/products_response.dart';
-import 'package:flutter_eshop/features/products/models/toggle_favorite_response.dart';
-import 'package:flutter_eshop/features/shared/models/service_exception.dart';
+import 'package:flutter_snappyshop/config/api/api.dart';
+import 'package:flutter_snappyshop/features/products/models/brand.dart';
+import 'package:flutter_snappyshop/features/products/models/category.dart';
+import 'package:flutter_snappyshop/features/products/models/filter_response.dart';
+import 'package:flutter_snappyshop/features/products/models/products_response.dart';
+import 'package:flutter_snappyshop/features/products/models/toggle_favorite_response.dart';
+import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 
 final api = Api();
 

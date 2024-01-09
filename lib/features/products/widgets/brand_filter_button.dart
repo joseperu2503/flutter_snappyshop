@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_eshop/config/constants/app_colors.dart';
-import 'package:flutter_eshop/features/products/models/filter_response.dart';
-import 'package:flutter_eshop/features/products/providers/search_provider.dart';
+import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/features/products/models/filter_response.dart';
+import 'package:flutter_snappyshop/features/products/providers/search_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 

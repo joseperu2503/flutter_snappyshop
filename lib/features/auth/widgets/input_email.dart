@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_eshop/config/constants/app_colors.dart';
-import 'package:flutter_eshop/features/shared/inputs/email.dart';
-import 'package:flutter_eshop/features/shared/widgets/text_field_container.dart';
+import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/features/shared/inputs/email.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/text_field_container.dart';
 
 class InputEmail extends StatefulWidget {
   const InputEmail({

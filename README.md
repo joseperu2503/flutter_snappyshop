@@ -1,4 +1,4 @@
-# flutter_eshop
+# flutter_snappyshop
 
 A new Flutter project.
 

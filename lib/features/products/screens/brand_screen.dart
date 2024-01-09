@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_eshop/features/products/models/products_response.dart';
-import 'package:flutter_eshop/features/products/providers/products_provider.dart';
-import 'package:flutter_eshop/features/products/services/products_services.dart';
-import 'package:flutter_eshop/features/products/widgets/product_card.dart';
-import 'package:flutter_eshop/features/shared/layout/layout_1.dart';
-import 'package:flutter_eshop/features/shared/models/service_exception.dart';
-import 'package:flutter_eshop/features/shared/providers/snackbar_provider.dart';
+import 'package:flutter_snappyshop/features/products/models/products_response.dart';
+import 'package:flutter_snappyshop/features/products/providers/products_provider.dart';
+import 'package:flutter_snappyshop/features/products/services/products_services.dart';
+import 'package:flutter_snappyshop/features/products/widgets/product_card.dart';
+import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
+import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
+import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BrandScreen extends ConsumerStatefulWidget {

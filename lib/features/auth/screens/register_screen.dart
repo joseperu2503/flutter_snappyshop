@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_eshop/config/constants/app_colors.dart';
-import 'package:flutter_eshop/features/auth/providers/register_provider.dart';
-import 'package:flutter_eshop/features/auth/widgets/input_email.dart';
-import 'package:flutter_eshop/features/auth/widgets/input_name.dart';
-import 'package:flutter_eshop/features/auth/widgets/input_password.dart';
-import 'package:flutter_eshop/features/shared/layout/layout_1.dart';
-import 'package:flutter_eshop/features/shared/widgets/checkbox.dart';
+import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/features/auth/providers/register_provider.dart';
+import 'package:flutter_snappyshop/features/auth/widgets/input_email.dart';
+import 'package:flutter_snappyshop/features/auth/widgets/input_name.dart';
+import 'package:flutter_snappyshop/features/auth/widgets/input_password.dart';
+import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/checkbox.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {

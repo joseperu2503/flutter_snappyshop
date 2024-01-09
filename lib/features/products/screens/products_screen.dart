@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_eshop/config/constants/app_colors.dart';
-import 'package:flutter_eshop/features/auth/providers/auth_provider.dart';
-import 'package:flutter_eshop/features/products/providers/cart_provider.dart';
-import 'package:flutter_eshop/features/products/providers/products_provider.dart';
-import 'package:flutter_eshop/features/products/widgets/cart_button.dart';
-import 'package:flutter_eshop/features/products/widgets/custom_drawer.dart';
-import 'package:flutter_eshop/features/products/widgets/product_card.dart';
+import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/features/auth/providers/auth_provider.dart';
+import 'package:flutter_snappyshop/features/products/providers/cart_provider.dart';
+import 'package:flutter_snappyshop/features/products/providers/products_provider.dart';
+import 'package:flutter_snappyshop/features/products/widgets/cart_button.dart';
+import 'package:flutter_snappyshop/features/products/widgets/custom_drawer.dart';
+import 'package:flutter_snappyshop/features/products/widgets/product_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 

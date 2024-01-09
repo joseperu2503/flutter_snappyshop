@@ -1,4 +1,4 @@
-import 'package:flutter_eshop/features/products/models/cart.dart';
+import 'package:flutter_snappyshop/features/products/models/cart.dart';
 
 class CreateCartResponse {
   final bool success;

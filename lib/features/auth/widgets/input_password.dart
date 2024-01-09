@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_eshop/config/constants/app_colors.dart';
-import 'package:flutter_eshop/features/shared/inputs/password.dart';
-import 'package:flutter_eshop/features/shared/widgets/text_field_container.dart';
+import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/features/shared/inputs/password.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/text_field_container.dart';
 
 class InputPassword extends StatefulWidget {
   const InputPassword({

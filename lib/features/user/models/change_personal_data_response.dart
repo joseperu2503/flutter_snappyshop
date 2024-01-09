@@ -1,4 +1,4 @@
-import 'package:flutter_eshop/features/auth/models/auth_user.dart';
+import 'package:flutter_snappyshop/features/auth/models/auth_user.dart';
 
 class ChangePersonalDataResponse {
   final bool success;

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_eshop/features/auth/providers/auth_provider.dart';
-import 'package:flutter_eshop/features/shared/inputs/email.dart';
-import 'package:flutter_eshop/features/shared/inputs/name.dart';
-import 'package:flutter_eshop/features/shared/models/service_exception.dart';
-import 'package:flutter_eshop/features/shared/providers/loader_provider.dart';
-import 'package:flutter_eshop/features/shared/providers/snackbar_provider.dart';
-import 'package:flutter_eshop/features/user/services/user_service.dart';
+import 'package:flutter_snappyshop/features/auth/providers/auth_provider.dart';
+import 'package:flutter_snappyshop/features/shared/inputs/email.dart';
+import 'package:flutter_snappyshop/features/shared/inputs/name.dart';
+import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
+import 'package:flutter_snappyshop/features/shared/providers/loader_provider.dart';
+import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
+import 'package:flutter_snappyshop/features/user/services/user_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
 

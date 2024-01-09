@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_eshop/config/router/app_router.dart';
-import 'package:flutter_eshop/features/shared/inputs/password.dart';
-import 'package:flutter_eshop/features/shared/models/service_exception.dart';
-import 'package:flutter_eshop/features/shared/providers/loader_provider.dart';
-import 'package:flutter_eshop/features/shared/providers/snackbar_provider.dart';
-import 'package:flutter_eshop/features/user/services/user_service.dart';
+import 'package:flutter_snappyshop/config/router/app_router.dart';
+import 'package:flutter_snappyshop/features/shared/inputs/password.dart';
+import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
+import 'package:flutter_snappyshop/features/shared/providers/loader_provider.dart';
+import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
+import 'package:flutter_snappyshop/features/user/services/user_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
 

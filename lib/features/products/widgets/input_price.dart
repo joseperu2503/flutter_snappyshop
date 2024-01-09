@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_eshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 
 class InputPrice extends StatefulWidget {
   const InputPrice({
