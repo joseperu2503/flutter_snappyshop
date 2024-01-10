@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
-import 'package:flutter_snappyshop/features/shared/providers/notifications_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,8 +21,6 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final notification = ref.watch(notificationsProvider);
-
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 0,
@@ -134,14 +131,6 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                     ),
                   ),
-                  Text('${notification.status}'),
-                  TextButton(
-                      onPressed: () {
-                        ref
-                            .read(notificationsProvider.notifier)
-                            .requestPermission();
-                      },
-                      child: Text('permisos')),
                   const Spacer(),
                 ],
               ),

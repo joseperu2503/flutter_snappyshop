@@ -1,5 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_snappyshop/config/router/app_router.dart';
 
 final notificationsProvider =
     StateNotifierProvider<NotificationsNotifier, NotificationsState>((ref) {
@@ -11,19 +13,29 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-  initialStatusCheck() async {
-    final settings = await messaging.getNotificationSettings();
-    state = state.copyWith(
-      status: settings.authorizationStatus,
-    );
+  initNotificationStatus() async {
+    _setupInteractedMessage();
+    await requestPermission();
     _getToken();
     _onForegroundMessage();
   }
 
-  void _getToken() async {
+  Future<void> getStatus() async {
+    final settings = await messaging.getNotificationSettings();
+    state = state.copyWith(
+      status: settings.authorizationStatus,
+    );
+  }
+
+  Future<void> _getToken() async {
     if (state.status != AuthorizationStatus.authorized) return;
     final token = await messaging.getToken();
     print(token);
+  }
+
+  void _onForegroundMessage() {
+    //cuando la aplicacion esta siendo usada, en primer plano
+    FirebaseMessaging.onMessage.listen(_handleRemoteMessage);
   }
 
   void _handleRemoteMessage(RemoteMessage message) {
@@ -35,11 +47,7 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
     }
   }
 
-  void _onForegroundMessage() {
-    FirebaseMessaging.onMessage.listen(_handleRemoteMessage);
-  }
-
-  void requestPermission() async {
+  Future<void> requestPermission() async {
     NotificationSettings settings = await messaging.requestPermission(
       alert: true,
       announcement: false,
@@ -53,6 +61,33 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
       status: settings.authorizationStatus,
     );
     _getToken();
+  }
+
+  //configuracion de las interacciones con las notificaciones
+
+  // Se supone que todos los mensajes contienen un campo de datos con la key 'type'
+  Future<void> _setupInteractedMessage() async {
+    // Recibe cualquier mensaje que provocó que la aplicación se abriera desde
+    // un estado terminado.
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+
+    // Si el mensaje también contiene una propiedad de datos con un "type" de "chat",
+    // navegar a una pantalla de chat
+    if (initialMessage != null) {
+      _handleMessage(initialMessage);
+    }
+
+    // También maneja cualquier interacción cuando la aplicación
+    // está en segundo plano a través de un Stream listener
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+  }
+
+  void _handleMessage(RemoteMessage message) {
+    if (message.data['type'] == 'product' &&
+        message.data['productId'] != null) {
+      appRouter.push('/product/${message.data['productId']}');
+    }
   }
 }
 
@@ -73,4 +108,12 @@ class NotificationsState {
         notifications: notifications ?? this.notifications,
         status: status ?? this.status,
       );
+}
+
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // Si vas a utilizar otros servicios de Firebase en segundo plano, como Firestore,
+  // asegúrate de llamar a `initializeApp` antes de usar otros servicios de Firebase.
+  await Firebase.initializeApp();
+
+  print("Handling a background message: ${message.messageId}");
 }
