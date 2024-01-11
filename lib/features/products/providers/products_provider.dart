@@ -106,8 +106,6 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
 
   getProduct({required String productId}) async {
     if (state.productDetails[productId] == null) {
-      ref.read(loaderProvider.notifier).showLoader();
-
       try {
         final product =
             await ProductsService.getProductDetail(productId: productId);
@@ -116,8 +114,8 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
         );
       } on ServiceException catch (e) {
         ref.read(snackbarProvider.notifier).showSnackbar(e.message);
+        throw ServiceException(e.message);
       }
-      ref.read(loaderProvider.notifier).dismissLoader();
     }
   }
 
