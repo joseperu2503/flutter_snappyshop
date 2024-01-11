@@ -1,11 +1,11 @@
 import 'package:flutter_snappyshop/features/auth/providers/auth_provider.dart';
 import 'package:flutter_snappyshop/features/products/models/brand.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
-import 'package:flutter_snappyshop/features/products/models/category.dart';
+import 'package:flutter_snappyshop/features/products/providers/cart_provider.dart';
 import 'package:flutter_snappyshop/features/products/providers/search_provider.dart';
 import 'package:flutter_snappyshop/features/products/services/products_services.dart';
+import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
-import 'package:flutter_snappyshop/features/shared/providers/loader_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,35 +16,54 @@ final productsProvider =
 });
 
 class ProductsNotifier extends StateNotifier<ProductsState> {
-  // final GoRouter router = appRouter;
-
   ProductsNotifier(this.ref) : super(ProductsState());
   final StateNotifierProviderRef ref;
 
-  getDashboardData() async {
-    ref.read(loaderProvider.notifier).showLoader();
-
-    try {
-      await Future.wait([
-        getProducts(withSpinner: false),
-        getBrands(),
-        getCategories(),
-        ref.read(searchProvider.notifier).getFilterData(),
-        ref.read(authProvider.notifier).getUser(),
-      ]);
-    } on ServiceException catch (e) {
-      ref.read(snackbarProvider.notifier).showSnackbar(e.message);
-    }
-    FlutterNativeSplash.remove();
-
-    ref.read(loaderProvider.notifier).dismissLoader();
+  initData() {
+    state = state.copyWith(
+      brands: [],
+      products: [],
+      page: 1,
+      totalPages: 1,
+      productDetails: {},
+      loadingProducts: false,
+    );
   }
 
-  Future<void> getProducts({bool withSpinner = true}) async {
+  getDashboardData() async {
+    state = state.copyWith(
+      dashboardStatus: LoadingStatus.loading,
+    );
+    ref.read(cartProvider.notifier).initData();
+    initData();
+    FlutterNativeSplash.remove();
+
+    try {
+      ref.read(authProvider.notifier).setuser(null);
+      await Future.wait([
+        getProducts(),
+        getBrands(),
+        ref.read(searchProvider.notifier).getFilterData(),
+        ref.read(authProvider.notifier).getUser(),
+        ref.read(cartProvider.notifier).getCartService(),
+      ]);
+    } on ServiceException catch (e) {
+      state = state.copyWith(
+        dashboardStatus: LoadingStatus.error,
+      );
+      ref.read(snackbarProvider.notifier).showSnackbar(e.message);
+    }
+
+    state = state.copyWith(
+      dashboardStatus: LoadingStatus.success,
+    );
+  }
+
+  Future<void> getProducts() async {
     if (state.page > state.totalPages || state.loadingProducts) return;
 
     state = state.copyWith(
-      loadingProducts: withSpinner,
+      loadingProducts: true,
     );
 
     try {
@@ -57,12 +76,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
         page: state.page + 1,
       );
     } on ServiceException catch (e) {
-      state = state.copyWith(
-        loadingProducts: false,
-      );
-      if (withSpinner) {
-        ref.read(snackbarProvider.notifier).showSnackbar(e.message);
-      }
+      ref.read(snackbarProvider.notifier).showSnackbar(e.message);
       throw ServiceException(e.message);
     }
 
@@ -76,17 +90,6 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
       final response = await ProductsService.getBrands();
       state = state.copyWith(
         brands: response,
-      );
-    } on ServiceException catch (e) {
-      throw ServiceException(e.message);
-    }
-  }
-
-  Future<void> getCategories() async {
-    try {
-      final response = await ProductsService.getCategories();
-      state = state.copyWith(
-        categories: response,
       );
     } on ServiceException catch (e) {
       throw ServiceException(e.message);
@@ -149,38 +152,38 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
 class ProductsState {
   final List<Product> products;
   final List<Brand> brands;
-  final List<Category> categories;
   final Map<String, Product> productDetails;
   final int page;
   final int totalPages;
   final bool loadingProducts;
+  final LoadingStatus dashboardStatus;
 
   ProductsState({
     this.products = const [],
     this.brands = const [],
-    this.categories = const [],
     this.productDetails = const {},
     this.page = 1,
     this.totalPages = 1,
     this.loadingProducts = false,
+    this.dashboardStatus = LoadingStatus.loading,
   });
 
   ProductsState copyWith({
     List<Product>? products,
     List<Brand>? brands,
-    List<Category>? categories,
     Map<String, Product>? productDetails,
     int? page,
     int? totalPages,
     bool? loadingProducts,
+    LoadingStatus? dashboardStatus,
   }) =>
       ProductsState(
         products: products ?? this.products,
         brands: brands ?? this.brands,
-        categories: categories ?? this.categories,
         productDetails: productDetails ?? this.productDetails,
         page: page ?? this.page,
         totalPages: totalPages ?? this.totalPages,
         loadingProducts: loadingProducts ?? this.loadingProducts,
+        dashboardStatus: dashboardStatus ?? this.dashboardStatus,
       );
 }

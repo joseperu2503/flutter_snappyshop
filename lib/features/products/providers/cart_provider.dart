@@ -20,7 +20,7 @@ class CartNotifier extends StateNotifier<CartState> {
   CartNotifier(this.ref) : super(CartState());
   final StateNotifierProviderRef ref;
 
-  initState() {
+  initData() {
     state = state.copyWith(
       cart: () => null,
       showUpdateBtn: false,

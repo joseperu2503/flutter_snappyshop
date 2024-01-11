@@ -23,7 +23,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  setuser(AuthUser user) {
+  setuser(AuthUser? user) {
     state = state.copyWith(
       user: () => user,
     );

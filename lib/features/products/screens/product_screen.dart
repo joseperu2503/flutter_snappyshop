@@ -10,13 +10,12 @@ import 'package:flutter_snappyshop/features/products/widgets/cart_button.dart';
 import 'package:flutter_snappyshop/features/products/widgets/image_viewer.dart';
 import 'package:flutter_snappyshop/features/products/widgets/product_card.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
+import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/back_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-enum ProductStatus { loading, success, error }
 
 class ProductScreen extends ConsumerStatefulWidget {
   const ProductScreen({
@@ -41,24 +40,24 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
 
   loadProduct() {
     setState(() {
-      productStatus = ProductStatus.loading;
+      productStatus = LoadingStatus.loading;
     });
     try {
       ref
           .read(productsProvider.notifier)
           .getProduct(productId: widget.productId);
       setState(() {
-        productStatus = ProductStatus.success;
+        productStatus = LoadingStatus.success;
       });
     } on ServiceException catch (_) {
       setState(() {
-        productStatus = ProductStatus.error;
+        productStatus = LoadingStatus.error;
       });
     }
   }
 
   bool loadingFavorite = false;
-  ProductStatus productStatus = ProductStatus.loading;
+  LoadingStatus productStatus = LoadingStatus.loading;
 
   toggleFavorite(Product? product) async {
     if (loadingFavorite || product == null) return;
@@ -102,7 +101,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
     }
 
     return Scaffold(
-      bottomNavigationBar: productStatus == ProductStatus.success
+      bottomNavigationBar: productStatus == LoadingStatus.success
           ? Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: 16,
@@ -175,7 +174,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
               ),
             )
           : null,
-      body: productStatus == ProductStatus.success
+      body: productStatus == LoadingStatus.success
           ? CustomScrollView(
               physics: const ClampingScrollPhysics(),
               slivers: [
@@ -373,30 +372,31 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
             )
           : Layout1(
               child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 16,
-              ),
-              child: Center(
-                child: productStatus == ProductStatus.loading
-                    ? const CircularProgressIndicator()
-                    : CustomButton(
-                        child: const Text(
-                          'Retry',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.textCultured,
-                            height: 22 / 16,
-                            leadingDistribution: TextLeadingDistribution.even,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 16,
+                ),
+                child: Center(
+                  child: productStatus == LoadingStatus.loading
+                      ? const CircularProgressIndicator()
+                      : CustomButton(
+                          child: const Text(
+                            'Retry',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.textCultured,
+                              height: 22 / 16,
+                              leadingDistribution: TextLeadingDistribution.even,
+                            ),
                           ),
+                          onPressed: () {
+                            loadProduct();
+                          },
                         ),
-                        onPressed: () {
-                          loadProduct();
-                        },
-                      ),
+                ),
               ),
-            )),
+            ),
     );
   }
 }
