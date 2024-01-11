@@ -6,7 +6,7 @@ import 'package:flutter_snappyshop/features/shared/inputs/email.dart';
 import 'package:flutter_snappyshop/features/shared/inputs/password.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/providers/loader_provider.dart';
-import 'package:flutter_snappyshop/features/shared/providers/notification_provider.dart';
+import 'package:flutter_snappyshop/features/settings/providers/notification_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_snappyshop/features/shared/services/key_value_storage_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
-import 'package:flutter_snappyshop/features/shared/providers/notification_provider.dart';
+import 'package:flutter_snappyshop/features/settings/providers/notification_provider.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/features/shared/providers/loader_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
-import 'package:flutter_snappyshop/features/shared/services/notification_service.dart';
+import 'package:flutter_snappyshop/features/settings/services/notification_service.dart';
 import 'package:flutter_snappyshop/features/shared/services/snackbar_service.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

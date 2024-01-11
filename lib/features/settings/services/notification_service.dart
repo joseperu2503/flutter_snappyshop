@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_snappyshop/config/api/api.dart';
 import 'package:flutter_snappyshop/config/router/app_router.dart';
-import 'package:flutter_snappyshop/features/shared/models/save_snappy_token_response.dart';
+import 'package:flutter_snappyshop/features/settings/models/save_snappy_token_response.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 
 final api = Api();

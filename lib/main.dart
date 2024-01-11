@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/environment.dart';
 import 'package:flutter_snappyshop/config/router/app_router.dart';
 import 'package:flutter_snappyshop/config/theme/app_theme.dart';
-import 'package:flutter_snappyshop/features/shared/services/notification_service.dart';
+import 'package:flutter_snappyshop/features/settings/services/notification_service.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
