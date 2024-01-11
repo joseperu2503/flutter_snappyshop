@@ -156,16 +156,26 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                       onPressed: () {
                         ref.read(loginProvider.notifier).login();
                       },
-                      child: const Text(
-                        'Log In',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.textCultured,
-                          height: 22 / 16,
-                          leadingDistribution: TextLeadingDistribution.even,
-                        ),
-                      ),
+                      child: !loginState.loading
+                          ? const Text(
+                              'Log In',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.textCultured,
+                                height: 22 / 16,
+                                leadingDistribution:
+                                    TextLeadingDistribution.even,
+                              ),
+                            )
+                          : const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: AppColors.primaryCultured,
+                                strokeWidth: 2,
+                              ),
+                            ),
                     ),
                   )
                 ],

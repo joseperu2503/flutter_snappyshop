@@ -5,7 +5,6 @@ import 'package:flutter_snappyshop/features/auth/services/auth_service.dart';
 import 'package:flutter_snappyshop/features/shared/inputs/email.dart';
 import 'package:flutter_snappyshop/features/shared/inputs/password.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
-import 'package:flutter_snappyshop/features/shared/providers/loader_provider.dart';
 import 'package:flutter_snappyshop/features/settings/providers/notification_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_snappyshop/features/shared/services/key_value_storage_service.dart';
@@ -38,7 +37,9 @@ class LoginNotifier extends StateNotifier<LoginState> {
     );
     if (!Formz.validate([email, password])) return;
 
-    ref.read(loaderProvider.notifier).showLoader();
+    state = state.copyWith(
+      loading: true,
+    );
 
     try {
       final LoginResponse loginResponse = await AuthService.login(
@@ -57,7 +58,9 @@ class LoginNotifier extends StateNotifier<LoginState> {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
     }
 
-    ref.read(loaderProvider.notifier).dismissLoader();
+    state = state.copyWith(
+      loading: false,
+    );
   }
 
   changeEmail(Email email) {
@@ -76,18 +79,22 @@ class LoginNotifier extends StateNotifier<LoginState> {
 class LoginState {
   final Email email;
   final Password password;
+  final bool loading;
 
   LoginState({
     this.email = const Email.pure(''),
     this.password = const Password.pure(''),
+    this.loading = false,
   });
 
   LoginState copyWith({
     Email? email,
     Password? password,
+    bool? loading,
   }) =>
       LoginState(
         email: email ?? this.email,
         password: password ?? this.password,
+        loading: loading ?? this.loading,
       );
 }
