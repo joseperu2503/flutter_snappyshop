@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/features/products/screens/wishlist_screen.dart';
+import 'package:flutter_snappyshop/features/settings/screens/settings_screen.dart';
 import 'package:flutter_snappyshop/features/user/screens/account_information_screen.dart';
 import 'package:flutter_snappyshop/features/user/screens/change_password_screen.dart';
 import 'package:flutter_snappyshop/features/auth/screens/home_screen.dart';
@@ -250,6 +251,22 @@ final appRouter = GoRouter(
         return CustomTransitionPage(
           key: state.pageKey,
           child: const AccountInformationScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return transition(
+                animation: animation, context: context, child: child);
+          },
+        );
+      },
+      redirect: (context, state) async {
+        return internalRedirect();
+      },
+    ),
+    GoRoute(
+      path: '/settings',
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const SettingsScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return transition(
                 animation: animation, context: context, child: child);

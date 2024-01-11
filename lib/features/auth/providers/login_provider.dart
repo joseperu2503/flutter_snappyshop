@@ -6,6 +6,7 @@ import 'package:flutter_snappyshop/features/shared/inputs/email.dart';
 import 'package:flutter_snappyshop/features/shared/inputs/password.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/providers/loader_provider.dart';
+import 'package:flutter_snappyshop/features/shared/providers/notification_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_snappyshop/features/shared/services/key_value_storage_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -47,6 +48,9 @@ class LoginNotifier extends StateNotifier<LoginState> {
 
       await keyValueStorageService.setKeyValue<String>(
           'token', loginResponse.accessToken);
+
+      //cada vez que inicia sesion habilita las notificaciones
+      ref.read(notificationProvider.notifier).enableNotifications();
 
       appRouter.go('/products');
     } on ServiceException catch (e) {

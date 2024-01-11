@@ -1,36 +1,61 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_snappyshop/config/api/api.dart';
 import 'package:flutter_snappyshop/config/router/app_router.dart';
+import 'package:flutter_snappyshop/features/shared/models/save_snappy_token_response.dart';
+import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 
-final notificationsProvider =
-    StateNotifierProvider<NotificationsNotifier, NotificationsState>((ref) {
-  return NotificationsNotifier();
-});
+final api = Api();
+final FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-class NotificationsNotifier extends StateNotifier<NotificationsState> {
-  NotificationsNotifier() : super(NotificationsState());
+class NotificationService {
+  static Future<SaveSnappyTokenResponse> saveSnappyToken({
+    required String token,
+  }) async {
+    try {
+      Map<String, dynamic> form = {
+        "token": token,
+      };
 
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
+      final response = await api.post('/snappytoken', data: form);
 
-  initNotificationStatus() async {
-    _setupInteractedMessage();
-    await requestPermission();
-    _getToken();
+      return SaveSnappyTokenResponse.fromJson(response.data);
+    } on DioException catch (e) {
+      if (e.response?.data['message'] != null) {
+        throw ServiceException(e.response?.data['message']);
+      }
+      throw ServiceException('An error occurred while saving the SnappyToken.');
+    } catch (e) {
+      throw ServiceException('An error occurred while saving the SnappyToken.');
+    }
+  }
+
+  initNotifications() async {
+    final settings = await requestPermission();
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      final token = await messaging.getToken();
+      if (token != null) {
+        try {
+          await saveSnappyToken(token: token);
+        } on ServiceException catch (e) {
+          throw ServiceException(e.message);
+        }
+      } else {
+        throw ServiceException('An error occurred while obtaining the token.');
+      }
+    } else {
+      throw ServiceException('Notification permissions not authorized.');
+    }
+  }
+
+  initListeners() {
     _onForegroundMessage();
+    _setupInteractedMessage();
   }
 
-  Future<void> getStatus() async {
-    final settings = await messaging.getNotificationSettings();
-    state = state.copyWith(
-      status: settings.authorizationStatus,
-    );
-  }
-
-  Future<void> _getToken() async {
-    if (state.status != AuthorizationStatus.authorized) return;
-    final token = await messaging.getToken();
-    print(token);
+  Future<NotificationSettings> getStatus() async {
+    return await messaging.getNotificationSettings();
   }
 
   void _onForegroundMessage() {
@@ -47,8 +72,8 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
     }
   }
 
-  Future<void> requestPermission() async {
-    NotificationSettings settings = await messaging.requestPermission(
+  Future<NotificationSettings> requestPermission() async {
+    return await messaging.requestPermission(
       alert: true,
       announcement: false,
       badge: true,
@@ -57,10 +82,6 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
       provisional: false,
       sound: true,
     );
-    state = state.copyWith(
-      status: settings.authorizationStatus,
-    );
-    _getToken();
   }
 
   //configuracion de las interacciones con las notificaciones
@@ -89,25 +110,10 @@ class NotificationsNotifier extends StateNotifier<NotificationsState> {
       appRouter.push('/product/${message.data['productId']}');
     }
   }
-}
 
-class NotificationsState {
-  final List<dynamic> notifications;
-  final AuthorizationStatus status;
-
-  NotificationsState({
-    this.notifications = const [],
-    this.status = AuthorizationStatus.notDetermined,
-  });
-
-  NotificationsState copyWith({
-    List<dynamic>? notifications,
-    AuthorizationStatus? status,
-  }) =>
-      NotificationsState(
-        notifications: notifications ?? this.notifications,
-        status: status ?? this.status,
-      );
+  Future<void> deleteToken() async {
+    await messaging.deleteToken();
+  }
 }
 
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {

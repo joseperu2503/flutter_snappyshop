@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/features/shared/providers/notification_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,6 +17,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     FlutterNativeSplash.remove();
+    ref.read(notificationProvider.notifier).disableNotifications();
     super.initState();
   }
 

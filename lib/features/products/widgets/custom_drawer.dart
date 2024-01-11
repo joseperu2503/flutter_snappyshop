@@ -160,11 +160,15 @@ class CustomDrawer extends ConsumerWidget {
                       context.push('/change-password');
                     },
                   ),
-                  const ListTile(
+                  ListTile(
                     contentPadding:
-                        EdgeInsetsDirectional.symmetric(horizontal: 24),
-                    title: Text('Settings'),
-                    leading: Icon(Icons.settings_outlined),
+                        const EdgeInsetsDirectional.symmetric(horizontal: 24),
+                    title: const Text('Settings'),
+                    leading: const Icon(Icons.settings_outlined),
+                    onTap: () {
+                      context.pop();
+                      context.push('/settings');
+                    },
                   ),
                   const Spacer(),
                   Container(
