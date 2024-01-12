@@ -2,6 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
+    <!-- Permisos camara -->
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Necesitamos acceso a la galeria para seleccionar foto</string>
+
+    <key>NSCameraUsageDescription </key>
+    <string>Necesitamos poder tomar fotos de los productos con la camara</string>
+
+    <key>NSMicrophoneUsageDescription  </key>
+    <string>Activa tu micro pe, TODO: cambiar estos mensajes :v</string>
+    <!--  -->
     <key>CFBundleDevelopmentRegion</key>
     <string>$(DEVELOPMENT_LANGUAGE)</string>
     <key>CFBundleDisplayName</key>

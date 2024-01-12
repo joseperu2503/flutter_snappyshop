@@ -28,12 +28,14 @@ class UserService {
     required int? userId,
     required String name,
     required String email,
+    required String? photo,
   }) async {
     try {
       Map<String, dynamic> form = {
         "id": userId,
         "email": email,
         "name": name,
+        'profile_photo': photo,
       };
 
       final response = await api.post('/change-personal-data', data: form);

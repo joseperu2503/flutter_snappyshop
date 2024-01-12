@@ -4,10 +4,10 @@ import 'package:flutter_snappyshop/features/products/models/products_response.da
 import 'package:flutter_snappyshop/features/products/providers/favorite_products_provider.dart';
 import 'package:flutter_snappyshop/features/products/providers/products_provider.dart';
 import 'package:flutter_snappyshop/features/products/services/products_services.dart';
-import 'package:flutter_snappyshop/features/products/widgets/image_viewer.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/image_viewer.dart';
 import 'package:go_router/go_router.dart';
 
 class ProductCard extends ConsumerStatefulWidget {

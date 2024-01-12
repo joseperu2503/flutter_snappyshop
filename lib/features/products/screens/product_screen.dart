@@ -7,7 +7,6 @@ import 'package:flutter_snappyshop/features/products/providers/favorite_products
 import 'package:flutter_snappyshop/features/products/providers/products_provider.dart';
 import 'package:flutter_snappyshop/features/products/services/products_services.dart';
 import 'package:flutter_snappyshop/features/products/widgets/cart_button.dart';
-import 'package:flutter_snappyshop/features/products/widgets/image_viewer.dart';
 import 'package:flutter_snappyshop/features/products/widgets/product_card.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
@@ -16,6 +15,7 @@ import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.d
 import 'package:flutter_snappyshop/features/shared/widgets/back_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/image_viewer.dart';
 
 class ProductScreen extends ConsumerStatefulWidget {
   const ProductScreen({

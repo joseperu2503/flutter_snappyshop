@@ -4,6 +4,7 @@ import 'package:flutter_snappyshop/features/auth/providers/auth_provider.dart';
 import 'package:flutter_snappyshop/features/products/providers/cart_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/image_viewer.dart';
 import 'package:go_router/go_router.dart';
 
 class CustomDrawer extends ConsumerWidget {
@@ -41,52 +42,73 @@ class CustomDrawer extends ConsumerWidget {
               ),
               child: Column(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 46,
-                          height: 46,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.primaryCultured,
-                          ),
-                          child: const Icon(Icons.person),
-                        ),
-                        const SizedBox(
-                          width: 12,
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${authState.user?.name}',
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.textYankeesBlue,
-                                  height: 1.1,
-                                  leadingDistribution:
-                                      TextLeadingDistribution.even,
+                  GestureDetector(
+                    onTap: () {
+                      context.pop();
+                      context.push('/account-information');
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Row(
+                        children: [
+                          authState.user?.profilePhoto != null
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(90),
+                                  child: SizedBox(
+                                    width: 46,
+                                    height: 46,
+                                    child: ImageViewer(
+                                      images: [authState.user!.profilePhoto!],
+                                      radius: 23,
+                                    ),
+                                  ),
+                                )
+                              : Container(
+                                  width: 46,
+                                  height: 46,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColors.primaryCultured,
+                                  ),
+                                  child: const Icon(
+                                    Icons.person,
+                                    color: AppColors.textArsenic,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                '${authState.user?.email}',
-                                style: const TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.textArsenic,
-                                  height: 1.1,
-                                  leadingDistribution:
-                                      TextLeadingDistribution.even,
-                                ),
-                              ),
-                            ],
+                          const SizedBox(
+                            width: 12,
                           ),
-                        )
-                      ],
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${authState.user?.name}',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.textYankeesBlue,
+                                    height: 1.1,
+                                    leadingDistribution:
+                                        TextLeadingDistribution.even,
+                                  ),
+                                ),
+                                Text(
+                                  '${authState.user?.email}',
+                                  style: const TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColors.textArsenic,
+                                    height: 1.1,
+                                    leadingDistribution:
+                                        TextLeadingDistribution.even,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(
