@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/auth/providers/auth_provider.dart';
-import 'package:flutter_snappyshop/features/auth/services/auth_service.dart';
 import 'package:flutter_snappyshop/features/products/providers/cart_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -193,7 +192,7 @@ class CustomDrawer extends ConsumerWidget {
                         ],
                       ),
                       onPressed: () {
-                        AuthService().logout();
+                        ref.read(authProvider.notifier).logout();
                       },
                     ),
                   ),

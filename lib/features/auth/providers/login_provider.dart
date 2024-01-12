@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/router/app_router.dart';
 import 'package:flutter_snappyshop/features/auth/models/login_response.dart';
+import 'package:flutter_snappyshop/features/auth/providers/auth_provider.dart';
 import 'package:flutter_snappyshop/features/auth/services/auth_service.dart';
 import 'package:flutter_snappyshop/features/shared/inputs/email.dart';
 import 'package:flutter_snappyshop/features/shared/inputs/password.dart';
@@ -52,6 +53,7 @@ class LoginNotifier extends StateNotifier<LoginState> {
 
       //cada vez que inicia sesion habilita las notificaciones
       ref.read(notificationProvider.notifier).enableNotifications();
+      ref.read(authProvider.notifier).initAutoLogout();
 
       appRouter.go('/products');
     } on ServiceException catch (e) {

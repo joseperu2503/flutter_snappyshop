@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_snappyshop/features/auth/providers/auth_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/loader_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_snappyshop/features/settings/services/notification_service.dart';
@@ -19,6 +20,9 @@ class ServicesState extends ConsumerState<Services> {
   void initState() {
     super.initState();
     NotificationService().initListeners();
+    Future.microtask(() {
+      ref.read(authProvider.notifier).initAutoLogout();
+    });
   }
 
   @override

@@ -15,20 +15,13 @@ import 'package:flutter_snappyshop/features/products/screens/products_screen.dar
 import 'package:flutter_snappyshop/features/products/screens/search_screen.dart';
 import 'package:go_router/go_router.dart';
 
-Future<String?> externalRedirect() async {
-  final token = await AuthService.verifyToken();
+Future<String?> externalRedirect(
+    BuildContext context, GoRouterState state) async {
+  final (token, _) = await AuthService.verifyToken();
   if (token) {
     return '/products';
   }
   return null;
-}
-
-Future<String?> internalRedirect() async {
-  final token = await AuthService.verifyToken();
-  if (token) {
-    return null;
-  }
-  return '/';
 }
 
 Widget transition({
@@ -68,9 +61,7 @@ final appRouter = GoRouter(
           },
         );
       },
-      redirect: (context, state) async {
-        return externalRedirect();
-      },
+      redirect: externalRedirect,
     ),
     GoRoute(
       path: '/login',
@@ -84,9 +75,6 @@ final appRouter = GoRouter(
           },
         );
       },
-      redirect: (context, state) async {
-        return externalRedirect();
-      },
     ),
     GoRoute(
       path: '/register',
@@ -99,9 +87,6 @@ final appRouter = GoRouter(
                 animation: animation, context: context, child: child);
           },
         );
-      },
-      redirect: (context, state) async {
-        return externalRedirect();
       },
     ),
 
@@ -118,9 +103,6 @@ final appRouter = GoRouter(
           },
         );
       },
-      redirect: (context, state) async {
-        return internalRedirect();
-      },
     ),
     GoRoute(
       path: '/product/:id',
@@ -135,9 +117,6 @@ final appRouter = GoRouter(
                 animation: animation, context: context, child: child);
           },
         );
-      },
-      redirect: (context, state) async {
-        return internalRedirect();
       },
       onExit: (context) {
         //para cuando la notificacion redirija a esta vista directamente
@@ -159,9 +138,6 @@ final appRouter = GoRouter(
           },
         );
       },
-      redirect: (context, state) async {
-        return internalRedirect();
-      },
     ),
     GoRoute(
       path: '/order-confirmed',
@@ -174,9 +150,6 @@ final appRouter = GoRouter(
                 animation: animation, context: context, child: child);
           },
         );
-      },
-      redirect: (context, state) async {
-        return internalRedirect();
       },
     ),
     GoRoute(
@@ -191,9 +164,6 @@ final appRouter = GoRouter(
           },
         );
       },
-      redirect: (context, state) async {
-        return internalRedirect();
-      },
     ),
     GoRoute(
       path: '/whishlist',
@@ -206,9 +176,6 @@ final appRouter = GoRouter(
                 animation: animation, context: context, child: child);
           },
         );
-      },
-      redirect: (context, state) async {
-        return internalRedirect();
       },
     ),
     GoRoute(
@@ -225,9 +192,6 @@ final appRouter = GoRouter(
           },
         );
       },
-      redirect: (context, state) async {
-        return internalRedirect();
-      },
     ),
     GoRoute(
       path: '/change-password',
@@ -240,9 +204,6 @@ final appRouter = GoRouter(
                 animation: animation, context: context, child: child);
           },
         );
-      },
-      redirect: (context, state) async {
-        return internalRedirect();
       },
     ),
     GoRoute(
@@ -257,9 +218,6 @@ final appRouter = GoRouter(
           },
         );
       },
-      redirect: (context, state) async {
-        return internalRedirect();
-      },
     ),
     GoRoute(
       path: '/settings',
@@ -272,9 +230,6 @@ final appRouter = GoRouter(
                 animation: animation, context: context, child: child);
           },
         );
-      },
-      redirect: (context, state) async {
-        return internalRedirect();
       },
     ),
   ],

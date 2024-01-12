@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_snappyshop/config/api/api.dart';
-import 'package:flutter_snappyshop/config/router/app_router.dart';
 import 'package:flutter_snappyshop/features/auth/models/auth_user.dart';
 import 'package:flutter_snappyshop/features/auth/models/login_response.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
@@ -58,10 +57,9 @@ class AuthService {
     }
   }
 
-  static Future<bool> verifyToken() async {
+  static Future<(bool, int)> verifyToken() async {
     final token = await KeyValueStorageService().getKeyValue<String>('token');
-
-    if (token == null) return false;
+    if (token == null) return (false, 0);
 
     Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
 
@@ -72,15 +70,14 @@ class AuthService {
     int currentTimestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
     //si el token es invalido
-    if (currentTimestamp >= expirationTimestamp) {
-      return false;
-    }
-    return true;
-  }
 
-  logout() async {
-    await KeyValueStorageService().removeKey('token');
-    appRouter.go('/');
+    // Calcula el tiempo restante hasta la expiración en segundos
+    int timeRemainingInSeconds = expirationTimestamp - currentTimestamp;
+
+    if (timeRemainingInSeconds <= 0) {
+      return (false, 0);
+    }
+    return (true, timeRemainingInSeconds);
   }
 
   static Future<AuthUser> getUser() async {

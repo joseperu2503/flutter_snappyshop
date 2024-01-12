@@ -17,7 +17,9 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     FlutterNativeSplash.remove();
-    ref.read(notificationProvider.notifier).disableNotifications();
+    Future.microtask(() {
+      ref.read(notificationProvider.notifier).disableNotifications();
+    });
     super.initState();
   }
 
