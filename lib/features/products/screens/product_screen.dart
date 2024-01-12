@@ -38,12 +38,12 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
     FlutterNativeSplash.remove();
   }
 
-  loadProduct() {
+  loadProduct() async {
     setState(() {
       productStatus = LoadingStatus.loading;
     });
     try {
-      ref
+      await ref
           .read(productsProvider.notifier)
           .getProduct(productId: widget.productId);
       setState(() {
@@ -94,15 +94,9 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
         : ((product?.price ?? 1) * (1 - (product?.discount ?? 1) / 100));
     double safeAreaHeight = MediaQuery.of(context).padding.top;
 
-    if (product == null) {
-      return Container(
-        color: AppColors.white,
-      );
-    }
-
-    return Scaffold(
-      bottomNavigationBar: productStatus == LoadingStatus.success
-          ? Container(
+    return productStatus == LoadingStatus.success && product != null
+        ? Scaffold(
+            bottomNavigationBar: Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: 16,
                 vertical: 16,
@@ -172,10 +166,8 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                   ),
                 ],
               ),
-            )
-          : null,
-      body: productStatus == LoadingStatus.success
-          ? CustomScrollView(
+            ),
+            body: CustomScrollView(
               physics: const ClampingScrollPhysics(),
               slivers: [
                 SliverAppBar(
@@ -369,34 +361,33 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                   ),
                 )
               ],
-            )
-          : Layout1(
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 16,
-                ),
-                child: Center(
-                  child: productStatus == LoadingStatus.loading
-                      ? const CircularProgressIndicator()
-                      : CustomButton(
-                          child: const Text(
-                            'Retry',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.textCultured,
-                              height: 22 / 16,
-                              leadingDistribution: TextLeadingDistribution.even,
-                            ),
+            ))
+        : Layout1(
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 16,
+              ),
+              child: Center(
+                child: productStatus == LoadingStatus.loading
+                    ? const CircularProgressIndicator()
+                    : CustomButton(
+                        child: const Text(
+                          'Retry',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.textCultured,
+                            height: 22 / 16,
+                            leadingDistribution: TextLeadingDistribution.even,
                           ),
-                          onPressed: () {
-                            loadProduct();
-                          },
                         ),
-                ),
+                        onPressed: () {
+                          loadProduct();
+                        },
+                      ),
               ),
             ),
-    );
+          );
   }
 }
