@@ -94,6 +94,7 @@ class AccountInformationNotifier
 
   takePhoto() async {
     final String? image = await CameraService().takePhoto();
+    if (image == null) return;
     state = state.copyWith(
       temporalImage: () => image,
       image: () => null,
@@ -103,6 +104,7 @@ class AccountInformationNotifier
 
   selectPhoto() async {
     final String? image = await CameraService().selectPhoto();
+    if (image == null) return;
     state = state.copyWith(
       temporalImage: () => image,
       image: () => null,

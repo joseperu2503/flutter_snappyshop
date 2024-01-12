@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_snappyshop/config/api/api.dart';
 import 'package:flutter_snappyshop/config/router/app_router.dart';
+import 'package:flutter_snappyshop/features/auth/services/auth_service.dart';
 import 'package:flutter_snappyshop/features/settings/models/save_snappy_token_response.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 
@@ -104,7 +105,10 @@ class NotificationService {
     FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
   }
 
-  void _handleMessage(RemoteMessage message) {
+  void _handleMessage(RemoteMessage message) async {
+    final (validToken, _) = await AuthService.verifyToken();
+
+    if (!validToken) return;
     if (message.data['type'] == 'product' &&
         message.data['productId'] != null) {
       appRouter.push('/product/${message.data['productId']}');
