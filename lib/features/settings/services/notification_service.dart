@@ -86,29 +86,23 @@ class NotificationService {
   }
 
   //configuracion de las interacciones con las notificaciones
-
-  // Se supone que todos los mensajes contienen un campo de datos con la key 'type'
   Future<void> _setupInteractedMessage() async {
-    // Recibe cualquier mensaje que provocó que la aplicación se abriera desde
-    // un estado terminado.
     RemoteMessage? initialMessage =
         await FirebaseMessaging.instance.getInitialMessage();
 
-    // Si el mensaje también contiene una propiedad de datos con un "type" de "chat",
-    // navegar a una pantalla de chat
     if (initialMessage != null) {
       _handleMessage(initialMessage);
     }
 
-    // También maneja cualquier interacción cuando la aplicación
-    // está en segundo plano a través de un Stream listener
     FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
   }
 
   void _handleMessage(RemoteMessage message) async {
+    //funcion que se ejecuta al abrir la notificacion
     final (validToken, _) = await AuthService.verifyToken();
 
     if (!validToken) return;
+    //si esta autenticado lo redirige a la vista de producto.
     if (message.data['type'] == 'product' &&
         message.data['productId'] != null) {
       appRouter.push('/product/${message.data['productId']}');
