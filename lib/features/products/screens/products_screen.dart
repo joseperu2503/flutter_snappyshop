@@ -86,10 +86,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                 ),
               ),
             )
-          : AppBar(
-              toolbarHeight: 0,
-              backgroundColor: AppColors.white,
-            ),
+          : null,
       body: (productsState.dashboardStatus == LoadingStatus.success)
           ? CustomScrollView(
               controller: scrollController,
@@ -251,7 +248,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                     top: 16,
                     left: 24,
                     right: 24,
-                    bottom: 56,
+                    bottom: 20,
                   ),
                   sliver: SliverGrid(
                     delegate: SliverChildBuilderDelegate(
@@ -271,12 +268,18 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                   ),
                 ),
                 if (productsState.loadingProducts)
-                  const SliverToBoxAdapter(
-                    child: Center(
-                      child: SizedBox(
-                        width: 40,
-                        height: 40,
-                        child: CircularProgressIndicator(),
+                  SliverToBoxAdapter(
+                    child: Container(
+                      padding: const EdgeInsets.only(
+                        top: 10,
+                        bottom: 40,
+                      ),
+                      child: const Center(
+                        child: SizedBox(
+                          width: 40,
+                          height: 40,
+                          child: CircularProgressIndicator(),
+                        ),
                       ),
                     ),
                   )

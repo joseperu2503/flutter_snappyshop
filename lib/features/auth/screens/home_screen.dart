@@ -26,10 +26,6 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 0,
-        backgroundColor: AppColors.white,
-      ),
       body: CustomScrollView(
         physics: const ClampingScrollPhysics(),
         slivers: [
