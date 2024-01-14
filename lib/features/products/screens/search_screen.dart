@@ -23,7 +23,6 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
 
   @override
   void initState() {
-    _focusNode.requestFocus();
     super.initState();
     Future.microtask(() {
       ref.read(searchProvider.notifier).initState();
