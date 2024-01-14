@@ -1,32 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
-import 'package:flutter_snappyshop/features/auth/providers/login_provider.dart';
+import 'package:flutter_snappyshop/features/auth/providers/forgot_password_provider.dart';
 import 'package:flutter_snappyshop/features/auth/widgets/input_email.dart';
-import 'package:flutter_snappyshop/features/auth/widgets/input_password.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
-import 'package:flutter_snappyshop/features/shared/widgets/checkbox.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
-class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({super.key});
+class ForgotPasswordScreen extends ConsumerStatefulWidget {
+  const ForgotPasswordScreen({super.key});
 
   @override
-  LoginScreenState createState() => LoginScreenState();
+  ForgotPasswordScreenState createState() => ForgotPasswordScreenState();
 }
 
-class LoginScreenState extends ConsumerState<LoginScreen> {
+class ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   @override
   void initState() {
     super.initState();
     Future.microtask(() {
-      ref.read(loginProvider.notifier).initData();
+      ref.read(forgotPasswordProvider.notifier).initData();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final loginState = ref.watch(loginProvider);
+    final forgotState = ref.watch(forgotPasswordProvider);
 
     return Layout1(
       child: CustomScrollView(
@@ -45,11 +42,11 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                 children: [
                   const Center(
                     child: Text(
-                      'Log in',
+                      'Forgot Password',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.primaryPearlAqua,
+                        color: AppColors.textYankeesBlue,
                         height: 32 / 24,
                         leadingDistribution: TextLeadingDistribution.even,
                       ),
@@ -62,7 +59,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                     child: Container(
                       constraints: const BoxConstraints(maxWidth: 300),
                       child: const Text(
-                        'Please enter your data to continue',
+                        'Please enter your email, we send an verify code',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -91,63 +88,15 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                     height: 4,
                   ),
                   InputEmail(
-                    value: loginState.email,
+                    value: forgotState.email,
                     onChanged: (value) {
-                      ref.read(loginProvider.notifier).changeEmail(value);
+                      ref
+                          .read(forgotPasswordProvider.notifier)
+                          .changeEmail(value);
                     },
                   ),
                   const SizedBox(
-                    height: 16,
-                  ),
-                  const Text(
-                    'Password',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.textYankeesBlue,
-                      height: 22 / 14,
-                      leadingDistribution: TextLeadingDistribution.even,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  InputPassword(
-                    value: loginState.password,
-                    onChanged: (value) {
-                      ref.read(loginProvider.notifier).changePassword(value);
-                    },
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomCheckbox(
-                        value: true,
-                        onChanged: (value) {},
-                        label: 'Remember Me',
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          context.push('/forgot-password');
-                        },
-                        child: const Text(
-                          'Forgot Password',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.textArsenic,
-                            height: 22 / 14,
-                            leadingDistribution: TextLeadingDistribution.even,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 80,
+                    height: 40,
                   ),
                   Container(
                     height: 52,
@@ -158,11 +107,11 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                     child: TextButton(
                       onPressed: () {
-                        ref.read(loginProvider.notifier).login();
+                        ref.read(forgotPasswordProvider.notifier).getCode();
                       },
-                      child: !loginState.loading
+                      child: !forgotState.loading
                           ? const Text(
-                              'Log In',
+                              'Get code',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,

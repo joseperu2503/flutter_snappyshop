@@ -23,8 +23,9 @@ class LoginNotifier extends StateNotifier<LoginState> {
 
   initData() {
     state = state.copyWith(
-        email: const Email.pure('joseperu2503@gmail.com'),
-        password: const Password.pure('12345678'));
+      email: const Email.pure('joseperu2503@gmail.com'),
+      password: const Password.pure('12345678'),
+    );
   }
 
   login() async {

@@ -26,7 +26,6 @@ class ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
     final passwordState = ref.watch(changePasswordProvider);
 
     return Layout1(
-      title: 'Change Password',
       child: CustomScrollView(
         slivers: [
           SliverFillRemaining(
@@ -41,6 +40,34 @@ class ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  const Center(
+                    child: Text(
+                      'Change Password',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textYankeesBlue,
+                        height: 32 / 24,
+                        leadingDistribution: TextLeadingDistribution.even,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  const Center(
+                    child: Text(
+                      'Please change your old password, \n and put new password',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.textArsenic,
+                        height: 1.5,
+                        leadingDistribution: TextLeadingDistribution.even,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                   const SizedBox(
                     height: 40,
                   ),
