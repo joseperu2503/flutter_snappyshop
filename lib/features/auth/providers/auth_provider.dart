@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/router/app_router.dart';
 import 'package:flutter_snappyshop/features/auth/models/auth_user.dart';
 import 'package:flutter_snappyshop/features/auth/services/auth_service.dart';
-import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/services/key_value_storage_service.dart';
@@ -23,7 +22,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
       setuser(user);
     } on ServiceException catch (e) {
-      ref.read(snackbarProvider.notifier).showSnackbar(e.message);
+      throw ServiceException(e.message);
     }
   }
 

@@ -47,16 +47,15 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
         ref.read(authProvider.notifier).getUser(),
         ref.read(cartProvider.notifier).getCartService(),
       ]);
+      state = state.copyWith(
+        dashboardStatus: LoadingStatus.success,
+      );
     } on ServiceException catch (e) {
       state = state.copyWith(
         dashboardStatus: LoadingStatus.error,
       );
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
     }
-
-    state = state.copyWith(
-      dashboardStatus: LoadingStatus.success,
-    );
   }
 
   Future<void> getProducts() async {
