@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/auth/providers/forgot_password_provider.dart';
-import 'package:flutter_snappyshop/features/auth/widgets/input_email.dart';
+import 'package:flutter_snappyshop/features/auth/widgets/otp.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -71,13 +71,13 @@ class VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
                   const SizedBox(
                     height: 60,
                   ),
-                  InputEmail(
-                    value: forgotState.email,
+                  Otp(
                     onChanged: (value) {
                       ref
                           .read(forgotPasswordProvider.notifier)
-                          .changeEmail(value);
+                          .changeVerifyCode(value);
                     },
+                    value: forgotState.verifyCode,
                   ),
                   const SizedBox(
                     height: 40,

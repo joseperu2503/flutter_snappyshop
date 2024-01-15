@@ -60,24 +60,33 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState> {
       email: email,
     );
   }
+
+  changeVerifyCode(String verifyCode) {
+    state = state.copyWith(
+      verifyCode: verifyCode,
+    );
+  }
 }
 
 class ForgotPasswordState {
   final Email email;
-
   final bool loading;
+  final String verifyCode;
 
   ForgotPasswordState({
     this.email = const Email.pure(''),
     this.loading = false,
+    this.verifyCode = '',
   });
 
   ForgotPasswordState copyWith({
     Email? email,
     bool? loading,
+    String? verifyCode,
   }) =>
       ForgotPasswordState(
         email: email ?? this.email,
         loading: loading ?? this.loading,
+        verifyCode: verifyCode ?? this.verifyCode,
       );
 }
