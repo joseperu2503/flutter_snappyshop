@@ -6,6 +6,7 @@ import 'package:flutter_snappyshop/features/products/widgets/cart_button.dart';
 import 'package:flutter_snappyshop/features/products/widgets/custom_drawer.dart';
 import 'package:flutter_snappyshop/features/products/widgets/product_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_snappyshop/features/settings/services/notification_service.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:go_router/go_router.dart';
@@ -28,6 +29,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
     });
     Future.microtask(() {
       loadData();
+      NotificationService().initListeners();
     });
     super.initState();
   }
