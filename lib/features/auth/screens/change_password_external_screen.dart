@@ -1,31 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/auth/providers/forgot_password_provider.dart';
-import 'package:flutter_snappyshop/features/auth/widgets/otp.dart';
+import 'package:flutter_snappyshop/features/auth/widgets/input_password.dart';
+import 'package:flutter_snappyshop/features/shared/inputs/password.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_snappyshop/features/shared/providers/timer_provider.dart';
 
-class VerifyCodeScreen extends ConsumerStatefulWidget {
-  const VerifyCodeScreen({super.key});
+class ChangePasswordExternalScreen extends ConsumerStatefulWidget {
+  const ChangePasswordExternalScreen({super.key});
 
   @override
-  VerifyCodeScreenState createState() => VerifyCodeScreenState();
+  ChangePasswordExternalScreenState createState() =>
+      ChangePasswordExternalScreenState();
 }
 
-class VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
+class ChangePasswordExternalScreenState
+    extends ConsumerState<ChangePasswordExternalScreen> {
   @override
   void initState() {
     super.initState();
     Future.microtask(() {
-      ref.read(forgotPasswordProvider.notifier).changeVerifyCode('');
+      ref
+          .read(forgotPasswordProvider.notifier)
+          .changePassword(const Password.pure(''));
+      ref
+          .read(forgotPasswordProvider.notifier)
+          .changeConfirmPassword(const Password.pure(''));
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final forgotState = ref.watch(forgotPasswordProvider);
-    final timerState = ref.watch(timerProvider);
 
     return Layout1(
       child: CustomScrollView(
@@ -44,7 +50,7 @@ class VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
                 children: [
                   const Center(
                     child: Text(
-                      'Verify Code',
+                      'Change Password',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w700,
@@ -59,7 +65,7 @@ class VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
                   ),
                   const Center(
                     child: Text(
-                      'Please enter verify code that we\'ve \n sent to your email',
+                      'Please change your old password, \n and put new password',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -71,45 +77,55 @@ class VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
                     ),
                   ),
                   const SizedBox(
-                    height: 60,
+                    height: 40,
                   ),
-                  Otp(
+                  const Text(
+                    'New Password',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.textYankeesBlue,
+                      height: 22 / 14,
+                      leadingDistribution: TextLeadingDistribution.even,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 4,
+                  ),
+                  InputPassword(
+                    value: forgotState.password,
                     onChanged: (value) {
                       ref
                           .read(forgotPasswordProvider.notifier)
-                          .changeVerifyCode(value);
+                          .changePassword(value);
                     },
-                    value: forgotState.verifyCode,
                   ),
                   const SizedBox(
-                    height: 50,
+                    height: 16,
                   ),
-                  if (timerState.timerOn)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.schedule_rounded,
-                          size: 16,
-                        ),
-                        const SizedBox(
-                          width: 6,
-                        ),
-                        Text(
-                          timerState.timerText,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.textArsenic,
-                            height: 1.5,
-                            leadingDistribution: TextLeadingDistribution.even,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
+                  const Text(
+                    'Confirm new password',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.textYankeesBlue,
+                      height: 22 / 14,
+                      leadingDistribution: TextLeadingDistribution.even,
                     ),
+                  ),
                   const SizedBox(
-                    height: 10,
+                    height: 4,
+                  ),
+                  InputPassword(
+                    value: forgotState.confirmPassword,
+                    onChanged: (value) {
+                      ref
+                          .read(forgotPasswordProvider.notifier)
+                          .changeConfirmPassword(value);
+                    },
+                  ),
+                  const SizedBox(
+                    height: 80,
                   ),
                   Container(
                     height: 52,
@@ -120,36 +136,28 @@ class VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
                     ),
                     child: TextButton(
                       onPressed: () {
-                        if (timerState.timerOn) {
-                          ref
-                              .read(forgotPasswordProvider.notifier)
-                              .validateVerifyCode();
-                        } else {
-                          ref
-                              .read(forgotPasswordProvider.notifier)
-                              .sendVerifyCode(withPushRoute: false);
-                        }
+                        ref
+                            .read(forgotPasswordProvider.notifier)
+                            .submitChangePassword();
                       },
-                      child: forgotState.loading
-                          ? const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                color: AppColors.primaryCultured,
-                                strokeWidth: 2,
-                              ),
-                            )
-                          : Text(
-                              timerState.timerOn
-                                  ? 'Verify'
-                                  : 'Resend verify code',
-                              style: const TextStyle(
+                      child: !forgotState.loading
+                          ? const Text(
+                              'Change password',
+                              style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.textCultured,
                                 height: 22 / 16,
                                 leadingDistribution:
                                     TextLeadingDistribution.even,
+                              ),
+                            )
+                          : const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: AppColors.primaryCultured,
+                                strokeWidth: 2,
                               ),
                             ),
                     ),

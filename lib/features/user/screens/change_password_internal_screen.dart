@@ -5,14 +5,16 @@ import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_snappyshop/features/user/providers/change_password_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ChangePasswordScreen extends ConsumerStatefulWidget {
-  const ChangePasswordScreen({super.key});
+class ChangePasswordInternalScreen extends ConsumerStatefulWidget {
+  const ChangePasswordInternalScreen({super.key});
 
   @override
-  ChangePasswordScreenState createState() => ChangePasswordScreenState();
+  ChangePasswordInternalScreenState createState() =>
+      ChangePasswordInternalScreenState();
 }
 
-class ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
+class ChangePasswordInternalScreenState
+    extends ConsumerState<ChangePasswordInternalScreen> {
   @override
   void initState() {
     super.initState();
@@ -26,6 +28,7 @@ class ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
     final passwordState = ref.watch(changePasswordProvider);
 
     return Layout1(
+      title: 'Change password',
       child: CustomScrollView(
         slivers: [
           SliverFillRemaining(
@@ -40,18 +43,6 @@ class ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Center(
-                    child: Text(
-                      'Change Password',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.textYankeesBlue,
-                        height: 32 / 24,
-                        leadingDistribution: TextLeadingDistribution.even,
-                      ),
-                    ),
-                  ),
                   const SizedBox(
                     height: 16,
                   ),
@@ -130,16 +121,26 @@ class ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                       onPressed: () {
                         ref.read(changePasswordProvider.notifier).submit();
                       },
-                      child: const Text(
-                        'Save Change',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.textCultured,
-                          height: 22 / 16,
-                          leadingDistribution: TextLeadingDistribution.even,
-                        ),
-                      ),
+                      child: !passwordState.loading
+                          ? const Text(
+                              'Change password',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.textCultured,
+                                height: 22 / 16,
+                                leadingDistribution:
+                                    TextLeadingDistribution.even,
+                              ),
+                            )
+                          : const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: AppColors.primaryCultured,
+                                strokeWidth: 2,
+                              ),
+                            ),
                     ),
                   )
                 ],

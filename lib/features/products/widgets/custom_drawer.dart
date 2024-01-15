@@ -178,7 +178,7 @@ class CustomDrawer extends ConsumerWidget {
                     leading: const Icon(Icons.lock_outline_rounded),
                     onTap: () {
                       context.pop();
-                      context.push('/change-password');
+                      context.push('/change-password-internal');
                     },
                   ),
                   ListTile(

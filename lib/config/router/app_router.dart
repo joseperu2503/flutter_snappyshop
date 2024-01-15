@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_snappyshop/features/auth/screens/change_password_external_screen.dart';
 import 'package:flutter_snappyshop/features/auth/screens/forgot_password_screen.dart';
 import 'package:flutter_snappyshop/features/auth/screens/verify_code_screen.dart';
 import 'package:flutter_snappyshop/features/products/screens/wishlist_screen.dart';
 import 'package:flutter_snappyshop/features/settings/screens/settings_screen.dart';
 import 'package:flutter_snappyshop/features/user/screens/account_information_screen.dart';
-import 'package:flutter_snappyshop/features/user/screens/change_password_screen.dart';
+import 'package:flutter_snappyshop/features/user/screens/change_password_internal_screen.dart';
 import 'package:flutter_snappyshop/features/auth/screens/home_screen.dart';
 import 'package:flutter_snappyshop/features/auth/screens/login_screen.dart';
 import 'package:flutter_snappyshop/features/auth/screens/register_screen.dart';
@@ -117,7 +118,19 @@ final appRouter = GoRouter(
         );
       },
     ),
-
+    GoRoute(
+      path: '/change-password-external',
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const ChangePasswordExternalScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return transition(
+                animation: animation, context: context, child: child);
+          },
+        );
+      },
+    ),
     // Product Routes
     GoRoute(
       path: '/products',
@@ -222,11 +235,11 @@ final appRouter = GoRouter(
       },
     ),
     GoRoute(
-      path: '/change-password',
+      path: '/change-password-internal',
       pageBuilder: (context, state) {
         return CustomTransitionPage(
           key: state.pageKey,
-          child: const ChangePasswordScreen(),
+          child: const ChangePasswordInternalScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return transition(
                 animation: animation, context: context, child: child);

@@ -6,7 +6,7 @@ import 'package:flutter_snappyshop/features/user/models/change_personal_data_res
 final api = Api();
 
 class UserService {
-  static Future<ChangePasswordResponse> changePassword({
+  static Future<ChangePasswordResponse> changePasswordInternal({
     required String password,
     required String confirmPassword,
   }) async {
@@ -16,7 +16,7 @@ class UserService {
         "password_confirmation": confirmPassword,
       };
 
-      final response = await api.post('/change-password', data: form);
+      final response = await api.post('/change-password-internal', data: form);
 
       return ChangePasswordResponse.fromJson(response.data);
     } catch (e) {

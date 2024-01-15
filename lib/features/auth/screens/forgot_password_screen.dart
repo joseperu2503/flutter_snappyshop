@@ -107,7 +107,7 @@ class ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                     ),
                     child: TextButton(
                       onPressed: () {
-                        ref.read(forgotPasswordProvider.notifier).getCode();
+                        ref.read(forgotPasswordProvider.notifier).sendVerifyCode();
                       },
                       child: !forgotState.loading
                           ? const Text(

@@ -67,7 +67,11 @@ class _OtpState extends State<Otp> {
   void initState() {
     super.initState();
     focusNodeList = List.generate(numberDigits, (index) => FocusNode());
-    focusNodeList[0].requestFocus();
+    if (widget.value.isEmpty) {
+      focusNodeList[0].requestFocus();
+    } else {
+      focusNodeList[widget.value.length - 1].requestFocus();
+    }
   }
 
   setFocus() {
