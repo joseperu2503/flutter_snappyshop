@@ -19,9 +19,9 @@ class ServicesState extends ConsumerState<Services> {
   @override
   void initState() {
     super.initState();
-    NotificationService().initListeners();
-    Future.microtask(() {
-      ref.read(authProvider.notifier).initAutoLogout();
+    Future.microtask(() async {
+      await ref.read(authProvider.notifier).initAutoLogout();
+      await NotificationService().initListeners();
     });
   }
 
