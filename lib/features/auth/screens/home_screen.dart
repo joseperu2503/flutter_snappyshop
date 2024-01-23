@@ -4,6 +4,7 @@ import 'package:flutter_snappyshop/features/settings/providers/notification_prov
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -132,6 +133,25 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                   ),
                   const Spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Powered by',
+                        style: TextStyle(
+                          fontSize: 9,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.textCoolBlack,
+                          height: 1.4,
+                          leadingDistribution: TextLeadingDistribution.even,
+                        ),
+                      ),
+                      SvgPicture.asset(
+                        'assets/icons/joseperez-logo.svg',
+                        width: 100,
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
