@@ -96,75 +96,77 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
 
     return productStatus == LoadingStatus.success && product != null
         ? Scaffold(
-            bottomNavigationBar: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 16,
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    height: 52,
-                    width: 52,
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: AppColors.primaryPearlAqua,
-                      ),
-                    ),
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+            bottomNavigationBar: SafeArea(
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 16,
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      height: 52,
+                      width: 52,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: AppColors.primaryPearlAqua,
                         ),
-                        foregroundColor: AppColors.primaryPearlAqua,
                       ),
-                      onPressed: loadingFavorite
-                          ? null
-                          : () {
-                              toggleFavorite(product);
-                            },
-                      child: loadingFavorite
-                          ? const Center(
-                              child: SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: AppColors.primaryPearlAqua,
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          foregroundColor: AppColors.primaryPearlAqua,
+                        ),
+                        onPressed: loadingFavorite
+                            ? null
+                            : () {
+                                toggleFavorite(product);
+                              },
+                        child: loadingFavorite
+                            ? const Center(
+                                child: SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: AppColors.primaryPearlAqua,
+                                  ),
                                 ),
+                              )
+                            : Icon(
+                                product.isFavorite
+                                    ? Icons.favorite_rounded
+                                    : Icons.favorite_outline_rounded,
+                                color: AppColors.primaryPearlAqua,
                               ),
-                            )
-                          : Icon(
-                              product.isFavorite
-                                  ? Icons.favorite_rounded
-                                  : Icons.favorite_outline_rounded,
-                              color: AppColors.primaryPearlAqua,
-                            ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: CustomButton(
-                      child: const Text(
-                        'Add to cart',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.textCultured,
-                          height: 22 / 16,
-                          leadingDistribution: TextLeadingDistribution.even,
-                        ),
                       ),
-                      onPressed: () {
-                        ref.read(cartProvider.notifier).addToCart(product);
-                      },
                     ),
-                  ),
-                ],
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: CustomButton(
+                        child: const Text(
+                          'Add to cart',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.textCultured,
+                            height: 22 / 16,
+                            leadingDistribution: TextLeadingDistribution.even,
+                          ),
+                        ),
+                        onPressed: () {
+                          ref.read(cartProvider.notifier).addToCart(product);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             body: CustomScrollView(
@@ -213,7 +215,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                       left: 24,
                       right: 24,
                       top: 20,
-                      bottom: 40,
+                      bottom: 0,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -336,32 +338,36 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                         const SizedBox(
                           height: 30,
                         ),
-                        SizedBox(
-                          height: 230,
-                          child: ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              return SizedBox(
-                                width: 150,
-                                child: ProductCard(
-                                  product: productsState.products[index],
-                                ),
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return const SizedBox(
-                                width: 14,
-                              );
-                            },
-                            itemCount: productsState.products.length,
-                          ),
-                        ),
                       ],
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 230,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      itemBuilder: (context, index) {
+                        return SizedBox(
+                          width: 150,
+                          child: ProductCard(
+                            product: productsState.products[index],
+                          ),
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(
+                          width: 14,
+                        );
+                      },
+                      itemCount: productsState.products.length,
                     ),
                   ),
                 )
               ],
-            ))
+            ),
+          )
         : Layout1(
             child: Container(
               padding: const EdgeInsets.symmetric(
