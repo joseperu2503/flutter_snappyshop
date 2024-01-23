@@ -31,62 +31,64 @@ class CartScreenState extends ConsumerState<CartScreen> {
     return Layout1(
       title: 'Cart',
       bottomNavigationBar: !emptyCart
-          ? Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 16,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    children: [
-                      const Text(
-                        'Total',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.textArsenic,
-                          height: 22 / 14,
-                          leadingDistribution: TextLeadingDistribution.even,
+          ? SafeArea(
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 16,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        const Text(
+                          'Total',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.textArsenic,
+                            height: 22 / 14,
+                            leadingDistribution: TextLeadingDistribution.even,
+                          ),
                         ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        '\$${cartState.cart?.totalAmount.toStringAsFixed(2)}',
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textYankeesBlue,
-                          height: 32 / 20,
-                          leadingDistribution: TextLeadingDistribution.even,
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 14,
-                  ),
-                  CustomButton(
-                    child: Text(
-                      cartState.showUpdateBtn ? 'Update cart' : 'Checkout',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.textCultured,
-                        height: 22 / 16,
-                        leadingDistribution: TextLeadingDistribution.even,
-                      ),
+                        const Spacer(),
+                        Text(
+                          '\$${cartState.cart?.totalAmount.toStringAsFixed(2)}',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textYankeesBlue,
+                            height: 32 / 20,
+                            leadingDistribution: TextLeadingDistribution.even,
+                          ),
+                        )
+                      ],
                     ),
-                    onPressed: () {
-                      if (cartState.showUpdateBtn) {
-                        ref.read(cartProvider.notifier).updateCart();
-                        return;
-                      }
-                      context.push('/order-confirmed');
-                    },
-                  )
-                ],
+                    const SizedBox(
+                      height: 14,
+                    ),
+                    CustomButton(
+                      child: Text(
+                        cartState.showUpdateBtn ? 'Update cart' : 'Checkout',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.textCultured,
+                          height: 22 / 16,
+                          leadingDistribution: TextLeadingDistribution.even,
+                        ),
+                      ),
+                      onPressed: () {
+                        if (cartState.showUpdateBtn) {
+                          ref.read(cartProvider.notifier).updateCart();
+                          return;
+                        }
+                        context.push('/order-confirmed');
+                      },
+                    )
+                  ],
+                ),
               ),
             )
           : null,

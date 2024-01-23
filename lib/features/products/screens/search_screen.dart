@@ -129,6 +129,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                     SizedBox(
                       height: 46,
                       child: ListView(
+                        physics: const AlwaysScrollableScrollPhysics(),
                         scrollDirection: Axis.horizontal,
                         children: const [
                           SizedBox(

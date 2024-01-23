@@ -84,89 +84,91 @@ class BrandBottomSheetState extends ConsumerState<_BrandBottomSheet> {
   Widget build(BuildContext context) {
     final searchState = ref.watch(searchProvider);
 
-    return Container(
-      padding: const EdgeInsets.only(top: 10),
-      width: double.infinity,
-      height: 400,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            padding: const EdgeInsets.only(left: 24, right: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(top: 15),
-                  child: const Text(
-                    'Brands',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textYankeesBlue,
-                      height: 1,
-                      leadingDistribution: TextLeadingDistribution.even,
+    return SafeArea(
+      child: Container(
+        padding: const EdgeInsets.only(top: 10),
+        width: double.infinity,
+        height: 400,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              padding: const EdgeInsets.only(left: 24, right: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(top: 15),
+                    child: const Text(
+                      'Brands',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textYankeesBlue,
+                        height: 1,
+                        leadingDistribution: TextLeadingDistribution.even,
+                      ),
                     ),
                   ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    context.pop();
-                  },
-                  icon: const Icon(Icons.close),
-                  color: AppColors.textYankeesBlue,
-                )
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Expanded(
-            child: ListView.separated(
-              padding: const EdgeInsets.only(
-                bottom: 20,
-                top: 5,
+                  IconButton(
+                    onPressed: () {
+                      context.pop();
+                    },
+                    icon: const Icon(Icons.close),
+                    color: AppColors.textYankeesBlue,
+                  )
+                ],
               ),
-              itemBuilder: (context, index) {
-                final brand = searchState.brands[index];
-                final selected = brand.id == searchState.filter?.brandId;
-                return ListTile(
-                  visualDensity: const VisualDensity(vertical: 0),
-                  contentPadding: const EdgeInsets.only(
-                    left: 24,
-                    right: 24,
-                  ),
-                  title: Text(
-                    brand.name,
-                    style: TextStyle(
-                      color: selected
-                          ? AppColors.primaryPearlAqua
-                          : AppColors.textArsenic,
-                      fontSize: selected ? 17 : 16,
-                      fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
-                    ),
-                  ),
-                  onTap: () {
-                    ref.read(searchProvider.notifier).changeFilter(
-                          searchState.filter?.copyWith(brandId: () => brand.id),
-                        );
-                    context.pop();
-                  },
-                  trailing: selected ? const Icon(Icons.check) : null,
-                  selected: selected,
-                  selectedColor: AppColors.primaryPearlAqua,
-                );
-              },
-              separatorBuilder: (context, index) {
-                return const SizedBox(
-                  height: 0,
-                );
-              },
-              itemCount: searchState.brands.length,
             ),
-          ),
-        ],
+            const SizedBox(
+              height: 15,
+            ),
+            Expanded(
+              child: ListView.separated(
+                padding: const EdgeInsets.only(
+                  bottom: 20,
+                  top: 5,
+                ),
+                itemBuilder: (context, index) {
+                  final brand = searchState.brands[index];
+                  final selected = brand.id == searchState.filter?.brandId;
+                  return ListTile(
+                    visualDensity: const VisualDensity(vertical: 0),
+                    contentPadding: const EdgeInsets.only(
+                      left: 24,
+                      right: 24,
+                    ),
+                    title: Text(
+                      brand.name,
+                      style: TextStyle(
+                        color: selected
+                            ? AppColors.primaryPearlAqua
+                            : AppColors.textArsenic,
+                        fontSize: selected ? 17 : 16,
+                        fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+                      ),
+                    ),
+                    onTap: () {
+                      ref.read(searchProvider.notifier).changeFilter(
+                            searchState.filter?.copyWith(brandId: () => brand.id),
+                          );
+                      context.pop();
+                    },
+                    trailing: selected ? const Icon(Icons.check) : null,
+                    selected: selected,
+                    selectedColor: AppColors.primaryPearlAqua,
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return const SizedBox(
+                    height: 0,
+                  );
+                },
+                itemCount: searchState.brands.length,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -106,172 +106,174 @@ class PriceBottomSheetState extends ConsumerState<_PriceBottomSheet> {
   Widget build(BuildContext context) {
     final searchState = ref.watch(searchProvider);
 
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom,
-        top: 10,
-      ),
-      child: SizedBox(
-        width: double.infinity,
-        height: 250,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              padding: const EdgeInsets.only(left: 24, right: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      context.pop();
-                    },
-                    icon: const Icon(Icons.close),
-                    color: AppColors.textYankeesBlue,
-                  )
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.only(
-                  left: 24,
-                  right: 24,
-                ),
-                child: Column(
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+          top: 10,
+        ),
+        child: SizedBox(
+          width: double.infinity,
+          height: 250,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                padding: const EdgeInsets.only(left: 24, right: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Min price',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.textCoolBlack,
-                                  height: 1.1,
-                                  leadingDistribution:
-                                      TextLeadingDistribution.even,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 16,
-                              ),
-                              InputPrice(
-                                value: minPrice,
-                                onChanged: (value) {
-                                  setState(() {
-                                    minPrice = value;
-                                  });
-                                },
-                              )
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 24,
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Max price',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.textCoolBlack,
-                                  height: 1.1,
-                                  leadingDistribution:
-                                      TextLeadingDistribution.even,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 16,
-                              ),
-                              InputPrice(
-                                value: maxPrice,
-                                onChanged: (value) {
-                                  setState(() {
-                                    maxPrice = value;
-                                  });
-                                },
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Spacer(),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 100,
-                          child: CustomTextButton(
-                            child: const Text(
-                              'Reset',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.textYankeesBlue,
-                                height: 22 / 16,
-                                leadingDistribution:
-                                    TextLeadingDistribution.even,
-                              ),
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                minPrice = '';
-                                maxPrice = '';
-                              });
-                            },
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: CustomButton(
-                            child: const Text(
-                              'Apply',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.textCultured,
-                                height: 22 / 16,
-                                leadingDistribution:
-                                    TextLeadingDistribution.even,
-                              ),
-                            ),
-                            onPressed: () {
-                              ref.read(searchProvider.notifier).changeFilter(
-                                    searchState.filter?.copyWith(
-                                      maxPrice:
-                                          formatStringWithTwoDecimals(maxPrice),
-                                      minPrice:
-                                          formatStringWithTwoDecimals(minPrice),
-                                    ),
-                                  );
-                              context.pop();
-                            },
-                          ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    IconButton(
+                      onPressed: () {
+                        context.pop();
+                      },
+                      icon: const Icon(Icons.close),
+                      color: AppColors.textYankeesBlue,
+                    )
                   ],
                 ),
               ),
-            ),
-          ],
+              const SizedBox(
+                height: 15,
+              ),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.only(
+                    left: 24,
+                    right: 24,
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Min price',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.textCoolBlack,
+                                    height: 1.1,
+                                    leadingDistribution:
+                                        TextLeadingDistribution.even,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                                InputPrice(
+                                  value: minPrice,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      minPrice = value;
+                                    });
+                                  },
+                                )
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 24,
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Max price',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.textCoolBlack,
+                                    height: 1.1,
+                                    leadingDistribution:
+                                        TextLeadingDistribution.even,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                                InputPrice(
+                                  value: maxPrice,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      maxPrice = value;
+                                    });
+                                  },
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 100,
+                            child: CustomTextButton(
+                              child: const Text(
+                                'Reset',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.textYankeesBlue,
+                                  height: 22 / 16,
+                                  leadingDistribution:
+                                      TextLeadingDistribution.even,
+                                ),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  minPrice = '';
+                                  maxPrice = '';
+                                });
+                              },
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: CustomButton(
+                              child: const Text(
+                                'Apply',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.textCultured,
+                                  height: 22 / 16,
+                                  leadingDistribution:
+                                      TextLeadingDistribution.even,
+                                ),
+                              ),
+                              onPressed: () {
+                                ref.read(searchProvider.notifier).changeFilter(
+                                      searchState.filter?.copyWith(
+                                        maxPrice:
+                                            formatStringWithTwoDecimals(maxPrice),
+                                        minPrice:
+                                            formatStringWithTwoDecimals(minPrice),
+                                      ),
+                                    );
+                                context.pop();
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -45,52 +45,37 @@ class WishlistScreenState extends ConsumerState<WishlistScreen> {
 
     return Layout1(
       title: 'Wishslit',
-      child: CustomScrollView(
-        controller: scrollController,
-        slivers: [
-          SliverPadding(
-            padding: const EdgeInsets.only(
-              top: 16,
-              left: 24,
-              right: 24,
-              bottom: 20,
-            ),
-            sliver: SliverGrid(
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  final product = favoriteState.products[index];
-                  return ProductCard(product: product);
-                },
-                childCount: favoriteState.products.length,
+      child: SafeArea(
+        child: CustomScrollView(
+          controller: scrollController,
+          slivers: [
+            SliverPadding(
+              padding: const EdgeInsets.only(
+                top: 16,
+                left: 24,
+                right: 24,
+                bottom: 20,
               ),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 15,
-                mainAxisSpacing: 20,
-                mainAxisExtent: 210,
-              ),
-            ),
-          ),
-          if (favoriteState.loadingProducts && favoriteState.products.isEmpty)
-            const SliverFillRemaining(
-              hasScrollBody: false,
-              child: Center(
-                child: SizedBox(
-                  width: 40,
-                  height: 40,
-                  child: CircularProgressIndicator(),
+              sliver: SliverGrid(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    final product = favoriteState.products[index];
+                    return ProductCard(product: product);
+                  },
+                  childCount: favoriteState.products.length,
+                ),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 15,
+                  mainAxisSpacing: 20,
+                  mainAxisExtent: 210,
                 ),
               ),
             ),
-          if (favoriteState.loadingProducts &&
-              favoriteState.products.isNotEmpty)
-            SliverToBoxAdapter(
-              child: Container(
-                padding: const EdgeInsets.only(
-                  top: 10,
-                  bottom: 40,
-                ),
-                child: const Center(
+            if (favoriteState.loadingProducts && favoriteState.products.isEmpty)
+              const SliverFillRemaining(
+                hasScrollBody: false,
+                child: Center(
                   child: SizedBox(
                     width: 40,
                     height: 40,
@@ -98,73 +83,91 @@ class WishlistScreenState extends ConsumerState<WishlistScreen> {
                   ),
                 ),
               ),
-            ),
-          if (!favoriteState.loadingProducts && favoriteState.products.isEmpty)
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: Column(
-                children: [
-                  const Spacer(),
-                  SvgPicture.asset(
-                    'assets/icons/empty-wishlist.svg',
-                    width: 200,
+            if (favoriteState.loadingProducts &&
+                favoriteState.products.isNotEmpty)
+              SliverToBoxAdapter(
+                child: Container(
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    bottom: 40,
                   ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  const Text(
-                    'your wishlist is empty!',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.textYankeesBlue,
-                      height: 32 / 24,
-                      leadingDistribution: TextLeadingDistribution.even,
+                  child: const Center(
+                    child: SizedBox(
+                      width: 40,
+                      height: 40,
+                      child: CircularProgressIndicator(),
                     ),
                   ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  SizedBox(
-                    width: 280,
-                    child: Text(
-                      'Explore more and shortlist some items',
+                ),
+              ),
+            if (!favoriteState.loadingProducts &&
+                favoriteState.products.isEmpty)
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Column(
+                  children: [
+                    const Spacer(),
+                    SvgPicture.asset(
+                      'assets/icons/empty-wishlist.svg',
+                      width: 200,
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    const Text(
+                      'your wishlist is empty!',
                       style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.textArsenic.withOpacity(0.7),
-                        height: 22 / 14,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textYankeesBlue,
+                        height: 32 / 24,
                         leadingDistribution: TextLeadingDistribution.even,
                       ),
-                      textAlign: TextAlign.center,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: CustomButton(
-                      child: const Text(
-                        'Start shopping',
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    SizedBox(
+                      width: 280,
+                      child: Text(
+                        'Explore more and shortlist some items',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: FontWeight.w500,
-                          color: AppColors.textCultured,
-                          height: 22 / 16,
+                          color: AppColors.textArsenic.withOpacity(0.7),
+                          height: 22 / 14,
                           leadingDistribution: TextLeadingDistribution.even,
                         ),
+                        textAlign: TextAlign.center,
                       ),
-                      onPressed: () {
-                        context.go('/products');
-                      },
                     ),
-                  ),
-                  const Spacer(),
-                ],
-              ),
-            )
-        ],
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: CustomButton(
+                        child: const Text(
+                          'Start shopping',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.textCultured,
+                            height: 22 / 16,
+                            leadingDistribution: TextLeadingDistribution.even,
+                          ),
+                        ),
+                        onPressed: () {
+                          context.go('/products');
+                        },
+                      ),
+                    ),
+                    const Spacer(),
+                  ],
+                ),
+              )
+          ],
+        ),
       ),
     );
   }
