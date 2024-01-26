@@ -78,7 +78,11 @@ class _InputPasswordState extends State<InputPassword> {
               ),
               controller: controller,
               onChanged: (value) {
-                widget.onChanged(Password.dirty(value));
+                widget.onChanged(
+                  widget.value.isPure
+                      ? Password.pure(value)
+                      : Password.dirty(value),
+                );
               },
               obscureText: !showPassword,
               focusNode: _focusNode,

@@ -75,7 +75,9 @@ class _InputNameState extends State<InputName> {
         ),
         controller: controller,
         onChanged: (value) {
-          widget.onChanged(Name.dirty(value));
+          widget.onChanged(
+            widget.value.isPure ? Name.pure(value) : Name.dirty(value),
+          );
         },
         focusNode: _focusNode,
       ),

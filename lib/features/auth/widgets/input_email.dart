@@ -73,7 +73,9 @@ class _InputEmailState extends State<InputEmail> {
         keyboardType: TextInputType.emailAddress,
         controller: controller,
         onChanged: (value) {
-          widget.onChanged(Email.dirty(value));
+          widget.onChanged(
+            widget.value.isPure ? Email.pure(value) : Email.dirty(value),
+          );
         },
         focusNode: _focusNode,
       ),
