@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_snappyshop/config/constants/storage_keys.dart';
 import 'package:flutter_snappyshop/config/router/app_router.dart';
 import 'package:flutter_snappyshop/features/auth/models/login_response.dart';
 import 'package:flutter_snappyshop/features/auth/providers/auth_provider.dart';
@@ -21,10 +22,18 @@ class LoginNotifier extends StateNotifier<LoginState> {
   final StateNotifierProviderRef ref;
   final keyValueStorageService = KeyValueStorageService();
 
-  initData() {
+  initData() async {
+    final email =
+        await keyValueStorageService.getKeyValue<String>(StorageKeys.email) ??
+            '';
+    final rememberMe = await keyValueStorageService
+            .getKeyValue<bool>(StorageKeys.rememberMe) ??
+        false;
+
     state = state.copyWith(
-      email: const Email.pure('joseperu2503@gmail.com'),
-      password: const Password.pure('12345678'),
+      email: rememberMe ? Email.pure(email) : const Email.pure(''),
+      password: const Password.pure(''),
+      rememberMe: rememberMe,
     );
   }
 
@@ -50,8 +59,9 @@ class LoginNotifier extends StateNotifier<LoginState> {
       );
 
       await keyValueStorageService.setKeyValue<String>(
-          'token', loginResponse.accessToken);
+          StorageKeys.token, loginResponse.accessToken);
 
+      setRemember();
       //cada vez que inicia sesion habilita las notificaciones
       ref.read(notificationProvider.notifier).enableNotifications();
       ref.read(authProvider.notifier).initAutoLogout();
@@ -66,6 +76,15 @@ class LoginNotifier extends StateNotifier<LoginState> {
     );
   }
 
+  setRemember() async {
+    if (state.rememberMe) {
+      await keyValueStorageService.setKeyValue<String>(
+          StorageKeys.email, state.email.value);
+    }
+    await keyValueStorageService.setKeyValue<bool>(
+        StorageKeys.rememberMe, state.rememberMe);
+  }
+
   changeEmail(Email email) {
     state = state.copyWith(
       email: email,
@@ -77,27 +96,37 @@ class LoginNotifier extends StateNotifier<LoginState> {
       password: password,
     );
   }
+
+  toggleRememberMe() {
+    state = state.copyWith(
+      rememberMe: !state.rememberMe,
+    );
+  }
 }
 
 class LoginState {
   final Email email;
   final Password password;
   final bool loading;
+  final bool rememberMe;
 
   LoginState({
     this.email = const Email.pure(''),
     this.password = const Password.pure(''),
     this.loading = false,
+    this.rememberMe = false,
   });
 
   LoginState copyWith({
     Email? email,
     Password? password,
     bool? loading,
+    bool? rememberMe,
   }) =>
       LoginState(
         email: email ?? this.email,
         password: password ?? this.password,
         loading: loading ?? this.loading,
+        rememberMe: rememberMe ?? this.rememberMe,
       );
 }

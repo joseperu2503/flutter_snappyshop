@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_snappyshop/config/constants/environment.dart';
+import 'package:flutter_snappyshop/config/constants/storage_keys.dart';
 import 'package:flutter_snappyshop/features/shared/services/key_value_storage_service.dart';
 
 class Api {
@@ -11,7 +12,8 @@ class Api {
   Api() {
     interceptor = InterceptorsWrapper(
       onRequest: (options, handler) async {
-        final token = await keyValueStorageService.getKeyValue<String>('token');
+        final token =
+            await keyValueStorageService.getKeyValue<String>(StorageKeys.token);
         options.headers['Authorization'] = 'Bearer $token';
         options.headers['Accept'] = 'application/json';
 

@@ -125,8 +125,10 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CustomCheckbox(
-                        value: true,
-                        onChanged: (value) {},
+                        value: loginState.rememberMe,
+                        onChanged: (value) {
+                          ref.read(loginProvider.notifier).toggleRememberMe();
+                        },
                         label: 'Remember Me',
                       ),
                       GestureDetector(
