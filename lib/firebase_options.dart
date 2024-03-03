@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyD48m6H97Mk0DPzeTCzzLUw3Ft1uyVZgQE',
-    appId: '1:267778652600:android:f0eac006dfe9092127b74d',
+    appId: '1:267778652600:android:f82821484e8e781727b74d',
     messagingSenderId: '267778652600',
     projectId: 'snappyshop-727fd',
     storageBucket: 'snappyshop-727fd.appspot.com',
@@ -59,10 +59,10 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyC1s8luLdxf0V9DSUYw52yfbQUhxyL0SJ8',
-    appId: '1:267778652600:ios:50faa051713b556027b74d',
+    appId: '1:267778652600:ios:9d7dbc8a962a3e9b27b74d',
     messagingSenderId: '267778652600',
     projectId: 'snappyshop-727fd',
     storageBucket: 'snappyshop-727fd.appspot.com',
-    iosBundleId: 'com.example.flutterSnappyshop',
+    iosBundleId: 'com.joseperezgil.flutterSnappyshop',
   );
 }
