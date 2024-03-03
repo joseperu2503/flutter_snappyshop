@@ -1,23 +1,28 @@
 # flutter_snappyshop
 
-A new Flutter project.
+## Compilar android
 
-para cambiar el icono
+    flutter build apk --release
 
-flutter pub run flutter_launcher_icons
+## Compilar ios
 
-para cambiar el splashscreen
+    flutter build ios --release
 
-dart run flutter_native_splash:create
+## cambiar el icono de la app
+
+    flutter pub run flutter_launcher_icons
+
+## Cambiar el splashscreen
+
+    dart run flutter_native_splash:create
 
 los cambios del splashscreen no se ven reflejados cuando se lanza la aplicacion desde el editor de codigo, hay que detener el editor y volver a correr, y abrirla presionando el icono en el celular
 
 
-para cambiar nombre de la app
+## Cambiar nombre de la app
 
-flutter pub run rename_app:main all="SnappyShop"
+    flutter pub run rename_app:main all="SnappyShop"
 
+## Cambiar bundleId
 
-para compilar el apk
-
-flutter build apk --release
+    flutter pub run change_app_package_name:main com.joseperezgil.snappyshop
