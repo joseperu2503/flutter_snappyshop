@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_snappyshop/config/api/api.dart';
 import 'package:flutter_snappyshop/features/auth/models/auth_user.dart';
 import 'package:flutter_snappyshop/features/auth/models/login_response.dart';
+import 'package:flutter_snappyshop/features/auth/models/register_response.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/services/key_value_storage_service.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -35,7 +36,7 @@ class AuthService {
     }
   }
 
-  static Future<LoginResponse> register({
+  static Future<RegisterResponse> register({
     required String name,
     required String email,
     required String password,
@@ -46,12 +47,20 @@ class AuthService {
         "name": name,
         "email": email,
         "password": password,
-        "confirmPassword": confirmPassword,
+        "password_confirmation": confirmPassword,
       };
 
       final response = await api.post('/register', data: form);
 
-      return LoginResponse.fromJson(response.data);
+      return RegisterResponse.fromJson(response.data);
+    } on DioException catch (e) {
+      String errorMessage = '';
+      if (e.response?.data['message'] != null) {
+        errorMessage = e.response?.data['message'];
+      } else {
+        throw ServiceException('An error occurred while trying to register.');
+      }
+      throw ServiceException(errorMessage);
     } catch (e) {
       throw ServiceException('An error occurred while trying to register.');
     }

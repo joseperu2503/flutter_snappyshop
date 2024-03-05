@@ -32,7 +32,7 @@ class RegisterNotifier extends StateNotifier<RegisterState> {
 
   register() async {
     FocusManager.instance.primaryFocus?.unfocus();
-    final name = Name.dirty(state.email.value);
+    final name = Name.dirty(state.name.value);
     final email = Email.dirty(state.email.value);
     final password = Password.dirty(state.password.value);
     final confirmPassword = Password.dirty(state.confirmPassword.value);
