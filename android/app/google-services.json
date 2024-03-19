@@ -12,7 +12,20 @@
           "package_name": "com.joseperezgil.snappyshop"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "267778652600-g07cl4d4r7grkfochuf6qpaovi2rcfca.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.joseperezgil.snappyshop",
+            "certificate_hash": "796759702f26bd181c60bbb6e11927ef15b5a207"
+          }
+        },
+        {
+          "client_id": "267778652600-ks6hi2222t4pnm3pgh9koh5jaqh35el3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyD48m6H97Mk0DPzeTCzzLUw3Ft1uyVZgQE"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "267778652600-ks6hi2222t4pnm3pgh9koh5jaqh35el3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "267778652600-047bma60rua6a5ouef96ueeod24esrbn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.joseperezgil.flutterSnappyshop"
+              }
+            }
+          ]
         }
       }
     }

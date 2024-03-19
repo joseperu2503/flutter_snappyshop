@@ -59,10 +59,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyC1s8luLdxf0V9DSUYw52yfbQUhxyL0SJ8',
-    appId: '1:267778652600:ios:9d7dbc8a962a3e9b27b74d',
+    appId: '1:267778652600:ios:79e93c01278f352627b74d',
     messagingSenderId: '267778652600',
     projectId: 'snappyshop-727fd',
     storageBucket: 'snappyshop-727fd.appspot.com',
-    iosBundleId: 'com.joseperezgil.flutterSnappyshop',
+    androidClientId: '267778652600-g07cl4d4r7grkfochuf6qpaovi2rcfca.apps.googleusercontent.com',
+    iosClientId: '267778652600-726isguq13lj75bgb4pruesvkcmsau88.apps.googleusercontent.com',
+    iosBundleId: 'com.joseperezgil.snappyshop',
   );
 }
