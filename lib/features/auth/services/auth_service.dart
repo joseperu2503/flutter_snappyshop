@@ -6,6 +6,7 @@ import 'package:flutter_snappyshop/features/auth/models/register_response.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/services/key_value_storage_service.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 final api = Api();
 
@@ -97,5 +98,16 @@ class AuthService {
     } catch (e) {
       throw ServiceException('An error occurred while loading the user.');
     }
+  }
+
+  static void signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    print(googleUser?.email);
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
   }
 }
