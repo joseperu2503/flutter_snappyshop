@@ -200,114 +200,116 @@ class _PhotoBottomSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      padding: const EdgeInsets.only(top: 10),
-      width: double.infinity,
-      height: 250,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            padding: const EdgeInsets.only(left: 24, right: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(top: 15),
-                  child: const Text(
-                    'Update profile photo',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textYankeesBlue,
-                      height: 1,
-                      leadingDistribution: TextLeadingDistribution.even,
+    return SafeArea(
+      child: Container(
+        padding: const EdgeInsets.only(top: 10),
+        width: double.infinity,
+        height: 250,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              padding: const EdgeInsets.only(left: 24, right: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(top: 15),
+                    child: const Text(
+                      'Update profile photo',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textYankeesBlue,
+                        height: 1,
+                        leadingDistribution: TextLeadingDistribution.even,
+                      ),
                     ),
                   ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    context.pop();
-                  },
-                  icon: const Icon(Icons.close),
+                  IconButton(
+                    onPressed: () {
+                      context.pop();
+                    },
+                    icon: const Icon(Icons.close),
+                    color: AppColors.textYankeesBlue,
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            ListTile(
+              title: const Text(
+                'Take photo',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
                   color: AppColors.textYankeesBlue,
-                )
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          ListTile(
-            title: const Text(
-              'Take photo',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-                color: AppColors.textYankeesBlue,
-                height: 1,
-                leadingDistribution: TextLeadingDistribution.even,
+                  height: 1,
+                  leadingDistribution: TextLeadingDistribution.even,
+                ),
               ),
-            ),
-            contentPadding: const EdgeInsetsDirectional.symmetric(
-              horizontal: 24,
-            ),
-            leading: const Icon(
-              Icons.camera_alt_rounded,
-              color: AppColors.textArsenic,
-            ),
-            onTap: () {
-              context.pop();
-              ref.read(accountInformationProvider.notifier).takePhoto();
-            },
-          ),
-          ListTile(
-            title: const Text(
-              'Choose from gallery',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-                color: AppColors.textYankeesBlue,
-                height: 1,
-                leadingDistribution: TextLeadingDistribution.even,
+              contentPadding: const EdgeInsetsDirectional.symmetric(
+                horizontal: 24,
               ),
+              leading: const Icon(
+                Icons.camera_alt_rounded,
+                color: AppColors.textArsenic,
+              ),
+              onTap: () {
+                context.pop();
+                ref.read(accountInformationProvider.notifier).takePhoto();
+              },
             ),
-            contentPadding: const EdgeInsetsDirectional.symmetric(
-              horizontal: 24,
+            ListTile(
+              title: const Text(
+                'Choose from gallery',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.textYankeesBlue,
+                  height: 1,
+                  leadingDistribution: TextLeadingDistribution.even,
+                ),
+              ),
+              contentPadding: const EdgeInsetsDirectional.symmetric(
+                horizontal: 24,
+              ),
+              leading: const Icon(
+                Icons.add_photo_alternate_rounded,
+                color: AppColors.textArsenic,
+              ),
+              onTap: () {
+                context.pop();
+                ref.read(accountInformationProvider.notifier).selectPhoto();
+              },
             ),
-            leading: const Icon(
-              Icons.add_photo_alternate_rounded,
-              color: AppColors.textArsenic,
-            ),
-            onTap: () {
-              context.pop();
-              ref.read(accountInformationProvider.notifier).selectPhoto();
-            },
-          ),
-          ListTile(
-            title: const Text(
-              'Delete photo',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
+            ListTile(
+              title: const Text(
+                'Delete photo',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.error,
+                  height: 1,
+                  leadingDistribution: TextLeadingDistribution.even,
+                ),
+              ),
+              contentPadding: const EdgeInsetsDirectional.symmetric(
+                horizontal: 24,
+              ),
+              leading: const Icon(
+                Icons.delete,
                 color: AppColors.error,
-                height: 1,
-                leadingDistribution: TextLeadingDistribution.even,
               ),
-            ),
-            contentPadding: const EdgeInsetsDirectional.symmetric(
-              horizontal: 24,
-            ),
-            leading: const Icon(
-              Icons.delete,
-              color: AppColors.error,
-            ),
-            onTap: () {
-              context.pop();
-              ref.read(accountInformationProvider.notifier).deletePhoto();
-            },
-          )
-        ],
+              onTap: () {
+                context.pop();
+                ref.read(accountInformationProvider.notifier).deletePhoto();
+              },
+            )
+          ],
+        ),
       ),
     );
   }
