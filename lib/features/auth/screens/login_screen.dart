@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/auth/providers/login_provider.dart';
+import 'package:flutter_snappyshop/features/auth/services/auth_service.dart';
 import 'package:flutter_snappyshop/features/auth/widgets/input_email.dart';
 import 'package:flutter_snappyshop/features/auth/widgets/input_password.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
@@ -169,6 +170,49 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.textCultured,
+                                height: 22 / 16,
+                                leadingDistribution:
+                                    TextLeadingDistribution.even,
+                              ),
+                            )
+                          : const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: AppColors.primaryCultured,
+                                strokeWidth: 2,
+                              ),
+                            ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  Container(
+                    height: 52,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        AuthService.signInWithGoogle();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        surfaceTintColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: !loginState.loading
+                          ? const Text(
+                              'Log In with Google',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.textCoolBlack,
                                 height: 22 / 16,
                                 leadingDistribution:
                                     TextLeadingDistribution.even,
