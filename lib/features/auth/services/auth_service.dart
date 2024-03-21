@@ -102,12 +102,32 @@ class AuthService {
 
   static void signInWithGoogle() async {
     // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAccount? googleUser = await GoogleSignIn(
+      // scopes: [
+      //   'https://www.googleapis.com/auth/userinfo.email',
+      //   'openid',
+      //   'https://www.googleapis.com/auth/userinfo.profile',
+      // ],
+      clientId:
+          '267778652600-bgeqjchi3c9ohm8565eefkafh9kofodm.apps.googleusercontent.com',
+    ).signIn();
 
     print(googleUser?.email);
+    print(googleUser?.displayName);
 
     // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
+    print(googleAuth?.accessToken);
+    // print(googleAuth?.idToken);
+    // print(googleAuth?.idToken.toString());
+    printLongString('${googleAuth?.idToken}');
   }
+}
+
+void printLongString(String text) {
+  final RegExp pattern = RegExp('.{1,800}'); // 800 is the size of each chunk
+  pattern
+      .allMatches(text)
+      .forEach((RegExpMatch match) => print(match.group(0)));
 }

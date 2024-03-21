@@ -7,6 +7,7 @@ import 'package:flutter_snappyshop/features/auth/widgets/input_password.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/checkbox.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -192,7 +193,6 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                     height: 52,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: AppColors.white,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: ElevatedButton(
@@ -200,32 +200,35 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                         AuthService.signInWithGoogle();
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
+                        backgroundColor: AppColors.primaryCultured,
                         surfaceTintColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
+                        elevation: 3,
                       ),
-                      child: !loginState.loading
-                          ? const Text(
-                              'Log In with Google',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.textCoolBlack,
-                                height: 22 / 16,
-                                leadingDistribution:
-                                    TextLeadingDistribution.even,
-                              ),
-                            )
-                          : const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                color: AppColors.primaryCultured,
-                                strokeWidth: 2,
-                              ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icons/google.svg',
+                            width: 24,
+                          ),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          const Text(
+                            'Log In with Google',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.textCoolBlack,
+                              height: 22 / 16,
+                              leadingDistribution: TextLeadingDistribution.even,
                             ),
+                          ),
+                        ],
+                      ),
                     ),
                   )
                 ],
