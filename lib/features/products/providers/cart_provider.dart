@@ -1,12 +1,10 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/features/products/models/cart.dart';
 import 'package:flutter_snappyshop/features/products/models/create_cart.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
 import 'package:flutter_snappyshop/features/products/services/cart_service.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
-import 'package:flutter_snappyshop/features/shared/providers/loader_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,14 +26,17 @@ class CartNotifier extends StateNotifier<CartState> {
   }
 
   Future<void> getCart() async {
-    ref.read(loaderProvider.notifier).showLoader();
-
+    state = state.copyWith(
+      loading: true,
+    );
     try {
       await getCartService();
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
     }
-    ref.read(loaderProvider.notifier).dismissLoader();
+    state = state.copyWith(
+      loading: false,
+    );
   }
 
   Future<void> getCartService() async {
@@ -83,13 +84,17 @@ class CartNotifier extends StateNotifier<CartState> {
 
   updateCart() async {
     if (state.cart == null) return;
-    ref.read(loaderProvider.notifier).showLoader();
+    state = state.copyWith(
+      loading: true,
+    );
     try {
       await updateCartService();
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
     }
-    ref.read(loaderProvider.notifier).dismissLoader();
+    state = state.copyWith(
+      loading: false,
+    );
   }
 
   updateCartService() async {
@@ -114,7 +119,9 @@ class CartNotifier extends StateNotifier<CartState> {
   }
 
   addToCart(Product product) async {
-    ref.read(loaderProvider.notifier).showLoader();
+    state = state.copyWith(
+      loading: true,
+    );
     try {
       await getCartService();
       if (state.cart == null) return;
@@ -140,25 +147,31 @@ class CartNotifier extends StateNotifier<CartState> {
           .read(snackbarProvider.notifier)
           .showSnackbar('An error occurred while updating the cart.');
     }
-    ref.read(loaderProvider.notifier).dismissLoader();
+    state = state.copyWith(
+      loading: false,
+    );
   }
 }
 
 class CartState {
   final Cart? cart;
   final bool showUpdateBtn;
+  final bool loading;
 
   CartState({
     this.cart,
     this.showUpdateBtn = false,
+    this.loading = false,
   });
 
   CartState copyWith({
     ValueGetter<Cart?>? cart,
     bool? showUpdateBtn,
+    bool? loading,
   }) =>
       CartState(
         cart: cart != null ? cart() : this.cart,
         showUpdateBtn: showUpdateBtn ?? this.showUpdateBtn,
+        loading: loading ?? this.loading,
       );
 }

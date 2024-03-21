@@ -6,7 +6,6 @@ import 'package:flutter_snappyshop/features/auth/models/register_response.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/services/key_value_storage_service.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 final api = Api();
 
@@ -21,7 +20,7 @@ class AuthService {
         "password": password,
       };
 
-      final response = await api.post('/login', data: form);
+      final response = await api.post('/v2/login', data: form);
 
       return LoginResponse.fromJson(response.data);
     } on DioException catch (e) {
@@ -100,34 +99,21 @@ class AuthService {
     }
   }
 
-  static void signInWithGoogle() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn(
-      // scopes: [
-      //   'https://www.googleapis.com/auth/userinfo.email',
-      //   'openid',
-      //   'https://www.googleapis.com/auth/userinfo.profile',
-      // ],
-      clientId:
-          '267778652600-bgeqjchi3c9ohm8565eefkafh9kofodm.apps.googleusercontent.com',
-    ).signIn();
+  static Future<LoginResponse> loginGoogle({required String idToken}) async {
+    try {
+      Map<String, dynamic> form = {
+        "id_token": idToken,
+      };
 
-    print(googleUser?.email);
-    print(googleUser?.displayName);
+      final response = await api.post('/snappyshop/login-google', data: form);
 
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
-    print(googleAuth?.accessToken);
-    // print(googleAuth?.idToken);
-    // print(googleAuth?.idToken.toString());
-    printLongString('${googleAuth?.idToken}');
+      return LoginResponse.fromJson(response.data);
+    } on DioException catch (_) {
+      String errorMessage = '';
+      errorMessage = 'An error occurred while trying to log in.';
+      throw ServiceException(errorMessage);
+    } catch (e) {
+      throw ServiceException('An error occurred while trying to log in.');
+    }
   }
-}
-
-void printLongString(String text) {
-  final RegExp pattern = RegExp('.{1,800}'); // 800 is the size of each chunk
-  pattern
-      .allMatches(text)
-      .forEach((RegExpMatch match) => print(match.group(0)));
 }

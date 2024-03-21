@@ -12,6 +12,8 @@ import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.d
 import 'package:flutter_snappyshop/features/shared/services/key_value_storage_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
+import 'package:flutter_snappyshop/config/constants/environment.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 final loginProvider = StateNotifierProvider<LoginNotifier, LoginState>((ref) {
   return LoginNotifier(ref);
@@ -62,6 +64,56 @@ class LoginNotifier extends StateNotifier<LoginState> {
           StorageKeys.token, loginResponse.accessToken);
 
       setRemember();
+      //cada vez que inicia sesion habilita las notificaciones
+      ref.read(notificationProvider.notifier).enableNotifications();
+      ref.read(authProvider.notifier).initAutoLogout();
+
+      appRouter.go('/products');
+    } on ServiceException catch (e) {
+      ref.read(snackbarProvider.notifier).showSnackbar(e.message);
+    }
+
+    state = state.copyWith(
+      loading: false,
+    );
+  }
+
+  loginGoogle() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn(
+      clientId: Environment.googleClientIdOAuth,
+    ).signIn();
+
+    state = state.copyWith(
+      loading: true,
+    );
+
+    if (googleUser == null) {
+      ref.read(snackbarProvider.notifier).showSnackbar('no googleUser');
+      return;
+    }
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+
+    final String? idToken = googleAuth.idToken;
+
+    if (idToken == null) {
+      ref.read(snackbarProvider.notifier).showSnackbar('no idToken');
+      return;
+    }
+
+    try {
+      final LoginResponse loginResponse = await AuthService.loginGoogle(
+        idToken: idToken,
+      );
+
+      await keyValueStorageService.setKeyValue<String>(
+          StorageKeys.token, loginResponse.accessToken);
+
       //cada vez que inicia sesion habilita las notificaciones
       ref.read(notificationProvider.notifier).enableNotifications();
       ref.read(authProvider.notifier).initAutoLogout();

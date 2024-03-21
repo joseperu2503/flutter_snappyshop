@@ -7,4 +7,6 @@ class Environment {
 
   static String urlBase = dotenv.env['URL_BASE'] ?? 'No URL_BASE';
   static String urlImages = dotenv.env['URL_IMAGES'] ?? 'No URL_IMAGES';
+  static String googleClientIdOAuth =
+      dotenv.env['GOOGLE_CLIENT_ID_OAUTH'] ?? 'No GOOGLE_CLIENT_ID_OAUTH';
 }

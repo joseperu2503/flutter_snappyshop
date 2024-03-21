@@ -3,7 +3,6 @@ import 'package:flutter_snappyshop/features/auth/providers/auth_provider.dart';
 import 'package:flutter_snappyshop/features/shared/inputs/email.dart';
 import 'package:flutter_snappyshop/features/shared/inputs/name.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
-import 'package:flutter_snappyshop/features/shared/providers/loader_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_snappyshop/features/user/services/camera_service.dart';
 import 'package:flutter_snappyshop/features/user/services/user_service.dart';
@@ -42,8 +41,9 @@ class AccountInformationNotifier
     );
     if (!Formz.validate([email, name])) return;
 
-    ref.read(loaderProvider.notifier).showLoader();
-
+    state = state.copyWith(
+      loading: true,
+    );
     try {
       if (state.temporalImage != null) {
         //cuando sube nueva foto asi haya tenido o no foto antes
@@ -75,7 +75,9 @@ class AccountInformationNotifier
     }
 
     initData();
-    ref.read(loaderProvider.notifier).dismissLoader();
+    state = state.copyWith(
+      loading: false,
+    );
   }
 
   changeName(Name name) {
@@ -128,6 +130,7 @@ class AccountInformationState {
   final String? image;
   final String? temporalImage;
   final bool showButton;
+  final bool loading;
 
   AccountInformationState({
     this.name = const Name.pure(''),
@@ -135,6 +138,7 @@ class AccountInformationState {
     this.image,
     this.temporalImage,
     this.showButton = false,
+    this.loading = false,
   });
 
   AccountInformationState copyWith({
@@ -143,6 +147,7 @@ class AccountInformationState {
     bool? showButton,
     ValueGetter<String?>? image,
     ValueGetter<String?>? temporalImage,
+    bool? loading,
   }) =>
       AccountInformationState(
         name: name ?? this.name,
@@ -151,5 +156,6 @@ class AccountInformationState {
         image: image != null ? image() : this.image,
         temporalImage:
             temporalImage != null ? temporalImage() : this.temporalImage,
+        loading: loading ?? this.loading,
       );
 }

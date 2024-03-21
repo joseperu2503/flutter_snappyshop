@@ -19,7 +19,8 @@ class NotificationService {
         "token": token,
       };
 
-      final response = await api.post('/snappytoken', data: form);
+      final response =
+          await api.post('/snappyshop/save-snappy-token', data: form);
 
       return SaveSnappyTokenResponse.fromJson(response.data);
     } on DioException catch (e) {

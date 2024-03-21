@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/features/auth/providers/auth_provider.dart';
-import 'package:flutter_snappyshop/features/shared/providers/loader_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_snappyshop/features/shared/services/snackbar_service.dart';
-import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class Services extends ConsumerStatefulWidget {
@@ -25,8 +23,6 @@ class ServicesState extends ConsumerState<Services> {
 
   @override
   Widget build(BuildContext context) {
-    final loader = ref.watch(loaderProvider);
-
     ref.listen(snackbarProvider, (previous, next) {
       if (next.showSnackbar) {
         SnackbarService().showSnackbar(
@@ -39,7 +35,6 @@ class ServicesState extends ConsumerState<Services> {
     return Stack(
       children: [
         widget.child,
-        if (loader.loading) const Loader(),
       ],
     );
   }

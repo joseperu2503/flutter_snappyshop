@@ -5,7 +5,6 @@ import 'package:flutter_snappyshop/features/shared/inputs/email.dart';
 import 'package:flutter_snappyshop/features/shared/inputs/name.dart';
 import 'package:flutter_snappyshop/features/shared/inputs/password.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
-import 'package:flutter_snappyshop/features/shared/providers/loader_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_snappyshop/features/shared/services/key_value_storage_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -45,8 +44,9 @@ class RegisterNotifier extends StateNotifier<RegisterState> {
     );
     if (!Formz.validate([email, password, name, confirmPassword])) return;
 
-    ref.read(loaderProvider.notifier).showLoader();
-
+    state = state.copyWith(
+      loading: true,
+    );
     try {
       await AuthService.register(
         name: state.name.value,
@@ -63,7 +63,9 @@ class RegisterNotifier extends StateNotifier<RegisterState> {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
     }
 
-    ref.read(loaderProvider.notifier).dismissLoader();
+    state = state.copyWith(
+      loading: false,
+    );
   }
 
   changeName(Name name) {
@@ -96,12 +98,14 @@ class RegisterState {
   final Email email;
   final Password password;
   final Password confirmPassword;
+  final bool loading;
 
   RegisterState({
     this.name = const Name.pure(''),
     this.email = const Email.pure(''),
     this.password = const Password.pure(''),
     this.confirmPassword = const Password.pure(''),
+    this.loading = false,
   });
 
   RegisterState copyWith({
@@ -109,11 +113,13 @@ class RegisterState {
     Email? email,
     Password? password,
     Password? confirmPassword,
+    bool? loading,
   }) =>
       RegisterState(
         name: name ?? this.name,
         email: email ?? this.email,
         password: password ?? this.password,
         confirmPassword: confirmPassword ?? this.confirmPassword,
+        loading: loading ?? this.loading,
       );
 }
