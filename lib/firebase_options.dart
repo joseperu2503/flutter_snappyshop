@@ -59,7 +59,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyC1s8luLdxf0V9DSUYw52yfbQUhxyL0SJ8',
-    appId: '1:267778652600:ios:79e93c01278f352627b74d',
+    appId: '1:267778652600:ios:6a5fcdc09d5c9dc527b74d',
     messagingSenderId: '267778652600',
     projectId: 'snappyshop-727fd',
     storageBucket: 'snappyshop-727fd.appspot.com',

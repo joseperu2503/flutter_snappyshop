@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLIENT_ID</key>
+	<string>267778652600-726isguq13lj75bgb4pruesvkcmsau88.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.267778652600-726isguq13lj75bgb4pruesvkcmsau88</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>267778652600-g07cl4d4r7grkfochuf6qpaovi2rcfca.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyC1s8luLdxf0V9DSUYw52yfbQUhxyL0SJ8</string>
 	<key>GCM_SENDER_ID</key>
@@ -9,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.flutterSnappyshop</string>
+	<string>com.joseperezgil.snappyshop</string>
 	<key>PROJECT_ID</key>
 	<string>snappyshop-727fd</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:267778652600:ios:50faa051713b556027b74d</string>
+	<string>1:267778652600:ios:6a5fcdc09d5c9dc527b74d</string>
 </dict>
 </plist>

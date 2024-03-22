@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/storage_keys.dart';
 import 'package:flutter_snappyshop/config/router/app_router.dart';
@@ -83,17 +85,19 @@ class LoginNotifier extends StateNotifier<LoginState> {
 
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn(
-      clientId: Environment.googleClientIdOAuth,
+      clientId: Platform.isIOS
+          ? Environment.googleClientIdOAuthIos
+          : Environment.googleClientIdOAuthIos,
+      serverClientId: Environment.googleClientIdOAuthServer,
     ).signIn();
+
+    if (googleUser == null) {
+      return;
+    }
 
     state = state.copyWith(
       loading: true,
     );
-
-    if (googleUser == null) {
-      ref.read(snackbarProvider.notifier).showSnackbar('no googleUser');
-      return;
-    }
 
     // Obtain the auth details from the request
     final GoogleSignInAuthentication googleAuth =
@@ -103,6 +107,9 @@ class LoginNotifier extends StateNotifier<LoginState> {
 
     if (idToken == null) {
       ref.read(snackbarProvider.notifier).showSnackbar('no idToken');
+      state = state.copyWith(
+        loading: false,
+      );
       return;
     }
 

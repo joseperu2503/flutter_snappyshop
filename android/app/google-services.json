@@ -39,10 +39,10 @@
               "client_type": 3
             },
             {
-              "client_id": "267778652600-047bma60rua6a5ouef96ueeod24esrbn.apps.googleusercontent.com",
+              "client_id": "267778652600-726isguq13lj75bgb4pruesvkcmsau88.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.joseperezgil.flutterSnappyshop"
+                "bundle_id": "com.joseperezgil.snappyshop"
               }
             }
           ]
