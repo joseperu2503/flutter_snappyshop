@@ -26,3 +26,6 @@ los cambios del splashscreen no se ven reflejados cuando se lanza la aplicacion 
 ## Cambiar bundleId
 
     flutter pub run change_app_package_name:main com.joseperezgil.snappyshop
+    
+## firebase
+    flutterfire configure
