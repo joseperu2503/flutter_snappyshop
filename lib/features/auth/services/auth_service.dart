@@ -23,16 +23,16 @@ class AuthService {
       final response = await api.post('/v2/login', data: form);
 
       return LoginResponse.fromJson(response.data);
-    } on DioException catch (e) {
-      String errorMessage = '';
-      if (e.response?.statusCode == 401) {
-        errorMessage = 'Incorrect email or password';
-      } else {
-        errorMessage = 'An error occurred while trying to log in.';
-      }
-      throw ServiceException(errorMessage);
     } catch (e) {
-      throw ServiceException('An error occurred while trying to log in.');
+      String errorMessage = 'An error occurred while trying to log in.';
+
+      if (e is DioException) {
+        if (e.response?.data['message'] != null) {
+          errorMessage = e.response?.data['message'];
+        }
+      }
+
+      throw ServiceException(errorMessage);
     }
   }
 
@@ -108,12 +108,16 @@ class AuthService {
       final response = await api.post('/snappyshop/login-google', data: form);
 
       return LoginResponse.fromJson(response.data);
-    } on DioException catch (_) {
-      String errorMessage = '';
-      errorMessage = 'An error occurred while trying to log in.';
-      throw ServiceException(errorMessage);
     } catch (e) {
-      throw ServiceException('An error occurred while trying to log in.');
+      String errorMessage = 'An error occurred while trying to log in.';
+
+      if (e is DioException) {
+        if (e.response?.data['message'] != null) {
+          errorMessage = e.response?.data['message'];
+        }
+      }
+
+      throw ServiceException(errorMessage);
     }
   }
 }
