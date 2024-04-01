@@ -208,8 +208,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                     ),
                   ),
                 ),
-                SliverFillRemaining(
-                  hasScrollBody: false,
+                SliverToBoxAdapter(
                   child: Container(
                     padding: const EdgeInsets.only(
                       left: 24,
