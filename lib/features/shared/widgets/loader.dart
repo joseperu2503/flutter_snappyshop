@@ -14,7 +14,7 @@ class Loader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: false,
+      canPop: !loading,
       child: Stack(
         children: [
           child,
