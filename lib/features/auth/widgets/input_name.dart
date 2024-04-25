@@ -20,14 +20,11 @@ class InputName extends StatefulWidget {
 class _InputNameState extends State<InputName> {
   final TextEditingController controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
-  bool showText = false;
 
   @override
   void initState() {
     super.initState();
-    setState(() {
-      showText = false;
-    });
+
     _focusNode.addListener(() {
       if (!_focusNode.hasFocus) {
         widget.onChanged(Name.dirty(widget.value.value));
