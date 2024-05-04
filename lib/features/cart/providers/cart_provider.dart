@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_snappyshop/features/products/models/cart.dart';
-import 'package:flutter_snappyshop/features/products/models/create_cart.dart';
+import 'package:flutter_snappyshop/features/cart/models/cart.dart';
+import 'package:flutter_snappyshop/features/cart/models/create_cart.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
-import 'package:flutter_snappyshop/features/products/services/cart_service.dart';
+import 'package:flutter_snappyshop/features/cart/services/cart_service.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

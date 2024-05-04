@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
-import 'package:flutter_snappyshop/features/products/providers/cart_provider.dart';
-import 'package:flutter_snappyshop/features/products/widgets/button_stepper.dart';
+import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
+import 'package:flutter_snappyshop/features/cart/widgets/button_stepper.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

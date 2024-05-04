@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
-import 'package:flutter_snappyshop/features/products/providers/search_provider.dart';
-import 'package:flutter_snappyshop/features/products/widgets/brand_filter_button.dart';
-import 'package:flutter_snappyshop/features/products/widgets/category_filter_button.dart';
-import 'package:flutter_snappyshop/features/products/widgets/input_search.dart';
-import 'package:flutter_snappyshop/features/products/widgets/price_filter_button.dart';
+import 'package:flutter_snappyshop/features/search/providers/search_provider.dart';
+import 'package:flutter_snappyshop/features/search/widgets/brand_filter_button.dart';
+import 'package:flutter_snappyshop/features/search/widgets/category_filter_button.dart';
+import 'package:flutter_snappyshop/features/search/widgets/input_search.dart';
+import 'package:flutter_snappyshop/features/search/widgets/price_filter_button.dart';
 import 'package:flutter_snappyshop/features/products/widgets/product_card.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/back_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

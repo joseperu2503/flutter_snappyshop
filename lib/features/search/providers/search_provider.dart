@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_snappyshop/features/products/models/filter.dart';
-import 'package:flutter_snappyshop/features/products/models/filter_response.dart';
+import 'package:flutter_snappyshop/features/search/models/filter.dart';
+import 'package:flutter_snappyshop/features/search/models/filter_response.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
 import 'package:flutter_snappyshop/features/products/services/products_services.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';

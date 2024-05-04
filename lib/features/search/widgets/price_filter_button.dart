@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
-import 'package:flutter_snappyshop/features/products/models/filter.dart';
-import 'package:flutter_snappyshop/features/products/providers/search_provider.dart';
-import 'package:flutter_snappyshop/features/products/widgets/input_price.dart';
+import 'package:flutter_snappyshop/features/search/models/filter.dart';
+import 'package:flutter_snappyshop/features/search/providers/search_provider.dart';
+import 'package:flutter_snappyshop/features/search/widgets/input_price.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_text_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

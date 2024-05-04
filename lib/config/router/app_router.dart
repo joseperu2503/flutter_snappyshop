@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/features/auth/screens/change_password_external_screen.dart';
 import 'package:flutter_snappyshop/features/auth/screens/forgot_password_screen.dart';
 import 'package:flutter_snappyshop/features/auth/screens/verify_code_screen.dart';
-import 'package:flutter_snappyshop/features/products/screens/wishlist_screen.dart';
+import 'package:flutter_snappyshop/features/wishlist/screens/wishlist_screen.dart';
 import 'package:flutter_snappyshop/features/settings/screens/settings_screen.dart';
 import 'package:flutter_snappyshop/features/user/screens/account_information_screen.dart';
 import 'package:flutter_snappyshop/features/user/screens/change_password_internal_screen.dart';
@@ -10,12 +10,12 @@ import 'package:flutter_snappyshop/features/auth/screens/home_screen.dart';
 import 'package:flutter_snappyshop/features/auth/screens/login_screen.dart';
 import 'package:flutter_snappyshop/features/auth/screens/register_screen.dart';
 import 'package:flutter_snappyshop/features/auth/services/auth_service.dart';
-import 'package:flutter_snappyshop/features/products/screens/brand_screen.dart';
-import 'package:flutter_snappyshop/features/products/screens/cart_screen.dart';
-import 'package:flutter_snappyshop/features/products/screens/order_confirmed_screen.dart';
+import 'package:flutter_snappyshop/features/brand/screens/brand_screen.dart';
+import 'package:flutter_snappyshop/features/cart/screens/cart_screen.dart';
+import 'package:flutter_snappyshop/features/checkout/screens/order_confirmed_screen.dart';
 import 'package:flutter_snappyshop/features/products/screens/product_screen.dart';
 import 'package:flutter_snappyshop/features/products/screens/products_screen.dart';
-import 'package:flutter_snappyshop/features/products/screens/search_screen.dart';
+import 'package:flutter_snappyshop/features/search/screens/search_screen.dart';
 import 'package:go_router/go_router.dart';
 
 Future<String?> externalRedirect(

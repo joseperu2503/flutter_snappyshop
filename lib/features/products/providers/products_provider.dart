@@ -1,8 +1,8 @@
 import 'package:flutter_snappyshop/features/auth/providers/auth_provider.dart';
 import 'package:flutter_snappyshop/features/products/models/brand.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
-import 'package:flutter_snappyshop/features/products/providers/cart_provider.dart';
-import 'package:flutter_snappyshop/features/products/providers/search_provider.dart';
+import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
+import 'package:flutter_snappyshop/features/search/providers/search_provider.dart';
 import 'package:flutter_snappyshop/features/products/services/products_services.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';

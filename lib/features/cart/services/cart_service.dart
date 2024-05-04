@@ -1,7 +1,7 @@
 import 'package:flutter_snappyshop/config/api/api.dart';
-import 'package:flutter_snappyshop/features/products/models/cart.dart';
-import 'package:flutter_snappyshop/features/products/models/create_cart.dart';
-import 'package:flutter_snappyshop/features/products/models/create_cart_response.dart';
+import 'package:flutter_snappyshop/features/cart/models/cart.dart';
+import 'package:flutter_snappyshop/features/cart/models/create_cart.dart';
+import 'package:flutter_snappyshop/features/cart/models/create_cart_response.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 
 final api = Api();

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
-import 'package:flutter_snappyshop/features/products/providers/favorite_products_provider.dart';
+import 'package:flutter_snappyshop/features/wishlist/providers/favorite_products_provider.dart';
 import 'package:flutter_snappyshop/features/products/widgets/product_card.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';

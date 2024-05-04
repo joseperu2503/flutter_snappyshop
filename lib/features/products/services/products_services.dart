@@ -1,9 +1,9 @@
 import 'package:flutter_snappyshop/config/api/api.dart';
 import 'package:flutter_snappyshop/features/products/models/brand.dart';
 import 'package:flutter_snappyshop/features/products/models/category.dart';
-import 'package:flutter_snappyshop/features/products/models/filter_response.dart';
+import 'package:flutter_snappyshop/features/search/models/filter_response.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
-import 'package:flutter_snappyshop/features/products/models/toggle_favorite_response.dart';
+import 'package:flutter_snappyshop/features/wishlist/models/toggle_favorite_response.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 
 final api = Api();
