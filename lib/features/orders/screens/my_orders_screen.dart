@@ -31,7 +31,7 @@ class MyOrdersScreenState extends ConsumerState<MyOrdersScreen> {
       loading: orderState.loading,
       child: Layout1(
         title: 'My Orders',
-        child: CustomScrollView(
+        body: CustomScrollView(
           slivers: [
             SliverPadding(
               padding: const EdgeInsets.all(24),

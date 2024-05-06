@@ -29,7 +29,7 @@ class RegisterScreenState extends ConsumerState<RegisterScreen> {
     final registerState = ref.watch(registerProvider);
 
     return Layout1(
-      child: CustomScrollView(
+      body: CustomScrollView(
         slivers: [
           SliverFillRemaining(
             hasScrollBody: false,

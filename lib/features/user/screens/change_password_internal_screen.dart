@@ -29,7 +29,7 @@ class ChangePasswordInternalScreenState
 
     return Layout1(
       title: 'Change password',
-      child: CustomScrollView(
+      body: CustomScrollView(
         slivers: [
           SliverFillRemaining(
             hasScrollBody: false,

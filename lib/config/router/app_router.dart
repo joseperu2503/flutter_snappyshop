@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_snappyshop/features/address/screens/addresses_screen.dart';
 import 'package:flutter_snappyshop/features/auth/screens/change_password_external_screen.dart';
 import 'package:flutter_snappyshop/features/auth/screens/forgot_password_screen.dart';
 import 'package:flutter_snappyshop/features/auth/screens/verify_code_screen.dart';
@@ -273,6 +274,19 @@ final appRouter = GoRouter(
         return CustomTransitionPage(
           key: state.pageKey,
           child: const MyOrdersScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return transition(
+                animation: animation, context: context, child: child);
+          },
+        );
+      },
+    ),
+    GoRoute(
+      path: '/my-addresses',
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const AddressesScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return transition(
                 animation: animation, context: context, child: child);

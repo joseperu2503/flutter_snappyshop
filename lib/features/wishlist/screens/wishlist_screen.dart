@@ -45,7 +45,7 @@ class WishlistScreenState extends ConsumerState<WishlistScreen> {
 
     return Layout1(
       title: 'Wishslit',
-      child: SafeArea(
+      body: SafeArea(
         child: CustomScrollView(
           controller: scrollController,
           slivers: [

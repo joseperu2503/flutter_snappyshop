@@ -34,7 +34,7 @@ class ChangePasswordExternalScreenState
     final forgotState = ref.watch(forgotPasswordProvider);
 
     return Layout1(
-      child: CustomScrollView(
+      body: CustomScrollView(
         slivers: [
           SliverFillRemaining(
             hasScrollBody: false,

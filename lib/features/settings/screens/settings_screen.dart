@@ -26,7 +26,7 @@ class SettingsScreenState extends ConsumerState<SettingsScreen> {
 
     return Layout1(
       title: 'Settings',
-      child: CustomScrollView(
+      body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
           SliverToBoxAdapter(

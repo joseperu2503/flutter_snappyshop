@@ -80,7 +80,7 @@ class BrandScreenState extends ConsumerState<BrandScreen> {
 
     return Layout1(
       title: brand.name,
-      child: CustomScrollView(
+      body: CustomScrollView(
         slivers: [
           SliverPadding(
             padding: const EdgeInsets.only(

@@ -38,7 +38,7 @@ class AccountInformationScreenState
       loading: accountState.loading,
       child: Layout1(
         title: 'Account Information',
-        child: CustomScrollView(
+        body: CustomScrollView(
           slivers: [
             SliverFillRemaining(
               hasScrollBody: false,

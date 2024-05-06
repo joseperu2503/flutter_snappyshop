@@ -28,7 +28,7 @@ class VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
     final timerState = ref.watch(timerProvider);
 
     return Layout1(
-      child: CustomScrollView(
+      body: CustomScrollView(
         slivers: [
           SliverFillRemaining(
             hasScrollBody: false,

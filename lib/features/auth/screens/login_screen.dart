@@ -33,7 +33,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
     return Loader(
       loading: loginState.loading,
       child: Layout1(
-        child: CustomScrollView(
+        body: CustomScrollView(
           slivers: [
             SliverFillRemaining(
               hasScrollBody: false,

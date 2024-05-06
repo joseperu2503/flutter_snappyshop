@@ -5,18 +5,22 @@ import 'package:flutter_snappyshop/features/shared/widgets/back_button.dart';
 class Layout1 extends StatelessWidget {
   const Layout1({
     super.key,
-    required this.child,
+    required this.body,
     this.bottomNavigationBar,
+    this.floatingActionButton,
     this.title,
   });
 
-  final Widget child;
+  final Widget body;
   final Widget? bottomNavigationBar;
   final String? title;
+  final Widget? floatingActionButton;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: bottomNavigationBar,
+      floatingActionButton: floatingActionButton,
       appBar: AppBar(
         toolbarHeight: 58,
         automaticallyImplyLeading: false,
@@ -48,7 +52,7 @@ class Layout1 extends StatelessWidget {
           ),
         ),
       ),
-      body: child,
+      body: body,
     );
   }
 }

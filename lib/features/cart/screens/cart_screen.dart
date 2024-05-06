@@ -95,7 +95,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
                 ),
               )
             : null,
-        child: CustomScrollView(
+        body: CustomScrollView(
           slivers: [
             if (!emptyCart)
               SliverPadding(

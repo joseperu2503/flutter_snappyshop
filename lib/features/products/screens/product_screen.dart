@@ -368,7 +368,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
             ),
           )
         : Layout1(
-            child: Container(
+            body: Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: 16,
                 vertical: 16,

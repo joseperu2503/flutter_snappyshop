@@ -185,6 +185,16 @@ class CustomDrawer extends ConsumerWidget {
                     ListTile(
                       contentPadding:
                           const EdgeInsetsDirectional.symmetric(horizontal: 24),
+                      title: const Text('My Addresses'),
+                      leading: const Icon(Icons.pin_drop_outlined),
+                      onTap: () {
+                        context.pop();
+                        context.push('/my-addresses');
+                      },
+                    ),
+                    ListTile(
+                      contentPadding:
+                          const EdgeInsetsDirectional.symmetric(horizontal: 24),
                       title: const Text('Change Password'),
                       leading: const Icon(Icons.lock_outline_rounded),
                       onTap: () {
