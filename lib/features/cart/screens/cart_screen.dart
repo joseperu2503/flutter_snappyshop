@@ -89,7 +89,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
                           }
                           context.push('/order-confirmed');
                         },
-                      )
+                      ),
                     ],
                   ),
                 ),

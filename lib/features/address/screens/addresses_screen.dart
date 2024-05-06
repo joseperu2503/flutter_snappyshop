@@ -36,7 +36,9 @@ class AddressesScreenState extends ConsumerState<AddressesScreen> {
               Icons.add,
               color: AppColors.white,
             ),
-            onPressed: () {},
+            onPressed: () {
+              context.push('/address');
+            },
           ),
         ),
         body: CustomScrollView(
