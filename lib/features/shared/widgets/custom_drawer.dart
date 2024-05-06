@@ -129,7 +129,7 @@ class CustomDrawer extends ConsumerWidget {
                       contentPadding:
                           const EdgeInsetsDirectional.symmetric(horizontal: 24),
                       title: const Text('Cart'),
-                      leading: const Icon(Icons.shopping_bag_outlined),
+                      leading: const Icon(Icons.shopping_cart),
                       trailing: numProducts > 0
                           ? Container(
                               width: 30,
@@ -161,6 +161,16 @@ class CustomDrawer extends ConsumerWidget {
                           EdgeInsetsDirectional.symmetric(horizontal: 24),
                       title: Text('My Cards'),
                       leading: Icon(Icons.credit_card_outlined),
+                    ),
+                    ListTile(
+                      contentPadding:
+                          const EdgeInsetsDirectional.symmetric(horizontal: 24),
+                      title: const Text('My Orders'),
+                      leading: const Icon(Icons.shopping_bag_outlined),
+                      onTap: () {
+                        context.pop();
+                        context.push('/my-orders');
+                      },
                     ),
                     ListTile(
                       contentPadding:

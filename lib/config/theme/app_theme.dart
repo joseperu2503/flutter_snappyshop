@@ -9,8 +9,7 @@ class AppTheme {
           modalBackgroundColor: Colors.white,
           showDragHandle: true,
           backgroundColor: Colors.white,
-          surfaceTintColor: Colors.white
+          surfaceTintColor: Colors.white,
         ),
-        
       );
 }

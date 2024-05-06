@@ -21,4 +21,5 @@ class AppColors {
   static const Color star = Color(0xFFFF7A45);
 
   static const Color error = Color(0xFFF04438);
+  static const Color success = Color(0xFF2AA952);
 }

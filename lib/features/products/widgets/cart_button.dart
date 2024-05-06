@@ -60,7 +60,7 @@ class CartButton extends ConsumerWidget {
             badgeColor: AppColors.primaryPearlAqua.withOpacity(0.8),
           ),
           child: const Icon(
-            Icons.shopping_bag_outlined,
+            Icons.shopping_cart,
             color: AppColors.textYankeesBlue,
           ),
         ),
