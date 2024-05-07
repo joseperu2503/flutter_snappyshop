@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/back_button.dart';
 
 class Layout1 extends StatelessWidget {
@@ -9,20 +10,23 @@ class Layout1 extends StatelessWidget {
     this.bottomNavigationBar,
     this.floatingActionButton,
     this.title,
+    this.bottomSheet,
   });
 
   final Widget body;
   final Widget? bottomNavigationBar;
   final String? title;
   final Widget? floatingActionButton;
+  final Widget? bottomSheet;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: bottomNavigationBar,
+      bottomSheet: bottomSheet,
       floatingActionButton: floatingActionButton,
       appBar: AppBar(
-        toolbarHeight: 58,
+        toolbarHeight: toolbarHeight,
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.white,
         forceMaterialTransparency: true,

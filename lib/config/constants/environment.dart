@@ -16,4 +16,6 @@ class Environment {
   static String googleClientIdOAuthIos =
       dotenv.env['GOOGLE_CLIENT_ID_OAUTH_IOS'] ??
           'No GOOGLE_CLIENT_ID_OAUTH_IOS';
+  static String urlMapbox = dotenv.env['URL_MAPBOX'] ?? 'No URL_MAPBOX';
+  static String tokenMapbox = dotenv.env['TOKEN_MAPBOX'] ?? 'No TOKEN_MAPBOX';
 }

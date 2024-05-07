@@ -6,9 +6,11 @@ class TextFieldContainer extends StatelessWidget {
     super.key,
     required this.child,
     this.errorMessage,
+    this.height = 52,
   });
   final Widget child;
   final String? errorMessage;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +22,7 @@ class TextFieldContainer extends StatelessWidget {
             color: AppColors.primaryCultured,
             borderRadius: BorderRadius.circular(10),
           ),
+          height: height,
           child: child,
         ),
         if (errorMessage != null)

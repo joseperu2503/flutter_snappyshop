@@ -4,6 +4,8 @@ import 'package:flutter_snappyshop/features/address/screens/addresses_screen.dar
 import 'package:flutter_snappyshop/features/auth/screens/change_password_external_screen.dart';
 import 'package:flutter_snappyshop/features/auth/screens/forgot_password_screen.dart';
 import 'package:flutter_snappyshop/features/auth/screens/verify_code_screen.dart';
+import 'package:flutter_snappyshop/features/cards/screens/card_screen.dart';
+import 'package:flutter_snappyshop/features/cards/screens/cards_screen.dart';
 import 'package:flutter_snappyshop/features/orders/screens/my_orders_screen.dart';
 import 'package:flutter_snappyshop/features/wishlist/screens/wishlist_screen.dart';
 import 'package:flutter_snappyshop/features/settings/screens/settings_screen.dart';
@@ -301,6 +303,32 @@ final appRouter = GoRouter(
         return CustomTransitionPage(
           key: state.pageKey,
           child: const AddressScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return transition(
+                animation: animation, context: context, child: child);
+          },
+        );
+      },
+    ),
+    GoRoute(
+      path: '/my-cards',
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const CardsScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return transition(
+                animation: animation, context: context, child: child);
+          },
+        );
+      },
+    ),
+    GoRoute(
+      path: '/card',
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const CardScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return transition(
                 animation: animation, context: context, child: child);

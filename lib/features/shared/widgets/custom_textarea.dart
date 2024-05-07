@@ -4,8 +4,8 @@ import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/text_field_container.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class CustomInput extends StatefulWidget {
-  const CustomInput({
+class CustomTexarea extends StatefulWidget {
+  const CustomTexarea({
     super.key,
     required this.value,
     required this.onChanged,
@@ -18,7 +18,6 @@ class CustomInput extends StatefulWidget {
     this.textInputAction,
     this.onFieldSubmitted,
     this.autofocus = false,
-    this.validationMessages,
   });
 
   final FormControl<String> value;
@@ -33,11 +32,10 @@ class CustomInput extends StatefulWidget {
   final void Function(String value)? onFieldSubmitted;
   final bool autofocus;
   @override
-  State<CustomInput> createState() => _CustomInputState();
-  final Map<String, ValidationMessageFunction>? validationMessages;
+  State<CustomTexarea> createState() => _CustomTexareaState();
 }
 
-class _CustomInputState extends State<CustomInput> {
+class _CustomTexareaState extends State<CustomTexarea> {
   final TextEditingController controller = TextEditingController();
   FocusNode _focusNode = FocusNode();
 
@@ -63,33 +61,6 @@ class _CustomInputState extends State<CustomInput> {
     super.dispose();
   }
 
-  String? get errorText {
-    if (widget.value.hasErrors && _showErrors) {
-      final errorKey = widget.value.errors.keys.first;
-      final validationMessage = _findValidationMessage(errorKey);
-
-      return validationMessage != null
-          ? validationMessage(widget.value.getError(errorKey)!)
-          : errorKey;
-    }
-
-    return null;
-  }
-
-  ValidationMessageFunction? _findValidationMessage(String errorKey) {
-    if (widget.validationMessages != null &&
-        widget.validationMessages!.containsKey(errorKey)) {
-      return widget.validationMessages![errorKey];
-    } else {
-      final formConfig = ReactiveFormConfig.of(context);
-      return formConfig?.validationMessages[errorKey];
-    }
-  }
-
-  bool get _showErrors {
-    return widget.value.invalid && widget.value.touched;
-  }
-
   @override
   Widget build(BuildContext context) {
     String? newValue = widget.value.value;
@@ -101,7 +72,7 @@ class _CustomInputState extends State<CustomInput> {
     );
 
     return TextFieldContainer(
-      errorMessage: errorText,
+      height: 100,
       child: TextFormField(
         style: const TextStyle(
           color: AppColors.textYankeesBlue,
@@ -111,7 +82,6 @@ class _CustomInputState extends State<CustomInput> {
         ),
         decoration: InputDecoration(
           border: const OutlineInputBorder(borderSide: BorderSide.none),
-          isDense: true,
           hintText: widget.hintText,
           hintStyle: TextStyle(
             color: AppColors.textArsenic.withOpacity(0.5),
@@ -145,6 +115,7 @@ class _CustomInputState extends State<CustomInput> {
         textInputAction: widget.textInputAction,
         onFieldSubmitted: widget.onFieldSubmitted,
         autofocus: widget.autofocus,
+        maxLines: 10,
       ),
     );
   }
