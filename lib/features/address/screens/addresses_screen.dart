@@ -37,7 +37,7 @@ class AddressesScreenState extends ConsumerState<AddressesScreen> {
               color: AppColors.white,
             ),
             onPressed: () {
-              context.push('/address');
+              context.push('/search-address');
             },
           ),
         ),

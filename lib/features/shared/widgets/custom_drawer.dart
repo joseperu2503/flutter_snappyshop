@@ -190,7 +190,7 @@ class CustomDrawer extends ConsumerWidget {
                       contentPadding:
                           const EdgeInsetsDirectional.symmetric(horizontal: 24),
                       title: const Text('My Addresses'),
-                      leading: const Icon(Icons.pin_drop_outlined),
+                      leading: const Icon(Icons.location_pin),
                       onTap: () {
                         context.pop();
                         context.push('/my-addresses');

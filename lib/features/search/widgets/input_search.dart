@@ -7,11 +7,13 @@ class InputSearch extends StatefulWidget {
     required this.focusNode,
     required this.value,
     required this.onChanged,
+    this.hintText,
   });
 
   final FocusNode focusNode;
   final String value;
   final void Function(String value) onChanged;
+  final String? hintText;
 
   @override
   State<InputSearch> createState() => _InputSearchState();
@@ -53,17 +55,17 @@ class _InputSearchState extends State<InputSearch> {
                 fontWeight: FontWeight.w400,
                 height: 22 / 14,
               ),
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(borderSide: BorderSide.none),
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(borderSide: BorderSide.none),
                 isDense: true,
-                hintText: 'Search a product...',
-                hintStyle: TextStyle(
+                hintText: widget.hintText,
+                hintStyle: const TextStyle(
                   color: AppColors.textArsenic,
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
                   height: 22 / 14,
                 ),
-                contentPadding: EdgeInsets.only(
+                contentPadding: const EdgeInsets.only(
                   left: 0,
                   right: 20,
                 ),

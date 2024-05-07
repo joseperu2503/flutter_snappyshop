@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_snappyshop/features/address/screens/address_map_screen.dart';
 import 'package:flutter_snappyshop/features/address/screens/address_screen.dart';
 import 'package:flutter_snappyshop/features/address/screens/addresses_screen.dart';
+import 'package:flutter_snappyshop/features/address/screens/search_address_screen.dart';
 import 'package:flutter_snappyshop/features/auth/screens/change_password_external_screen.dart';
 import 'package:flutter_snappyshop/features/auth/screens/forgot_password_screen.dart';
 import 'package:flutter_snappyshop/features/auth/screens/verify_code_screen.dart';
@@ -298,7 +300,33 @@ final appRouter = GoRouter(
       },
     ),
     GoRoute(
-      path: '/address',
+      path: '/search-address',
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const SearchAddressScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return transition(
+                animation: animation, context: context, child: child);
+          },
+        );
+      },
+    ),
+    GoRoute(
+      path: '/address-map',
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const AddressMapScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return transition(
+                animation: animation, context: context, child: child);
+          },
+        );
+      },
+    ),
+    GoRoute(
+      path: '/confirm-address',
       pageBuilder: (context, state) {
         return CustomTransitionPage(
           key: state.pageKey,

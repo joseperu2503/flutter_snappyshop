@@ -122,6 +122,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                                   .read(searchProvider.notifier)
                                   .changeSearch(value);
                             },
+                            hintText: 'Search a product...',
                           ),
                         ),
                       ),

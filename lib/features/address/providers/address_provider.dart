@@ -1,10 +1,9 @@
 import 'dart:async';
-
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/address/models/mapbox_response.dart';
 import 'package:flutter_snappyshop/features/address/services/mapbox_service.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
+import 'package:flutter_snappyshop/features/shared/providers/map_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -33,8 +32,10 @@ class AddressNotifier extends StateNotifier<AddressState> {
               ),
               FormAddress.detail: FormControl<String>(
                   value: '', validators: [Validators.required]),
-              FormAddress.phone: FormControl<String>(
-                  value: '', validators: [Validators.required]),
+              FormAddress.phone: FormControl<String>(value: '', validators: [
+                Validators.required,
+                Validators.number(),
+              ]),
               FormAddress.address: FormControl<String>(
                   value: '', validators: [Validators.required]),
               FormAddress.references: FormControl<String>(value: ''),
@@ -53,14 +54,8 @@ class AddressNotifier extends StateNotifier<AddressState> {
     );
   }
 
-  void changeCameraPosition(LatLng newCameraPosition) {
-    state = state.copyWith(
-      cameraPosition: () => newCameraPosition,
-    );
-  }
-
   Future<void> searchLocality() async {
-    LatLng? cameraPosition = state.cameraPosition;
+    LatLng? cameraPosition = ref.read(mapProvider).cameraPosition;
     if (cameraPosition == null) return;
     try {
       final MapboxResponse response = await MapBoxService.geocode(
@@ -68,7 +63,7 @@ class AddressNotifier extends StateNotifier<AddressState> {
         longitude: cameraPosition.longitude,
       );
 
-      if (cameraPosition == state.cameraPosition) {
+      if (cameraPosition == ref.read(mapProvider).cameraPosition) {
         if (response.features.isNotEmpty &&
             response.features[0].properties.namePreferred != null &&
             response.features[0].properties.context.country?.name != null) {
@@ -79,7 +74,7 @@ class AddressNotifier extends StateNotifier<AddressState> {
         }
       }
     } on ServiceException catch (_) {
-      if (cameraPosition == state.cameraPosition) {
+      if (cameraPosition == ref.read(mapProvider).cameraPosition) {
         changeForm(FormAddress.address, FormControl(value: ''));
       }
     }
@@ -137,14 +132,12 @@ class AddressNotifier extends StateNotifier<AddressState> {
 }
 
 class AddressState {
-  final LatLng? cameraPosition;
   final List<Feature> addressResults;
   final String search;
   final bool loadingAddresses;
   final FormGroup form;
 
   AddressState({
-    this.cameraPosition,
     this.addressResults = const [],
     this.search = '',
     this.loadingAddresses = false,
@@ -165,15 +158,12 @@ class AddressState {
   bool get isFormValue => form.valid;
 
   AddressState copyWith({
-    ValueGetter<LatLng?>? cameraPosition,
     List<Feature>? addressResults,
     String? search,
     bool? loadingAddresses,
     FormGroup? form,
   }) =>
       AddressState(
-        cameraPosition:
-            cameraPosition != null ? cameraPosition() : this.cameraPosition,
         addressResults: addressResults ?? this.addressResults,
         search: search ?? this.search,
         loadingAddresses: loadingAddresses ?? this.loadingAddresses,
