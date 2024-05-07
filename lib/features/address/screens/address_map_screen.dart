@@ -203,13 +203,13 @@ class BottomModal extends ConsumerWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       backgroundColor: AppColors.white,
                     ),
-                    child: Row(
+                    child: const Row(
                       children: [
                         Icon(Icons.location_searching),
-                        const SizedBox(
+                        SizedBox(
                           width: 8,
                         ),
-                        const Text(
+                        Text(
                           'Find me',
                           style: TextStyle(
                             fontSize: 16,
