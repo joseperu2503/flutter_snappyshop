@@ -87,7 +87,7 @@ class LoginNotifier extends StateNotifier<LoginState> {
     final GoogleSignInAccount? googleUser = await GoogleSignIn(
       clientId: Platform.isIOS
           ? Environment.googleClientIdOAuthIos
-          : Environment.googleClientIdOAuthIos,
+          : Environment.googleClientIdOAuthAndroid,
       serverClientId: Environment.googleClientIdOAuthServer,
     ).signIn();
 
