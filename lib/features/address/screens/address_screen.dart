@@ -40,6 +40,7 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
   @override
   Widget build(BuildContext context) {
     final MediaQueryData screen = MediaQuery.of(context);
+    final addressState = ref.watch(addressProvider);
 
     return Loader(
       loading: false,
@@ -55,6 +56,10 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
           color: AppColors.white,
           child: Center(
             child: CustomButton(
+              onPressed: () {
+                context.pop();
+              },
+              disabled: !addressState.isFormValue,
               child: const Text(
                 'Save Address',
                 style: TextStyle(
@@ -65,9 +70,6 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                   leadingDistribution: TextLeadingDistribution.even,
                 ),
               ),
-              onPressed: () {
-                context.pop();
-              },
             ),
           ),
         ),

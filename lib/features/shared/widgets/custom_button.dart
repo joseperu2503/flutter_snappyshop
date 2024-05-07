@@ -8,12 +8,14 @@ class CustomButton extends StatelessWidget {
     required this.child,
     this.width = double.infinity,
     this.height = 52,
+    this.disabled = false,
   });
 
   final void Function()? onPressed;
   final Widget child;
   final double width;
   final double height;
+  final bool disabled;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,9 @@ class CustomButton extends StatelessWidget {
       height: height,
       width: width,
       decoration: BoxDecoration(
-        color: AppColors.primaryPearlAqua,
+        color: disabled
+            ? AppColors.textArsenic.withOpacity(0.2)
+            : AppColors.primaryPearlAqua,
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextButton(
@@ -31,11 +35,13 @@ class CustomButton extends StatelessWidget {
           ),
           foregroundColor: Colors.white60,
         ),
-        onPressed: () {
-          if (onPressed != null) {
-            onPressed!();
-          }
-        },
+        onPressed: disabled
+            ? null
+            : () {
+                if (onPressed != null) {
+                  onPressed!();
+                }
+              },
         child: child,
       ),
     );

@@ -9,6 +9,14 @@ import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.d
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+class FormAddress {
+  static String name = 'name';
+  static String detail = 'detail';
+  static String phone = 'phone';
+  static String address = 'address';
+  static String references = 'references';
+}
+
 final addressProvider =
     StateNotifierProvider<AddressNotifier, AddressState>((ref) {
   return AddressNotifier(ref);
@@ -18,55 +26,36 @@ class AddressNotifier extends StateNotifier<AddressState> {
   AddressNotifier(this.ref)
       : super(
           AddressState(
-            name: FormControl<String>(
-              value: '',
-              validators: [Validators.required],
-            ),
-            detail: FormControl<String>(
-                value: '', validators: [Validators.required]),
-            phone: FormControl<String>(
-                value: '', validators: [Validators.required]),
-            address: FormControl<String>(
-                value: '', validators: [Validators.required]),
-            references: FormControl<String>(value: ''),
+            form: FormGroup({
+              FormAddress.name: FormControl<String>(
+                value: '',
+                validators: [Validators.required],
+              ),
+              FormAddress.detail: FormControl<String>(
+                  value: '', validators: [Validators.required]),
+              FormAddress.phone: FormControl<String>(
+                  value: '', validators: [Validators.required]),
+              FormAddress.address: FormControl<String>(
+                  value: '', validators: [Validators.required]),
+              FormAddress.references: FormControl<String>(value: ''),
+            }),
           ),
         );
 
   final StateNotifierProviderRef ref;
 
-  void changeName(FormControl<String> name) {
+  void changeForm(String key, FormControl<String> formControl) {
     state = state.copyWith(
-      name: name,
-    );
-  }
-
-  void changePhone(FormControl<String> phone) {
-    state = state.copyWith(
-      phone: phone,
-    );
-  }
-
-  void changeAddress(FormControl<String> address) {
-    state = state.copyWith(
-      address: address,
-    );
-  }
-
-  void changeReferences(FormControl<String> references) {
-    state = state.copyWith(
-      references: references,
+      form: FormGroup({
+        ...state.form.controls,
+        key: formControl,
+      }),
     );
   }
 
   void changeCameraPosition(LatLng newCameraPosition) {
     state = state.copyWith(
       cameraPosition: () => newCameraPosition,
-    );
-  }
-
-  void changeDetail(FormControl<String> detail) {
-    state = state.copyWith(
-      detail: detail,
     );
   }
 
@@ -83,16 +72,15 @@ class AddressNotifier extends StateNotifier<AddressState> {
         if (response.features.isNotEmpty &&
             response.features[0].properties.namePreferred != null &&
             response.features[0].properties.context.country?.name != null) {
-          state = state.copyWith(
-            address: FormControl(value: response.features[0].properties.name),
-          );
+          changeForm(FormAddress.address,
+              FormControl(value: response.features[0].properties.name));
         } else {
-          state = state.copyWith(address: FormControl(value: ''));
+          changeForm(FormAddress.address, FormControl(value: ''));
         }
       }
     } on ServiceException catch (_) {
       if (cameraPosition == state.cameraPosition) {
-        state = state.copyWith(address: FormControl(value: null));
+        changeForm(FormAddress.address, FormControl(value: ''));
       }
     }
   }
@@ -149,49 +137,46 @@ class AddressNotifier extends StateNotifier<AddressState> {
 }
 
 class AddressState {
-  final FormControl<String> name;
-  final FormControl<String> detail;
-  final FormControl<String> references;
-  final FormControl<String> phone;
-  final FormControl<String> address;
   final LatLng? cameraPosition;
   final List<Feature> addressResults;
   final String search;
   final bool loadingAddresses;
+  final FormGroup form;
 
   AddressState({
-    required this.name,
-    required this.detail,
-    required this.phone,
-    required this.address,
-    required this.references,
     this.cameraPosition,
     this.addressResults = const [],
     this.search = '',
     this.loadingAddresses = false,
+    required this.form,
   });
 
+  FormControl<String> get name =>
+      form.control(FormAddress.name) as FormControl<String>;
+  FormControl<String> get detail =>
+      form.control(FormAddress.detail) as FormControl<String>;
+  FormControl<String> get references =>
+      form.control(FormAddress.references) as FormControl<String>;
+  FormControl<String> get phone =>
+      form.control(FormAddress.phone) as FormControl<String>;
+  FormControl<String> get address =>
+      form.control(FormAddress.address) as FormControl<String>;
+
+  bool get isFormValue => form.valid;
+
   AddressState copyWith({
-    FormControl<String>? name,
-    FormControl<String>? detail,
-    FormControl<String>? phone,
-    FormControl<String>? address,
-    FormControl<String>? references,
     ValueGetter<LatLng?>? cameraPosition,
     List<Feature>? addressResults,
     String? search,
     bool? loadingAddresses,
+    FormGroup? form,
   }) =>
       AddressState(
-        name: name ?? this.name,
-        detail: detail ?? this.detail,
-        phone: phone ?? this.phone,
-        address: address ?? this.address,
-        references: references ?? this.references,
         cameraPosition:
             cameraPosition != null ? cameraPosition() : this.cameraPosition,
         addressResults: addressResults ?? this.addressResults,
         search: search ?? this.search,
         loadingAddresses: loadingAddresses ?? this.loadingAddresses,
+        form: form ?? this.form,
       );
 }
