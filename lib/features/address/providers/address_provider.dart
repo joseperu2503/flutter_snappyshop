@@ -16,19 +16,21 @@ final addressProvider =
 
 class AddressNotifier extends StateNotifier<AddressState> {
   AddressNotifier(this.ref)
-      : super(AddressState(
-          name: FormControl<String>(
-            value: '',
-            validators: [Validators.required],
+      : super(
+          AddressState(
+            name: FormControl<String>(
+              value: '',
+              validators: [Validators.required],
+            ),
+            detail: FormControl<String>(
+                value: '', validators: [Validators.required]),
+            phone: FormControl<String>(
+                value: '', validators: [Validators.required]),
+            address: FormControl<String>(
+                value: '', validators: [Validators.required]),
+            references: FormControl<String>(value: ''),
           ),
-          detail:
-              FormControl<String>(value: '', validators: [Validators.required]),
-          phone:
-              FormControl<String>(value: '', validators: [Validators.required]),
-          address:
-              FormControl<String>(value: '', validators: [Validators.required]),
-          references: FormControl<String>(value: ''),
-        ));
+        );
 
   final StateNotifierProviderRef ref;
 

@@ -19,6 +19,7 @@ class CustomInput extends StatefulWidget {
     this.onFieldSubmitted,
     this.autofocus = false,
     this.validationMessages,
+    this.readOnly = false,
   });
 
   final FormControl<String> value;
@@ -32,6 +33,8 @@ class CustomInput extends StatefulWidget {
   final TextInputAction? textInputAction;
   final void Function(String value)? onFieldSubmitted;
   final bool autofocus;
+  final bool readOnly;
+
   @override
   State<CustomInput> createState() => _CustomInputState();
   final Map<String, ValidationMessageFunction>? validationMessages;
@@ -145,6 +148,7 @@ class _CustomInputState extends State<CustomInput> {
         textInputAction: widget.textInputAction,
         onFieldSubmitted: widget.onFieldSubmitted,
         autofocus: widget.autofocus,
+        readOnly: widget.readOnly,
       ),
     );
   }

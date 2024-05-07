@@ -86,6 +86,7 @@ class BottomModal extends ConsumerWidget {
                               .read(addressProvider.notifier)
                               .changeAddress(value);
                         },
+                        readOnly: true,
                       ),
                       const SizedBox(
                         height: formInputSpacing,
@@ -112,7 +113,7 @@ class BottomModal extends ConsumerWidget {
                         },
                         hintText: 'ex. Rio de oro building apt 201',
                         validationMessages: {
-                          'required': (error) => 'The name must not be empty'
+                          'required': (error) => 'We need this information.'
                         },
                       ),
                       const SizedBox(
@@ -137,6 +138,9 @@ class BottomModal extends ConsumerWidget {
                           ref.read(addressProvider.notifier).changeName(value);
                         },
                         hintText: 'ex. James Hetfield',
+                        validationMessages: {
+                          'required': (error) => 'We need this information.'
+                        },
                       ),
                       const SizedBox(
                         height: formInputSpacing,
@@ -158,6 +162,9 @@ class BottomModal extends ConsumerWidget {
                         value: addressState.phone,
                         onChanged: (value) {
                           ref.read(addressProvider.notifier).changePhone(value);
+                        },
+                        validationMessages: {
+                          'required': (error) => 'We need this information.'
                         },
                       ),
                       const SizedBox(
