@@ -3,4 +3,5 @@ class StorageKeys {
   static const rememberMe = 'rememberMe';
   static const token = 'token';
   static const notificationsEnabled = 'notificationsEnabled';
+  static const cards = 'cards';
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/features/cards/providers/card_provider.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
@@ -16,12 +17,16 @@ class CardsScreen extends ConsumerStatefulWidget {
 class CardsScreenState extends ConsumerState<CardsScreen> {
   @override
   void initState() {
+    Future.microtask(() {
+      ref.read(cardProvider.notifier).getCards();
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData screen = MediaQuery.of(context);
+    final cardState = ref.watch(cardProvider);
 
     return Loader(
       loading: false,
@@ -39,6 +44,7 @@ class CardsScreenState extends ConsumerState<CardsScreen> {
               color: AppColors.white,
             ),
             onPressed: () {
+              ref.read(cardProvider.notifier).resetForm();
               context.push('/card');
             },
           ),
@@ -49,17 +55,24 @@ class CardsScreenState extends ConsumerState<CardsScreen> {
               padding: const EdgeInsets.all(24),
               sliver: SliverList.separated(
                 itemBuilder: (context, index) {
-                  return CreditCardWidget(
-                    height: screen.size.width * 0.5,
-                    padding: 0,
-                    cardNumber: '4557880555769110',
-                    expiryDate: '03/24',
-                    cardHolderName: 'Jose Perez',
-                    cvvCode: '',
-                    showBackView: false,
-                    isHolderNameVisible: true,
-                    isSwipeGestureEnabled: false,
-                    onCreditCardWidgetChange: (CreditCardBrand brand) {},
+                  final card = cardState.cards[index];
+                  return GestureDetector(
+                    onTap: () {
+                      ref.read(cardProvider.notifier).selectCard(card);
+                      context.push('/card');
+                    },
+                    child: CreditCardWidget(
+                      height: screen.size.width * 0.5,
+                      padding: 0,
+                      cardNumber: card.cardNumber,
+                      expiryDate: card.expired,
+                      cardHolderName: card.cardHolderName,
+                      cvvCode: '',
+                      showBackView: false,
+                      isHolderNameVisible: true,
+                      isSwipeGestureEnabled: false,
+                      onCreditCardWidgetChange: (CreditCardBrand brand) {},
+                    ),
                   );
                 },
                 separatorBuilder: (context, index) {
@@ -67,7 +80,7 @@ class CardsScreenState extends ConsumerState<CardsScreen> {
                     height: 20,
                   );
                 },
-                itemCount: 2,
+                itemCount: cardState.cards.length,
               ),
             )
           ],

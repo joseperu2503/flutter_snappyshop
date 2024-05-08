@@ -8,8 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_input.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
-import 'package:go_router/go_router.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:mask_input_formatter/mask_input_formatter.dart';
 
 class CardScreen extends ConsumerStatefulWidget {
   const CardScreen({super.key});
@@ -29,16 +28,7 @@ class CardScreenState extends ConsumerState<CardScreen> {
         showBackView = _focusNodeCcv.hasFocus;
       });
     });
-    Future.microtask(() {
-      ref.invalidate(cardProvider);
-    });
     super.initState();
-  }
-
-  @override
-  void deactivate() {
-    ref.invalidate(cardProvider);
-    super.deactivate();
   }
 
   @override
@@ -94,7 +84,7 @@ class CardScreenState extends ConsumerState<CardScreen> {
                     CustomInput(
                       value: cardState.cardNumber,
                       onChanged: (value) {
-                        changeForm(FormAddress.cardNumber, value);
+                        changeForm(FormCard.cardNumber, value);
                       },
                       valueProcess: (value) {
                         return addSpaces(value);
@@ -107,7 +97,9 @@ class CardScreenState extends ConsumerState<CardScreen> {
                         cardNumberFormatter,
                       ],
                       textInputAction: TextInputAction.next,
-                      autofocus: true,
+                      autofocus:
+                          cardState.form.control(FormCard.cardNumber).value ==
+                              '',
                       validationMessages: {
                         'required': (error) => 'We need this information.',
                         'minLength': (error) =>
@@ -134,7 +126,7 @@ class CardScreenState extends ConsumerState<CardScreen> {
                     CustomInput(
                       value: cardState.cardHolderName,
                       onChanged: (value) {
-                        changeForm(FormAddress.cardHolderName, value);
+                        changeForm(FormCard.cardHolderName, value);
                       },
                       hintText: 'Enter Holder Name',
                       keyboardType: TextInputType.name,
@@ -170,7 +162,7 @@ class CardScreenState extends ConsumerState<CardScreen> {
                               CustomInput(
                                 value: cardState.expired,
                                 onChanged: (value) {
-                                  changeForm(FormAddress.expired, value);
+                                  changeForm(FormCard.expired, value);
                                 },
                                 hintText: 'MM/YY',
                                 textInputAction: TextInputAction.next,
@@ -210,7 +202,7 @@ class CardScreenState extends ConsumerState<CardScreen> {
                               CustomInput(
                                 value: cardState.ccv,
                                 onChanged: (value) {
-                                  changeForm(FormAddress.ccv, value);
+                                  changeForm(FormCard.ccv, value);
                                 },
                                 hintText: 'XXX',
                                 focusNode: _focusNodeCcv,
@@ -234,6 +226,10 @@ class CardScreenState extends ConsumerState<CardScreen> {
                       height: 80,
                     ),
                     CustomButton(
+                      onPressed: () {
+                        ref.read(cardProvider.notifier).saveCard();
+                      },
+                      disabled: !cardState.isFormValue,
                       child: const Text(
                         'Save Card',
                         style: TextStyle(
@@ -244,11 +240,6 @@ class CardScreenState extends ConsumerState<CardScreen> {
                           leadingDistribution: TextLeadingDistribution.even,
                         ),
                       ),
-                      onPressed: () {
-                        // context.pop();
-                        print(cardState.form.value);
-                      },
-                      disabled: !cardState.isFormValue,
                     ),
                   ],
                 ),
@@ -282,15 +273,14 @@ String removeSpaces(String value) {
   return value.replaceAll(' ', '');
 }
 
-MaskTextInputFormatter expiredFormatter = MaskTextInputFormatter(
+MaskInputFormatter expiredFormatter = MaskInputFormatter(
   mask: '##/##',
-  type: MaskAutoCompletionType.eager,
 );
 
-MaskTextInputFormatter cardNumberFormatter = MaskTextInputFormatter(
+MaskInputFormatter cardNumberFormatter = MaskInputFormatter(
   mask: '#### #### #### ####',
 );
 
-MaskTextInputFormatter ccvFormatter = MaskTextInputFormatter(
+MaskInputFormatter ccvFormatter = MaskInputFormatter(
   mask: '###',
 );

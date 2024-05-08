@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/text_field_container.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class CustomInput extends StatefulWidget {
+class CustomInput extends ConsumerStatefulWidget {
   const CustomInput({
     super.key,
     required this.value,
@@ -36,11 +37,11 @@ class CustomInput extends StatefulWidget {
   final bool readOnly;
 
   @override
-  State<CustomInput> createState() => _CustomInputState();
+  CustomInputState createState() => CustomInputState();
   final Map<String, ValidationMessageFunction>? validationMessages;
 }
 
-class _CustomInputState extends State<CustomInput> {
+class CustomInputState extends ConsumerState<CustomInput> {
   final TextEditingController controller = TextEditingController();
   FocusNode _focusNode = FocusNode();
 
@@ -63,6 +64,7 @@ class _CustomInputState extends State<CustomInput> {
   @override
   void dispose() {
     _focusNode.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -133,13 +135,8 @@ class _CustomInputState extends State<CustomInput> {
           if (widget.onChangeProcess != null) {
             newValue = widget.onChangeProcess!(newValue);
           }
-          FormControl<String> formControl = widget.value;
-          formControl.patchValue(newValue);
-          widget.onChanged(formControl);
-
-          widget.onChanged(
-            formControl,
-          );
+          widget.value.patchValue(newValue);
+          widget.onChanged(widget.value);
         },
         keyboardType: widget.keyboardType,
         focusNode: _focusNode,
