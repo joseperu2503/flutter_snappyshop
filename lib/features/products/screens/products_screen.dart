@@ -298,16 +298,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                 child: productsState.dashboardStatus == LoadingStatus.loading
                     ? const CircularProgressIndicator()
                     : CustomButton(
-                        child: const Text(
-                          'Retry',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.textCultured,
-                            height: 22 / 16,
-                            leadingDistribution: TextLeadingDistribution.even,
-                          ),
-                        ),
+                        text: 'Retry',
                         onPressed: () {
                           loadData();
                         },

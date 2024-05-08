@@ -72,16 +72,9 @@ class CartScreenState extends ConsumerState<CartScreen> {
                         height: 14,
                       ),
                       CustomButton(
-                        child: Text(
-                          cartState.showUpdateBtn ? 'Update cart' : 'Checkout',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.textCultured,
-                            height: 22 / 16,
-                            leadingDistribution: TextLeadingDistribution.even,
-                          ),
-                        ),
+                        text: cartState.showUpdateBtn
+                            ? 'Update cart'
+                            : 'Checkout',
                         onPressed: () {
                           if (cartState.showUpdateBtn) {
                             ref.read(cartProvider.notifier).updateCart();
@@ -275,16 +268,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: CustomButton(
-                        child: const Text(
-                          'Start shopping',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.textCultured,
-                            height: 22 / 16,
-                            leadingDistribution: TextLeadingDistribution.even,
-                          ),
-                        ),
+                        text: 'Start shopping',
                         onPressed: () {
                           context.go('/products');
                         },

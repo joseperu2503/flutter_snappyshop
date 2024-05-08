@@ -5,17 +5,19 @@ class CustomButton extends StatelessWidget {
   const CustomButton({
     super.key,
     this.onPressed,
-    required this.child,
+    this.text,
     this.width = double.infinity,
     this.height = 52,
     this.disabled = false,
+    this.iconLeft,
   });
 
   final void Function()? onPressed;
-  final Widget child;
+  final String? text;
   final double width;
   final double height;
   final bool disabled;
+  final Widget? iconLeft;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,27 @@ class CustomButton extends StatelessWidget {
                   onPressed!();
                 }
               },
-        child: child,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (iconLeft != null) iconLeft!,
+            if (text != null && iconLeft != null)
+              const SizedBox(
+                width: 10,
+              ),
+            if (text != null)
+              Text(
+                text!,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.textCultured,
+                  height: 22 / 16,
+                  leadingDistribution: TextLeadingDistribution.even,
+                ),
+              )
+          ],
+        ),
       ),
     );
   }

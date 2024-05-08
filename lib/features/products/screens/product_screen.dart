@@ -150,16 +150,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                     ),
                     Expanded(
                       child: CustomButton(
-                        child: const Text(
-                          'Add to cart',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.textCultured,
-                            height: 22 / 16,
-                            leadingDistribution: TextLeadingDistribution.even,
-                          ),
-                        ),
+                        text: 'Add to cart',
                         onPressed: () {
                           ref.read(cartProvider.notifier).addToCart(product);
                         },
@@ -377,16 +368,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                 child: productStatus == LoadingStatus.loading
                     ? const CircularProgressIndicator()
                     : CustomButton(
-                        child: const Text(
-                          'Retry',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.textCultured,
-                            height: 22 / 16,
-                            leadingDistribution: TextLeadingDistribution.even,
-                          ),
-                        ),
+                        text: 'Retry',
                         onPressed: () {
                           loadProduct();
                         },

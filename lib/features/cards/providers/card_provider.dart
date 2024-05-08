@@ -28,6 +28,7 @@ class CardNotifier extends StateNotifier<CardState> {
 
   resetForm() {
     state = state.copyWith(
+      formType: FormType.create,
       form: FormCard.resetForm(),
     );
   }
@@ -61,17 +62,24 @@ class CardNotifier extends StateNotifier<CardState> {
 
   selectCard(BankCard card) {
     resetForm();
+    state = state.copyWith(
+      formType: FormType.edit,
+    );
     state.form.patchValue(card.toJson());
   }
 }
 
+enum FormType { create, edit }
+
 class CardState {
   final FormGroup form;
   final List<BankCard> cards;
+  final FormType formType;
 
   CardState({
     required this.form,
     this.cards = const [],
+    this.formType = FormType.create,
   });
 
   FormControl<String> get cardNumber =>
@@ -88,10 +96,12 @@ class CardState {
   CardState copyWith({
     FormGroup? form,
     List<BankCard>? cards,
+    FormType? formType,
   }) =>
       CardState(
         form: form ?? this.form,
         cards: cards ?? this.cards,
+        formType: formType ?? this.formType,
       );
 }
 

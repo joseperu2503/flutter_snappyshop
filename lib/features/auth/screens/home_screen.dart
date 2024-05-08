@@ -78,16 +78,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                       height: 64,
                     ),
                     CustomButton(
-                      child: const Text(
-                        'Sign Up',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.textCultured,
-                          height: 22 / 16,
-                          leadingDistribution: TextLeadingDistribution.even,
-                        ),
-                      ),
+                      text: 'Sign Up',
                       onPressed: () {
                         context.push('/register');
                       },
@@ -125,8 +116,8 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                               ),
                               TextSpan(
                                 text: 'Log in',
-                                style:
-                                    TextStyle(color: AppColors.primaryPearlAqua),
+                                style: TextStyle(
+                                    color: AppColors.primaryPearlAqua),
                               ),
                             ],
                           ),

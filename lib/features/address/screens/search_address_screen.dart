@@ -235,16 +235,7 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
                     context.push('/address-map');
                   } catch (_) {}
                 },
-                child: const Text(
-                  'Search address over the map',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.textCultured,
-                    height: 22 / 16,
-                    leadingDistribution: TextLeadingDistribution.even,
-                  ),
-                ),
+                text: 'Search address over the map',
               ),
             ),
           )

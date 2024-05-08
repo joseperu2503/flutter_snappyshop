@@ -239,24 +239,14 @@ class PriceBottomSheetState extends ConsumerState<_PriceBottomSheet> {
                           ),
                           Expanded(
                             child: CustomButton(
-                              child: const Text(
-                                'Apply',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.textCultured,
-                                  height: 22 / 16,
-                                  leadingDistribution:
-                                      TextLeadingDistribution.even,
-                                ),
-                              ),
+                              text: 'Apply',
                               onPressed: () {
                                 ref.read(searchProvider.notifier).changeFilter(
                                       searchState.filter?.copyWith(
-                                        maxPrice:
-                                            formatStringWithTwoDecimals(maxPrice),
-                                        minPrice:
-                                            formatStringWithTwoDecimals(minPrice),
+                                        maxPrice: formatStringWithTwoDecimals(
+                                            maxPrice),
+                                        minPrice: formatStringWithTwoDecimals(
+                                            minPrice),
                                       ),
                                     );
                                 context.pop();

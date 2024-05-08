@@ -233,16 +233,7 @@ class BottomModal extends ConsumerWidget {
               onPressed: () {
                 context.push('/confirm-address');
               },
-              child: const Text(
-                'Confirm Address',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.textCultured,
-                  height: 22 / 16,
-                  leadingDistribution: TextLeadingDistribution.even,
-                ),
-              ),
+              text: 'Confirm Address',
             )
           ],
         ),

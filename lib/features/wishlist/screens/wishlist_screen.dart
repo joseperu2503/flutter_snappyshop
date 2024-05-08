@@ -147,16 +147,7 @@ class WishlistScreenState extends ConsumerState<WishlistScreen> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: CustomButton(
-                        child: const Text(
-                          'Start shopping',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.textCultured,
-                            height: 22 / 16,
-                            leadingDistribution: TextLeadingDistribution.even,
-                          ),
-                        ),
+                        text: 'Start shopping',
                         onPressed: () {
                           context.go('/products');
                         },

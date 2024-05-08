@@ -57,16 +57,7 @@ class OrderConfirmedScreen extends StatelessWidget {
               ),
               const Spacer(),
               CustomButton(
-                child: const Text(
-                  'Continue Shopping',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.textCultured,
-                    height: 22 / 16,
-                    leadingDistribution: TextLeadingDistribution.even,
-                  ),
-                ),
+                text: 'Continue Shopping',
                 onPressed: () {
                   context.go('/');
                 },

@@ -97,15 +97,14 @@ class CardScreenState extends ConsumerState<CardScreen> {
                         cardNumberFormatter,
                       ],
                       textInputAction: TextInputAction.next,
-                      autofocus:
-                          cardState.form.control(FormCard.cardNumber).value ==
-                              '',
+                      autofocus: cardState.formType == FormType.create,
                       validationMessages: {
                         'required': (error) => 'We need this information.',
                         'minLength': (error) =>
                             'Please enter the 16 digits of your card correctly.'
                       },
                       keyboardType: TextInputType.number,
+                      readOnly: cardState.formType == FormType.edit,
                     ),
                     const SizedBox(
                       height: formInputSpacing,
@@ -134,6 +133,7 @@ class CardScreenState extends ConsumerState<CardScreen> {
                       validationMessages: {
                         'required': (error) => 'We need this information.'
                       },
+                      readOnly: cardState.formType == FormType.edit,
                     ),
                     const SizedBox(
                       height: formInputSpacing,
@@ -174,6 +174,7 @@ class CardScreenState extends ConsumerState<CardScreen> {
                                 inputFormatters: [
                                   expiredFormatter,
                                 ],
+                                readOnly: cardState.formType == FormType.edit,
                               ),
                             ],
                           ),
@@ -216,6 +217,7 @@ class CardScreenState extends ConsumerState<CardScreen> {
                                 inputFormatters: [
                                   ccvFormatter,
                                 ],
+                                readOnly: cardState.formType == FormType.edit,
                               ),
                             ],
                           ),
@@ -230,16 +232,7 @@ class CardScreenState extends ConsumerState<CardScreen> {
                         ref.read(cardProvider.notifier).saveCard();
                       },
                       disabled: !cardState.isFormValue,
-                      child: const Text(
-                        'Save Card',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.textCultured,
-                          height: 22 / 16,
-                          leadingDistribution: TextLeadingDistribution.even,
-                        ),
-                      ),
+                      text: 'Save Card',
                     ),
                   ],
                 ),
