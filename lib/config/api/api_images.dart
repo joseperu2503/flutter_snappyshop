@@ -1,11 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_snappyshop/config/constants/environment.dart';
-import 'package:flutter_snappyshop/features/shared/services/key_value_storage_service.dart';
 
 class ApiImages {
   final Dio _dioBase = Dio(BaseOptions(baseUrl: Environment.urlImages));
 
-  final keyValueStorageService = KeyValueStorageService();
   InterceptorsWrapper interceptor = InterceptorsWrapper();
 
   ApiImages() {

@@ -6,12 +6,12 @@ import 'package:flutter_snappyshop/config/router/app_router.dart';
 import 'package:flutter_snappyshop/features/auth/models/login_response.dart';
 import 'package:flutter_snappyshop/features/auth/providers/auth_provider.dart';
 import 'package:flutter_snappyshop/features/auth/services/auth_service.dart';
+import 'package:flutter_snappyshop/features/core/services/storage_service.dart';
 import 'package:flutter_snappyshop/features/shared/inputs/email.dart';
 import 'package:flutter_snappyshop/features/shared/inputs/password.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/settings/providers/notification_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
-import 'package:flutter_snappyshop/features/shared/services/key_value_storage_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
 import 'package:flutter_snappyshop/config/constants/environment.dart';
@@ -24,15 +24,11 @@ final loginProvider = StateNotifierProvider<LoginNotifier, LoginState>((ref) {
 class LoginNotifier extends StateNotifier<LoginState> {
   LoginNotifier(this.ref) : super(LoginState());
   final StateNotifierProviderRef ref;
-  final keyValueStorageService = KeyValueStorageService();
 
   initData() async {
-    final email =
-        await keyValueStorageService.getKeyValue<String>(StorageKeys.email) ??
-            '';
-    final rememberMe = await keyValueStorageService
-            .getKeyValue<bool>(StorageKeys.rememberMe) ??
-        false;
+    final email = await StorageService.get<String>(StorageKeys.email) ?? '';
+    final rememberMe =
+        await StorageService.get<bool>(StorageKeys.rememberMe) ?? false;
 
     state = state.copyWith(
       email: rememberMe ? Email.pure(email) : const Email.pure(''),
@@ -62,7 +58,7 @@ class LoginNotifier extends StateNotifier<LoginState> {
         password: state.password.value,
       );
 
-      await keyValueStorageService.setKeyValue<String>(
+      await StorageService.set<String>(
           StorageKeys.token, loginResponse.accessToken);
 
       setRemember();
@@ -118,7 +114,7 @@ class LoginNotifier extends StateNotifier<LoginState> {
         idToken: idToken,
       );
 
-      await keyValueStorageService.setKeyValue<String>(
+      await StorageService.set<String>(
           StorageKeys.token, loginResponse.accessToken);
 
       //cada vez que inicia sesion habilita las notificaciones
@@ -137,11 +133,9 @@ class LoginNotifier extends StateNotifier<LoginState> {
 
   setRemember() async {
     if (state.rememberMe) {
-      await keyValueStorageService.setKeyValue<String>(
-          StorageKeys.email, state.email.value);
+      await StorageService.set<String>(StorageKeys.email, state.email.value);
     }
-    await keyValueStorageService.setKeyValue<bool>(
-        StorageKeys.rememberMe, state.rememberMe);
+    await StorageService.set<bool>(StorageKeys.rememberMe, state.rememberMe);
   }
 
   changeEmail(Email email) {

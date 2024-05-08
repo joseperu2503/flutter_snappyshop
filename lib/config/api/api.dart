@@ -1,19 +1,17 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_snappyshop/config/constants/environment.dart';
 import 'package:flutter_snappyshop/config/constants/storage_keys.dart';
-import 'package:flutter_snappyshop/features/shared/services/key_value_storage_service.dart';
+import 'package:flutter_snappyshop/features/core/services/storage_service.dart';
 
 class Api {
   final Dio _dioBase = Dio(BaseOptions(baseUrl: Environment.urlBase));
 
-  final keyValueStorageService = KeyValueStorageService();
   InterceptorsWrapper interceptor = InterceptorsWrapper();
 
   Api() {
     interceptor = InterceptorsWrapper(
       onRequest: (options, handler) async {
-        final token =
-            await keyValueStorageService.getKeyValue<String>(StorageKeys.token);
+        final token = await StorageService.get<String>(StorageKeys.token);
         options.headers['Authorization'] = 'Bearer $token';
         options.headers['Accept'] = 'application/json';
 

@@ -1,7 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_snappyshop/config/constants/storage_keys.dart';
+import 'package:flutter_snappyshop/features/core/services/storage_service.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
-import 'package:flutter_snappyshop/features/shared/services/key_value_storage_service.dart';
 import 'package:flutter_snappyshop/features/settings/services/notification_service.dart';
 
 final notificationProvider =
@@ -14,8 +15,8 @@ class NotificationNotifier extends StateNotifier<NotificationState> {
   final StateNotifierProviderRef ref;
 
   getNotificationsEnabled() async {
-    bool? notificationsEnabled = await KeyValueStorageService()
-        .getKeyValue<bool>('notificationsEnabled');
+    bool? notificationsEnabled =
+        await StorageService.get<bool>(StorageKeys.notificationsEnabled);
 
     notificationsEnabled ??= false;
     state = state.copyWith(
@@ -38,7 +39,7 @@ class NotificationNotifier extends StateNotifier<NotificationState> {
     state = state.copyWith(
       notificationsEnabled: false,
     );
-    KeyValueStorageService().setKeyValue<bool>('notificationsEnabled', false);
+    StorageService.set<bool>(StorageKeys.notificationsEnabled, false);
     NotificationService().deleteToken();
   }
 
@@ -47,8 +48,7 @@ class NotificationNotifier extends StateNotifier<NotificationState> {
     state = state.copyWith(
       notificationsEnabled: true,
     );
-    await KeyValueStorageService()
-        .setKeyValue<bool>('notificationsEnabled', true);
+    await StorageService.set<bool>(StorageKeys.notificationsEnabled, true);
 
     try {
       await NotificationService().initNotifications();

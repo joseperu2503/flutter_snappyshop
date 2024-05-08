@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_snappyshop/config/api/api.dart';
+import 'package:flutter_snappyshop/config/constants/storage_keys.dart';
 import 'package:flutter_snappyshop/features/auth/models/auth_user.dart';
 import 'package:flutter_snappyshop/features/auth/models/login_response.dart';
 import 'package:flutter_snappyshop/features/auth/models/register_response.dart';
+import 'package:flutter_snappyshop/features/core/services/storage_service.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
-import 'package:flutter_snappyshop/features/shared/services/key_value_storage_service.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 final api = Api();
@@ -67,7 +68,7 @@ class AuthService {
   }
 
   static Future<(bool, int)> verifyToken() async {
-    final token = await KeyValueStorageService().getKeyValue<String>('token');
+    final token = await StorageService.get<String>(StorageKeys.token);
     if (token == null) return (false, 0);
 
     Map<String, dynamic> decodedToken = JwtDecoder.decode(token);

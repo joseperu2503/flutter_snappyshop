@@ -6,7 +6,6 @@ import 'package:flutter_snappyshop/features/shared/inputs/name.dart';
 import 'package:flutter_snappyshop/features/shared/inputs/password.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
-import 'package:flutter_snappyshop/features/shared/services/key_value_storage_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:formz/formz.dart';
 
@@ -18,7 +17,6 @@ final registerProvider =
 class RegisterNotifier extends StateNotifier<RegisterState> {
   RegisterNotifier(this.ref) : super(RegisterState());
   final StateNotifierProviderRef ref;
-  final keyValueStorageService = KeyValueStorageService();
 
   initData() {
     state = state.copyWith(

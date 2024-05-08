@@ -1,12 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_snappyshop/config/constants/storage_keys.dart';
 import 'package:flutter_snappyshop/config/router/app_router.dart';
 import 'package:flutter_snappyshop/features/auth/models/auth_user.dart';
 import 'package:flutter_snappyshop/features/auth/services/auth_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_snappyshop/features/core/services/storage_service.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
-import 'package:flutter_snappyshop/features/shared/services/key_value_storage_service.dart';
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   return AuthNotifier(ref);
@@ -47,7 +48,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   logout() async {
-    await KeyValueStorageService().removeKey('token');
+    await StorageService.remove(StorageKeys.token);
     cancelTimer();
     appRouter.go('/');
   }
