@@ -145,7 +145,7 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                       },
                       hintText: 'ex. James Hetfield',
                       validationMessages: {
-                        'required': (error) => 'We need this information.'
+                        'required': (error) => 'We need this information.',
                       },
                       textInputAction: TextInputAction.next,
                     ),

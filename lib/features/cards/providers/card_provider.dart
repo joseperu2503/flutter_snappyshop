@@ -1,6 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
+class FormAddress {
+  static String cardNumber = 'cardNumber';
+  static String cardHolderName = 'cardHolderName';
+  static String expired = 'expired';
+  static String ccv = 'ccv';
+}
+
 final cardProvider = StateNotifierProvider<CardNotifier, CardState>((ref) {
   return CardNotifier(ref);
 });
@@ -8,61 +15,68 @@ final cardProvider = StateNotifierProvider<CardNotifier, CardState>((ref) {
 class CardNotifier extends StateNotifier<CardState> {
   CardNotifier(this.ref)
       : super(CardState(
-          cardNumber: FormControl<String>(value: ''),
-          cardHolderName: FormControl<String>(value: ''),
-          expired: FormControl<String>(value: ''),
-          ccv: FormControl<String>(value: ''),
+          form: FormGroup({
+            FormAddress.cardNumber: FormControl<String>(
+              value: '',
+              validators: [
+                Validators.required,
+                Validators.minLength(16),
+                Validators.minLength(16)
+              ],
+            ),
+            FormAddress.cardHolderName: FormControl<String>(
+              value: '',
+              validators: [Validators.required],
+            ),
+            FormAddress.expired: FormControl<String>(
+              value: '',
+              validators: [
+                Validators.required,
+              ],
+            ),
+            FormAddress.ccv: FormControl<String>(
+              value: '',
+              validators: [
+                Validators.required,
+                Validators.number(),
+              ],
+            ),
+          }),
         ));
   final StateNotifierProviderRef ref;
 
-  void changeCardNumber(FormControl<String> cardNumber) {
+  void changeForm(String key, FormControl<String> formControl) {
     state = state.copyWith(
-      cardNumber: cardNumber,
-    );
-  }
-
-  void changeCardHolderName(FormControl<String> cardHolderName) {
-    state = state.copyWith(
-      cardHolderName: cardHolderName,
-    );
-  }
-
-  void changeExpired(FormControl<String> expired) {
-    state = state.copyWith(
-      expired: expired,
-    );
-  }
-
-  void changeCcv(FormControl<String> ccv) {
-    state = state.copyWith(
-      ccv: ccv,
+      form: FormGroup({
+        ...state.form.controls,
+        key: formControl,
+      }),
     );
   }
 }
 
 class CardState {
-  final FormControl<String> cardNumber;
-  final FormControl<String> cardHolderName;
-  final FormControl<String> expired;
-  final FormControl<String> ccv;
+  final FormGroup form;
 
   CardState({
-    required this.cardNumber,
-    required this.cardHolderName,
-    required this.expired,
-    required this.ccv,
+    required this.form,
   });
 
+  FormControl<String> get cardNumber =>
+      form.control(FormAddress.cardNumber) as FormControl<String>;
+  FormControl<String> get cardHolderName =>
+      form.control(FormAddress.cardHolderName) as FormControl<String>;
+  FormControl<String> get expired =>
+      form.control(FormAddress.expired) as FormControl<String>;
+  FormControl<String> get ccv =>
+      form.control(FormAddress.ccv) as FormControl<String>;
+
+  bool get isFormValue => form.valid;
+
   CardState copyWith({
-    FormControl<String>? cardNumber,
-    FormControl<String>? cardHolderName,
-    FormControl<String>? expired,
-    FormControl<String>? ccv,
+    FormGroup? form,
   }) =>
       CardState(
-        cardNumber: cardNumber ?? this.cardNumber,
-        cardHolderName: cardHolderName ?? this.cardHolderName,
-        expired: expired ?? this.expired,
-        ccv: ccv ?? this.ccv,
+        form: form ?? this.form,
       );
 }

@@ -135,7 +135,6 @@ class _CustomInputState extends State<CustomInput> {
           }
           FormControl<String> formControl = widget.value;
           formControl.patchValue(newValue);
-          formControl.markAsTouched();
           widget.onChanged(formControl);
 
           widget.onChanged(

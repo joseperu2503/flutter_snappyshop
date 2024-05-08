@@ -10,6 +10,7 @@ import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_input.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class CardScreen extends ConsumerStatefulWidget {
   const CardScreen({super.key});
@@ -21,6 +22,7 @@ class CardScreen extends ConsumerStatefulWidget {
 class CardScreenState extends ConsumerState<CardScreen> {
   final FocusNode _focusNodeCcv = FocusNode();
   bool showBackView = false;
+
   @override
   void initState() {
     _focusNodeCcv.addListener(() {
@@ -28,13 +30,23 @@ class CardScreenState extends ConsumerState<CardScreen> {
         showBackView = _focusNodeCcv.hasFocus;
       });
     });
+    Future.microtask(() {
+      ref.invalidate(cardProvider);
+    });
     super.initState();
+  }
+
+  @override
+  void deactivate() {
+    ref.invalidate(cardProvider);
+    super.deactivate();
   }
 
   @override
   Widget build(BuildContext context) {
     final MediaQueryData screen = MediaQuery.of(context);
     final cardState = ref.watch(cardProvider);
+    final changeForm = ref.read(cardProvider.notifier).changeForm;
 
     return Loader(
       loading: false,
@@ -83,7 +95,7 @@ class CardScreenState extends ConsumerState<CardScreen> {
                     CustomInput(
                       value: cardState.cardNumber,
                       onChanged: (value) {
-                        ref.read(cardProvider.notifier).changeCardNumber(value);
+                        changeForm(FormAddress.cardNumber, value);
                       },
                       valueProcess: (value) {
                         return addSpaces(value);
@@ -93,11 +105,16 @@ class CardScreenState extends ConsumerState<CardScreen> {
                       },
                       hintText: 'XXXX XXXX XXXX XXXX',
                       inputFormatters: [
-                        CardFormatter(),
-                        LengthLimitingTextInputFormatter(19)
+                        cardNumberFormatter,
                       ],
                       textInputAction: TextInputAction.next,
                       autofocus: true,
+                      validationMessages: {
+                        'required': (error) => 'We need this information.',
+                        'minLength': (error) =>
+                            'Please enter the 16 digits of your card correctly.'
+                      },
+                      keyboardType: TextInputType.number,
                     ),
                     const SizedBox(
                       height: formInputSpacing,
@@ -118,18 +135,20 @@ class CardScreenState extends ConsumerState<CardScreen> {
                     CustomInput(
                       value: cardState.cardHolderName,
                       onChanged: (value) {
-                        ref
-                            .read(cardProvider.notifier)
-                            .changeCardHolderName(value);
+                        changeForm(FormAddress.cardHolderName, value);
                       },
                       hintText: 'Enter Holder Name',
                       keyboardType: TextInputType.name,
                       textInputAction: TextInputAction.next,
+                      validationMessages: {
+                        'required': (error) => 'We need this information.'
+                      },
                     ),
                     const SizedBox(
                       height: formInputSpacing,
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           child: Column(
@@ -152,12 +171,18 @@ class CardScreenState extends ConsumerState<CardScreen> {
                               CustomInput(
                                 value: cardState.expired,
                                 onChanged: (value) {
-                                  ref
-                                      .read(cardProvider.notifier)
-                                      .changeExpired(value);
+                                  changeForm(FormAddress.expired, value);
                                 },
                                 hintText: 'MM/YY',
                                 textInputAction: TextInputAction.next,
+                                validationMessages: {
+                                  'required': (error) =>
+                                      'We need this information.'
+                                },
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [
+                                  expiredFormatter,
+                                ],
                               ),
                             ],
                           ),
@@ -186,14 +211,20 @@ class CardScreenState extends ConsumerState<CardScreen> {
                               CustomInput(
                                 value: cardState.ccv,
                                 onChanged: (value) {
-                                  ref
-                                      .read(cardProvider.notifier)
-                                      .changeCcv(value);
+                                  changeForm(FormAddress.ccv, value);
                                 },
                                 hintText: 'XXX',
                                 focusNode: _focusNodeCcv,
                                 textInputAction: TextInputAction.done,
                                 onFieldSubmitted: (value) {},
+                                validationMessages: {
+                                  'required': (error) =>
+                                      'We need this information.'
+                                },
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [
+                                  ccvFormatter,
+                                ],
                               ),
                             ],
                           ),
@@ -215,8 +246,10 @@ class CardScreenState extends ConsumerState<CardScreen> {
                         ),
                       ),
                       onPressed: () {
-                        context.pop();
+                        // context.pop();
+                        print(cardState.form.value);
                       },
+                      disabled: !cardState.isFormValue,
                     ),
                   ],
                 ),
@@ -224,72 +257,6 @@ class CardScreenState extends ConsumerState<CardScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-int offset(int selectionEnd) {
-  if (selectionEnd >= 0 && selectionEnd <= 3) {
-    return 0;
-  }
-  if (selectionEnd >= 4 && selectionEnd <= 8) {
-    return 1;
-  }
-  if (selectionEnd >= 9 && selectionEnd <= 13) {
-    return 2;
-  }
-  return 3;
-}
-
-class CardFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
-    // Rechazar la entrada si ingresan espacio
-    if (removeSpaces(oldValue.text) == removeSpaces(newValue.text) &&
-        (newValue.text.length > oldValue.text.length)) {
-      return oldValue;
-    }
-
-    final regex = RegExp(r'^[0-9]*$');
-    if (!regex.hasMatch(removeSpaces(newValue.text))) {
-      return oldValue; // Rechazar la entrada si no contiene solo números
-    }
-
-    var newText = addSpaces(newValue.text);
-
-    //limitar a 19 caracteres, esto es porque al pegar de la papelera
-    //el LengthLimitingTextInputFormatter(19) no funcionaba
-    if (newText.length > 19) {
-      newText = newText.substring(0, 19);
-    }
-
-    //variable para saber cuanto hay que aumentarle o disminuirle al puntero
-    var addSelection = 0;
-
-    // al agregar caracteres, funciona para cuando se pega del portapapeles
-    if (newValue.text.length > oldValue.text.length) {
-      addSelection =
-          offset(newValue.selection.end) - offset(oldValue.selection.end);
-      //al agregar caracter, cuando el puntero esté en las posiciones indicadas se le aumentará una posicion
-      if ([4, 9, 14].contains(oldValue.selection.end)) {
-        addSelection = addSelection + 1;
-      }
-    }
-    //al remover caracter, cuando el puntero esté en las posiciones indicadas se le restara una posicion
-    if (newValue.text.length < oldValue.text.length) {
-      if ([5, 10, 15].contains(newValue.selection.end)) {
-        addSelection = -1;
-      }
-    }
-
-    return newValue.copyWith(
-      text: newText,
-      selection: TextSelection.collapsed(
-        offset: newValue.selection.end + addSelection > 19
-            ? 19
-            : newValue.selection.end + addSelection,
       ),
     );
   }
@@ -315,3 +282,16 @@ String addSpaces(String value) {
 String removeSpaces(String value) {
   return value.replaceAll(' ', '');
 }
+
+MaskTextInputFormatter expiredFormatter = MaskTextInputFormatter(
+  mask: '##/##',
+  type: MaskAutoCompletionType.eager,
+);
+
+MaskTextInputFormatter cardNumberFormatter = MaskTextInputFormatter(
+  mask: '#### #### #### ####',
+);
+
+MaskTextInputFormatter ccvFormatter = MaskTextInputFormatter(
+  mask: '###',
+);

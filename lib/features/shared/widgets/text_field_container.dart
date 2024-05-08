@@ -31,7 +31,7 @@ class TextFieldContainer extends StatelessWidget {
             child: Text(
               '$errorMessage',
               style: const TextStyle(
-                fontSize: 12,
+                fontSize: 11,
                 fontWeight: FontWeight.w400,
                 height: 1.5,
                 color: AppColors.error,
