@@ -6,6 +6,7 @@ import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/cards/providers/card_provider.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_snappyshop/features/shared/models/form_type.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_input.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
@@ -86,7 +87,7 @@ class CardScreenState extends ConsumerState<CardScreen> {
                     CustomInput(
                       value: cardState.cardNumber,
                       onChanged: (value) {
-                        changeForm(FormCard.cardNumber, value);
+                        changeForm(CardForm.cardNumber, value);
                       },
                       valueProcess: (value) {
                         return addSpaces(value);
@@ -126,7 +127,7 @@ class CardScreenState extends ConsumerState<CardScreen> {
                     CustomInput(
                       value: cardState.cardHolderName,
                       onChanged: (value) {
-                        changeForm(FormCard.cardHolderName, value);
+                        changeForm(CardForm.cardHolderName, value);
                       },
                       hintText: 'Enter Holder Name',
                       keyboardType: TextInputType.name,
@@ -166,7 +167,7 @@ class CardScreenState extends ConsumerState<CardScreen> {
                               CustomInput(
                                 value: cardState.expired,
                                 onChanged: (value) {
-                                  changeForm(FormCard.expired, value);
+                                  changeForm(CardForm.expired, value);
                                 },
                                 hintText: 'MM/YY',
                                 textInputAction: TextInputAction.next,
@@ -209,7 +210,7 @@ class CardScreenState extends ConsumerState<CardScreen> {
                               CustomInput(
                                 value: cardState.ccv,
                                 onChanged: (value) {
-                                  changeForm(FormCard.ccv, value);
+                                  changeForm(CardForm.ccv, value);
                                 },
                                 hintText: 'XXX',
                                 focusNode: _focusNodeCcv,

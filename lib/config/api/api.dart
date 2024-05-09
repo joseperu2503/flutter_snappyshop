@@ -31,4 +31,11 @@ class Api {
   Future<Response> post(String path, {required Object data}) async {
     return _dioBase.post(path, data: data);
   }
+
+  Future<Response> delete(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    return _dioBase.delete(path, queryParameters: queryParameters);
+  }
 }

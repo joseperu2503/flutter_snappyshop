@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/features/address/models/addresses_response.dart';
+import 'package:flutter_snappyshop/features/address/providers/address_provider.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/checkbox.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
 import 'package:go_router/go_router.dart';
@@ -14,15 +17,33 @@ class AddressesScreen extends ConsumerStatefulWidget {
 }
 
 class AddressesScreenState extends ConsumerState<AddressesScreen> {
+  final ScrollController scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
+    Future.microtask(() {
+      ref.read(addressProvider.notifier).resetMyAddresses();
+      scrollController.addListener(() {
+        if (scrollController.position.pixels + 400 >=
+            scrollController.position.maxScrollExtent) {
+          ref.read(addressProvider.notifier).getMyAddresses();
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final addressState = ref.watch(addressProvider);
     return Loader(
-      loading: false,
+      loading: addressState.loadingAddresses == LoadingStatus.loading,
       child: Layout1(
         title: 'My Addresses',
         floatingActionButton: SizedBox(
@@ -42,11 +63,13 @@ class AddressesScreenState extends ConsumerState<AddressesScreen> {
           ),
         ),
         body: CustomScrollView(
+          controller: scrollController,
           slivers: [
             SliverPadding(
               padding: const EdgeInsets.all(24),
               sliver: SliverList.separated(
                 itemBuilder: (context, index) {
+                  final address = addressState.addresses[index];
                   return Container(
                     decoration: BoxDecoration(
                       color: AppColors.primaryCultured,
@@ -71,7 +94,9 @@ class AddressesScreenState extends ConsumerState<AddressesScreen> {
                           showDragHandle: true,
                           context: context,
                           builder: (context) {
-                            return const _AddressBottomSheet();
+                            return _AddressBottomSheet(
+                              address: address,
+                            );
                           },
                         );
                       },
@@ -80,15 +105,15 @@ class AddressesScreenState extends ConsumerState<AddressesScreen> {
                           Row(
                             children: [
                               CustomCheckbox(
-                                value: index == 0,
+                                value: address.primary,
                                 onChanged: (value) {},
                               ),
                               const SizedBox(
                                 width: 12,
                               ),
-                              const Text(
-                                'Savannah Nguyen',
-                                style: TextStyle(
+                              Text(
+                                address.name,
+                                style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.textYankeesBlue,
@@ -123,9 +148,9 @@ class AddressesScreenState extends ConsumerState<AddressesScreen> {
                               const SizedBox(
                                 width: 5,
                               ),
-                              const Text(
-                                '(219) 555-0114',
-                                style: TextStyle(
+                              Text(
+                                address.phone,
+                                style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,
                                   color: AppColors.textArsenic,
@@ -160,9 +185,9 @@ class AddressesScreenState extends ConsumerState<AddressesScreen> {
                               const SizedBox(
                                 width: 5,
                               ),
-                              const Text(
-                                '(219) 555-0114',
-                                style: TextStyle(
+                              Text(
+                                address.address,
+                                style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,
                                   color: AppColors.textArsenic,
@@ -185,7 +210,7 @@ class AddressesScreenState extends ConsumerState<AddressesScreen> {
                     height: 14,
                   );
                 },
-                itemCount: 2,
+                itemCount: addressState.addresses.length,
               ),
             ),
           ],
@@ -196,7 +221,10 @@ class AddressesScreenState extends ConsumerState<AddressesScreen> {
 }
 
 class _AddressBottomSheet extends ConsumerWidget {
-  const _AddressBottomSheet();
+  const _AddressBottomSheet({
+    required this.address,
+  });
+  final Address address;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -230,6 +258,7 @@ class _AddressBottomSheet extends ConsumerWidget {
                 ),
                 onTap: () {
                   context.pop();
+                  ref.read(addressProvider.notifier).markAsPrimary(address);
                 },
               ),
               ListTile(
@@ -274,6 +303,7 @@ class _AddressBottomSheet extends ConsumerWidget {
                 ),
                 onTap: () {
                   context.pop();
+                  ref.read(addressProvider.notifier).deleteAddress(address);
                 },
               )
             ],

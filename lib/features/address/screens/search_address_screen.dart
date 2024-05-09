@@ -4,6 +4,7 @@ import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/address/providers/address_provider.dart';
 import 'package:flutter_snappyshop/features/search/widgets/input_search.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
+import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/providers/map_provider.dart';
 import 'package:flutter_snappyshop/features/shared/services/location_service.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
@@ -23,15 +24,8 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      ref.invalidate(addressProvider);
       _focusNode.requestFocus();
     });
-  }
-
-  @override
-  void deactivate() {
-    ref.invalidate(addressProvider);
-    super.deactivate();
   }
 
   @override
@@ -46,9 +40,9 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
   Widget build(BuildContext context) {
     final addressState = ref.watch(addressProvider);
     final showResults = addressState.addressResults.isNotEmpty;
-    final noResults = !addressState.loadingAddresses &&
-        addressState.addressResults.isEmpty &&
-        addressState.search != '';
+    final noResults =
+        addressState.searchingAddresses == LoadingStatus.success &&
+            addressState.addressResults.isEmpty;
 
     return Layout1(
       title: 'Search address',
@@ -89,7 +83,7 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
             ),
             pinned: true,
           ),
-          if (addressState.loadingAddresses)
+          if (addressState.searchingAddresses == LoadingStatus.loading)
             const SliverToBoxAdapter(
               child: SizedBox(
                 height: 200,

@@ -9,7 +9,6 @@ class MapBoxService {
       Map<String, dynamic> queryParameters = {
         "q": query,
         "access_token": Environment.tokenMapbox,
-        "country": "pe",
         "language": "en",
       };
 
@@ -31,7 +30,6 @@ class MapBoxService {
     try {
       Map<String, dynamic> queryParameters = {
         "access_token": Environment.tokenMapbox,
-        // "country": "pe",
         "language": "en",
         "types": "street",
         "longitude": longitude,

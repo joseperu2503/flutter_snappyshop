@@ -1,7 +1,12 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_snappyshop/config/router/app_router.dart';
+import 'package:flutter_snappyshop/features/address/models/addresses_response.dart';
 import 'package:flutter_snappyshop/features/address/models/mapbox_response.dart';
+import 'package:flutter_snappyshop/features/address/services/address_services.dart';
 import 'package:flutter_snappyshop/features/address/services/mapbox_service.dart';
+import 'package:flutter_snappyshop/features/shared/models/form_type.dart';
+import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/providers/map_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
@@ -25,21 +30,7 @@ class AddressNotifier extends StateNotifier<AddressState> {
   AddressNotifier(this.ref)
       : super(
           AddressState(
-            form: FormGroup({
-              FormAddress.name: FormControl<String>(
-                value: '',
-                validators: [Validators.required],
-              ),
-              FormAddress.detail: FormControl<String>(
-                  value: '', validators: [Validators.required]),
-              FormAddress.phone: FormControl<String>(value: '', validators: [
-                Validators.required,
-                Validators.number(),
-              ]),
-              FormAddress.address: FormControl<String>(
-                  value: '', validators: [Validators.required]),
-              FormAddress.references: FormControl<String>(value: ''),
-            }),
+            form: AddressForm.resetForm(),
           ),
         );
 
@@ -51,6 +42,14 @@ class AddressNotifier extends StateNotifier<AddressState> {
         ...state.form.controls,
         key: formControl,
       }),
+    );
+  }
+
+  resetForm() {
+    state = state.copyWith(
+      formType: FormType.create,
+      savingAddress: LoadingStatus.none,
+      form: AddressForm.resetForm(),
     );
   }
 
@@ -86,7 +85,8 @@ class AddressNotifier extends StateNotifier<AddressState> {
     state = state.copyWith(
       addressResults: [],
       search: newSearch,
-      loadingAddresses: newSearch != '',
+      searchingAddresses:
+          newSearch != '' ? LoadingStatus.success : LoadingStatus.none,
     );
     if (newSearch == '') return;
 
@@ -97,14 +97,14 @@ class AddressNotifier extends StateNotifier<AddressState> {
       const Duration(milliseconds: 1000),
       () {
         if (search != state.search) return;
-        searchProducts();
+        searchAddress();
       },
     );
   }
 
-  Future<void> searchProducts() async {
+  Future<void> searchAddress() async {
     state = state.copyWith(
-      loadingAddresses: true,
+      searchingAddresses: LoadingStatus.loading,
     );
 
     final search = state.search;
@@ -116,32 +116,141 @@ class AddressNotifier extends StateNotifier<AddressState> {
       if (search == state.search) {
         state = state.copyWith(
           addressResults: response.features,
+          searchingAddresses: LoadingStatus.success,
         );
       }
     } on ServiceException catch (e) {
       if (search == state.search) {
         ref.read(snackbarProvider.notifier).showSnackbar(e.message);
+        state = state.copyWith(
+          searchingAddresses: LoadingStatus.error,
+        );
       }
     }
-    if (search == state.search) {
+  }
+
+  resetMyAddresses() {
+    state = state.copyWith(
+      addresses: [],
+      page: 1,
+      totalPages: 1,
+      loadingAddresses: LoadingStatus.none,
+    );
+    getMyAddresses();
+  }
+
+  Future<void> getMyAddresses() async {
+    if (state.page > state.totalPages ||
+        state.loadingAddresses == LoadingStatus.loading) return;
+
+    state = state.copyWith(
+      loadingAddresses: LoadingStatus.loading,
+    );
+
+    try {
+      final AddressesResponse response = await AddressService.getMyAddresses(
+        page: state.page,
+      );
       state = state.copyWith(
-        loadingAddresses: false,
+        addresses: [...state.addresses, ...response.results],
+        totalPages: response.info.lastPage,
+        page: state.page + 1,
+        loadingAddresses: LoadingStatus.success,
+      );
+    } on ServiceException catch (e) {
+      ref.read(snackbarProvider.notifier).showSnackbar(e.message);
+      state = state.copyWith(
+        loadingAddresses: LoadingStatus.error,
       );
     }
+  }
+
+  saveAddress() async {
+    LatLng? cameraPosition = ref.read(mapProvider).cameraPosition;
+    if (cameraPosition == null) return;
+
+    try {
+      state = state.copyWith(
+        savingAddress: LoadingStatus.loading,
+      );
+      await AddressService.createAddress(
+        address: state.form.control(AddressForm.address).value,
+        detail: state.form.control(AddressForm.detail).value,
+        name: state.form.control(AddressForm.name).value,
+        phone: state.form.control(AddressForm.phone).value,
+        latitude: cameraPosition.latitude,
+        longitude: cameraPosition.longitude,
+        references: state.form.control(AddressForm.references).value,
+      );
+      state = state.copyWith(
+        savingAddress: LoadingStatus.success,
+      );
+      appRouter.pop();
+      appRouter.pop();
+      appRouter.pop();
+      resetMyAddresses();
+    } on ServiceException catch (e) {
+      ref.read(snackbarProvider.notifier).showSnackbar(e.message);
+      state = state.copyWith(
+        savingAddress: LoadingStatus.error,
+      );
+    }
+  }
+
+  deleteAddress(Address address) async {
+    try {
+      state = state.copyWith(
+        loadingAddresses: LoadingStatus.loading,
+      );
+      await AddressService.deleteAddress(
+        addressId: address.id,
+      );
+    } on ServiceException catch (e) {
+      ref.read(snackbarProvider.notifier).showSnackbar(e.message);
+    }
+
+    resetMyAddresses();
+  }
+
+  markAsPrimary(Address address) async {
+    try {
+      state = state.copyWith(
+        loadingAddresses: LoadingStatus.loading,
+      );
+      await AddressService.markAsPrimary(
+        addressId: address.id,
+      );
+    } on ServiceException catch (e) {
+      ref.read(snackbarProvider.notifier).showSnackbar(e.message);
+    }
+
+    resetMyAddresses();
   }
 }
 
 class AddressState {
   final List<Feature> addressResults;
   final String search;
-  final bool loadingAddresses;
+  final LoadingStatus searchingAddresses;
   final FormGroup form;
+  final List<Address> addresses;
+  final int page;
+  final int totalPages;
+  final LoadingStatus loadingAddresses;
+  final LoadingStatus savingAddress;
+  final FormType formType;
 
   AddressState({
     this.addressResults = const [],
     this.search = '',
-    this.loadingAddresses = false,
+    this.searchingAddresses = LoadingStatus.none,
     required this.form,
+    this.addresses = const [],
+    this.page = 1,
+    this.totalPages = 1,
+    this.loadingAddresses = LoadingStatus.none,
+    this.formType = FormType.create,
+    this.savingAddress = LoadingStatus.none,
   });
 
   FormControl<String> get name =>
@@ -160,13 +269,51 @@ class AddressState {
   AddressState copyWith({
     List<Feature>? addressResults,
     String? search,
-    bool? loadingAddresses,
+    LoadingStatus? searchingAddresses,
     FormGroup? form,
+    List<Address>? addresses,
+    int? page,
+    int? totalPages,
+    LoadingStatus? loadingAddresses,
+    FormType? formType,
+    LoadingStatus? savingAddress,
   }) =>
       AddressState(
         addressResults: addressResults ?? this.addressResults,
         search: search ?? this.search,
-        loadingAddresses: loadingAddresses ?? this.loadingAddresses,
+        searchingAddresses: searchingAddresses ?? this.searchingAddresses,
         form: form ?? this.form,
+        addresses: addresses ?? this.addresses,
+        page: page ?? this.page,
+        totalPages: totalPages ?? this.totalPages,
+        loadingAddresses: loadingAddresses ?? this.loadingAddresses,
+        formType: formType ?? this.formType,
+        savingAddress: savingAddress ?? this.savingAddress,
       );
+}
+
+class AddressForm {
+  static String address = 'address';
+  static String detail = 'detail';
+  static String name = 'name';
+  static String phone = 'phone';
+  static String references = 'references';
+
+  static FormGroup resetForm() {
+    return FormGroup({
+      FormAddress.address:
+          FormControl<String>(value: '', validators: [Validators.required]),
+      FormAddress.detail:
+          FormControl<String>(value: '', validators: [Validators.required]),
+      FormAddress.name: FormControl<String>(
+        value: '',
+        validators: [Validators.required],
+      ),
+      FormAddress.phone: FormControl<String>(value: '', validators: [
+        Validators.required,
+        Validators.number(),
+      ]),
+      FormAddress.references: FormControl<String>(value: ''),
+    });
+  }
 }

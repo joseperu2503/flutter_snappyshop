@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/router/app_router.dart';
 import 'package:flutter_snappyshop/features/cards/models/bank_card.dart';
 import 'package:flutter_snappyshop/features/cards/services/card_service.dart';
+import 'package:flutter_snappyshop/features/shared/models/form_type.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -29,7 +30,7 @@ class CardNotifier extends StateNotifier<CardState> {
   resetForm() {
     state = state.copyWith(
       formType: FormType.create,
-      form: FormCard.resetForm(),
+      form: CardForm.resetForm(),
     );
   }
 
@@ -86,8 +87,6 @@ class CardNotifier extends StateNotifier<CardState> {
   }
 }
 
-enum FormType { create, edit }
-
 class CardState {
   final FormGroup form;
   final List<BankCard> cards;
@@ -100,13 +99,13 @@ class CardState {
   });
 
   FormControl<String> get cardNumber =>
-      form.control(FormCard.cardNumber) as FormControl<String>;
+      form.control(CardForm.cardNumber) as FormControl<String>;
   FormControl<String> get cardHolderName =>
-      form.control(FormCard.cardHolderName) as FormControl<String>;
+      form.control(CardForm.cardHolderName) as FormControl<String>;
   FormControl<String> get expired =>
-      form.control(FormCard.expired) as FormControl<String>;
+      form.control(CardForm.expired) as FormControl<String>;
   FormControl<String> get ccv =>
-      form.control(FormCard.ccv) as FormControl<String>;
+      form.control(CardForm.ccv) as FormControl<String>;
 
   bool get isFormValue => form.valid;
 
@@ -129,7 +128,7 @@ class CardState {
       );
 }
 
-class FormCard {
+class CardForm {
   static String cardNumber = 'cardNumber';
   static String cardHolderName = 'cardHolderName';
   static String expired = 'expired';

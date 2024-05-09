@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/address/providers/address_provider.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_input.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_textarea.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
-import 'package:go_router/go_router.dart';
 
 class AddressScreen extends ConsumerStatefulWidget {
   const AddressScreen({super.key});
@@ -30,27 +31,9 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
     final changeForm = ref.read(addressProvider.notifier).changeForm;
 
     return Loader(
-      loading: false,
+      loading: addressState.savingAddress == LoadingStatus.loading,
       child: Layout1(
         title: 'Address',
-        bottomNavigationBar: Container(
-          padding: EdgeInsets.only(
-            right: 24,
-            left: 24,
-            bottom: screen.padding.bottom,
-          ),
-          height: 120,
-          color: AppColors.white,
-          child: Center(
-            child: CustomButton(
-              onPressed: () {
-                context.pop();
-              },
-              disabled: !addressState.isFormValue,
-              text: 'Save Address',
-            ),
-          ),
-        ),
         body: CustomScrollView(
           slivers: [
             SliverFillRemaining(
@@ -112,6 +95,9 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                         'required': (error) => 'We need this information.'
                       },
                       textInputAction: TextInputAction.next,
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(28),
+                      ],
                     ),
                     const SizedBox(
                       height: formInputSpacing,
@@ -139,6 +125,9 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                         'required': (error) => 'We need this information.',
                       },
                       textInputAction: TextInputAction.next,
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(28),
+                      ],
                     ),
                     const SizedBox(
                       height: formInputSpacing,
@@ -166,6 +155,9 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                       },
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.phone,
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(12),
+                      ],
                     ),
                     const SizedBox(
                       height: formInputSpacing,
@@ -189,12 +181,33 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                         changeForm(FormAddress.references, value);
                       },
                       textInputAction: TextInputAction.done,
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(50),
+                      ],
                     ),
                   ],
                 ),
               ),
             )
           ],
+        ),
+        bottomNavigationBar: Container(
+          padding: EdgeInsets.only(
+            right: 24,
+            left: 24,
+            bottom: screen.padding.bottom,
+          ),
+          height: 120,
+          color: AppColors.white,
+          child: Center(
+            child: CustomButton(
+              onPressed: () {
+                ref.read(addressProvider.notifier).saveAddress();
+              },
+              disabled: !addressState.isFormValue,
+              text: 'Save Address',
+            ),
+          ),
         ),
       ),
     );
