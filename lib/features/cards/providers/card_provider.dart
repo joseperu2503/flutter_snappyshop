@@ -46,12 +46,29 @@ class CardNotifier extends StateNotifier<CardState> {
 
   saveCard() async {
     try {
+      if (state.cardExist) {
+        ref
+            .read(snackbarProvider.notifier)
+            .showSnackbar('Credit card already registered. Try another one');
+        return;
+      }
       await CardService.saveCard(BankCard(
         cardNumber: state.cardNumber.value ?? '',
         cardHolderName: state.cardHolderName.value ?? '',
         expired: state.expired.value ?? '',
         ccv: state.ccv.value ?? '',
       ));
+      appRouter.pop();
+    } on ServiceException catch (e) {
+      ref.read(snackbarProvider.notifier).showSnackbar(e.message);
+    }
+
+    getCards();
+  }
+
+  deleteCard() async {
+    try {
+      await CardService.deleteCard(state.cardNumber.value);
       appRouter.pop();
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
@@ -93,6 +110,13 @@ class CardState {
 
   bool get isFormValue => form.valid;
 
+  bool get cardExist {
+    final int index =
+        cards.indexWhere((element) => cardNumber.value == element.cardNumber);
+
+    return index >= 0;
+  }
+
   CardState copyWith({
     FormGroup? form,
     List<BankCard>? cards,
@@ -118,7 +142,7 @@ class FormCard {
         validators: [
           Validators.required,
           Validators.minLength(16),
-          Validators.minLength(16)
+          Validators.maxLength(16),
         ],
       ),
       cardHolderName: FormControl<String>(
@@ -129,6 +153,8 @@ class FormCard {
         value: '',
         validators: [
           Validators.required,
+          Validators.minLength(5),
+          Validators.maxLength(5),
         ],
       ),
       ccv: FormControl<String>(
@@ -136,6 +162,8 @@ class FormCard {
         validators: [
           Validators.required,
           Validators.number(),
+          Validators.minLength(3),
+          Validators.maxLength(3),
         ],
       ),
     });

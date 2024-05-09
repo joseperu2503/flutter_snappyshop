@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/config/constants/styles.dart';
@@ -64,6 +65,7 @@ class CardScreenState extends ConsumerState<CardScreen> {
                       isHolderNameVisible: true,
                       onCreditCardWidgetChange: (CreditCardBrand brand) {},
                       padding: 0,
+                      cardBgColor: AppColors.textCoolBlack,
                     ),
                     const SizedBox(
                       height: 40,
@@ -100,8 +102,7 @@ class CardScreenState extends ConsumerState<CardScreen> {
                       autofocus: cardState.formType == FormType.create,
                       validationMessages: {
                         'required': (error) => 'We need this information.',
-                        'minLength': (error) =>
-                            'Please enter the 16 digits of your card correctly.'
+                        'minLength': (error) => 'Incomplete card number.'
                       },
                       keyboardType: TextInputType.number,
                       readOnly: cardState.formType == FormType.edit,
@@ -134,6 +135,9 @@ class CardScreenState extends ConsumerState<CardScreen> {
                         'required': (error) => 'We need this information.'
                       },
                       readOnly: cardState.formType == FormType.edit,
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(28),
+                      ],
                     ),
                     const SizedBox(
                       height: formInputSpacing,
@@ -166,15 +170,17 @@ class CardScreenState extends ConsumerState<CardScreen> {
                                 },
                                 hintText: 'MM/YY',
                                 textInputAction: TextInputAction.next,
-                                validationMessages: {
-                                  'required': (error) =>
-                                      'We need this information.'
-                                },
                                 keyboardType: TextInputType.number,
                                 inputFormatters: [
                                   expiredFormatter,
                                 ],
                                 readOnly: cardState.formType == FormType.edit,
+                                validationMessages: {
+                                  'required': (error) =>
+                                      'We need this information.',
+                                  'minLength': (error) =>
+                                      'Incomplete expiration date.'
+                                },
                               ),
                             ],
                           ),
@@ -211,7 +217,8 @@ class CardScreenState extends ConsumerState<CardScreen> {
                                 onFieldSubmitted: (value) {},
                                 validationMessages: {
                                   'required': (error) =>
-                                      'We need this information.'
+                                      'We need this information.',
+                                  'minLength': (error) => 'Incomplete CVC/CCV. '
                                 },
                                 keyboardType: TextInputType.number,
                                 inputFormatters: [
@@ -227,13 +234,25 @@ class CardScreenState extends ConsumerState<CardScreen> {
                     const SizedBox(
                       height: 80,
                     ),
-                    CustomButton(
-                      onPressed: () {
-                        ref.read(cardProvider.notifier).saveCard();
-                      },
-                      disabled: !cardState.isFormValue,
-                      text: 'Save Card',
-                    ),
+                    cardState.formType == FormType.edit
+                        ? CustomButton(
+                            onPressed: () {
+                              ref.read(cardProvider.notifier).deleteCard();
+                            },
+                            text: 'Delete Card',
+                            type: ButtonType.delete,
+                            iconLeft: const Icon(
+                              Icons.delete,
+                              color: AppColors.error,
+                            ),
+                          )
+                        : CustomButton(
+                            onPressed: () {
+                              ref.read(cardProvider.notifier).saveCard();
+                            },
+                            disabled: !cardState.isFormValue,
+                            text: 'Save Card',
+                          ),
                   ],
                 ),
               ),

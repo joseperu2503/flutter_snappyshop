@@ -72,6 +72,7 @@ class CardsScreenState extends ConsumerState<CardsScreen> {
                       isHolderNameVisible: true,
                       isSwipeGestureEnabled: false,
                       onCreditCardWidgetChange: (CreditCardBrand brand) {},
+                      cardBgColor: AppColors.textCoolBlack,
                     ),
                   );
                 },

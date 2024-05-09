@@ -1,6 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 
+enum ButtonType { primary, delete }
+
+List<ButtonTypeStyle> buttonTypes = [
+  ButtonTypeStyle(
+    buttonType: ButtonType.primary,
+    color: AppColors.primaryPearlAqua,
+    colorDisabled: AppColors.textArsenic.withOpacity(0.2),
+    textColor: AppColors.textCultured,
+    textColorDisabled: AppColors.textCultured,
+    foregroundColor: Colors.white60,
+  ),
+  ButtonTypeStyle(
+    buttonType: ButtonType.delete,
+    color: Colors.transparent,
+    colorDisabled: AppColors.textArsenic.withOpacity(0.2),
+    textColor: AppColors.error,
+    textColorDisabled: AppColors.error,
+    foregroundColor: AppColors.error,
+  ),
+];
+
 class CustomButton extends StatelessWidget {
   const CustomButton({
     super.key,
@@ -10,6 +31,7 @@ class CustomButton extends StatelessWidget {
     this.height = 52,
     this.disabled = false,
     this.iconLeft,
+    this.type = ButtonType.primary,
   });
 
   final void Function()? onPressed;
@@ -18,16 +40,17 @@ class CustomButton extends StatelessWidget {
   final double height;
   final bool disabled;
   final Widget? iconLeft;
+  final ButtonType type;
 
   @override
   Widget build(BuildContext context) {
+    final buttonStyle = buttonTypes.firstWhere((b) => b.buttonType == type);
+
     return Container(
       height: height,
       width: width,
       decoration: BoxDecoration(
-        color: disabled
-            ? AppColors.textArsenic.withOpacity(0.2)
-            : AppColors.primaryPearlAqua,
+        color: disabled ? buttonStyle.colorDisabled : buttonStyle.color,
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextButton(
@@ -35,7 +58,7 @@ class CustomButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          foregroundColor: Colors.white60,
+          foregroundColor: buttonStyle.foregroundColor,
         ),
         onPressed: disabled
             ? null
@@ -55,10 +78,12 @@ class CustomButton extends StatelessWidget {
             if (text != null)
               Text(
                 text!,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: AppColors.textCultured,
+                  color: disabled
+                      ? buttonStyle.textColorDisabled
+                      : buttonStyle.textColor,
                   height: 22 / 16,
                   leadingDistribution: TextLeadingDistribution.even,
                 ),
@@ -68,4 +93,22 @@ class CustomButton extends StatelessWidget {
       ),
     );
   }
+}
+
+class ButtonTypeStyle {
+  final ButtonType buttonType;
+  final Color color;
+  final Color colorDisabled;
+  final Color textColor;
+  final Color textColorDisabled;
+  final Color foregroundColor;
+
+  ButtonTypeStyle({
+    required this.buttonType,
+    required this.color,
+    required this.colorDisabled,
+    required this.textColor,
+    required this.textColorDisabled,
+    required this.foregroundColor,
+  });
 }

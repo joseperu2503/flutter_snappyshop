@@ -26,4 +26,16 @@ class CardService {
           'An error occurred while saving the credit card information.');
     }
   }
+
+  static Future<void> deleteCard(String? cardNumber) async {
+    try {
+      List<BankCard> cardsStorage = await getCards();
+      cardsStorage =
+          cardsStorage.where((p) => p.cardNumber != cardNumber).toList();
+      await StorageService.set<List<dynamic>>(StorageKeys.cards, cardsStorage);
+    } catch (e) {
+      throw ServiceException(
+          'An error occurred while deleting the credit card information.');
+    }
+  }
 }
