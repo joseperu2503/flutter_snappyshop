@@ -1,5 +1,10 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/wishlist/providers/favorite_products_provider.dart';
 import 'package:flutter_snappyshop/features/products/widgets/product_card.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
@@ -44,6 +49,7 @@ class WishlistScreenState extends ConsumerState<WishlistScreen> {
     final favoriteState = ref.watch(favoriteProductsProvider);
 
     return Layout1(
+      loading: favoriteState.firstLoad,
       title: 'Wishslit',
       body: SafeArea(
         child: CustomScrollView(
@@ -72,18 +78,7 @@ class WishlistScreenState extends ConsumerState<WishlistScreen> {
                 ),
               ),
             ),
-            if (favoriteState.loadingProducts && favoriteState.products.isEmpty)
-              const SliverFillRemaining(
-                hasScrollBody: false,
-                child: Center(
-                  child: SizedBox(
-                    width: 40,
-                    height: 40,
-                    child: CircularProgressIndicator(),
-                  ),
-                ),
-              ),
-            if (favoriteState.loadingProducts &&
+            if (favoriteState.loadingProducts == LoadingStatus.loading &&
                 favoriteState.products.isNotEmpty)
               SliverToBoxAdapter(
                 child: Container(
@@ -91,16 +86,23 @@ class WishlistScreenState extends ConsumerState<WishlistScreen> {
                     top: 10,
                     bottom: 40,
                   ),
-                  child: const Center(
+                  child: Center(
                     child: SizedBox(
                       width: 40,
                       height: 40,
-                      child: CircularProgressIndicator(),
+                      child: kIsWeb || Platform.isAndroid
+                          ? const CircularProgressIndicator(
+                              color: AppColors.primaryPearlAqua,
+                            )
+                          : const CupertinoActivityIndicator(
+                              radius: 16,
+                              color: AppColors.primaryPearlAqua,
+                            ),
                     ),
                   ),
                 ),
               ),
-            if (!favoriteState.loadingProducts &&
+            if (favoriteState.loadingProducts == LoadingStatus.success &&
                 favoriteState.products.isEmpty)
               SliverFillRemaining(
                 hasScrollBody: false,

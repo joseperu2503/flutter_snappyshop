@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/router/app_router.dart';
 import 'package:flutter_snappyshop/features/shared/inputs/password.dart';
+import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_snappyshop/features/user/services/user_service.dart';
@@ -18,6 +19,7 @@ class ChangePasswordNotifier extends StateNotifier<ChangePasswordState> {
 
   initData() {
     state = state.copyWith(
+      loading: LoadingStatus.none,
       password: const Password.pure(''),
       confirmPassword: const Password.pure(''),
     );
@@ -41,7 +43,7 @@ class ChangePasswordNotifier extends StateNotifier<ChangePasswordState> {
     if (!Formz.validate([password, confirmPassword])) return;
 
     state = state.copyWith(
-      loading: true,
+      loading: LoadingStatus.loading,
     );
 
     try {
@@ -49,17 +51,18 @@ class ChangePasswordNotifier extends StateNotifier<ChangePasswordState> {
         password: state.password.value,
         confirmPassword: state.confirmPassword.value,
       );
-
+      state = state.copyWith(
+        loading: LoadingStatus.success,
+      );
       ref.read(snackbarProvider.notifier).showSnackbar(response.message);
 
       appRouter.go('/products');
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
+      state = state.copyWith(
+        loading: LoadingStatus.error,
+      );
     }
-
-    state = state.copyWith(
-      loading: false,
-    );
   }
 
   changePassword(Password password) {
@@ -78,18 +81,18 @@ class ChangePasswordNotifier extends StateNotifier<ChangePasswordState> {
 class ChangePasswordState {
   final Password password;
   final Password confirmPassword;
-  final bool loading;
+  final LoadingStatus loading;
 
   ChangePasswordState({
     this.password = const Password.pure(''),
     this.confirmPassword = const Password.pure(''),
-    this.loading = false,
+    this.loading = LoadingStatus.none,
   });
 
   ChangePasswordState copyWith({
     Password? password,
     Password? confirmPassword,
-    bool? loading,
+    LoadingStatus? loading,
   }) =>
       ChangePasswordState(
         password: password ?? this.password,

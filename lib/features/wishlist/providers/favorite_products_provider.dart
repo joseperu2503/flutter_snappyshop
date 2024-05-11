@@ -2,6 +2,7 @@ import 'package:flutter_snappyshop/features/products/models/products_response.da
 import 'package:flutter_snappyshop/features/products/providers/products_provider.dart';
 import 'package:flutter_snappyshop/features/search/providers/search_provider.dart';
 import 'package:flutter_snappyshop/features/products/services/products_services.dart';
+import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,7 +21,7 @@ class FavoriteProductsNotifier extends StateNotifier<FavoriteProductsState> {
 
   initState() {
     state = state.copyWith(
-      loadingProducts: false,
+      loadingProducts: LoadingStatus.none,
       page: 1,
       products: [],
       totalPages: 1,
@@ -28,10 +29,11 @@ class FavoriteProductsNotifier extends StateNotifier<FavoriteProductsState> {
   }
 
   Future<void> getProducts() async {
-    if (state.page > state.totalPages || state.loadingProducts) return;
+    if (state.page > state.totalPages ||
+        state.loadingProducts == LoadingStatus.loading) return;
 
     state = state.copyWith(
-      loadingProducts: true,
+      loadingProducts: LoadingStatus.loading,
     );
     try {
       final ProductsResponse response =
@@ -43,13 +45,14 @@ class FavoriteProductsNotifier extends StateNotifier<FavoriteProductsState> {
         products: [...state.products, ...response.data],
         totalPages: response.meta.lastPage,
         page: state.page + 1,
+        loadingProducts: LoadingStatus.success,
       );
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
+      state = state.copyWith(
+        loadingProducts: LoadingStatus.error,
+      );
     }
-    state = state.copyWith(
-      loadingProducts: false,
-    );
   }
 
   setFavoriteProduct(bool isFavorite, int productId) {
@@ -75,20 +78,22 @@ class FavoriteProductsState {
   final List<Product> products;
   final int page;
   final int totalPages;
-  final bool loadingProducts;
+  final LoadingStatus loadingProducts;
 
   FavoriteProductsState({
     this.products = const [],
     this.page = 1,
     this.totalPages = 1,
-    this.loadingProducts = false,
+    this.loadingProducts = LoadingStatus.none,
   });
+
+  bool get firstLoad => loadingProducts == LoadingStatus.loading && page == 1;
 
   FavoriteProductsState copyWith({
     List<Product>? products,
     int? page,
     int? totalPages,
-    bool? loadingProducts,
+    LoadingStatus? loadingProducts,
   }) =>
       FavoriteProductsState(
         products: products ?? this.products,

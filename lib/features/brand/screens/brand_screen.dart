@@ -1,9 +1,15 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
 import 'package:flutter_snappyshop/features/products/providers/products_provider.dart';
 import 'package:flutter_snappyshop/features/products/services/products_services.dart';
 import 'package:flutter_snappyshop/features/products/widgets/product_card.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
+import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,14 +29,14 @@ class BrandScreenState extends ConsumerState<BrandScreen> {
   List<Product> products = [];
   int page = 1;
   int totalPages = 1;
-  bool loadingProducts = false;
+  LoadingStatus loadingProducts = LoadingStatus.none;
   final ScrollController scrollController = ScrollController();
 
   Future<void> getProducts() async {
-    if (page > totalPages || loadingProducts) return;
+    if (page > totalPages || loadingProducts == LoadingStatus.loading) return;
 
     setState(() {
-      loadingProducts = true;
+      loadingProducts = LoadingStatus.loading;
     });
 
     try {
@@ -43,15 +49,17 @@ class BrandScreenState extends ConsumerState<BrandScreen> {
         products = [...products, ...response.data];
         totalPages = response.meta.lastPage;
         page = page + 1;
+        loadingProducts = LoadingStatus.success;
       });
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
+      setState(() {
+        loadingProducts = LoadingStatus.error;
+      });
     }
-
-    setState(() {
-      loadingProducts = false;
-    });
   }
+
+  bool get firstLoad => loadingProducts == LoadingStatus.loading && page == 1;
 
   @override
   void initState() {
@@ -80,6 +88,7 @@ class BrandScreenState extends ConsumerState<BrandScreen> {
 
     return Layout1(
       title: brand.name,
+      loading: firstLoad,
       body: CustomScrollView(
         slivers: [
           SliverPadding(
@@ -105,16 +114,29 @@ class BrandScreenState extends ConsumerState<BrandScreen> {
               ),
             ),
           ),
-          if (loadingProducts)
-            const SliverToBoxAdapter(
-              child: Center(
-                child: SizedBox(
-                  width: 40,
-                  height: 40,
-                  child: CircularProgressIndicator(),
+          if (loadingProducts == LoadingStatus.loading && products.isNotEmpty)
+            SliverToBoxAdapter(
+              child: Container(
+                padding: const EdgeInsets.only(
+                  top: 10,
+                  bottom: 40,
+                ),
+                child: Center(
+                  child: SizedBox(
+                    width: 40,
+                    height: 40,
+                    child: kIsWeb || Platform.isAndroid
+                        ? const CircularProgressIndicator(
+                            color: AppColors.primaryPearlAqua,
+                          )
+                        : const CupertinoActivityIndicator(
+                            radius: 16,
+                            color: AppColors.primaryPearlAqua,
+                          ),
+                  ),
                 ),
               ),
-            )
+            ),
         ],
       ),
     );

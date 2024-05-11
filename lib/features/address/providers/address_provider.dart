@@ -136,7 +136,6 @@ class AddressNotifier extends StateNotifier<AddressState> {
       totalPages: 1,
       loadingAddresses: LoadingStatus.none,
     );
-    getMyAddresses();
   }
 
   Future<void> getMyAddresses() async {
@@ -189,6 +188,7 @@ class AddressNotifier extends StateNotifier<AddressState> {
       appRouter.pop();
       appRouter.pop();
       resetMyAddresses();
+      getMyAddresses();
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
       state = state.copyWith(
@@ -198,6 +198,7 @@ class AddressNotifier extends StateNotifier<AddressState> {
   }
 
   deleteAddress(Address address) async {
+    resetMyAddresses();
     try {
       state = state.copyWith(
         loadingAddresses: LoadingStatus.loading,
@@ -208,11 +209,14 @@ class AddressNotifier extends StateNotifier<AddressState> {
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
     }
-
-    resetMyAddresses();
+    state = state.copyWith(
+      loadingAddresses: LoadingStatus.none,
+    );
+    getMyAddresses();
   }
 
   markAsPrimary(Address address) async {
+    resetMyAddresses();
     try {
       state = state.copyWith(
         loadingAddresses: LoadingStatus.loading,
@@ -223,8 +227,10 @@ class AddressNotifier extends StateNotifier<AddressState> {
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
     }
-
-    resetMyAddresses();
+    state = state.copyWith(
+      loadingAddresses: LoadingStatus.none,
+    );
+    getMyAddresses();
   }
 }
 
@@ -265,6 +271,7 @@ class AddressState {
       form.control(FormAddress.address) as FormControl<String>;
 
   bool get isFormValue => form.valid;
+  bool get firstLoad => loadingAddresses == LoadingStatus.loading && page == 1;
 
   AddressState copyWith({
     List<Feature>? addressResults,

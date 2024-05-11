@@ -34,7 +34,7 @@ class Loader extends StatelessWidget {
                           color: AppColors.primaryPearlAqua,
                         )
                       : const CupertinoActivityIndicator(
-                          radius: 20,
+                          radius: 16,
                           color: AppColors.primaryPearlAqua,
                         ),
                 ),

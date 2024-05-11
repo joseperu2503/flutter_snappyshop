@@ -164,7 +164,7 @@ class ProductsState {
     this.page = 1,
     this.totalPages = 1,
     this.loadingProducts = false,
-    this.dashboardStatus = LoadingStatus.loading,
+    this.dashboardStatus = LoadingStatus.none,
   });
 
   ProductsState copyWith({

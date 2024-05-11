@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/search/providers/search_provider.dart';
@@ -239,13 +243,20 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                   ),
                 ),
               if (searchState.loadingProducts && searchState.products.isEmpty)
-                const SliverFillRemaining(
+                SliverFillRemaining(
                   hasScrollBody: false,
                   child: Center(
                     child: SizedBox(
                       width: 40,
                       height: 40,
-                      child: CircularProgressIndicator(),
+                      child: kIsWeb || Platform.isAndroid
+                          ? const CircularProgressIndicator(
+                              color: AppColors.primaryPearlAqua,
+                            )
+                          : const CupertinoActivityIndicator(
+                              radius: 16,
+                              color: AppColors.primaryPearlAqua,
+                            ),
                     ),
                   ),
                 ),
@@ -257,11 +268,18 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                       top: 10,
                       bottom: 40,
                     ),
-                    child: const Center(
+                    child: Center(
                       child: SizedBox(
                         width: 40,
                         height: 40,
-                        child: CircularProgressIndicator(),
+                        child: kIsWeb || Platform.isAndroid
+                            ? const CircularProgressIndicator(
+                                color: AppColors.primaryPearlAqua,
+                              )
+                            : const CupertinoActivityIndicator(
+                                radius: 16,
+                                color: AppColors.primaryPearlAqua,
+                              ),
                       ),
                     ),
                   ),
