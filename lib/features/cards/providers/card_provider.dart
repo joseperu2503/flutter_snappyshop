@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/router/app_router.dart';
 import 'package:flutter_snappyshop/features/cards/models/bank_card.dart';
 import 'package:flutter_snappyshop/features/cards/services/card_service.dart';
+import 'package:flutter_snappyshop/features/cards/validators/card_validator.dart';
 import 'package:flutter_snappyshop/features/shared/models/form_type.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
@@ -54,7 +55,7 @@ class CardNotifier extends StateNotifier<CardState> {
         return;
       }
       await CardService.saveCard(BankCard(
-        cardNumber: state.cardNumber.value ?? '',
+        cardNumber: removeSpaces(state.cardNumber.value ?? ''),
         cardHolderName: state.cardHolderName.value ?? '',
         expired: state.expired.value ?? '',
         ccv: state.ccv.value ?? '',
@@ -140,8 +141,11 @@ class CardForm {
         value: '',
         validators: [
           Validators.required,
-          Validators.minLength(16),
-          Validators.maxLength(16),
+          Validators.composeOR([
+            const VisaValidator(),
+            const MastercardValidator(),
+            const AmexValidator(),
+          ])
         ],
       ),
       cardHolderName: FormControl<String>(
@@ -154,6 +158,7 @@ class CardForm {
           Validators.required,
           Validators.minLength(5),
           Validators.maxLength(5),
+          const ExpiredValidator(),
         ],
       ),
       ccv: FormControl<String>(
@@ -162,9 +167,13 @@ class CardForm {
           Validators.required,
           Validators.number(),
           Validators.minLength(3),
-          Validators.maxLength(3),
+          Validators.maxLength(4),
         ],
       ),
     });
   }
+}
+
+String removeSpaces(String value) {
+  return value.replaceAll(' ', '');
 }

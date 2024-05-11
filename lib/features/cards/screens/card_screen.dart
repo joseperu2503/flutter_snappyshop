@@ -33,6 +33,14 @@ class CardScreenState extends ConsumerState<CardScreen> {
     super.initState();
   }
 
+  MaskInputFormatter cardNumberFormatter = MaskInputFormatter(
+    mask: '#### #### #### ####',
+  );
+
+  MaskInputFormatter ccvFormatter = MaskInputFormatter(
+    mask: '###',
+  );
+
   @override
   Widget build(BuildContext context) {
     final MediaQueryData screen = MediaQuery.of(context);
@@ -64,7 +72,24 @@ class CardScreenState extends ConsumerState<CardScreen> {
                       cvvCode: cardState.ccv.value ?? '',
                       showBackView: showBackView,
                       isHolderNameVisible: true,
-                      onCreditCardWidgetChange: (CreditCardBrand brand) {},
+                      onCreditCardWidgetChange: (CreditCardBrand brand) {
+                        if (brand.brandName == CardType.visa ||
+                            brand.brandName == CardType.mastercard) {
+                          cardNumberFormatter = MaskInputFormatter(
+                            mask: '#### #### #### ####',
+                          );
+                          ccvFormatter = MaskInputFormatter(
+                            mask: '###',
+                          );
+                        }
+                        if (brand.brandName == CardType.americanExpress) {
+                          cardNumberFormatter =
+                              MaskInputFormatter(mask: '#### ###### #####');
+                          ccvFormatter = MaskInputFormatter(
+                            mask: '####',
+                          );
+                        }
+                      },
                       padding: 0,
                       cardBgColor: AppColors.textCoolBlack,
                     ),
@@ -89,12 +114,6 @@ class CardScreenState extends ConsumerState<CardScreen> {
                       onChanged: (value) {
                         changeForm(CardForm.cardNumber, value);
                       },
-                      valueProcess: (value) {
-                        return addSpaces(value);
-                      },
-                      onChangeProcess: (value) {
-                        return removeSpaces(value);
-                      },
                       hintText: 'XXXX XXXX XXXX XXXX',
                       inputFormatters: [
                         cardNumberFormatter,
@@ -103,7 +122,8 @@ class CardScreenState extends ConsumerState<CardScreen> {
                       autofocus: cardState.formType == FormType.create,
                       validationMessages: {
                         'required': (error) => 'We need this information.',
-                        'minLength': (error) => 'Incomplete card number.'
+                        'minLength': (error) => 'Incomplete card number.',
+                        'invalidCard': (error) => 'Invalid card number.'
                       },
                       keyboardType: TextInputType.number,
                       readOnly: cardState.formType == FormType.edit,
@@ -137,7 +157,7 @@ class CardScreenState extends ConsumerState<CardScreen> {
                       },
                       readOnly: cardState.formType == FormType.edit,
                       inputFormatters: [
-                        LengthLimitingTextInputFormatter(28),
+                        LengthLimitingTextInputFormatter(40),
                       ],
                     ),
                     const SizedBox(
@@ -179,8 +199,8 @@ class CardScreenState extends ConsumerState<CardScreen> {
                                 validationMessages: {
                                   'required': (error) =>
                                       'We need this information.',
-                                  'minLength': (error) =>
-                                      'Incomplete expiration date.'
+                                  'minLength': (error) => 'Incomplete date.',
+                                  'invalid': (error) => 'Invalid date.'
                                 },
                               ),
                             ],
@@ -265,35 +285,6 @@ class CardScreenState extends ConsumerState<CardScreen> {
   }
 }
 
-String addSpaces(String value) {
-  final StringBuffer result = StringBuffer();
-  int groupLength = 0;
-  String stringWithoutSpaces = removeSpaces(value);
-
-  for (int i = 0; i < stringWithoutSpaces.length; i++) {
-    result.write(stringWithoutSpaces[i]);
-    if ([3, 7, 11].contains(groupLength)) {
-      // Agrega un espacio después de cada grupo de 4 dígitos, al final se obtiene 4 grupos de 4 dígitos
-      result.write(' ');
-    }
-    groupLength++;
-  }
-
-  return result.toString();
-}
-
-String removeSpaces(String value) {
-  return value.replaceAll(' ', '');
-}
-
 MaskInputFormatter expiredFormatter = MaskInputFormatter(
   mask: '##/##',
-);
-
-MaskInputFormatter cardNumberFormatter = MaskInputFormatter(
-  mask: '#### #### #### ####',
-);
-
-MaskInputFormatter ccvFormatter = MaskInputFormatter(
-  mask: '###',
 );

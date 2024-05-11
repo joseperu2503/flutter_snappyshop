@@ -14,8 +14,6 @@ class CustomInput extends ConsumerStatefulWidget {
     this.focusNode,
     this.inputFormatters,
     this.keyboardType,
-    this.valueProcess,
-    this.onChangeProcess,
     this.textInputAction,
     this.onFieldSubmitted,
     this.autofocus = false,
@@ -26,8 +24,6 @@ class CustomInput extends ConsumerStatefulWidget {
   final FormControl<String> value;
   final String? hintText;
   final FocusNode? focusNode;
-  final String Function(String value)? valueProcess;
-  final String Function(String value)? onChangeProcess;
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? keyboardType;
   final void Function(FormControl<String> value) onChanged;
@@ -97,13 +93,32 @@ class CustomInputState extends ConsumerState<CustomInput> {
 
   @override
   Widget build(BuildContext context) {
-    String? newValue = widget.value.value;
-    if (widget.valueProcess != null && newValue != null) {
-      newValue = widget.valueProcess!(newValue);
+    String newValue = widget.value.value ?? '';
+    if (newValue != controller.value.text) {
+      if (widget.inputFormatters != null) {
+        for (var inputFormatter in widget.inputFormatters!) {
+          newValue = inputFormatter
+              .formatEditUpdate(
+                  TextEditingValue(
+                    text: controller.value.text,
+                    selection: controller.selection.copyWith(
+                      baseOffset: 0,
+                    ),
+                  ),
+                  TextEditingValue(
+                    text: newValue,
+                    selection: controller.selection.copyWith(
+                      baseOffset: 0,
+                    ),
+                  ))
+              .text;
+        }
+      }
+
+      controller.value = controller.value.copyWith(
+        text: newValue,
+      );
     }
-    controller.value = controller.value.copyWith(
-      text: newValue,
-    );
 
     return TextFieldContainer(
       errorMessage: errorText,
@@ -132,9 +147,7 @@ class CustomInputState extends ConsumerState<CustomInput> {
         controller: controller,
         onChanged: (value) {
           String newValue = value;
-          if (widget.onChangeProcess != null) {
-            newValue = widget.onChangeProcess!(newValue);
-          }
+
           widget.value.patchValue(newValue);
           widget.onChanged(widget.value);
         },
@@ -145,6 +158,9 @@ class CustomInputState extends ConsumerState<CustomInput> {
         onFieldSubmitted: widget.onFieldSubmitted,
         autofocus: widget.autofocus,
         readOnly: widget.readOnly,
+        onTapOutside: (event) {
+          FocusScope.of(context).unfocus();
+        },
       ),
     );
   }
