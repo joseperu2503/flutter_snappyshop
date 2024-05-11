@@ -24,7 +24,7 @@ class CustomBackButton extends StatelessWidget {
         },
         child: SvgPicture.asset(
           kIsWeb || Platform.isAndroid
-              ? 'assets/icons/arrow_back_android.svg'
+              ? 'assets/icons/arrow_back_material.svg'
               : 'assets/icons/arrow_back_ios.svg',
           width: 24,
           height: 24,

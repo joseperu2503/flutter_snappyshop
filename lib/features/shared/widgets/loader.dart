@@ -27,8 +27,8 @@ class Loader extends StatelessWidget {
               backgroundColor: AppColors.white,
               body: Center(
                 child: SizedBox(
-                  width: 60,
-                  height: 60,
+                  width: 40,
+                  height: 40,
                   child: kIsWeb || Platform.isAndroid
                       ? const CircularProgressIndicator(
                           color: AppColors.primaryPearlAqua,
