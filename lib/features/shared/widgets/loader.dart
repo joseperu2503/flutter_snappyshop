@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 
@@ -20,12 +24,19 @@ class Loader extends StatelessWidget {
           child,
           if (loading)
             Scaffold(
-              backgroundColor: AppColors.textArsenic.withOpacity(0.4),
-              body: const Center(
+              backgroundColor: AppColors.white,
+              body: Center(
                 child: SizedBox(
                   width: 60,
                   height: 60,
-                  child: CircularProgressIndicator(),
+                  child: kIsWeb || Platform.isAndroid
+                      ? const CircularProgressIndicator(
+                          color: AppColors.primaryPearlAqua,
+                        )
+                      : const CupertinoActivityIndicator(
+                          radius: 20,
+                          color: AppColors.primaryPearlAqua,
+                        ),
                 ),
               ),
             ),
