@@ -61,307 +61,146 @@ final appRouter = GoRouter(
     // Auth Routes
     GoRoute(
       path: '/',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const HomeScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return transition(
-                animation: animation, context: context, child: child);
-          },
-        );
+      builder: (context, state) {
+        return const HomeScreen();
       },
       redirect: externalRedirect,
     ),
     GoRoute(
       path: '/login',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const LoginScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return transition(
-                animation: animation, context: context, child: child);
-          },
-        );
+      builder: (context, state) {
+        return const LoginScreen();
       },
     ),
     GoRoute(
       path: '/register',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const RegisterScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return transition(
-                animation: animation, context: context, child: child);
-          },
-        );
+      builder: (context, state) {
+        return const RegisterScreen();
       },
     ),
     GoRoute(
       path: '/forgot-password',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const ForgotPasswordScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return transition(
-                animation: animation, context: context, child: child);
-          },
-        );
+      builder: (context, state) {
+        return const ForgotPasswordScreen();
       },
     ),
     GoRoute(
       path: '/verify-code',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const VerifyCodeScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return transition(
-                animation: animation, context: context, child: child);
-          },
-        );
+      builder: (context, state) {
+        return const VerifyCodeScreen();
       },
     ),
     GoRoute(
       path: '/change-password-external',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const ChangePasswordExternalScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return transition(
-                animation: animation, context: context, child: child);
-          },
-        );
+      builder: (context, state) {
+        return const ChangePasswordExternalScreen();
       },
     ),
     // Product Routes
     GoRoute(
       path: '/products',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const ProductsScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return transition(
-                animation: animation, context: context, child: child);
-          },
-        );
+      builder: (context, state) {
+        return const ProductsScreen();
       },
     ),
     GoRoute(
       path: '/product/:id',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: ProductScreen(
-            productId: state.pathParameters['id'] ?? 'no-id',
-          ),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return transition(
-                animation: animation, context: context, child: child);
-          },
+      builder: (context, state) {
+        return ProductScreen(
+          productId: state.pathParameters['id'] ?? 'no-id',
         );
       },
     ),
     GoRoute(
       path: '/cart',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const CartScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return transition(
-                animation: animation, context: context, child: child);
-          },
-        );
+      builder: (context, state) {
+        return const CartScreen();
       },
     ),
     GoRoute(
       path: '/order-confirmed',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const OrderConfirmedScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return transition(
-                animation: animation, context: context, child: child);
-          },
-        );
+      builder: (context, state) {
+        return const OrderConfirmedScreen();
       },
     ),
     GoRoute(
       path: '/search',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const SearchScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return transition(
-                animation: animation, context: context, child: child);
-          },
-        );
+      builder: (context, state) {
+        return const SearchScreen();
       },
     ),
     GoRoute(
       path: '/whishlist',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const WishlistScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return transition(
-                animation: animation, context: context, child: child);
-          },
-        );
+      builder: (context, state) {
+        return const WishlistScreen();
       },
     ),
     GoRoute(
       path: '/brand/:id',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: BrandScreen(
-            brandId: state.pathParameters['id'] ?? 'no-id',
-          ),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return transition(
-                animation: animation, context: context, child: child);
-          },
+      builder: (context, state) {
+        return BrandScreen(
+          brandId: state.pathParameters['id'] ?? 'no-id',
         );
       },
     ),
     GoRoute(
       path: '/change-password-internal',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const ChangePasswordInternalScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return transition(
-                animation: animation, context: context, child: child);
-          },
-        );
+      builder: (context, state) {
+        return const ChangePasswordInternalScreen();
       },
     ),
     GoRoute(
       path: '/account-information',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const AccountInformationScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return transition(
-                animation: animation, context: context, child: child);
-          },
-        );
+      builder: (context, state) {
+        return const AccountInformationScreen();
       },
     ),
     GoRoute(
       path: '/settings',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const SettingsScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return transition(
-                animation: animation, context: context, child: child);
-          },
-        );
+      builder: (context, state) {
+        return const SettingsScreen();
       },
     ),
     GoRoute(
       path: '/my-orders',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const MyOrdersScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return transition(
-                animation: animation, context: context, child: child);
-          },
-        );
+      builder: (context, state) {
+        return const MyOrdersScreen();
       },
     ),
     GoRoute(
       path: '/my-addresses',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const AddressesScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return transition(
-                animation: animation, context: context, child: child);
-          },
-        );
+      builder: (context, state) {
+        return const AddressesScreen();
       },
     ),
     GoRoute(
       path: '/search-address',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const SearchAddressScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return transition(
-                animation: animation, context: context, child: child);
-          },
-        );
+      builder: (context, state) {
+        return const SearchAddressScreen();
       },
     ),
     GoRoute(
       path: '/address-map',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const AddressMapScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return transition(
-                animation: animation, context: context, child: child);
-          },
-        );
+      builder: (context, state) {
+        return const AddressMapScreen();
       },
     ),
     GoRoute(
       path: '/confirm-address',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const AddressScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return transition(
-                animation: animation, context: context, child: child);
-          },
-        );
+      builder: (context, state) {
+        return const AddressScreen();
       },
     ),
     GoRoute(
       path: '/my-cards',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const CardsScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return transition(
-                animation: animation, context: context, child: child);
-          },
-        );
+      builder: (context, state) {
+        return const CardsScreen();
       },
     ),
     GoRoute(
       path: '/card',
-      pageBuilder: (context, state) {
-        return CustomTransitionPage(
-          key: state.pageKey,
-          child: const CardScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return transition(
-                animation: animation, context: context, child: child);
-          },
-        );
+      builder: (context, state) {
+        return const CardScreen();
       },
     ),
   ],
