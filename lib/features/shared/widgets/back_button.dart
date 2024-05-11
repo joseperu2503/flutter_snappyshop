@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -20,9 +23,15 @@ class CustomBackButton extends StatelessWidget {
           context.pop();
         },
         child: SvgPicture.asset(
-          'assets/icons/arrow-back.svg',
+          kIsWeb || Platform.isAndroid
+              ? 'assets/icons/arrow_back_android.svg'
+              : 'assets/icons/arrow_back_ios.svg',
           width: 24,
           height: 24,
+          colorFilter: const ColorFilter.mode(
+            AppColors.textYankeesBlue,
+            BlendMode.srcIn,
+          ),
         ),
       ),
     );
