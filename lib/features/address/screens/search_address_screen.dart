@@ -36,6 +36,7 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
   }
 
   final FocusNode _focusNode = FocusNode();
+  bool loadingPosition = false;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +47,7 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
             addressState.addressResults.isEmpty;
 
     return Layout1(
+      loading: loadingPosition,
       title: 'Search address',
       body: CustomScrollView(
         slivers: [
@@ -212,17 +214,24 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
               ),
               child: CustomButton(
                 onPressed: () async {
-                  try {
-                    Position location =
-                        await LocationService.getCurrentPosition();
+                  FocusManager.instance.primaryFocus?.unfocus();
 
-                    ref.read(mapProvider.notifier).changeCameraPosition(LatLng(
-                          location.latitude,
-                          location.longitude,
-                        ));
-                    if (!context.mounted) return;
-                    context.push('/address-map');
-                  } catch (_) {}
+                  setState(() {
+                    loadingPosition = true;
+                  });
+                  Position? location =
+                      await LocationService.getCurrentPosition();
+                  setState(() {
+                    loadingPosition = false;
+                  });
+                  if (location == null) return;
+
+                  ref.read(mapProvider.notifier).changeCameraPosition(LatLng(
+                        location.latitude,
+                        location.longitude,
+                      ));
+                  if (!context.mounted) return;
+                  context.push('/address-map');
                 },
                 text: 'Search address over the map',
               ),

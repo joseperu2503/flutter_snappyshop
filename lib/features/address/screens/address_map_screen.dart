@@ -191,8 +191,9 @@ class BottomModal extends ConsumerWidget {
                   child: TextButton(
                     onPressed: () async {
                       try {
-                        Position location =
+                        Position? location =
                             await LocationService.getCurrentPosition();
+                        if (location == null) return;
                         ref.read(mapProvider.notifier).goToLocation(
                               location.latitude,
                               location.longitude,
