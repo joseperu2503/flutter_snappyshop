@@ -88,6 +88,7 @@ class LoginNotifier extends StateNotifier<LoginState> {
     ).signIn();
 
     if (googleUser == null) {
+      ref.read(snackbarProvider.notifier).showSnackbar('Cancelled by user.');
       return;
     }
 
