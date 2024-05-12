@@ -5,6 +5,7 @@ import 'package:flutter_snappyshop/features/auth/widgets/otp.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/providers/timer_provider.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 
 class VerifyCodeScreen extends ConsumerStatefulWidget {
   const VerifyCodeScreen({super.key});
@@ -17,9 +18,6 @@ class VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      ref.read(forgotPasswordProvider.notifier).changeVerifyCode('');
-    });
   }
 
   @override
@@ -28,6 +26,7 @@ class VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
     final timerState = ref.watch(timerProvider);
 
     return Layout1(
+      loading: forgotState.loading,
       body: CustomScrollView(
         slivers: [
           SliverFillRemaining(
@@ -111,49 +110,22 @@ class VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Container(
-                    height: 52,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryPearlAqua,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: TextButton(
-                      onPressed: () {
-                        if (timerState.timerOn) {
-                          ref
-                              .read(forgotPasswordProvider.notifier)
-                              .validateVerifyCode();
-                        } else {
-                          ref
-                              .read(forgotPasswordProvider.notifier)
-                              .sendVerifyCode(withPushRoute: false);
-                        }
-                      },
-                      child: forgotState.loading
-                          ? const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                color: AppColors.primaryCultured,
-                                strokeWidth: 2,
-                              ),
-                            )
-                          : Text(
-                              timerState.timerOn
-                                  ? 'Verify'
-                                  : 'Resend verify code',
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.textCultured,
-                                height: 22 / 16,
-                                leadingDistribution:
-                                    TextLeadingDistribution.even,
-                              ),
-                            ),
-                    ),
-                  )
+                  CustomButton(
+                    onPressed: () {
+                      if (timerState.timerOn) {
+                        ref
+                            .read(forgotPasswordProvider.notifier)
+                            .validateVerifyCode();
+                      } else {
+                        ref
+                            .read(forgotPasswordProvider.notifier)
+                            .sendVerifyCode(withPushRoute: false);
+                      }
+                    },
+                    text: timerState.timerOn ? 'Verify' : 'Resend verify code',
+                    disabled: timerState.timerOn &&
+                        forgotState.verifyCode.length != 4,
+                  ),
                 ],
               ),
             ),

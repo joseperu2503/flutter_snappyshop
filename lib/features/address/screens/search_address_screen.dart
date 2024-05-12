@@ -8,6 +8,7 @@ import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/providers/map_provider.dart';
 import 'package:flutter_snappyshop/features/shared/services/location_service.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -88,13 +89,7 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
               child: SizedBox(
                 height: 200,
                 child: Center(
-                  child: SizedBox(
-                    width: 40,
-                    height: 40,
-                    child: CircularProgressIndicator(
-                      color: AppColors.primaryPearlAqua,
-                    ),
-                  ),
+                  child: CustomProgressIndicator(),
                 ),
               ),
             ),

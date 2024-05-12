@@ -1,7 +1,3 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/address/providers/address_provider.dart';
@@ -9,6 +5,7 @@ import 'package:flutter_snappyshop/features/address/widgets/address_item.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
 import 'package:go_router/go_router.dart';
 
 class AddressesScreen extends ConsumerStatefulWidget {
@@ -91,19 +88,8 @@ class AddressesScreenState extends ConsumerState<AddressesScreen> {
                   top: 10,
                   bottom: 40,
                 ),
-                child: Center(
-                  child: SizedBox(
-                    width: 40,
-                    height: 40,
-                    child: kIsWeb || Platform.isAndroid
-                        ? const CircularProgressIndicator(
-                            color: AppColors.primaryPearlAqua,
-                          )
-                        : const CupertinoActivityIndicator(
-                            radius: 16,
-                            color: AppColors.primaryPearlAqua,
-                          ),
-                  ),
+                child: const Center(
+                  child: CustomProgressIndicator(),
                 ),
               ),
             ),

@@ -1,9 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
 import 'package:flutter_snappyshop/features/products/providers/products_provider.dart';
 import 'package:flutter_snappyshop/features/products/services/products_services.dart';
@@ -13,6 +9,7 @@ import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
 
 class BrandScreen extends ConsumerStatefulWidget {
   const BrandScreen({
@@ -121,19 +118,8 @@ class BrandScreenState extends ConsumerState<BrandScreen> {
                   top: 10,
                   bottom: 40,
                 ),
-                child: Center(
-                  child: SizedBox(
-                    width: 40,
-                    height: 40,
-                    child: kIsWeb || Platform.isAndroid
-                        ? const CircularProgressIndicator(
-                            color: AppColors.primaryPearlAqua,
-                          )
-                        : const CupertinoActivityIndicator(
-                            radius: 16,
-                            color: AppColors.primaryPearlAqua,
-                          ),
-                  ),
+                child: const Center(
+                  child: CustomProgressIndicator(),
                 ),
               ),
             ),

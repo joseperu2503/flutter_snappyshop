@@ -51,12 +51,10 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState> {
       state = state.copyWith(
         uuid: response.data.uuid,
         expirationDate: () => response.data.expirationDate,
+        verifyCode: '',
       );
 
       ref.read(timerProvider.notifier).initDateTimer(
-            onFinish: () {
-              resetVerifyCode();
-            },
             date: state.expirationDate,
           );
       if (withPushRoute) {
@@ -74,12 +72,7 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState> {
   validateVerifyCode() async {
     FocusManager.instance.primaryFocus?.unfocus();
 
-    if (state.verifyCode.length != 4) {
-      ref
-          .read(snackbarProvider.notifier)
-          .showSnackbar('The verification code must be 4 digits');
-      return;
-    }
+    ref.read(timerProvider.notifier).cancelTimer();
 
     state = state.copyWith(
       loading: true,
@@ -142,12 +135,6 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState> {
   changeEmail(Email email) {
     state = state.copyWith(
       email: email,
-    );
-  }
-
-  resetVerifyCode() {
-    state = state.copyWith(
-      verifyCode: '',
     );
   }
 

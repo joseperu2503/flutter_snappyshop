@@ -5,6 +5,7 @@ import 'package:flutter_snappyshop/features/auth/widgets/input_password.dart';
 import 'package:flutter_snappyshop/features/shared/inputs/password.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 
 class ChangePasswordExternalScreen extends ConsumerStatefulWidget {
   const ChangePasswordExternalScreen({super.key});
@@ -34,6 +35,7 @@ class ChangePasswordExternalScreenState
     final forgotState = ref.watch(forgotPasswordProvider);
 
     return Layout1(
+      loading: forgotState.loading,
       body: CustomScrollView(
         slivers: [
           SliverFillRemaining(
@@ -127,41 +129,14 @@ class ChangePasswordExternalScreenState
                   const SizedBox(
                     height: 80,
                   ),
-                  Container(
-                    height: 52,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryPearlAqua,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: TextButton(
-                      onPressed: () {
-                        ref
-                            .read(forgotPasswordProvider.notifier)
-                            .submitChangePassword();
-                      },
-                      child: !forgotState.loading
-                          ? const Text(
-                              'Change password',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.textCultured,
-                                height: 22 / 16,
-                                leadingDistribution:
-                                    TextLeadingDistribution.even,
-                              ),
-                            )
-                          : const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                color: AppColors.primaryCultured,
-                                strokeWidth: 2,
-                              ),
-                            ),
-                    ),
-                  )
+                  CustomButton(
+                    onPressed: () {
+                      ref
+                          .read(forgotPasswordProvider.notifier)
+                          .submitChangePassword();
+                    },
+                    text: 'Change password',
+                  ),
                 ],
               ),
             ),

@@ -10,6 +10,7 @@ import 'package:flutter_snappyshop/features/settings/services/notification_servi
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
 import 'package:go_router/go_router.dart';
 
 class ProductsScreen extends ConsumerStatefulWidget {
@@ -283,11 +284,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                             bottom: 40,
                           ),
                           child: const Center(
-                            child: SizedBox(
-                              width: 40,
-                              height: 40,
-                              child: CircularProgressIndicator(),
-                            ),
+                            child: CustomProgressIndicator(),
                           ),
                         ),
                       )
@@ -300,14 +297,12 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                   vertical: 16,
                 ),
                 child: Center(
-                  child: productsState.dashboardStatus == LoadingStatus.loading
-                      ? const CircularProgressIndicator()
-                      : CustomButton(
-                          text: 'Retry',
-                          onPressed: () {
-                            loadData();
-                          },
-                        ),
+                  child: CustomButton(
+                    text: 'Retry',
+                    onPressed: () {
+                      loadData();
+                    },
+                  ),
                 ),
               ),
       ),

@@ -32,9 +32,7 @@ class TimerNotifier extends StateNotifier<TimerState> {
     );
     DateTime now = DateTime.now();
 
-    if (date.hour <= now.hour &&
-        date.minute <= now.minute &&
-        date.second <= now.second) {
+    if (date.minute <= now.minute && date.second <= now.second) {
       //si la hora ya pasó
       cancelTimer();
       if (onFinish != null) {

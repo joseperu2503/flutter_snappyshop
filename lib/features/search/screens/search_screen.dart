@@ -1,7 +1,3 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/search/providers/search_provider.dart';
@@ -12,6 +8,7 @@ import 'package:flutter_snappyshop/features/search/widgets/price_filter_button.d
 import 'package:flutter_snappyshop/features/products/widgets/product_card.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/back_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
@@ -243,21 +240,10 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                   ),
                 ),
               if (searchState.loadingProducts && searchState.products.isEmpty)
-                SliverFillRemaining(
+                const SliverFillRemaining(
                   hasScrollBody: false,
                   child: Center(
-                    child: SizedBox(
-                      width: 40,
-                      height: 40,
-                      child: kIsWeb || Platform.isAndroid
-                          ? const CircularProgressIndicator(
-                              color: AppColors.primaryPearlAqua,
-                            )
-                          : const CupertinoActivityIndicator(
-                              radius: 16,
-                              color: AppColors.primaryPearlAqua,
-                            ),
-                    ),
+                    child: CustomProgressIndicator(),
                   ),
                 ),
               if (searchState.loadingProducts &&
@@ -268,19 +254,8 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                       top: 10,
                       bottom: 40,
                     ),
-                    child: Center(
-                      child: SizedBox(
-                        width: 40,
-                        height: 40,
-                        child: kIsWeb || Platform.isAndroid
-                            ? const CircularProgressIndicator(
-                                color: AppColors.primaryPearlAqua,
-                              )
-                            : const CupertinoActivityIndicator(
-                                radius: 16,
-                                color: AppColors.primaryPearlAqua,
-                              ),
-                      ),
+                    child: const Center(
+                      child: CustomProgressIndicator(),
                     ),
                   ),
                 )

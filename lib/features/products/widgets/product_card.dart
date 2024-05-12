@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
 import 'package:flutter_snappyshop/features/wishlist/providers/favorite_products_provider.dart';
 import 'package:flutter_snappyshop/features/products/providers/products_provider.dart';
 import 'package:flutter_snappyshop/features/products/services/products_services.dart';
@@ -110,12 +111,11 @@ class ProductCardState extends ConsumerState<ProductCard> {
                   width: 40,
                   height: 40,
                   child: loadingFavorite
-                      ? Container(
-                          padding: const EdgeInsets.all(10),
-                          child: CircularProgressIndicator(
+                      ? const Center(
+                          child: CustomProgressIndicator(
+                            size: 20,
+                            color: AppColors.secondaryPastelRed,
                             strokeWidth: 2,
-                            color:
-                                AppColors.secondaryPastelRed.withOpacity(0.8),
                           ),
                         )
                       : IconButton(

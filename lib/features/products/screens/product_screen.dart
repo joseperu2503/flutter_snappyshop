@@ -3,6 +3,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
 import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
 import 'package:flutter_snappyshop/features/wishlist/providers/favorite_products_provider.dart';
 import 'package:flutter_snappyshop/features/products/providers/products_provider.dart';
 import 'package:flutter_snappyshop/features/products/services/products_services.dart';
@@ -40,24 +41,24 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
 
   loadProduct() async {
     setState(() {
-      productStatus = LoadingStatus.loading;
+      loadingProduct = LoadingStatus.loading;
     });
     try {
       await ref
           .read(productsProvider.notifier)
           .getProduct(productId: widget.productId);
       setState(() {
-        productStatus = LoadingStatus.success;
+        loadingProduct = LoadingStatus.success;
       });
     } on ServiceException catch (_) {
       setState(() {
-        productStatus = LoadingStatus.error;
+        loadingProduct = LoadingStatus.error;
       });
     }
   }
 
   bool loadingFavorite = false;
-  LoadingStatus productStatus = LoadingStatus.loading;
+  LoadingStatus loadingProduct = LoadingStatus.none;
 
   toggleFavorite(Product? product) async {
     if (loadingFavorite || product == null) return;
@@ -94,7 +95,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
         : ((product?.price ?? 1) * (1 - (product?.discount ?? 1) / 100));
     double safeAreaHeight = MediaQuery.of(context).padding.top;
 
-    return productStatus == LoadingStatus.success && product != null
+    return loadingProduct == LoadingStatus.success && product != null
         ? Scaffold(
             bottomNavigationBar: SafeArea(
               child: Container(
@@ -128,13 +129,9 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                               },
                         child: loadingFavorite
                             ? const Center(
-                                child: SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color: AppColors.primaryPearlAqua,
-                                  ),
+                                child: CustomProgressIndicator(
+                                  size: 20,
+                                  strokeWidth: 2,
                                 ),
                               )
                             : Icon(
@@ -365,8 +362,8 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                 vertical: 16,
               ),
               child: Center(
-                child: productStatus == LoadingStatus.loading
-                    ? const CircularProgressIndicator()
+                child: loadingProduct == LoadingStatus.loading
+                    ? const CustomProgressIndicator()
                     : CustomButton(
                         text: 'Retry',
                         onPressed: () {

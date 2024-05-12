@@ -86,7 +86,7 @@ class AddressNotifier extends StateNotifier<AddressState> {
       addressResults: [],
       search: newSearch,
       searchingAddresses:
-          newSearch != '' ? LoadingStatus.success : LoadingStatus.none,
+          newSearch != '' ? LoadingStatus.loading : LoadingStatus.none,
     );
     if (newSearch == '') return;
 

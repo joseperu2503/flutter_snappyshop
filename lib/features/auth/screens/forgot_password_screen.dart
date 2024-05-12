@@ -4,6 +4,7 @@ import 'package:flutter_snappyshop/features/auth/providers/forgot_password_provi
 import 'package:flutter_snappyshop/features/auth/widgets/input_email.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 
 class ForgotPasswordScreen extends ConsumerStatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -26,6 +27,7 @@ class ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
     final forgotState = ref.watch(forgotPasswordProvider);
 
     return Layout1(
+      loading: forgotState.loading,
       body: CustomScrollView(
         slivers: [
           SliverFillRemaining(
@@ -98,39 +100,14 @@ class ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                   const SizedBox(
                     height: 40,
                   ),
-                  Container(
-                    height: 52,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryPearlAqua,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: TextButton(
-                      onPressed: () {
-                        ref.read(forgotPasswordProvider.notifier).sendVerifyCode();
-                      },
-                      child: !forgotState.loading
-                          ? const Text(
-                              'Get code',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.textCultured,
-                                height: 22 / 16,
-                                leadingDistribution:
-                                    TextLeadingDistribution.even,
-                              ),
-                            )
-                          : const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                color: AppColors.primaryCultured,
-                                strokeWidth: 2,
-                              ),
-                            ),
-                    ),
-                  )
+                  CustomButton(
+                    onPressed: () {
+                      ref
+                          .read(forgotPasswordProvider.notifier)
+                          .sendVerifyCode();
+                    },
+                    text: 'Get code',
+                  ),
                 ],
               ),
             ),

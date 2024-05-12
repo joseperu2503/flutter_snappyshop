@@ -1,9 +1,6 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
 
 class Loader extends StatelessWidget {
   const Loader({
@@ -23,21 +20,10 @@ class Loader extends StatelessWidget {
         children: [
           child,
           if (loading)
-            Scaffold(
+            const Scaffold(
               backgroundColor: AppColors.white,
               body: Center(
-                child: SizedBox(
-                  width: 40,
-                  height: 40,
-                  child: kIsWeb || Platform.isAndroid
-                      ? const CircularProgressIndicator(
-                          color: AppColors.primaryPearlAqua,
-                        )
-                      : const CupertinoActivityIndicator(
-                          radius: 16,
-                          color: AppColors.primaryPearlAqua,
-                        ),
-                ),
+                child: CustomProgressIndicator(),
               ),
             ),
         ],
