@@ -48,11 +48,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Necesitamos poder tomar fotos de los productos con la camara</string>
+	<string>This app needs access to your camera to take photos.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Activa tu micro pe, TODO: cambiar estos mensajes :v</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Necesitamos acceso a la galeria para seleccionar foto</string>
+	<string>his app needs access to your photos.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
