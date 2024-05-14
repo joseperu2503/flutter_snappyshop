@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
-import 'package:flutter_snappyshop/features/auth/providers/auth_provider.dart';
 import 'package:flutter_snappyshop/features/products/providers/products_provider.dart';
 import 'package:flutter_snappyshop/features/products/widgets/cart_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_drawer.dart';
@@ -52,7 +51,6 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
   @override
   Widget build(BuildContext context) {
     final productsState = ref.watch(productsProvider);
-    final authState = ref.watch(authProvider);
 
     return Loader(
       loading: productsState.dashboardStatus == LoadingStatus.loading,
@@ -67,14 +65,12 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
           title: Container(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
                   width: 46,
                   height: 46,
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    color: AppColors.primaryCultured,
                   ),
                   child: TextButton(
                     onPressed: () {
@@ -86,6 +82,20 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                     ),
                   ),
                 ),
+                const SizedBox(
+                  width: 8,
+                ),
+                const Text(
+                  'SnappyShop',
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.primaryPearlAqua,
+                    height: 22 / 22,
+                    leadingDistribution: TextLeadingDistribution.even,
+                  ),
+                ),
+                const Spacer(),
                 const CartButton(),
               ],
             ),
@@ -93,6 +103,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
         ),
         body: (productsState.dashboardStatus == LoadingStatus.success)
             ? SafeArea(
+                bottom: false,
                 child: CustomScrollView(
                   controller: scrollController,
                   slivers: [
@@ -107,17 +118,6 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Text(
-                              'Hi ${authState.user?.name ?? ''}',
-                              style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.textCoolBlack,
-                                height: 32 / 24,
-                                leadingDistribution:
-                                    TextLeadingDistribution.even,
-                              ),
-                            ),
                             const SizedBox(
                               height: 20,
                             ),
@@ -276,18 +276,19 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                         ),
                       ),
                     ),
-                    if (productsState.loadingProducts)
-                      SliverToBoxAdapter(
-                        child: Container(
-                          padding: const EdgeInsets.only(
-                            top: 10,
-                            bottom: 40,
-                          ),
-                          child: const Center(
-                            child: CustomProgressIndicator(),
-                          ),
+                    SliverToBoxAdapter(
+                      child: Container(
+                        padding: const EdgeInsets.only(
+                          top: 10,
+                          bottom: 40,
                         ),
-                      )
+                        child: Center(
+                          child: productsState.loadingProducts
+                              ? const CustomProgressIndicator()
+                              : null,
+                        ),
+                      ),
+                    )
                   ],
                 ),
               )
