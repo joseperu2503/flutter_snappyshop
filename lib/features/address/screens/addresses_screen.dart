@@ -58,6 +58,7 @@ class AddressesScreenState extends ConsumerState<AddressesScreen> {
             color: AppColors.white,
           ),
           onPressed: () {
+            ref.read(addressProvider.notifier).resetForm();
             context.push('/search-address');
           },
         ),

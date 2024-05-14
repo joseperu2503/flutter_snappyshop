@@ -18,6 +18,7 @@ class CustomTexarea extends StatefulWidget {
     this.textInputAction,
     this.onFieldSubmitted,
     this.autofocus = false,
+    this.readOnly = false,
   });
 
   final FormControl<String> value;
@@ -31,6 +32,8 @@ class CustomTexarea extends StatefulWidget {
   final TextInputAction? textInputAction;
   final void Function(String value)? onFieldSubmitted;
   final bool autofocus;
+  final bool readOnly;
+
   @override
   State<CustomTexarea> createState() => _CustomTexareaState();
 }
@@ -116,6 +119,7 @@ class _CustomTexareaState extends State<CustomTexarea> {
         onFieldSubmitted: widget.onFieldSubmitted,
         autofocus: widget.autofocus,
         maxLines: 10,
+        readOnly: widget.readOnly,
       ),
     );
   }

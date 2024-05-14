@@ -8,6 +8,7 @@ import 'package:flutter_snappyshop/features/auth/screens/forgot_password_screen.
 import 'package:flutter_snappyshop/features/auth/screens/verify_code_screen.dart';
 import 'package:flutter_snappyshop/features/cards/screens/card_screen.dart';
 import 'package:flutter_snappyshop/features/cards/screens/cards_screen.dart';
+import 'package:flutter_snappyshop/features/checkout/screens/checkout_screen.dart';
 import 'package:flutter_snappyshop/features/orders/screens/my_orders_screen.dart';
 import 'package:flutter_snappyshop/features/wishlist/screens/wishlist_screen.dart';
 import 'package:flutter_snappyshop/features/settings/screens/settings_screen.dart';
@@ -201,6 +202,12 @@ final appRouter = GoRouter(
       path: '/card',
       builder: (context, state) {
         return const CardScreen();
+      },
+    ),
+    GoRoute(
+      path: '/checkout',
+      builder: (context, state) {
+        return const CheckoutScreen();
       },
     ),
   ],

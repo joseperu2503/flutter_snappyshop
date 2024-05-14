@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/router/app_router.dart';
 import 'package:flutter_snappyshop/features/address/models/addresses_response.dart';
@@ -197,40 +198,57 @@ class AddressNotifier extends StateNotifier<AddressState> {
     }
   }
 
-  deleteAddress(Address address) async {
+  deleteAddress() async {
+    if (state.selectedAddress == null) return;
+
     resetMyAddresses();
     try {
       state = state.copyWith(
-        loadingAddresses: LoadingStatus.loading,
+        savingAddress: LoadingStatus.loading,
       );
       await AddressService.deleteAddress(
-        addressId: address.id,
+        addressId: state.selectedAddress!.id,
       );
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
     }
     state = state.copyWith(
-      loadingAddresses: LoadingStatus.none,
+      savingAddress: LoadingStatus.none,
     );
-    getMyAddresses();
+    appRouter.pop();
+    await getMyAddresses();
   }
 
-  markAsPrimary(Address address) async {
+  markAsPrimary() async {
+    if (state.selectedAddress == null) return;
+
     resetMyAddresses();
     try {
       state = state.copyWith(
-        loadingAddresses: LoadingStatus.loading,
+        savingAddress: LoadingStatus.loading,
       );
       await AddressService.markAsPrimary(
-        addressId: address.id,
+        addressId: state.selectedAddress!.id,
       );
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
     }
     state = state.copyWith(
-      loadingAddresses: LoadingStatus.none,
+      savingAddress: LoadingStatus.none,
     );
-    getMyAddresses();
+    appRouter.pop();
+    await getMyAddresses();
+  }
+
+  viewAddress(Address address) {
+    state = state.copyWith(
+      formType: FormType.edit,
+      selectedAddress: () => address,
+      savingAddress: LoadingStatus.none,
+      form: AddressForm.resetForm(),
+    );
+    state.form.patchValue(address.toJson());
+    appRouter.push('/confirm-address');
   }
 }
 
@@ -240,6 +258,7 @@ class AddressState {
   final LoadingStatus searchingAddresses;
   final FormGroup form;
   final List<Address> addresses;
+  final Address? selectedAddress;
   final int page;
   final int totalPages;
   final LoadingStatus loadingAddresses;
@@ -257,6 +276,7 @@ class AddressState {
     this.loadingAddresses = LoadingStatus.none,
     this.formType = FormType.create,
     this.savingAddress = LoadingStatus.none,
+    this.selectedAddress,
   });
 
   FormControl<String> get name =>
@@ -284,6 +304,7 @@ class AddressState {
     LoadingStatus? loadingAddresses,
     FormType? formType,
     LoadingStatus? savingAddress,
+    ValueGetter<Address?>? selectedAddress,
   }) =>
       AddressState(
         addressResults: addressResults ?? this.addressResults,
@@ -296,6 +317,8 @@ class AddressState {
         loadingAddresses: loadingAddresses ?? this.loadingAddresses,
         formType: formType ?? this.formType,
         savingAddress: savingAddress ?? this.savingAddress,
+        selectedAddress:
+            selectedAddress != null ? selectedAddress() : this.selectedAddress,
       );
 }
 

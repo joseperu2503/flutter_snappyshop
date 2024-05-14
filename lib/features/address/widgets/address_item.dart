@@ -3,10 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/address/models/addresses_response.dart';
 import 'package:flutter_snappyshop/features/address/providers/address_provider.dart';
-import 'package:flutter_snappyshop/features/shared/widgets/checkbox.dart';
-import 'package:go_router/go_router.dart';
 
-class AddressItem extends StatelessWidget {
+class AddressItem extends ConsumerWidget {
   const AddressItem({
     super.key,
     required this.address,
@@ -15,7 +13,7 @@ class AddressItem extends StatelessWidget {
   final Address address;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.primaryCultured,
@@ -25,40 +23,45 @@ class AddressItem extends StatelessWidget {
         style: TextButton.styleFrom(
           padding: const EdgeInsets.only(
             left: 16,
-            top: 18,
-            bottom: 18,
-            right: 23,
+            top: 16,
+            bottom: 16,
+            right: 16,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),
         ),
         onPressed: () {
-          showModalBottomSheet(
-            backgroundColor: AppColors.white,
-            elevation: 0,
-            showDragHandle: true,
-            context: context,
-            builder: (context) {
-              return _AddressBottomSheet(
-                address: address,
-              );
-            },
-          );
+          ref.read(addressProvider.notifier).viewAddress(address);
         },
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            if (address.primary)
+              const Text(
+                'Primary address',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.secondaryMangoTango,
+                  height: 16 / 12,
+                  leadingDistribution: TextLeadingDistribution.even,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             Row(
               children: [
-                CustomCheckbox(
-                  value: address.primary,
-                  onChanged: (value) {},
+                Icon(
+                  Icons.location_pin,
+                  size: 14,
+                  color: AppColors.textCoolBlack,
                 ),
-                const SizedBox(
-                  width: 12,
+                SizedBox(
+                  width: 4,
                 ),
                 Text(
-                  address.name,
+                  address.address,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -71,14 +74,26 @@ class AddressItem extends StatelessWidget {
                 ),
               ],
             ),
+            Text(
+              address.detail,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: AppColors.textArsenic,
+                height: 22 / 14,
+                leadingDistribution: TextLeadingDistribution.even,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
             const SizedBox(
               height: 19,
             ),
             Row(
               children: [
                 Container(
-                  width: 28,
-                  height: 28,
+                  width: 24,
+                  height: 24,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
                     color: AppColors.white,
@@ -86,7 +101,8 @@ class AddressItem extends StatelessWidget {
                   child: const Center(
                     child: Icon(
                       Icons.phone_outlined,
-                      size: 16,
+                      size: 14,
+                      color: AppColors.textCoolBlack,
                     ),
                   ),
                 ),
@@ -108,21 +124,22 @@ class AddressItem extends StatelessWidget {
               ],
             ),
             const SizedBox(
-              height: 11,
+              height: 8,
             ),
             Row(
               children: [
                 Container(
-                  width: 28,
-                  height: 28,
+                  width: 24,
+                  height: 24,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
                     color: AppColors.white,
                   ),
                   child: const Center(
                     child: Icon(
-                      Icons.pin_drop,
-                      size: 16,
+                      Icons.person,
+                      size: 14,
+                      color: AppColors.textCoolBlack,
                     ),
                   ),
                 ),
@@ -130,7 +147,7 @@ class AddressItem extends StatelessWidget {
                   width: 5,
                 ),
                 Text(
-                  address.address,
+                  address.name,
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
@@ -144,100 +161,6 @@ class AddressItem extends StatelessWidget {
               ],
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class _AddressBottomSheet extends ConsumerWidget {
-  const _AddressBottomSheet({
-    required this.address,
-  });
-  final Address address;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return SafeArea(
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Container(
-          padding: const EdgeInsets.only(top: 0),
-          width: double.infinity,
-          height: 180,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              ListTile(
-                title: const Text(
-                  'Save as primary address',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.textYankeesBlue,
-                    height: 1,
-                    leadingDistribution: TextLeadingDistribution.even,
-                  ),
-                ),
-                contentPadding: const EdgeInsetsDirectional.symmetric(
-                  horizontal: 24,
-                ),
-                leading: const Icon(
-                  Icons.check,
-                  color: AppColors.textArsenic,
-                ),
-                onTap: () {
-                  context.pop();
-                  ref.read(addressProvider.notifier).markAsPrimary(address);
-                },
-              ),
-              ListTile(
-                title: const Text(
-                  'View address',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.textYankeesBlue,
-                    height: 1,
-                    leadingDistribution: TextLeadingDistribution.even,
-                  ),
-                ),
-                contentPadding: const EdgeInsetsDirectional.symmetric(
-                  horizontal: 24,
-                ),
-                leading: const Icon(
-                  Icons.visibility,
-                  color: AppColors.textArsenic,
-                ),
-                onTap: () {
-                  context.pop();
-                },
-              ),
-              ListTile(
-                title: const Text(
-                  'Delete address',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.error,
-                    height: 1,
-                    leadingDistribution: TextLeadingDistribution.even,
-                  ),
-                ),
-                contentPadding: const EdgeInsetsDirectional.symmetric(
-                  horizontal: 24,
-                ),
-                leading: const Icon(
-                  Icons.delete,
-                  color: AppColors.error,
-                ),
-                onTap: () {
-                  context.pop();
-                  ref.read(addressProvider.notifier).deleteAddress(address);
-                },
-              )
-            ],
-          ),
         ),
       ),
     );

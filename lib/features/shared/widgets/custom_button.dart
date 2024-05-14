@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 
-enum ButtonType { primary, delete }
+enum ButtonType { primary, delete, text, outlined }
+
+enum ButtonColor { primary, secondary, terti, outlined }
 
 List<ButtonTypeStyle> buttonTypes = [
   ButtonTypeStyle(
@@ -11,6 +13,25 @@ List<ButtonTypeStyle> buttonTypes = [
     textColor: AppColors.textCultured,
     textColorDisabled: AppColors.textCultured,
     foregroundColor: Colors.white60,
+    borderColor: Colors.transparent,
+  ),
+  ButtonTypeStyle(
+    buttonType: ButtonType.outlined,
+    color: Colors.transparent,
+    colorDisabled: AppColors.textArsenic.withOpacity(0.2),
+    textColor: AppColors.primaryPearlAqua,
+    textColorDisabled: AppColors.textCultured,
+    foregroundColor: AppColors.primaryPearlAqua,
+    borderColor: AppColors.primaryPearlAqua,
+  ),
+  ButtonTypeStyle(
+    buttonType: ButtonType.text,
+    color: AppColors.textCultured.withOpacity(0.6),
+    colorDisabled: AppColors.textArsenic.withOpacity(0.2),
+    textColor: AppColors.secondaryPastelRed,
+    textColorDisabled: AppColors.primaryPearlAqua,
+    foregroundColor: AppColors.textArsenic,
+    borderColor: Colors.transparent,
   ),
   ButtonTypeStyle(
     buttonType: ButtonType.delete,
@@ -19,6 +40,7 @@ List<ButtonTypeStyle> buttonTypes = [
     textColor: AppColors.error,
     textColorDisabled: AppColors.error,
     foregroundColor: AppColors.error,
+    borderColor: Colors.transparent,
   ),
 ];
 
@@ -50,9 +72,11 @@ class CustomButton extends StatelessWidget {
       height: height,
       width: width,
       decoration: BoxDecoration(
-        color: disabled ? buttonStyle.colorDisabled : buttonStyle.color,
-        borderRadius: BorderRadius.circular(10),
-      ),
+          color: disabled ? buttonStyle.colorDisabled : buttonStyle.color,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: buttonStyle.borderColor,
+          )),
       child: TextButton(
         style: TextButton.styleFrom(
           shape: RoundedRectangleBorder(
@@ -102,6 +126,7 @@ class ButtonTypeStyle {
   final Color textColor;
   final Color textColorDisabled;
   final Color foregroundColor;
+  final Color borderColor;
 
   ButtonTypeStyle({
     required this.buttonType,
@@ -110,5 +135,6 @@ class ButtonTypeStyle {
     required this.textColor,
     required this.textColorDisabled,
     required this.foregroundColor,
+    required this.borderColor,
   });
 }

@@ -13,6 +13,7 @@ class Layout1 extends StatelessWidget {
     this.title,
     this.bottomSheet,
     this.loading = false,
+    this.action,
   });
 
   final Widget body;
@@ -21,6 +22,7 @@ class Layout1 extends StatelessWidget {
   final Widget? floatingActionButton;
   final Widget? bottomSheet;
   final bool loading;
+  final Widget? action;
 
   @override
   Widget build(BuildContext context) {
@@ -53,10 +55,11 @@ class Layout1 extends StatelessWidget {
                     ),
                   ),
                 const Spacer(),
-                const SizedBox(
-                  width: 46,
-                  height: 46,
-                )
+                action ??
+                    const SizedBox(
+                      width: 46,
+                      height: 46,
+                    )
               ],
             ),
           ),

@@ -80,7 +80,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
                             ref.read(cartProvider.notifier).updateCart();
                             return;
                           }
-                          context.push('/order-confirmed');
+                          context.push('/checkout');
                         },
                       ),
                     ],
