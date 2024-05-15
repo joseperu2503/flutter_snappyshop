@@ -6,6 +6,7 @@ import 'package:flutter_snappyshop/features/address/models/addresses_response.da
 import 'package:flutter_snappyshop/features/address/models/mapbox_response.dart';
 import 'package:flutter_snappyshop/features/address/services/address_services.dart';
 import 'package:flutter_snappyshop/features/address/services/mapbox_service.dart';
+import 'package:flutter_snappyshop/features/checkout/providers/checkout_provider.dart';
 import 'package:flutter_snappyshop/features/shared/models/form_type.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
@@ -52,6 +53,7 @@ class AddressNotifier extends StateNotifier<AddressState> {
       savingAddress: LoadingStatus.none,
       form: AddressForm.resetForm(),
     );
+    changeSearch('');
   }
 
   Future<void> searchLocality() async {
@@ -185,11 +187,25 @@ class AddressNotifier extends StateNotifier<AddressState> {
       state = state.copyWith(
         savingAddress: LoadingStatus.success,
       );
+
       appRouter.pop();
       appRouter.pop();
       appRouter.pop();
+
       resetMyAddresses();
-      getMyAddresses();
+      await getMyAddresses();
+
+      if (state.listType == ListType.select) {
+        appRouter.pop();
+        int selectedIndex = state.addresses.indexWhere((element) =>
+            element.latitude == cameraPosition.latitude &&
+            element.longitude == cameraPosition.longitude);
+        if (selectedIndex >= 0) {
+          ref
+              .read(checkoutProvider.notifier)
+              .setAddress(state.addresses[selectedIndex]);
+        }
+      }
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
       state = state.copyWith(
@@ -240,15 +256,26 @@ class AddressNotifier extends StateNotifier<AddressState> {
     await getMyAddresses();
   }
 
-  viewAddress(Address address) {
+  selectAddress(Address address) {
+    if (state.listType == ListType.list) {
+      state = state.copyWith(
+        formType: FormType.edit,
+        selectedAddress: () => address,
+        savingAddress: LoadingStatus.none,
+        form: AddressForm.resetForm(),
+      );
+      state.form.patchValue(address.toJson());
+      appRouter.push('/confirm-address');
+    } else {
+      ref.read(checkoutProvider.notifier).setAddress(address);
+      appRouter.pop();
+    }
+  }
+
+  changeListType(listType) {
     state = state.copyWith(
-      formType: FormType.edit,
-      selectedAddress: () => address,
-      savingAddress: LoadingStatus.none,
-      form: AddressForm.resetForm(),
+      listType: listType,
     );
-    state.form.patchValue(address.toJson());
-    appRouter.push('/confirm-address');
   }
 }
 
@@ -264,6 +291,7 @@ class AddressState {
   final LoadingStatus loadingAddresses;
   final LoadingStatus savingAddress;
   final FormType formType;
+  final ListType listType;
 
   AddressState({
     this.addressResults = const [],
@@ -277,6 +305,7 @@ class AddressState {
     this.formType = FormType.create,
     this.savingAddress = LoadingStatus.none,
     this.selectedAddress,
+    this.listType = ListType.list,
   });
 
   FormControl<String> get name =>
@@ -305,6 +334,7 @@ class AddressState {
     FormType? formType,
     LoadingStatus? savingAddress,
     ValueGetter<Address?>? selectedAddress,
+    ListType? listType,
   }) =>
       AddressState(
         addressResults: addressResults ?? this.addressResults,
@@ -319,6 +349,7 @@ class AddressState {
         savingAddress: savingAddress ?? this.savingAddress,
         selectedAddress:
             selectedAddress != null ? selectedAddress() : this.selectedAddress,
+        listType: listType ?? this.listType,
       );
 }
 

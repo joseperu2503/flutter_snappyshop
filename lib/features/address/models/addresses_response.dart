@@ -48,22 +48,26 @@ class Address {
   final int id;
   final User user;
   final String address;
-  final String name;
   final String detail;
   final String phone;
-  final bool primary;
+  final String name;
   final String? references;
+  final double latitude;
+  final double longitude;
+  final bool primary;
   final DateTime createdAt;
 
   Address({
     required this.id,
     required this.user,
     required this.address,
-    required this.name,
     required this.detail,
     required this.phone,
-    required this.primary,
+    required this.name,
     required this.references,
+    required this.latitude,
+    required this.longitude,
+    required this.primary,
     required this.createdAt,
   });
 
@@ -71,11 +75,13 @@ class Address {
         id: json["id"],
         user: User.fromJson(json["user"]),
         address: json["address"],
-        name: json["name"],
         detail: json["detail"],
         phone: json["phone"],
-        primary: json["primary"],
+        name: json["name"],
         references: json["references"],
+        latitude: json["latitude"]?.toDouble(),
+        longitude: json["longitude"]?.toDouble(),
+        primary: json["primary"],
         createdAt: DateTime.parse(json["created_at"]),
       );
 
@@ -83,11 +89,13 @@ class Address {
         "id": id,
         "user": user.toJson(),
         "address": address,
-        "name": name,
         "detail": detail,
         "phone": phone,
-        "primary": primary,
+        "name": name,
         "references": references,
+        "latitude": latitude,
+        "longitude": longitude,
+        "primary": primary,
         "created_at": createdAt.toIso8601String(),
       };
 }

@@ -70,7 +70,6 @@ class _InputSearchState extends State<InputSearch> {
                   right: 20,
                 ),
               ),
-              keyboardType: TextInputType.emailAddress,
               focusNode: widget.focusNode,
               controller: controller,
               onChanged: (value) {

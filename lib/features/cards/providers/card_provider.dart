@@ -3,6 +3,7 @@ import 'package:flutter_snappyshop/config/router/app_router.dart';
 import 'package:flutter_snappyshop/features/cards/models/bank_card.dart';
 import 'package:flutter_snappyshop/features/cards/services/card_service.dart';
 import 'package:flutter_snappyshop/features/cards/validators/card_validator.dart';
+import 'package:flutter_snappyshop/features/checkout/providers/checkout_provider.dart';
 import 'package:flutter_snappyshop/features/shared/models/form_type.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
@@ -54,13 +55,20 @@ class CardNotifier extends StateNotifier<CardState> {
             .showSnackbar('Credit card already registered. Try another one');
         return;
       }
+
       await CardService.saveCard(BankCard(
         cardNumber: removeSpaces(state.cardNumber.value ?? ''),
         cardHolderName: state.cardHolderName.value ?? '',
         expired: state.expired.value ?? '',
         ccv: state.ccv.value ?? '',
       ));
-      appRouter.pop();
+
+      if (state.listType == ListType.list) {
+        appRouter.pop();
+      } else {
+        appRouter.pop();
+        appRouter.pop();
+      }
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
     }
@@ -80,11 +88,23 @@ class CardNotifier extends StateNotifier<CardState> {
   }
 
   selectCard(BankCard card) {
-    resetForm();
+    if (state.listType == ListType.list) {
+      resetForm();
+      state = state.copyWith(
+        formType: FormType.edit,
+      );
+      state.form.patchValue(card.toJson());
+      appRouter.push('/card');
+    } else {
+      ref.read(checkoutProvider.notifier).setCard(card);
+      appRouter.pop();
+    }
+  }
+
+  changeListType(listType) {
     state = state.copyWith(
-      formType: FormType.edit,
+      listType: listType,
     );
-    state.form.patchValue(card.toJson());
   }
 }
 
@@ -92,11 +112,13 @@ class CardState {
   final FormGroup form;
   final List<BankCard> cards;
   final FormType formType;
+  final ListType listType;
 
   CardState({
     required this.form,
     this.cards = const [],
     this.formType = FormType.create,
+    this.listType = ListType.list,
   });
 
   FormControl<String> get cardNumber =>
@@ -121,11 +143,13 @@ class CardState {
     FormGroup? form,
     List<BankCard>? cards,
     FormType? formType,
+    ListType? listType,
   }) =>
       CardState(
         form: form ?? this.form,
         cards: cards ?? this.cards,
         formType: formType ?? this.formType,
+        listType: listType ?? this.listType,
       );
 }
 

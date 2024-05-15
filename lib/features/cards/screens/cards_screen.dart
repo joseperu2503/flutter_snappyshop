@@ -4,6 +4,7 @@ import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/cards/providers/card_provider.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_snappyshop/features/shared/models/form_type.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
 import 'package:go_router/go_router.dart';
 
@@ -31,7 +32,7 @@ class CardsScreenState extends ConsumerState<CardsScreen> {
     return Loader(
       loading: false,
       child: Layout1(
-        title: 'My Cards',
+        title: cardState.listType == ListType.list ? 'My Cards' : 'Select Card',
         floatingActionButton: SizedBox(
           width: 60,
           height: 60,
@@ -59,7 +60,6 @@ class CardsScreenState extends ConsumerState<CardsScreen> {
                   return GestureDetector(
                     onTap: () {
                       ref.read(cardProvider.notifier).selectCard(card);
-                      context.push('/card');
                     },
                     child: CreditCardWidget(
                       height: screen.size.width * 0.5,

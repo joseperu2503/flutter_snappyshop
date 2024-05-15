@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/features/address/providers/address_provider.dart';
 import 'package:flutter_snappyshop/features/auth/providers/auth_provider.dart';
+import 'package:flutter_snappyshop/features/cards/providers/card_provider.dart';
 import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
+import 'package:flutter_snappyshop/features/shared/models/form_type.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/image_viewer.dart';
@@ -163,6 +166,10 @@ class CustomDrawer extends ConsumerWidget {
                       leading: const Icon(Icons.credit_card_outlined),
                       onTap: () {
                         context.pop();
+                        ref
+                            .read(cardProvider.notifier)
+                            .changeListType(ListType.select);
+
                         context.push('/my-cards');
                       },
                     ),
@@ -193,6 +200,9 @@ class CustomDrawer extends ConsumerWidget {
                       leading: const Icon(Icons.location_pin),
                       onTap: () {
                         context.pop();
+                        ref
+                            .read(addressProvider.notifier)
+                            .changeListType(ListType.select);
                         context.push('/my-addresses');
                       },
                     ),

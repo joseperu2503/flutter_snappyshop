@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
-import 'package:flutter_snappyshop/features/cards/models/bank_card.dart';
+import 'package:flutter_snappyshop/features/address/models/addresses_response.dart';
+import 'package:flutter_snappyshop/features/address/providers/address_provider.dart';
 import 'package:flutter_snappyshop/features/cards/providers/card_provider.dart';
 import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
+import 'package:flutter_snappyshop/features/checkout/providers/checkout_provider.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
+import 'package:flutter_snappyshop/features/shared/models/form_type.dart';
+import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/image_viewer.dart';
@@ -22,7 +26,7 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   @override
   void initState() {
     Future.microtask(() {
-      ref.read(cardProvider.notifier).getCards();
+      ref.read(checkoutProvider.notifier).initData();
     });
     super.initState();
   }
@@ -30,14 +34,16 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     final cartState = ref.watch(cartProvider);
+    final addressState = ref.watch(addressProvider);
+    final checkoutState = ref.watch(checkoutProvider);
+    final Address? address = checkoutState.address;
+
     final emptyCart = !(cartState.cart != null &&
         (cartState.cart?.products ?? []).isNotEmpty);
     final MediaQueryData screen = MediaQuery.of(context);
-    final cardState = ref.watch(cardProvider);
-    final BankCard card = cardState.cards[0];
 
     return Loader(
-      loading: cartState.loading,
+      loading: addressState.loadingAddresses == LoadingStatus.loading,
       child: Layout1(
         title: 'Checkout',
         body: CustomScrollView(
@@ -200,7 +206,7 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                                 'Subtotal',
                                 style: TextStyle(
                                   fontSize: 14,
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w500,
                                   color: AppColors.textArsenic,
                                   height: 22 / 14,
                                   leadingDistribution:
@@ -230,7 +236,7 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                                 'Shipping Fee',
                                 style: TextStyle(
                                   fontSize: 14,
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w500,
                                   color: AppColors.textArsenic,
                                   height: 22 / 14,
                                   leadingDistribution:
@@ -301,6 +307,12 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         ),
                         const Spacer(),
                         GestureDetector(
+                          onTap: () {
+                            ref
+                                .read(addressProvider.notifier)
+                                .changeListType(ListType.select);
+                            context.push('/my-addresses');
+                          },
                           child: const Row(
                             children: [
                               Text(
@@ -336,146 +348,173 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         borderRadius: BorderRadius.circular(14),
                       ),
                       padding: const EdgeInsets.all(16),
-                      child: const Column(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           Row(
                             children: [
-                              Text(
+                              const Text(
                                 'Address',
                                 style: TextStyle(
                                   fontSize: 14,
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w500,
                                   color: AppColors.textArsenic,
                                   height: 22 / 14,
                                   leadingDistribution:
                                       TextLeadingDistribution.even,
                                 ),
                               ),
-                              Spacer(),
-                              Text(
-                                'Avenida Guzman blanco',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.textArsenic,
-                                  height: 22 / 14,
-                                  leadingDistribution:
-                                      TextLeadingDistribution.even,
-                                ),
+                              const SizedBox(
+                                width: 16,
                               ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 4,
-                          ),
-                          Row(
-                            children: [
-                              Spacer(),
-                              Text(
-                                'Numero 154',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.textArsenic,
-                                  height: 22 / 14,
-                                  leadingDistribution:
-                                      TextLeadingDistribution.even,
+                              Expanded(
+                                child: Text(
+                                  address?.address ?? '',
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColors.textArsenic,
+                                    height: 22 / 14,
+                                    leadingDistribution:
+                                        TextLeadingDistribution.even,
+                                  ),
+                                  textAlign: TextAlign.end,
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(
-                            height: 4,
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                'References',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.textArsenic,
-                                  height: 22 / 14,
-                                  leadingDistribution:
-                                      TextLeadingDistribution.even,
+                          if (address?.detail != null)
+                            const SizedBox(
+                              height: 4,
+                            ),
+                          if (address?.detail != null)
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    address?.detail ?? '',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.textArsenic,
+                                      height: 22 / 14,
+                                      leadingDistribution:
+                                          TextLeadingDistribution.even,
+                                    ),
+                                    textAlign: TextAlign.end,
+                                  ),
                                 ),
-                              ),
-                              Spacer(),
-                              Text(
-                                'Esquina con el colegio',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.textArsenic,
-                                  height: 22 / 14,
-                                  leadingDistribution:
-                                      TextLeadingDistribution.even,
+                              ],
+                            ),
+                          if (address?.references != null)
+                            const SizedBox(
+                              height: 4,
+                            ),
+                          if (address?.references != null)
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'References',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.textArsenic,
+                                    height: 22 / 14,
+                                    leadingDistribution:
+                                        TextLeadingDistribution.even,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    address?.references ?? '',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.textArsenic,
+                                      height: 22 / 14,
+                                      leadingDistribution:
+                                          TextLeadingDistribution.even,
+                                    ),
+                                    textAlign: TextAlign.end,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          const SizedBox(
                             height: 16,
                           ),
                           Row(
                             children: [
-                              Text(
+                              const Text(
                                 'Recipient',
                                 style: TextStyle(
                                   fontSize: 14,
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w500,
                                   color: AppColors.textArsenic,
                                   height: 22 / 14,
                                   leadingDistribution:
                                       TextLeadingDistribution.even,
                                 ),
                               ),
-                              Spacer(),
-                              Text(
-                                'Jose Perez',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.textArsenic,
-                                  height: 22 / 14,
-                                  leadingDistribution:
-                                      TextLeadingDistribution.even,
+                              const SizedBox(
+                                width: 16,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  address?.name ?? '',
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColors.textArsenic,
+                                    height: 22 / 14,
+                                    leadingDistribution:
+                                        TextLeadingDistribution.even,
+                                  ),
+                                  textAlign: TextAlign.end,
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 16,
                           ),
                           Row(
                             children: [
-                              Text(
-                                'Mobile number',
+                              const Text(
+                                'Phone',
                                 style: TextStyle(
                                   fontSize: 14,
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w500,
                                   color: AppColors.textArsenic,
                                   height: 22 / 14,
                                   leadingDistribution:
                                       TextLeadingDistribution.even,
                                 ),
                               ),
-                              Spacer(),
-                              Text(
-                                '993689145',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.textArsenic,
-                                  height: 22 / 14,
-                                  leadingDistribution:
-                                      TextLeadingDistribution.even,
+                              const SizedBox(
+                                width: 16,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  address?.phone ?? '',
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColors.textArsenic,
+                                    height: 22 / 14,
+                                    leadingDistribution:
+                                        TextLeadingDistribution.even,
+                                  ),
+                                  textAlign: TextAlign.end,
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 16,
                           ),
                         ],
@@ -499,6 +538,9 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         const Spacer(),
                         GestureDetector(
                           onTap: () {
+                            ref
+                                .read(cardProvider.notifier)
+                                .changeListType(ListType.select);
                             context.push('/my-cards');
                           },
                           child: const Row(
@@ -531,15 +573,21 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                       height: 16,
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        ref
+                            .read(cardProvider.notifier)
+                            .changeListType(ListType.select);
+                        context.push('/my-cards');
+                      },
                       child: SizedBox(
                         height: screen.size.width * 0.5,
                         child: CreditCardWidget(
                           height: screen.size.width * 0.5,
                           padding: 0,
-                          cardNumber: card.cardNumber,
-                          expiryDate: card.expired,
-                          cardHolderName: card.cardHolderName,
+                          cardNumber: checkoutState.card?.cardNumber ?? '',
+                          expiryDate: checkoutState.card?.expired ?? '',
+                          cardHolderName:
+                              checkoutState.card?.cardHolderName ?? '',
                           cvvCode: '',
                           showBackView: false,
                           isHolderNameVisible: true,
