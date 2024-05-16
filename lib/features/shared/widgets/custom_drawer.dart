@@ -16,6 +16,8 @@ class CustomDrawer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cartState = ref.watch(cartProvider);
+    final MediaQueryData screen = MediaQuery.of(context);
+
     int numProducts = 0;
     final authState = ref.watch(authProvider);
 
@@ -34,219 +36,217 @@ class CustomDrawer extends ConsumerWidget {
     return Drawer(
       elevation: 0,
       backgroundColor: AppColors.white,
-      child: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: Container(
-                padding: const EdgeInsets.only(
-                  top: 40,
-                  bottom: 40,
-                ),
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        context.pop();
-                        context.push('/account-information');
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Row(
-                          children: [
-                            authState.user?.profilePhoto != null
-                                ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(90),
-                                    child: SizedBox(
-                                      width: 46,
-                                      height: 46,
-                                      child: ImageViewer(
-                                        images: [authState.user!.profilePhoto!],
-                                        radius: 23,
-                                      ),
-                                    ),
-                                  )
-                                : Container(
+      child: CustomScrollView(
+        slivers: [
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Container(
+              padding: EdgeInsets.only(
+                top: 40 + screen.padding.top,
+                bottom: 40 + screen.padding.bottom,
+              ),
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      context.pop();
+                      context.push('/account-information');
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Row(
+                        children: [
+                          authState.user?.profilePhoto != null
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(90),
+                                  child: SizedBox(
                                     width: 46,
                                     height: 46,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: AppColors.primaryCultured,
-                                    ),
-                                    child: const Icon(
-                                      Icons.person,
-                                      color: AppColors.textArsenic,
+                                    child: ImageViewer(
+                                      images: [authState.user!.profilePhoto!],
+                                      radius: 23,
                                     ),
                                   ),
-                            const SizedBox(
-                              width: 12,
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '${authState.user?.name}',
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.textYankeesBlue,
-                                      height: 1.1,
-                                      leadingDistribution:
-                                          TextLeadingDistribution.even,
-                                    ),
+                                )
+                              : Container(
+                                  width: 46,
+                                  height: 46,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColors.primaryCultured,
                                   ),
-                                  Text(
-                                    '${authState.user?.email}',
-                                    style: const TextStyle(
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w400,
-                                      color: AppColors.textArsenic,
-                                      height: 1.1,
-                                      leadingDistribution:
-                                          TextLeadingDistribution.even,
-                                    ),
+                                  child: const Icon(
+                                    Icons.person,
+                                    color: AppColors.textArsenic,
                                   ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    ListTile(
-                      contentPadding:
-                          const EdgeInsetsDirectional.symmetric(horizontal: 24),
-                      title: const Text('Account Information'),
-                      leading: const Icon(Icons.person_2_outlined),
-                      onTap: () {
-                        context.pop();
-                        context.push('/account-information');
-                      },
-                    ),
-                    ListTile(
-                      contentPadding:
-                          const EdgeInsetsDirectional.symmetric(horizontal: 24),
-                      title: const Text('Cart'),
-                      leading: const Icon(Icons.shopping_cart),
-                      trailing: numProducts > 0
-                          ? Container(
-                              width: 30,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                  color: AppColors.primaryPearlAqua,
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: Center(
-                                child: Text(
-                                  numProducts.toString(),
+                                ),
+                          const SizedBox(
+                            width: 12,
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${authState.user?.name}',
                                   style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.textYankeesBlue,
+                                    height: 1.1,
                                     leadingDistribution:
                                         TextLeadingDistribution.even,
                                   ),
                                 ),
-                              ),
-                            )
-                          : null,
-                      onTap: () {
-                        context.pop();
-                        context.push('/cart');
-                      },
-                    ),
-                    ListTile(
-                      contentPadding:
-                          const EdgeInsetsDirectional.symmetric(horizontal: 24),
-                      title: const Text('My Cards'),
-                      leading: const Icon(Icons.credit_card_outlined),
-                      onTap: () {
-                        context.pop();
-
-                        ref
-                            .read(cardProvider.notifier)
-                            .changeListType(ListType.list);
-
-                        context.push('/my-cards');
-                      },
-                    ),
-                    ListTile(
-                      contentPadding:
-                          const EdgeInsetsDirectional.symmetric(horizontal: 24),
-                      title: const Text('My Orders'),
-                      leading: const Icon(Icons.shopping_bag_outlined),
-                      onTap: () {
-                        context.pop();
-                        context.push('/my-orders');
-                      },
-                    ),
-                    ListTile(
-                      contentPadding:
-                          const EdgeInsetsDirectional.symmetric(horizontal: 24),
-                      title: const Text('Wishlist'),
-                      leading: const Icon(Icons.favorite_outline),
-                      onTap: () {
-                        context.pop();
-                        context.push('/whishlist');
-                      },
-                    ),
-                    ListTile(
-                      contentPadding:
-                          const EdgeInsetsDirectional.symmetric(horizontal: 24),
-                      title: const Text('My Addresses'),
-                      leading: const Icon(Icons.location_pin),
-                      onTap: () {
-                        context.pop();
-                        ref
-                            .read(addressProvider.notifier)
-                            .changeListType(ListType.list);
-                        context.push('/my-addresses');
-                      },
-                    ),
-                    ListTile(
-                      contentPadding:
-                          const EdgeInsetsDirectional.symmetric(horizontal: 24),
-                      title: const Text('Change Password'),
-                      leading: const Icon(Icons.lock_outline_rounded),
-                      onTap: () {
-                        context.pop();
-                        context.push('/change-password-internal');
-                      },
-                    ),
-                    ListTile(
-                      contentPadding:
-                          const EdgeInsetsDirectional.symmetric(horizontal: 24),
-                      title: const Text('Settings'),
-                      leading: const Icon(Icons.settings_outlined),
-                      onTap: () {
-                        context.pop();
-                        context.push('/settings');
-                      },
-                    ),
-                    const Spacer(),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: CustomButton(
-                        text: 'Logout',
-                        iconLeft: const Icon(
-                          Icons.logout,
-                          color: AppColors.primaryCultured,
-                        ),
-                        onPressed: () {
-                          ref.read(authProvider.notifier).logout();
-                        },
+                                Text(
+                                  '${authState.user?.email}',
+                                  style: const TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColors.textArsenic,
+                                    height: 1.1,
+                                    leadingDistribution:
+                                        TextLeadingDistribution.even,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  ListTile(
+                    contentPadding:
+                        const EdgeInsetsDirectional.symmetric(horizontal: 24),
+                    title: const Text('Account Information'),
+                    leading: const Icon(Icons.person_2_outlined),
+                    onTap: () {
+                      context.pop();
+                      context.push('/account-information');
+                    },
+                  ),
+                  ListTile(
+                    contentPadding:
+                        const EdgeInsetsDirectional.symmetric(horizontal: 24),
+                    title: const Text('Cart'),
+                    leading: const Icon(Icons.shopping_cart),
+                    trailing: numProducts > 0
+                        ? Container(
+                            width: 30,
+                            height: 30,
+                            decoration: BoxDecoration(
+                                color: AppColors.primaryPearlAqua,
+                                borderRadius: BorderRadius.circular(15)),
+                            child: Center(
+                              child: Text(
+                                numProducts.toString(),
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.white,
+                                  leadingDistribution:
+                                      TextLeadingDistribution.even,
+                                ),
+                              ),
+                            ),
+                          )
+                        : null,
+                    onTap: () {
+                      context.pop();
+                      context.push('/cart');
+                    },
+                  ),
+                  ListTile(
+                    contentPadding:
+                        const EdgeInsetsDirectional.symmetric(horizontal: 24),
+                    title: const Text('My Cards'),
+                    leading: const Icon(Icons.credit_card_outlined),
+                    onTap: () {
+                      context.pop();
+
+                      ref
+                          .read(cardProvider.notifier)
+                          .changeListType(ListType.list);
+
+                      context.push('/my-cards');
+                    },
+                  ),
+                  ListTile(
+                    contentPadding:
+                        const EdgeInsetsDirectional.symmetric(horizontal: 24),
+                    title: const Text('My Orders'),
+                    leading: const Icon(Icons.shopping_bag_outlined),
+                    onTap: () {
+                      context.pop();
+                      context.push('/my-orders');
+                    },
+                  ),
+                  ListTile(
+                    contentPadding:
+                        const EdgeInsetsDirectional.symmetric(horizontal: 24),
+                    title: const Text('Wishlist'),
+                    leading: const Icon(Icons.favorite_outline),
+                    onTap: () {
+                      context.pop();
+                      context.push('/whishlist');
+                    },
+                  ),
+                  ListTile(
+                    contentPadding:
+                        const EdgeInsetsDirectional.symmetric(horizontal: 24),
+                    title: const Text('My Addresses'),
+                    leading: const Icon(Icons.location_pin),
+                    onTap: () {
+                      context.pop();
+                      ref
+                          .read(addressProvider.notifier)
+                          .changeListType(ListType.list);
+                      context.push('/my-addresses');
+                    },
+                  ),
+                  ListTile(
+                    contentPadding:
+                        const EdgeInsetsDirectional.symmetric(horizontal: 24),
+                    title: const Text('Change Password'),
+                    leading: const Icon(Icons.lock_outline_rounded),
+                    onTap: () {
+                      context.pop();
+                      context.push('/change-password-internal');
+                    },
+                  ),
+                  ListTile(
+                    contentPadding:
+                        const EdgeInsetsDirectional.symmetric(horizontal: 24),
+                    title: const Text('Settings'),
+                    leading: const Icon(Icons.settings_outlined),
+                    onTap: () {
+                      context.pop();
+                      context.push('/settings');
+                    },
+                  ),
+                  const Spacer(),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: CustomButton(
+                      text: 'Logout',
+                      iconLeft: const Icon(
+                        Icons.logout,
+                        color: AppColors.primaryCultured,
+                      ),
+                      onPressed: () {
+                        ref.read(authProvider.notifier).logout();
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

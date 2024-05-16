@@ -63,6 +63,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
       child: Scaffold(
         backgroundColor: AppColors.white,
         body: SafeArea(
+          bottom: false,
           child: CustomScrollView(
             controller: scrollController,
             slivers: [
@@ -246,19 +247,20 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                     child: CustomProgressIndicator(),
                   ),
                 ),
-              if (searchState.loadingProducts &&
-                  searchState.products.isNotEmpty)
-                SliverToBoxAdapter(
-                  child: Container(
-                    padding: const EdgeInsets.only(
-                      top: 10,
-                      bottom: 40,
-                    ),
-                    child: const Center(
-                      child: CustomProgressIndicator(),
-                    ),
+              SliverToBoxAdapter(
+                child: Container(
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    bottom: 40,
                   ),
-                )
+                  child: Center(
+                    child: searchState.loadingProducts &&
+                            searchState.products.isNotEmpty
+                        ? const CustomProgressIndicator()
+                        : null,
+                  ),
+                ),
+              )
             ],
           ),
         ),
