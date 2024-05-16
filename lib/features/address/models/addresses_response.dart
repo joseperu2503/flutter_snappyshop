@@ -50,7 +50,7 @@ class Address {
   final String address;
   final String detail;
   final String phone;
-  final String name;
+  final String recipientName;
   final String? references;
   final double latitude;
   final double longitude;
@@ -63,7 +63,7 @@ class Address {
     required this.address,
     required this.detail,
     required this.phone,
-    required this.name,
+    required this.recipientName,
     required this.references,
     required this.latitude,
     required this.longitude,
@@ -77,7 +77,7 @@ class Address {
         address: json["address"],
         detail: json["detail"],
         phone: json["phone"],
-        name: json["name"],
+        recipientName: json["recipient_name"],
         references: json["references"],
         latitude: json["latitude"]?.toDouble(),
         longitude: json["longitude"]?.toDouble(),
@@ -91,7 +91,7 @@ class Address {
         "address": address,
         "detail": detail,
         "phone": phone,
-        "name": name,
+        "name": recipientName,
         "references": references,
         "latitude": latitude,
         "longitude": longitude,

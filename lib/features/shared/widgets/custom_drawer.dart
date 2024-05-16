@@ -166,9 +166,10 @@ class CustomDrawer extends ConsumerWidget {
                       leading: const Icon(Icons.credit_card_outlined),
                       onTap: () {
                         context.pop();
+
                         ref
                             .read(cardProvider.notifier)
-                            .changeListType(ListType.select);
+                            .changeListType(ListType.list);
 
                         context.push('/my-cards');
                       },
@@ -202,7 +203,7 @@ class CustomDrawer extends ConsumerWidget {
                         context.pop();
                         ref
                             .read(addressProvider.notifier)
-                            .changeListType(ListType.select);
+                            .changeListType(ListType.list);
                         context.push('/my-addresses');
                       },
                     ),

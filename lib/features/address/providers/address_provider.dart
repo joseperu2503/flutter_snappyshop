@@ -15,14 +15,6 @@ import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.d
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class FormAddress {
-  static String name = 'name';
-  static String detail = 'detail';
-  static String phone = 'phone';
-  static String address = 'address';
-  static String references = 'references';
-}
-
 final addressProvider =
     StateNotifierProvider<AddressNotifier, AddressState>((ref) {
   return AddressNotifier(ref);
@@ -69,15 +61,15 @@ class AddressNotifier extends StateNotifier<AddressState> {
         if (response.features.isNotEmpty &&
             response.features[0].properties.namePreferred != null &&
             response.features[0].properties.context.country?.name != null) {
-          changeForm(FormAddress.address,
+          changeForm(AddressForm.address,
               FormControl(value: response.features[0].properties.name));
         } else {
-          changeForm(FormAddress.address, FormControl(value: ''));
+          changeForm(AddressForm.address, FormControl(value: ''));
         }
       }
     } on ServiceException catch (_) {
       if (cameraPosition == ref.read(mapProvider).cameraPosition) {
-        changeForm(FormAddress.address, FormControl(value: ''));
+        changeForm(AddressForm.address, FormControl(value: ''));
       }
     }
   }
@@ -178,7 +170,7 @@ class AddressNotifier extends StateNotifier<AddressState> {
       await AddressService.createAddress(
         address: state.form.control(AddressForm.address).value,
         detail: state.form.control(AddressForm.detail).value,
-        name: state.form.control(AddressForm.name).value,
+        recipientName: state.form.control(AddressForm.recipientName).value,
         phone: state.form.control(AddressForm.phone).value,
         latitude: cameraPosition.latitude,
         longitude: cameraPosition.longitude,
@@ -308,16 +300,16 @@ class AddressState {
     this.listType = ListType.list,
   });
 
-  FormControl<String> get name =>
-      form.control(FormAddress.name) as FormControl<String>;
+  FormControl<String> get recipientName =>
+      form.control(AddressForm.recipientName) as FormControl<String>;
   FormControl<String> get detail =>
-      form.control(FormAddress.detail) as FormControl<String>;
+      form.control(AddressForm.detail) as FormControl<String>;
   FormControl<String> get references =>
-      form.control(FormAddress.references) as FormControl<String>;
+      form.control(AddressForm.references) as FormControl<String>;
   FormControl<String> get phone =>
-      form.control(FormAddress.phone) as FormControl<String>;
+      form.control(AddressForm.phone) as FormControl<String>;
   FormControl<String> get address =>
-      form.control(FormAddress.address) as FormControl<String>;
+      form.control(AddressForm.address) as FormControl<String>;
 
   bool get isFormValue => form.valid;
   bool get firstLoad => loadingAddresses == LoadingStatus.loading && page == 1;
@@ -356,25 +348,24 @@ class AddressState {
 class AddressForm {
   static String address = 'address';
   static String detail = 'detail';
-  static String name = 'name';
+  static String recipientName = 'recipientName';
   static String phone = 'phone';
   static String references = 'references';
 
   static FormGroup resetForm() {
     return FormGroup({
-      FormAddress.address:
+      address:
           FormControl<String>(value: '', validators: [Validators.required]),
-      FormAddress.detail:
-          FormControl<String>(value: '', validators: [Validators.required]),
-      FormAddress.name: FormControl<String>(
+      detail: FormControl<String>(value: '', validators: [Validators.required]),
+      recipientName: FormControl<String>(
         value: '',
         validators: [Validators.required],
       ),
-      FormAddress.phone: FormControl<String>(value: '', validators: [
+      phone: FormControl<String>(value: '', validators: [
         Validators.required,
         Validators.number(),
       ]),
-      FormAddress.references: FormControl<String>(value: ''),
+      references: FormControl<String>(value: ''),
     });
   }
 }

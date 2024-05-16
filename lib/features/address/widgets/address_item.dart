@@ -147,7 +147,7 @@ class AddressItem extends ConsumerWidget {
                   width: 5,
                 ),
                 Text(
-                  address.name,
+                  address.recipientName,
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,

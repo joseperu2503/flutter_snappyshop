@@ -82,7 +82,7 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                     CustomInput(
                       value: addressState.address,
                       onChanged: (value) {
-                        changeForm(FormAddress.address, value);
+                        changeForm(AddressForm.address, value);
                       },
                       readOnly: true,
                       textInputAction: TextInputAction.next,
@@ -106,7 +106,7 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                     CustomInput(
                       value: addressState.detail,
                       onChanged: (value) {
-                        changeForm(FormAddress.detail, value);
+                        changeForm(AddressForm.detail, value);
                       },
                       hintText: 'ex. Rio de oro building apt 201',
                       validationMessages: {
@@ -135,9 +135,9 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                       height: labelInputSpacing,
                     ),
                     CustomInput(
-                      value: addressState.name,
+                      value: addressState.recipientName,
                       onChanged: (value) {
-                        changeForm(FormAddress.name, value);
+                        changeForm(AddressForm.recipientName, value);
                       },
                       hintText: 'ex. James Hetfield',
                       validationMessages: {
@@ -168,7 +168,7 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                     CustomInput(
                       value: addressState.phone,
                       onChanged: (value) {
-                        changeForm(FormAddress.phone, value);
+                        changeForm(AddressForm.phone, value);
                       },
                       validationMessages: {
                         'required': (error) => 'We need this information.'
@@ -199,7 +199,7 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                     CustomTexarea(
                       value: addressState.references,
                       onChanged: (value) {
-                        changeForm(FormAddress.references, value);
+                        changeForm(AddressForm.references, value);
                       },
                       textInputAction: TextInputAction.done,
                       inputFormatters: [

@@ -104,7 +104,8 @@ class ProductsService {
     };
 
     try {
-      final response = await api.post('/toggle-favorite-product', data: form);
+      final response =
+          await api.post('/v2/toggle-favorite-product', data: form);
 
       return ToggleFavoriteResponse.fromJson(response.data);
     } catch (e) {

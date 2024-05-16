@@ -465,7 +465,7 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                               ),
                               Expanded(
                                 child: Text(
-                                  address?.name ?? '',
+                                  address?.recipientName ?? '',
                                   style: const TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400,

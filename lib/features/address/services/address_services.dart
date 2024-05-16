@@ -59,7 +59,7 @@ class AddressService {
   static Future<CreateAddressResponse> createAddress({
     required String? address,
     required String? detail,
-    required String? name,
+    required String? recipientName,
     required String? phone,
     required String? references,
     required double? latitude,
@@ -68,7 +68,7 @@ class AddressService {
     Map<String, dynamic> form = {
       "address": address,
       "detail": detail,
-      "name": name,
+      "recipient_name": recipientName,
       "phone": phone,
       "references": references,
       "latitude": latitude,
