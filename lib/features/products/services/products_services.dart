@@ -28,7 +28,7 @@ class ProductsService {
 
     try {
       final response =
-          await api.get('/products', queryParameters: queryParameters);
+          await api.get('/v2/products', queryParameters: queryParameters);
 
       return ProductsResponse.fromJson(response.data);
     } catch (e) {
@@ -38,7 +38,7 @@ class ProductsService {
 
   static Future<Product> getProductDetail({required String productId}) async {
     try {
-      final response = await api.get('/products/$productId');
+      final response = await api.get('/v2/products/$productId');
 
       return Product.fromJson(response.data);
     } catch (e) {
@@ -69,7 +69,7 @@ class ProductsService {
 
   static Future<FilterResponse> getFilterData() async {
     try {
-      final response = await api.get('/products/filter-data');
+      final response = await api.get('/v2/products/filter-data');
 
       return FilterResponse.fromJson(response.data);
     } catch (e) {
@@ -85,7 +85,7 @@ class ProductsService {
     };
 
     try {
-      final response = await api.get('/my-favorite-products',
+      final response = await api.get('/v2/my-favorite-products',
           queryParameters: queryParameters);
 
       return ProductsResponse.fromJson(response.data);

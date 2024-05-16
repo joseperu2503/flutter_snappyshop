@@ -43,8 +43,8 @@ class BrandScreenState extends ConsumerState<BrandScreen> {
       );
 
       setState(() {
-        products = [...products, ...response.data];
-        totalPages = response.meta.lastPage;
+        products = [...products, ...response.results];
+        totalPages = response.info.lastPage;
         page = page + 1;
         loadingProducts = LoadingStatus.success;
       });

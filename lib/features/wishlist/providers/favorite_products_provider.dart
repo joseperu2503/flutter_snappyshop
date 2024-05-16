@@ -42,8 +42,8 @@ class FavoriteProductsNotifier extends StateNotifier<FavoriteProductsState> {
       );
 
       state = state.copyWith(
-        products: [...state.products, ...response.data],
-        totalPages: response.meta.lastPage,
+        products: [...state.products, ...response.results],
+        totalPages: response.info.lastPage,
         page: state.page + 1,
         loadingProducts: LoadingStatus.success,
       );

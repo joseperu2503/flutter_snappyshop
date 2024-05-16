@@ -70,8 +70,8 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
         page: state.page,
       );
       state = state.copyWith(
-        products: [...state.products, ...response.data],
-        totalPages: response.meta.lastPage,
+        products: [...state.products, ...response.results],
+        totalPages: response.info.lastPage,
         page: state.page + 1,
       );
     } on ServiceException catch (e) {

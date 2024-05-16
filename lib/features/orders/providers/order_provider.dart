@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_snappyshop/features/orders/models/my_orders_response.dart';
 import 'package:flutter_snappyshop/features/orders/services/order_service.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
@@ -36,6 +37,18 @@ class OrderNotifier extends StateNotifier<OrderState> {
       loading: false,
     );
   }
+
+  getOrderStatuses() {
+    state = state.copyWith(
+      orderStatuses: orderStatuses,
+    );
+  }
+
+  changeOrderStatus(OrderStatus orderStatus) {
+    state = state.copyWith(
+      orderStatus: () => orderStatus,
+    );
+  }
 }
 
 class OrderState {
@@ -43,12 +56,16 @@ class OrderState {
   final int page;
   final int totalPages;
   final bool loading;
+  final List<OrderStatus> orderStatuses;
+  final OrderStatus? orderStatus;
 
   OrderState({
     this.orders = const [],
     this.page = 1,
     this.totalPages = 1,
     this.loading = false,
+    this.orderStatuses = const [],
+    this.orderStatus,
   });
 
   OrderState copyWith({
@@ -56,11 +73,22 @@ class OrderState {
     int? page,
     int? totalPages,
     bool? loading,
+    List<OrderStatus>? orderStatuses,
+    ValueGetter<OrderStatus?>? orderStatus,
   }) =>
       OrderState(
         orders: orders ?? this.orders,
         page: page ?? this.page,
         totalPages: totalPages ?? this.totalPages,
         loading: loading ?? this.loading,
+        orderStatuses: orderStatuses ?? this.orderStatuses,
+        orderStatus: orderStatus != null ? orderStatus() : this.orderStatus,
       );
 }
+
+List<OrderStatus> orderStatuses = [
+  OrderStatus(id: null, name: 'All'),
+  OrderStatus(id: 1, name: 'Ordered'),
+  OrderStatus(id: 2, name: 'In Travel'),
+  OrderStatus(id: 3, name: 'Delivered'),
+];

@@ -15,8 +15,8 @@ class OrderService {
     };
 
     try {
-      final response =
-          await api.get('/v2/my-orders', queryParameters: queryParameters);
+      final response = await api.get('/v2/orders/my-orders',
+          queryParameters: queryParameters);
 
       return MyOrdersResponse.fromJson(response.data);
     } catch (e) {

@@ -68,3 +68,18 @@ class User {
         name: json["name"],
       );
 }
+
+class OrderStatus {
+  final int? id;
+  final String name;
+
+  OrderStatus({
+    required this.id,
+    required this.name,
+  });
+
+  factory OrderStatus.fromJson(Map<String, dynamic> json) => OrderStatus(
+        id: json["id"],
+        name: json["name"],
+      );
+}

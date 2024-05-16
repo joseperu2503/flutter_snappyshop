@@ -1,17 +1,42 @@
 class ProductsResponse {
-  final List<Product> data;
-  final Meta meta;
+  final List<Product> results;
+  final Info info;
 
   ProductsResponse({
-    required this.data,
-    required this.meta,
+    required this.results,
+    required this.info,
   });
 
   factory ProductsResponse.fromJson(Map<String, dynamic> json) =>
       ProductsResponse(
-        data: List<Product>.from(json["data"].map((x) => Product.fromJson(x))),
-        meta: Meta.fromJson(json["meta"]),
+        results:
+            List<Product>.from(json["results"].map((x) => Product.fromJson(x))),
+        info: Info.fromJson(json["info"]),
       );
+}
+
+class Info {
+  final int perPage;
+  final int currentPage;
+  final int lastPage;
+
+  Info({
+    required this.perPage,
+    required this.currentPage,
+    required this.lastPage,
+  });
+
+  factory Info.fromJson(Map<String, dynamic> json) => Info(
+        perPage: json["per_page"],
+        currentPage: json["current_page"],
+        lastPage: json["last_page"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "per_page": perPage,
+        "current_page": currentPage,
+        "last_page": lastPage,
+      };
 }
 
 class Product {
@@ -26,7 +51,6 @@ class Product {
   final List<String> colors;
   final List<Size> sizes;
   final List<Gender> genders;
-  final bool freeShipping;
   final User user;
   final DateTime createdAt;
   final int? discount;
@@ -44,7 +68,6 @@ class Product {
     required this.colors,
     required this.sizes,
     required this.genders,
-    required this.freeShipping,
     required this.user,
     required this.createdAt,
     required this.discount,
@@ -66,7 +89,6 @@ class Product {
         sizes: List<Size>.from(json["sizes"].map((x) => Size.fromJson(x))),
         genders:
             List<Gender>.from(json["genders"].map((x) => Gender.fromJson(x))),
-        freeShipping: json["free_shipping"],
         user: User.fromJson(json["user"]),
         createdAt: DateTime.parse(json["created_at"]),
         discount: json["discount"],
@@ -103,7 +125,6 @@ class Product {
       colors: colors ?? this.colors,
       sizes: sizes ?? this.sizes,
       genders: genders ?? this.genders,
-      freeShipping: freeShipping ?? this.freeShipping,
       user: user ?? this.user,
       createdAt: createdAt ?? this.createdAt,
       discount: discount ?? this.discount,
