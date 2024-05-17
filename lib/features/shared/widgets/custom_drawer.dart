@@ -5,6 +5,7 @@ import 'package:flutter_snappyshop/features/auth/providers/auth_provider.dart';
 import 'package:flutter_snappyshop/features/cards/providers/card_provider.dart';
 import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
 import 'package:flutter_snappyshop/features/shared/models/form_type.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/image_viewer.dart';
@@ -18,6 +19,7 @@ class CustomDrawer extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final cartState = ref.watch(cartProvider);
     final MediaQueryData screen = MediaQuery.of(context);
+    final darkMode = ref.watch(darkModeProvider);
 
     int numProducts = 0;
     final authState = ref.watch(authProvider);
@@ -34,17 +36,18 @@ class CustomDrawer extends ConsumerWidget {
       numProducts = 0;
     }
 
-    const textLabelStyle = TextStyle(
+    final textLabelStyle = TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.w400,
-      color: AppColors.textYankeesBlue,
+      color: darkMode ? AppColors.white : AppColors.textYankeesBlue,
       height: 16 / 16,
       leadingDistribution: TextLeadingDistribution.even,
     );
 
     return Drawer(
       elevation: 0,
-      backgroundColor: AppColors.white,
+      backgroundColor:
+          darkMode ? AppColors.backgroundColorDark2 : AppColors.white,
       child: CustomScrollView(
         slivers: [
           SliverFillRemaining(
@@ -84,9 +87,18 @@ class CustomDrawer extends ConsumerWidget {
                                     shape: BoxShape.circle,
                                     color: AppColors.primaryCultured,
                                   ),
-                                  child: const Icon(
-                                    Icons.person,
-                                    color: AppColors.textArsenic,
+                                  child: Center(
+                                    child: SvgPicture.asset(
+                                      'assets/icons/profile.svg',
+                                      colorFilter: ColorFilter.mode(
+                                        darkMode
+                                            ? AppColors.textArsenic
+                                            : AppColors.textArsenic,
+                                        BlendMode.srcIn,
+                                      ),
+                                      width: 24,
+                                      height: 24,
+                                    ),
                                   ),
                                 ),
                           const SizedBox(
@@ -98,10 +110,12 @@ class CustomDrawer extends ConsumerWidget {
                               children: [
                                 Text(
                                   '${authState.user?.name}',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
-                                    color: AppColors.textYankeesBlue,
+                                    color: darkMode
+                                        ? AppColors.white
+                                        : AppColors.textYankeesBlue,
                                     height: 1.1,
                                     leadingDistribution:
                                         TextLeadingDistribution.even,
@@ -109,10 +123,12 @@ class CustomDrawer extends ConsumerWidget {
                                 ),
                                 Text(
                                   '${authState.user?.email}',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.w400,
-                                    color: AppColors.textArsenic,
+                                    color: darkMode
+                                        ? AppColors.textCultured
+                                        : AppColors.textArsenic,
                                     height: 1.1,
                                     leadingDistribution:
                                         TextLeadingDistribution.even,
@@ -132,14 +148,14 @@ class CustomDrawer extends ConsumerWidget {
                     contentPadding: const EdgeInsetsDirectional.symmetric(
                       horizontal: 24,
                     ),
-                    title: const Text(
+                    title: Text(
                       'Account Information',
                       style: textLabelStyle,
                     ),
                     leading: SvgPicture.asset(
                       'assets/icons/profile.svg',
-                      colorFilter: const ColorFilter.mode(
-                        AppColors.textYankeesBlue,
+                      colorFilter: ColorFilter.mode(
+                        darkMode ? AppColors.white : AppColors.textYankeesBlue,
                         BlendMode.srcIn,
                       ),
                       width: 24,
@@ -154,14 +170,14 @@ class CustomDrawer extends ConsumerWidget {
                     contentPadding: const EdgeInsetsDirectional.symmetric(
                       horizontal: 24,
                     ),
-                    title: const Text(
+                    title: Text(
                       'Cart',
                       style: textLabelStyle,
                     ),
                     leading: SvgPicture.asset(
                       'assets/icons/shopping_cart.svg',
-                      colorFilter: const ColorFilter.mode(
-                        AppColors.textYankeesBlue,
+                      colorFilter: ColorFilter.mode(
+                        darkMode ? AppColors.white : AppColors.textYankeesBlue,
                         BlendMode.srcIn,
                       ),
                       width: 24,
@@ -196,14 +212,14 @@ class CustomDrawer extends ConsumerWidget {
                   ListTile(
                     contentPadding:
                         const EdgeInsetsDirectional.symmetric(horizontal: 24),
-                    title: const Text(
+                    title: Text(
                       'My Cards',
                       style: textLabelStyle,
                     ),
                     leading: SvgPicture.asset(
                       'assets/icons/card.svg',
-                      colorFilter: const ColorFilter.mode(
-                        AppColors.textYankeesBlue,
+                      colorFilter: ColorFilter.mode(
+                        darkMode ? AppColors.white : AppColors.textYankeesBlue,
                         BlendMode.srcIn,
                       ),
                       width: 24,
@@ -223,14 +239,14 @@ class CustomDrawer extends ConsumerWidget {
                     contentPadding: const EdgeInsetsDirectional.symmetric(
                       horizontal: 24,
                     ),
-                    title: const Text(
+                    title: Text(
                       'My Orders',
                       style: textLabelStyle,
                     ),
                     leading: SvgPicture.asset(
                       'assets/icons/order.svg',
-                      colorFilter: const ColorFilter.mode(
-                        AppColors.textYankeesBlue,
+                      colorFilter: ColorFilter.mode(
+                        darkMode ? AppColors.white : AppColors.textYankeesBlue,
                         BlendMode.srcIn,
                       ),
                       width: 24,
@@ -245,14 +261,14 @@ class CustomDrawer extends ConsumerWidget {
                     contentPadding: const EdgeInsetsDirectional.symmetric(
                       horizontal: 24,
                     ),
-                    title: const Text(
+                    title: Text(
                       'Wishlist',
                       style: textLabelStyle,
                     ),
                     leading: SvgPicture.asset(
-                      'assets/icons/heart.svg',
-                      colorFilter: const ColorFilter.mode(
-                        AppColors.textYankeesBlue,
+                      'assets/icons/heart_outlined.svg',
+                      colorFilter: ColorFilter.mode(
+                        darkMode ? AppColors.white : AppColors.textYankeesBlue,
                         BlendMode.srcIn,
                       ),
                       width: 24,
@@ -267,14 +283,14 @@ class CustomDrawer extends ConsumerWidget {
                     contentPadding: const EdgeInsetsDirectional.symmetric(
                       horizontal: 24,
                     ),
-                    title: const Text(
+                    title: Text(
                       'My Addresses',
                       style: textLabelStyle,
                     ),
                     leading: SvgPicture.asset(
                       'assets/icons/box.svg',
-                      colorFilter: const ColorFilter.mode(
-                        AppColors.textYankeesBlue,
+                      colorFilter: ColorFilter.mode(
+                        darkMode ? AppColors.white : AppColors.textYankeesBlue,
                         BlendMode.srcIn,
                       ),
                       width: 24,
@@ -292,14 +308,14 @@ class CustomDrawer extends ConsumerWidget {
                     contentPadding: const EdgeInsetsDirectional.symmetric(
                       horizontal: 24,
                     ),
-                    title: const Text(
+                    title: Text(
                       'Change Password',
                       style: textLabelStyle,
                     ),
                     leading: SvgPicture.asset(
                       'assets/icons/lock.svg',
-                      colorFilter: const ColorFilter.mode(
-                        AppColors.textYankeesBlue,
+                      colorFilter: ColorFilter.mode(
+                        darkMode ? AppColors.white : AppColors.textYankeesBlue,
                         BlendMode.srcIn,
                       ),
                       width: 24,
@@ -314,14 +330,14 @@ class CustomDrawer extends ConsumerWidget {
                     contentPadding: const EdgeInsetsDirectional.symmetric(
                       horizontal: 24,
                     ),
-                    title: const Text(
+                    title: Text(
                       'Settings',
                       style: textLabelStyle,
                     ),
                     leading: SvgPicture.asset(
                       'assets/icons/settings.svg',
-                      colorFilter: const ColorFilter.mode(
-                        AppColors.textYankeesBlue,
+                      colorFilter: ColorFilter.mode(
+                        darkMode ? AppColors.white : AppColors.textYankeesBlue,
                         BlendMode.srcIn,
                       ),
                       width: 24,

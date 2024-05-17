@@ -3,6 +3,7 @@ import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
 import 'package:flutter_snappyshop/features/cart/widgets/button_stepper.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/image_viewer.dart';
@@ -28,6 +29,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
     final cartState = ref.watch(cartProvider);
     final emptyCart = !(cartState.cart != null &&
         (cartState.cart?.products ?? []).isNotEmpty);
+    final darkMode = ref.watch(darkModeProvider);
 
     return Loader(
       loading: cartState.loading,
@@ -110,7 +112,9 @@ class CartScreenState extends ConsumerState<CartScreen> {
                         right: 23,
                       ),
                       decoration: BoxDecoration(
-                        color: AppColors.primaryCultured,
+                        color: darkMode
+                            ? AppColors.backgroundColorDark2
+                            : AppColors.primaryCultured,
                         borderRadius: BorderRadius.circular(14),
                       ),
                       child: Row(
@@ -133,10 +137,12 @@ class CartScreenState extends ConsumerState<CartScreen> {
                               children: [
                                 Text(
                                   product.name,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400,
-                                    color: AppColors.textArsenic,
+                                    color: darkMode
+                                        ? AppColors.white
+                                        : AppColors.textArsenic,
                                     height: 22 / 14,
                                     leadingDistribution:
                                         TextLeadingDistribution.even,
@@ -163,10 +169,12 @@ class CartScreenState extends ConsumerState<CartScreen> {
                                     if (product.discount != null)
                                       Text(
                                         '\$${product.price.toStringAsFixed(2)}',
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w400,
-                                          color: AppColors.gray,
+                                          color: darkMode
+                                              ? AppColors.textCultured
+                                              : AppColors.gray,
                                           height: 22 / 16,
                                           decoration:
                                               TextDecoration.lineThrough,

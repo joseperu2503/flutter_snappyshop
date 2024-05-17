@@ -2,21 +2,27 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-class CustomBackButton extends StatelessWidget {
+class CustomBackButton extends ConsumerWidget {
   const CustomBackButton({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final darkMode = ref.watch(darkModeProvider);
+
     return Container(
       width: 46,
       height: 46,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: AppColors.primaryCultured,
+        color: darkMode
+            ? AppColors.backgroundColorDark2
+            : AppColors.primaryCultured,
       ),
       child: TextButton(
         onPressed: () {
@@ -28,8 +34,8 @@ class CustomBackButton extends StatelessWidget {
               : 'assets/icons/arrow_back_ios.svg',
           width: 24,
           height: 24,
-          colorFilter: const ColorFilter.mode(
-            AppColors.textYankeesBlue,
+          colorFilter: ColorFilter.mode(
+            darkMode ? AppColors.white : AppColors.textYankeesBlue,
             BlendMode.srcIn,
           ),
         ),

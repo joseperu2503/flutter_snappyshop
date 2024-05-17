@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/config/constants/styles.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/back_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
 
-class Layout1 extends StatelessWidget {
+class Layout1 extends ConsumerWidget {
   const Layout1({
     super.key,
     required this.body,
@@ -25,7 +27,9 @@ class Layout1 extends StatelessWidget {
   final Widget? action;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final darkMode = ref.watch(darkModeProvider);
+
     return Loader(
       loading: loading,
       child: Scaffold(
@@ -47,10 +51,12 @@ class Layout1 extends StatelessWidget {
                 if (title != null)
                   Text(
                     title!,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.textYankeesBlue,
+                      color: darkMode
+                          ? AppColors.white
+                          : AppColors.textYankeesBlue,
                       leadingDistribution: TextLeadingDistribution.even,
                     ),
                   ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
 import 'package:flutter_snappyshop/features/wishlist/providers/favorite_products_provider.dart';
 import 'package:flutter_snappyshop/features/products/providers/products_provider.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_snappyshop/features/shared/models/service_exception.dart
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/image_viewer.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 class ProductCard extends ConsumerStatefulWidget {
@@ -56,6 +58,7 @@ class ProductCardState extends ConsumerState<ProductCard> {
     final double price = widget.product.discount == null
         ? widget.product.price
         : (widget.product.price * (1 - widget.product.discount! / 100));
+    final darkMode = ref.watch(darkModeProvider);
 
     return GestureDetector(
       onTap: () {
@@ -70,7 +73,9 @@ class ProductCardState extends ConsumerState<ProductCard> {
               Container(
                 height: 140,
                 decoration: BoxDecoration(
-                  color: AppColors.primaryCultured,
+                  color: darkMode
+                      ? AppColors.backgroundColorDark2
+                      : AppColors.primaryCultured,
                   borderRadius: BorderRadiusDirectional.circular(15),
                 ),
                 child: Center(
@@ -118,18 +123,22 @@ class ProductCardState extends ConsumerState<ProductCard> {
                             strokeWidth: 2,
                           ),
                         )
-                      : IconButton(
+                      : TextButton(
                           onPressed: loadingFavorite
                               ? null
                               : () {
                                   toggleFavorite();
                                 },
-                          icon: Icon(
+                          child: SvgPicture.asset(
                             widget.product.isFavorite
-                                ? Icons.favorite_rounded
-                                : Icons.favorite_outline_rounded,
-                            color:
-                                AppColors.secondaryPastelRed.withOpacity(0.8),
+                                ? 'assets/icons/heart_solid.svg'
+                                : 'assets/icons/heart_outlined.svg',
+                            colorFilter: ColorFilter.mode(
+                              AppColors.secondaryPastelRed.withOpacity(0.8),
+                              BlendMode.srcIn,
+                            ),
+                            width: 24,
+                            height: 24,
                           ),
                         ),
                 ),
@@ -141,10 +150,10 @@ class ProductCardState extends ConsumerState<ProductCard> {
           ),
           Text(
             widget.product.name,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w500,
-              color: AppColors.textCoolBlack,
+              color: darkMode ? AppColors.white : AppColors.textCoolBlack,
               height: 1.4,
               leadingDistribution: TextLeadingDistribution.even,
             ),

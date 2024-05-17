@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/products/providers/products_provider.dart';
 import 'package:flutter_snappyshop/features/products/widgets/cart_button.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_drawer.dart';
 import 'package:flutter_snappyshop/features/products/widgets/product_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 class ProductsScreen extends ConsumerStatefulWidget {
@@ -51,6 +53,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
   @override
   Widget build(BuildContext context) {
     final productsState = ref.watch(productsProvider);
+    final darkMode = ref.watch(darkModeProvider);
 
     return Loader(
       loading: productsState.dashboardStatus == LoadingStatus.loading,
@@ -63,7 +66,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
           forceMaterialTransparency: true,
           titleSpacing: 0,
           title: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               children: [
                 Container(
@@ -76,21 +79,28 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                     onPressed: () {
                       scaffoldKey.currentState?.openDrawer();
                     },
-                    child: const Icon(
-                      Icons.menu,
-                      color: AppColors.textYankeesBlue,
+                    child: SvgPicture.asset(
+                      'assets/icons/menu.svg',
+                      colorFilter: ColorFilter.mode(
+                        darkMode ? AppColors.white : AppColors.textYankeesBlue,
+                        BlendMode.srcIn,
+                      ),
+                      width: 24,
+                      height: 24,
                     ),
                   ),
                 ),
                 const SizedBox(
-                  width: 8,
+                  width: 2,
                 ),
-                const Text(
+                Text(
                   'SnappyShop',
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w700,
-                    color: AppColors.primaryPearlAqua,
+                    color: darkMode
+                        ? AppColors.textCultured
+                        : AppColors.primaryPearlAqua,
                     height: 22 / 22,
                     leadingDistribution: TextLeadingDistribution.even,
                   ),
@@ -124,6 +134,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                             Hero(
                               tag: 'searchTag',
                               child: Material(
+                                color: Colors.transparent,
                                 child: GestureDetector(
                                   onTap: () {
                                     context.push('/search');
@@ -131,18 +142,23 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                                   child: Container(
                                     height: 50,
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 15),
+                                      horizontal: 15,
+                                    ),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
-                                      color: AppColors.primaryCultured,
+                                      color: darkMode
+                                          ? AppColors.backgroundColorDark2
+                                          : AppColors.primaryCultured,
                                     ),
-                                    child: const Row(
+                                    child: Row(
                                       children: [
                                         Icon(
                                           Icons.search,
-                                          color: AppColors.textArsenic,
+                                          color: darkMode
+                                              ? AppColors.textCultured
+                                              : AppColors.textArsenic,
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 10,
                                         ),
                                         Text(
@@ -150,7 +166,9 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                                           style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w400,
-                                            color: AppColors.textCoolBlack,
+                                            color: darkMode
+                                                ? AppColors.textCultured
+                                                : AppColors.textCoolBlack,
                                             height: 22 / 14,
                                             leadingDistribution:
                                                 TextLeadingDistribution.even,
@@ -165,12 +183,14 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                             const SizedBox(
                               height: 20,
                             ),
-                            const Text(
+                            Text(
                               'Choose Brand',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
-                                color: AppColors.textCoolBlack,
+                                color: darkMode
+                                    ? AppColors.white
+                                    : AppColors.textCoolBlack,
                                 height: 1.1,
                                 leadingDistribution:
                                     TextLeadingDistribution.even,
@@ -201,18 +221,23 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      color: AppColors.primaryCultured,
+                                      color: darkMode
+                                          ? AppColors.backgroundColorDark2
+                                          : AppColors.primaryCultured,
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
+                                      horizontal: 10,
+                                    ),
                                     child: Center(
                                       child: Text(
                                         brand.name,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500,
-                                          color: AppColors.textCoolBlack,
+                                          color: darkMode
+                                              ? AppColors.textCultured
+                                              : AppColors.textCoolBlack,
                                           height: 22 / 16,
                                           leadingDistribution:
                                               TextLeadingDistribution.even,
@@ -237,12 +262,14 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                               left: 24,
                               bottom: 0,
                             ),
-                            child: const Text(
+                            child: Text(
                               'Popular',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
-                                color: AppColors.textCoolBlack,
+                                color: darkMode
+                                    ? AppColors.white
+                                    : AppColors.textCoolBlack,
                                 height: 1.1,
                                 leadingDistribution:
                                     TextLeadingDistribution.even,

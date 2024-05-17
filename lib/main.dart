@@ -5,6 +5,7 @@ import 'package:flutter_snappyshop/config/constants/environment.dart';
 import 'package:flutter_snappyshop/config/router/app_router.dart';
 import 'package:flutter_snappyshop/config/theme/app_theme.dart';
 import 'package:flutter_snappyshop/features/settings/services/notification_service.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,11 +35,13 @@ void main() async {
   );
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends ConsumerWidget {
   const MainApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final darkMode = ref.watch(darkModeProvider);
+
     return MaterialApp.router(
       title: 'SnappyShop',
       routerConfig: appRouter,
@@ -48,7 +51,7 @@ class MainApp extends StatelessWidget {
           child: child!,
         );
       },
-      theme: AppTheme().getTheme(),
+      theme: AppTheme.getTheme(darkMode),
     );
   }
 }

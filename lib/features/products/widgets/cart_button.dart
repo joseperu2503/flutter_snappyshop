@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:badges/badges.dart' as badges;
 
@@ -24,6 +26,7 @@ class CartButton extends ConsumerWidget {
     } else {
       numProducts = 0;
     }
+    final darkMode = ref.watch(darkModeProvider);
 
     return Container(
       width: 46,
@@ -59,9 +62,14 @@ class CartButton extends ConsumerWidget {
           badgeStyle: badges.BadgeStyle(
             badgeColor: AppColors.primaryPearlAqua.withOpacity(0.8),
           ),
-          child: const Icon(
-            Icons.shopping_cart,
-            color: AppColors.textYankeesBlue,
+          child: SvgPicture.asset(
+            'assets/icons/shopping_cart.svg',
+            colorFilter: ColorFilter.mode(
+              darkMode ? AppColors.white : AppColors.textYankeesBlue,
+              BlendMode.srcIn,
+            ),
+            width: 24,
+            height: 24,
           ),
         ),
       ),
