@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/config/constants/styles.dart';
 
 enum ButtonType { primary, delete, text, outlined }
 
@@ -14,6 +15,12 @@ List<ButtonTypeStyle> buttonTypes = [
     textColorDisabled: AppColors.textCultured,
     foregroundColor: Colors.white60,
     borderColor: Colors.transparent,
+    gradient: const LinearGradient(
+      colors: [Color(0xff905bd2), Color(0xff8034da)],
+      stops: [0, 1],
+      begin: Alignment(-0.9, -0.5),
+      end: Alignment(0.3, 1.0),
+    ),
   ),
   ButtonTypeStyle(
     buttonType: ButtonType.outlined,
@@ -72,15 +79,17 @@ class CustomButton extends StatelessWidget {
       height: height,
       width: width,
       decoration: BoxDecoration(
-          color: disabled ? buttonStyle.colorDisabled : buttonStyle.color,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: buttonStyle.borderColor,
-          )),
+        color: disabled ? buttonStyle.colorDisabled : buttonStyle.color,
+        borderRadius: BorderRadius.circular(radiusButton),
+        border: Border.all(
+          color: buttonStyle.borderColor,
+        ),
+        gradient: buttonStyle.gradient,
+      ),
       child: TextButton(
         style: TextButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(radiusButton),
           ),
           foregroundColor: buttonStyle.foregroundColor,
         ),
@@ -127,6 +136,7 @@ class ButtonTypeStyle {
   final Color textColorDisabled;
   final Color foregroundColor;
   final Color borderColor;
+  final Gradient? gradient;
 
   ButtonTypeStyle({
     required this.buttonType,
@@ -136,5 +146,6 @@ class ButtonTypeStyle {
     required this.textColorDisabled,
     required this.foregroundColor,
     required this.borderColor,
+    this.gradient,
   });
 }

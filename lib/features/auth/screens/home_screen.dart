@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/settings/providers/notification_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -90,7 +91,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                       height: 52,
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(radiusButton),
                       ),
                       child: TextButton(
                         onPressed: () {
@@ -98,7 +99,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                         },
                         style: TextButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(radiusButton),
                           ),
                         ),
                         child: RichText(

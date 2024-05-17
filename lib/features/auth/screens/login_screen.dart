@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/auth/providers/login_provider.dart';
 import 'package:flutter_snappyshop/features/auth/widgets/input_email.dart';
 import 'package:flutter_snappyshop/features/auth/widgets/input_password.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/checkbox.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -155,28 +157,11 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                     const SizedBox(
                       height: 80,
                     ),
-                    Container(
-                      height: 52,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryPearlAqua,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: TextButton(
-                        onPressed: () {
-                          ref.read(loginProvider.notifier).login();
-                        },
-                        child: const Text(
-                          'Log In',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.textCultured,
-                            height: 22 / 16,
-                            leadingDistribution: TextLeadingDistribution.even,
-                          ),
-                        ),
-                      ),
+                    CustomButton(
+                      text: 'Log In',
+                      onPressed: () {
+                        ref.read(loginProvider.notifier).login();
+                      },
                     ),
                     const SizedBox(
                       height: 40,
@@ -185,7 +170,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                       height: 52,
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(radiusButton),
                       ),
                       child: ElevatedButton(
                         onPressed: () {
@@ -195,7 +180,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                           backgroundColor: AppColors.primaryCultured,
                           surfaceTintColor: Colors.white,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(radiusButton),
                           ),
                           elevation: 3,
                         ),
