@@ -8,6 +8,7 @@ import 'package:flutter_snappyshop/features/shared/models/form_type.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/image_viewer.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 class CustomDrawer extends ConsumerWidget {
@@ -32,6 +33,14 @@ class CustomDrawer extends ConsumerWidget {
     } else {
       numProducts = 0;
     }
+
+    const textLabelStyle = TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+      color: AppColors.textYankeesBlue,
+      height: 16 / 16,
+      leadingDistribution: TextLeadingDistribution.even,
+    );
 
     return Drawer(
       elevation: 0,
@@ -120,20 +129,44 @@ class CustomDrawer extends ConsumerWidget {
                     height: 30,
                   ),
                   ListTile(
-                    contentPadding:
-                        const EdgeInsetsDirectional.symmetric(horizontal: 24),
-                    title: const Text('Account Information'),
-                    leading: const Icon(Icons.person_2_outlined),
+                    contentPadding: const EdgeInsetsDirectional.symmetric(
+                      horizontal: 24,
+                    ),
+                    title: const Text(
+                      'Account Information',
+                      style: textLabelStyle,
+                    ),
+                    leading: SvgPicture.asset(
+                      'assets/icons/profile.svg',
+                      colorFilter: const ColorFilter.mode(
+                        AppColors.textYankeesBlue,
+                        BlendMode.srcIn,
+                      ),
+                      width: 24,
+                      height: 24,
+                    ),
                     onTap: () {
                       context.pop();
                       context.push('/account-information');
                     },
                   ),
                   ListTile(
-                    contentPadding:
-                        const EdgeInsetsDirectional.symmetric(horizontal: 24),
-                    title: const Text('Cart'),
-                    leading: const Icon(Icons.shopping_cart),
+                    contentPadding: const EdgeInsetsDirectional.symmetric(
+                      horizontal: 24,
+                    ),
+                    title: const Text(
+                      'Cart',
+                      style: textLabelStyle,
+                    ),
+                    leading: SvgPicture.asset(
+                      'assets/icons/shopping_cart.svg',
+                      colorFilter: const ColorFilter.mode(
+                        AppColors.textYankeesBlue,
+                        BlendMode.srcIn,
+                      ),
+                      width: 24,
+                      height: 24,
+                    ),
                     trailing: numProducts > 0
                         ? Container(
                             width: 30,
@@ -163,8 +196,19 @@ class CustomDrawer extends ConsumerWidget {
                   ListTile(
                     contentPadding:
                         const EdgeInsetsDirectional.symmetric(horizontal: 24),
-                    title: const Text('My Cards'),
-                    leading: const Icon(Icons.credit_card_outlined),
+                    title: const Text(
+                      'My Cards',
+                      style: textLabelStyle,
+                    ),
+                    leading: SvgPicture.asset(
+                      'assets/icons/card.svg',
+                      colorFilter: const ColorFilter.mode(
+                        AppColors.textYankeesBlue,
+                        BlendMode.srcIn,
+                      ),
+                      width: 24,
+                      height: 24,
+                    ),
                     onTap: () {
                       context.pop();
 
@@ -176,30 +220,66 @@ class CustomDrawer extends ConsumerWidget {
                     },
                   ),
                   ListTile(
-                    contentPadding:
-                        const EdgeInsetsDirectional.symmetric(horizontal: 24),
-                    title: const Text('My Orders'),
-                    leading: const Icon(Icons.shopping_bag_outlined),
+                    contentPadding: const EdgeInsetsDirectional.symmetric(
+                      horizontal: 24,
+                    ),
+                    title: const Text(
+                      'My Orders',
+                      style: textLabelStyle,
+                    ),
+                    leading: SvgPicture.asset(
+                      'assets/icons/order.svg',
+                      colorFilter: const ColorFilter.mode(
+                        AppColors.textYankeesBlue,
+                        BlendMode.srcIn,
+                      ),
+                      width: 24,
+                      height: 24,
+                    ),
                     onTap: () {
                       context.pop();
                       context.push('/my-orders');
                     },
                   ),
                   ListTile(
-                    contentPadding:
-                        const EdgeInsetsDirectional.symmetric(horizontal: 24),
-                    title: const Text('Wishlist'),
-                    leading: const Icon(Icons.favorite_outline),
+                    contentPadding: const EdgeInsetsDirectional.symmetric(
+                      horizontal: 24,
+                    ),
+                    title: const Text(
+                      'Wishlist',
+                      style: textLabelStyle,
+                    ),
+                    leading: SvgPicture.asset(
+                      'assets/icons/heart.svg',
+                      colorFilter: const ColorFilter.mode(
+                        AppColors.textYankeesBlue,
+                        BlendMode.srcIn,
+                      ),
+                      width: 24,
+                      height: 24,
+                    ),
                     onTap: () {
                       context.pop();
                       context.push('/whishlist');
                     },
                   ),
                   ListTile(
-                    contentPadding:
-                        const EdgeInsetsDirectional.symmetric(horizontal: 24),
-                    title: const Text('My Addresses'),
-                    leading: const Icon(Icons.location_pin),
+                    contentPadding: const EdgeInsetsDirectional.symmetric(
+                      horizontal: 24,
+                    ),
+                    title: const Text(
+                      'My Addresses',
+                      style: textLabelStyle,
+                    ),
+                    leading: SvgPicture.asset(
+                      'assets/icons/box.svg',
+                      colorFilter: const ColorFilter.mode(
+                        AppColors.textYankeesBlue,
+                        BlendMode.srcIn,
+                      ),
+                      width: 24,
+                      height: 24,
+                    ),
                     onTap: () {
                       context.pop();
                       ref
@@ -209,20 +289,44 @@ class CustomDrawer extends ConsumerWidget {
                     },
                   ),
                   ListTile(
-                    contentPadding:
-                        const EdgeInsetsDirectional.symmetric(horizontal: 24),
-                    title: const Text('Change Password'),
-                    leading: const Icon(Icons.lock_outline_rounded),
+                    contentPadding: const EdgeInsetsDirectional.symmetric(
+                      horizontal: 24,
+                    ),
+                    title: const Text(
+                      'Change Password',
+                      style: textLabelStyle,
+                    ),
+                    leading: SvgPicture.asset(
+                      'assets/icons/lock.svg',
+                      colorFilter: const ColorFilter.mode(
+                        AppColors.textYankeesBlue,
+                        BlendMode.srcIn,
+                      ),
+                      width: 24,
+                      height: 24,
+                    ),
                     onTap: () {
                       context.pop();
                       context.push('/change-password-internal');
                     },
                   ),
                   ListTile(
-                    contentPadding:
-                        const EdgeInsetsDirectional.symmetric(horizontal: 24),
-                    title: const Text('Settings'),
-                    leading: const Icon(Icons.settings_outlined),
+                    contentPadding: const EdgeInsetsDirectional.symmetric(
+                      horizontal: 24,
+                    ),
+                    title: const Text(
+                      'Settings',
+                      style: textLabelStyle,
+                    ),
+                    leading: SvgPicture.asset(
+                      'assets/icons/settings.svg',
+                      colorFilter: const ColorFilter.mode(
+                        AppColors.textYankeesBlue,
+                        BlendMode.srcIn,
+                      ),
+                      width: 24,
+                      height: 24,
+                    ),
                     onTap: () {
                       context.pop();
                       context.push('/settings');

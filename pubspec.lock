@@ -66,7 +66,7 @@ packages:
     source: hosted
     version: "2.1.1"
   change_app_package_name:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: change_app_package_name
       sha256: f9ebaf68a4b5a68c581492579bb68273c523ef325fbf9ce2f1b57fb136ad023b
@@ -287,7 +287,7 @@ packages:
     source: hosted
     version: "5.1.0"
   flutter_launcher_icons:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: flutter_launcher_icons
       sha256: "526faf84284b86a4cb36d20a5e45147747b7563d921373d4ee0559c54fcdbcea"
@@ -777,7 +777,7 @@ packages:
     source: hosted
     version: "17.0.0"
   rename_app:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: rename_app
       sha256: "598d33d1a89c7f47e57b6f37edb9661667238e49a9a81cf4e60a8cf444a3f9fc"
