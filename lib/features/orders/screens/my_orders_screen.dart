@@ -5,6 +5,7 @@ import 'package:flutter_snappyshop/features/orders/widgets/order_status_filter_b
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
+import 'package:intl/intl.dart';
 
 class MyOrdersScreen extends ConsumerStatefulWidget {
   const MyOrdersScreen({super.key});
@@ -36,8 +37,13 @@ class MyOrdersScreenState extends ConsumerState<MyOrdersScreen> {
         body: Column(
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.only(
+                left: 24,
+                right: 24,
+                top: 8,
+              ),
               child: const Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   OrderStatusFilterButton(),
                 ],
@@ -65,13 +71,13 @@ class MyOrdersScreenState extends ConsumerState<MyOrdersScreen> {
                           ),
                           child: Column(
                             children: [
-                              const Row(
+                              Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Order N° 1947034',
-                                    style: TextStyle(
+                                    'Order N° ${order.id}',
+                                    style: const TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
                                       color: AppColors.textArsenic,
@@ -83,8 +89,9 @@ class MyOrdersScreenState extends ConsumerState<MyOrdersScreen> {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   Text(
-                                    '05-12-2019',
-                                    style: TextStyle(
+                                    DateFormat('dd-MM-yyyy')
+                                        .format(order.createdAt),
+                                    style: const TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
                                       color: AppColors.textArsenic,
@@ -100,9 +107,9 @@ class MyOrdersScreenState extends ConsumerState<MyOrdersScreen> {
                               const SizedBox(
                                 height: 12,
                               ),
-                              const Row(
+                              Row(
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Quantity: ',
                                     style: TextStyle(
                                       fontSize: 14,
@@ -116,35 +123,8 @@ class MyOrdersScreenState extends ConsumerState<MyOrdersScreen> {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   Text(
-                                    '2',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.textArsenic,
-                                      height: 22 / 14,
-                                      leadingDistribution:
-                                          TextLeadingDistribution.even,
-                                    ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  Spacer(),
-                                  Text(
-                                    'Total Amount: ',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                      color: AppColors.textArsenic,
-                                      height: 22 / 14,
-                                      leadingDistribution:
-                                          TextLeadingDistribution.even,
-                                    ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  Text(
-                                    '\$112',
-                                    style: TextStyle(
+                                    order.items.toString(),
+                                    style: const TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
                                       color: AppColors.textArsenic,
@@ -162,45 +142,23 @@ class MyOrdersScreenState extends ConsumerState<MyOrdersScreen> {
                               ),
                               Row(
                                 children: [
-                                  Container(
-                                    height: 42,
-                                    decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                        color: AppColors.textCoolBlack,
-                                      ),
-                                    ),
-                                    child: TextButton(
-                                      style: TextButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        foregroundColor: AppColors.textArsenic,
-                                      ),
-                                      onPressed: () {},
-                                      child: const Text(
-                                        'Details',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: AppColors.textCoolBlack,
-                                          height: 22 / 14,
-                                          leadingDistribution:
-                                              TextLeadingDistribution.even,
-                                        ),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
+                                  Text(
+                                    '\$${order.totalAmount}',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.textArsenic,
+                                      height: 22 / 16,
+                                      leadingDistribution:
+                                          TextLeadingDistribution.even,
                                     ),
                                   ),
                                   const Spacer(),
-                                  const Text(
-                                    'Delivered',
-                                    style: TextStyle(
+                                  Text(
+                                    order.orderStatus.name,
+                                    style: const TextStyle(
                                       fontSize: 14,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w500,
                                       color: AppColors.success,
                                       height: 22 / 14,
                                       leadingDistribution:
@@ -215,7 +173,7 @@ class MyOrdersScreenState extends ConsumerState<MyOrdersScreen> {
                           ),
                         );
                       },
-                      separatorBuilder: (context, index) {
+                      separatorBuilder: (contomtext, index) {
                         return const SizedBox(
                           height: 14,
                         );

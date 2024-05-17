@@ -23,6 +23,7 @@ class OrderNotifier extends StateNotifier<OrderState> {
     try {
       final MyOrdersResponse response = await OrderService.getOrders(
         page: state.page,
+        orderStatusId: state.orderStatus?.id,
       );
 
       state = state.copyWith(
@@ -44,10 +45,15 @@ class OrderNotifier extends StateNotifier<OrderState> {
     );
   }
 
-  changeOrderStatus(OrderStatus orderStatus) {
+  changeOrderStatus(OrderStatusFilter orderStatus) {
     state = state.copyWith(
       orderStatus: () => orderStatus,
+      orders: const [],
+      page: 1,
+      totalPages: 1,
+      loading: false,
     );
+    getOrders();
   }
 }
 
@@ -56,8 +62,8 @@ class OrderState {
   final int page;
   final int totalPages;
   final bool loading;
-  final List<OrderStatus> orderStatuses;
-  final OrderStatus? orderStatus;
+  final List<OrderStatusFilter> orderStatuses;
+  final OrderStatusFilter? orderStatus;
 
   OrderState({
     this.orders = const [],
@@ -73,8 +79,8 @@ class OrderState {
     int? page,
     int? totalPages,
     bool? loading,
-    List<OrderStatus>? orderStatuses,
-    ValueGetter<OrderStatus?>? orderStatus,
+    List<OrderStatusFilter>? orderStatuses,
+    ValueGetter<OrderStatusFilter?>? orderStatus,
   }) =>
       OrderState(
         orders: orders ?? this.orders,
@@ -86,9 +92,31 @@ class OrderState {
       );
 }
 
-List<OrderStatus> orderStatuses = [
-  OrderStatus(id: null, name: 'All'),
-  OrderStatus(id: 1, name: 'Ordered'),
-  OrderStatus(id: 2, name: 'In Travel'),
-  OrderStatus(id: 3, name: 'Delivered'),
+class OrderStatusFilter {
+  final int? id;
+  final String name;
+
+  OrderStatusFilter({
+    required this.id,
+    required this.name,
+  });
+
+  factory OrderStatusFilter.fromJson(Map<String, dynamic> json) =>
+      OrderStatusFilter(
+        id: json["id"],
+        name: json["name"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+      };
+}
+
+List<OrderStatusFilter> orderStatuses = [
+  OrderStatusFilter(id: null, name: 'All'),
+  OrderStatusFilter(id: 1, name: 'Ordered'),
+  OrderStatusFilter(id: 2, name: 'Packed'),
+  OrderStatusFilter(id: 3, name: 'In Transit'),
+  OrderStatusFilter(id: 4, name: 'Delivered'),
 ];

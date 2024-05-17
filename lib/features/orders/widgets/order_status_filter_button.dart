@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
-import 'package:flutter_snappyshop/features/orders/models/my_orders_response.dart';
 import 'package:flutter_snappyshop/features/orders/providers/order_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -11,7 +10,7 @@ class OrderStatusFilterButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final orderState = ref.watch(orderProvider);
-    OrderStatus? orderStatus;
+    OrderStatusFilter? orderStatus;
 
     int orderIndex = orderState.orderStatuses.indexWhere(
         (orderStatus) => orderStatus.id == orderState.orderStatus?.id);

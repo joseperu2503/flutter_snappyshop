@@ -44,8 +44,8 @@ class VisaValidator extends Validator<dynamic> {
   }
 }
 
-class MastercardValidator extends Validator<dynamic> {
-  const MastercardValidator() : super();
+class MasterCardValidator extends Validator<dynamic> {
+  const MasterCardValidator() : super();
 
   @override
   Map<String, dynamic>? validate(AbstractControl<dynamic> control) {

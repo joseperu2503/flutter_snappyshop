@@ -61,6 +61,7 @@ class CardNotifier extends StateNotifier<CardState> {
         cardHolderName: state.cardHolderName.value ?? '',
         expired: state.expired.value ?? '',
         ccv: state.ccv.value ?? '',
+        paymenthMethod: state.paymentMethod,
       ));
 
       if (state.listType == ListType.list) {
@@ -139,6 +140,31 @@ class CardState {
     return index >= 0;
   }
 
+  int? get paymentMethod {
+    final isVisa =
+        const VisaValidator().validate(form.control(CardForm.cardNumber)) ==
+            null;
+    if (isVisa) {
+      return 1;
+    }
+
+    final isMasterCard = const MasterCardValidator()
+            .validate(form.control(CardForm.cardNumber)) ==
+        null;
+    if (isMasterCard) {
+      return 2;
+    }
+
+    final isAmex =
+        const AmexValidator().validate(form.control(CardForm.cardNumber)) ==
+            null;
+    if (isAmex) {
+      return 3;
+    }
+
+    return null;
+  }
+
   CardState copyWith({
     FormGroup? form,
     List<BankCard>? cards,
@@ -167,7 +193,7 @@ class CardForm {
           Validators.required,
           Validators.composeOR([
             const VisaValidator(),
-            const MastercardValidator(),
+            const MasterCardValidator(),
             const AmexValidator(),
           ])
         ],
