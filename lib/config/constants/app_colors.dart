@@ -22,6 +22,8 @@ class AppColors {
 
   static const Color error = Color(0xFFF04438);
   static const Color success = Color(0xFF2AA952);
-  static const Color backgroundColorDark = Color(0xFF1d1e20);
+  static const Color backgroundColorDark = Color.fromARGB(255, 35, 36, 39);
   static const Color backgroundColorDark2 = Color(0xFF2b3036);
+  static const Color textArsenicDark = Color.fromARGB(255, 181, 184, 189);
+  static const Color textCoolBlackDark = Color(0xFFFFFFFF);
 }

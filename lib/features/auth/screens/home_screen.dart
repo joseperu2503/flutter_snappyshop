@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/settings/providers/notification_provider.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,6 +28,8 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final darkMode = ref.watch(darkModeProvider);
+
     return Scaffold(
       body: SafeArea(
         child: CustomScrollView(
@@ -51,12 +54,14 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                     const SizedBox(
                       height: 16,
                     ),
-                    const Text(
+                    Text(
                       'SnappyShop',
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.textYankeesBlue,
+                        color: darkMode
+                            ? AppColors.white
+                            : AppColors.textYankeesBlue,
                         height: 1.1,
                         leadingDistribution: TextLeadingDistribution.even,
                       ),
@@ -64,12 +69,14 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                     const SizedBox(
                       height: 12,
                     ),
-                    const Text(
+                    Text(
                       'Explore the latest trends and discover \nexclusive deals all in one place',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
-                        color: AppColors.textArsenic,
+                        color: darkMode
+                            ? AppColors.textArsenicDark
+                            : AppColors.textArsenic,
                         height: 1.3,
                         leadingDistribution: TextLeadingDistribution.even,
                       ),
@@ -103,8 +110,8 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                           ),
                         ),
                         child: RichText(
-                          text: const TextSpan(
-                            style: TextStyle(
+                          text: TextSpan(
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
                               height: 22 / 16,
@@ -113,9 +120,12 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                             children: [
                               TextSpan(
                                 text: 'I already have an account? ',
-                                style: TextStyle(color: AppColors.textArsenic),
+                                style: TextStyle(
+                                    color: darkMode
+                                        ? AppColors.textArsenicDark
+                                        : AppColors.textArsenic),
                               ),
-                              TextSpan(
+                              const TextSpan(
                                 text: 'Log in',
                                 style: TextStyle(
                                     color: AppColors.primaryPearlAqua),
@@ -129,12 +139,14 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'Powered by',
                           style: TextStyle(
                             fontSize: 9,
                             fontWeight: FontWeight.w400,
-                            color: AppColors.textCoolBlack,
+                            color: darkMode
+                                ? AppColors.textCoolBlackDark
+                                : AppColors.textCoolBlack,
                             height: 1.4,
                             leadingDistribution: TextLeadingDistribution.even,
                           ),

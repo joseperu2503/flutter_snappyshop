@@ -5,9 +5,11 @@ import 'package:flutter_snappyshop/features/auth/providers/login_provider.dart';
 import 'package:flutter_snappyshop/features/auth/widgets/input_email.dart';
 import 'package:flutter_snappyshop/features/auth/widgets/input_password.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/checkbox.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/custom_label.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -31,6 +33,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final loginState = ref.watch(loginProvider);
+    final darkMode = ref.watch(darkModeProvider);
 
     return Loader(
       loading: loginState.loading,
@@ -49,13 +52,15 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const Center(
+                    Center(
                       child: Text(
                         'Log in',
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.w700,
-                          color: AppColors.primaryPearlAqua,
+                          color: darkMode
+                              ? AppColors.white
+                              : AppColors.primaryPearlAqua,
                           height: 32 / 24,
                           leadingDistribution: TextLeadingDistribution.even,
                         ),
@@ -67,12 +72,14 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                     Center(
                       child: Container(
                         constraints: const BoxConstraints(maxWidth: 300),
-                        child: const Text(
+                        child: Text(
                           'Please enter your data to continue',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: AppColors.textArsenic,
+                            color: darkMode
+                                ? AppColors.textArsenicDark
+                                : AppColors.textArsenic,
                             height: 1.5,
                             leadingDistribution: TextLeadingDistribution.even,
                           ),
@@ -83,16 +90,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                     const SizedBox(
                       height: 60,
                     ),
-                    const Text(
-                      'Email',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.textYankeesBlue,
-                        height: 22 / 14,
-                        leadingDistribution: TextLeadingDistribution.even,
-                      ),
-                    ),
+                    const CustomLabel('Email'),
                     const SizedBox(
                       height: 4,
                     ),
@@ -105,16 +103,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                     const SizedBox(
                       height: 16,
                     ),
-                    const Text(
-                      'Password',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.textYankeesBlue,
-                        height: 22 / 14,
-                        leadingDistribution: TextLeadingDistribution.even,
-                      ),
-                    ),
+                    const CustomLabel('Password'),
                     const SizedBox(
                       height: 4,
                     ),
@@ -141,12 +130,14 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                           onTap: () {
                             context.push('/forgot-password');
                           },
-                          child: const Text(
+                          child: Text(
                             'Forgot Password',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
-                              color: AppColors.textArsenic,
+                              color: darkMode
+                                  ? AppColors.textArsenicDark
+                                  : AppColors.textArsenic,
                               height: 22 / 14,
                               leadingDistribution: TextLeadingDistribution.even,
                             ),

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/shared/inputs/password.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/text_field_container.dart';
 
-class InputPassword extends StatefulWidget {
+class InputPassword extends ConsumerStatefulWidget {
   const InputPassword({
     super.key,
     required this.value,
@@ -14,10 +16,10 @@ class InputPassword extends StatefulWidget {
   final void Function(Password value) onChanged;
 
   @override
-  State<InputPassword> createState() => _InputPasswordState();
+  InputPasswordState createState() => InputPasswordState();
 }
 
-class _InputPasswordState extends State<InputPassword> {
+class InputPasswordState extends ConsumerState<InputPassword> {
   final TextEditingController controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   bool showPassword = false;
@@ -49,14 +51,17 @@ class _InputPasswordState extends State<InputPassword> {
         offset: controller.selection.end,
       ),
     );
+
+    final darkMode = ref.watch(darkModeProvider);
+
     return TextFieldContainer(
       errorMessage: widget.value.errorMessage,
       child: Row(
         children: [
           Expanded(
             child: TextFormField(
-              style: const TextStyle(
-                color: AppColors.textYankeesBlue,
+              style: TextStyle(
+                color: darkMode ? AppColors.white : AppColors.textYankeesBlue,
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
                 height: 22 / 14,
@@ -66,7 +71,9 @@ class _InputPasswordState extends State<InputPassword> {
                 isDense: true,
                 hintText: 'Password',
                 hintStyle: TextStyle(
-                  color: AppColors.textArsenic.withOpacity(0.5),
+                  color: darkMode
+                      ? AppColors.textCultured.withOpacity(0.5)
+                      : AppColors.textArsenic.withOpacity(0.5),
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
                   height: 22 / 14,
@@ -96,7 +103,9 @@ class _InputPasswordState extends State<InputPassword> {
             },
             icon: Icon(
               showPassword ? Icons.visibility : Icons.visibility_off,
-              color: AppColors.textArsenic.withOpacity(0.9),
+              color: darkMode
+                  ? AppColors.textArsenicDark
+                  : AppColors.textArsenic.withOpacity(0.9),
             ),
           )
         ],

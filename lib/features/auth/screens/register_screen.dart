@@ -5,9 +5,11 @@ import 'package:flutter_snappyshop/features/auth/widgets/input_email.dart';
 import 'package:flutter_snappyshop/features/auth/widgets/input_name.dart';
 import 'package:flutter_snappyshop/features/auth/widgets/input_password.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/checkbox.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/custom_label.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
@@ -28,6 +30,7 @@ class RegisterScreenState extends ConsumerState<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final registerState = ref.watch(registerProvider);
+    final darkMode = ref.watch(darkModeProvider);
 
     return Layout1(
       body: CustomScrollView(
@@ -44,13 +47,15 @@ class RegisterScreenState extends ConsumerState<RegisterScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Center(
+                  Center(
                     child: Text(
                       'Register',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.textYankeesBlue,
+                        color: darkMode
+                            ? AppColors.white
+                            : AppColors.textYankeesBlue,
                         height: 32 / 24,
                         leadingDistribution: TextLeadingDistribution.even,
                       ),
@@ -59,16 +64,7 @@ class RegisterScreenState extends ConsumerState<RegisterScreen> {
                   const SizedBox(
                     height: 60,
                   ),
-                  const Text(
-                    'Name',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.textYankeesBlue,
-                      height: 22 / 14,
-                      leadingDistribution: TextLeadingDistribution.even,
-                    ),
-                  ),
+                  const CustomLabel('Name'),
                   const SizedBox(
                     height: 8,
                   ),
@@ -81,16 +77,7 @@ class RegisterScreenState extends ConsumerState<RegisterScreen> {
                   const SizedBox(
                     height: 16,
                   ),
-                  const Text(
-                    'Email',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.textYankeesBlue,
-                      height: 22 / 14,
-                      leadingDistribution: TextLeadingDistribution.even,
-                    ),
-                  ),
+                  const CustomLabel('Email'),
                   const SizedBox(
                     height: 4,
                   ),
@@ -103,16 +90,7 @@ class RegisterScreenState extends ConsumerState<RegisterScreen> {
                   const SizedBox(
                     height: 16,
                   ),
-                  const Text(
-                    'Password',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.textYankeesBlue,
-                      height: 22 / 14,
-                      leadingDistribution: TextLeadingDistribution.even,
-                    ),
-                  ),
+                  const CustomLabel('Password'),
                   const SizedBox(
                     height: 4,
                   ),
@@ -125,16 +103,7 @@ class RegisterScreenState extends ConsumerState<RegisterScreen> {
                   const SizedBox(
                     height: 16,
                   ),
-                  const Text(
-                    'Confirm password',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.textYankeesBlue,
-                      height: 22 / 14,
-                      leadingDistribution: TextLeadingDistribution.even,
-                    ),
-                  ),
+                  const CustomLabel('Confirm password'),
                   const SizedBox(
                     height: 4,
                   ),

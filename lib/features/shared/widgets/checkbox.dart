@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 
-class CustomCheckbox extends StatelessWidget {
+class CustomCheckbox extends ConsumerWidget {
   const CustomCheckbox({
     super.key,
     required this.value,
@@ -14,7 +16,9 @@ class CustomCheckbox extends StatelessWidget {
   final String? label;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final darkMode = ref.watch(darkModeProvider);
+
     return GestureDetector(
       onTap: () {
         onChanged(!value);
@@ -52,10 +56,12 @@ class CustomCheckbox extends StatelessWidget {
           if (label != null)
             Text(
               label!,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
-                color: AppColors.textCoolBlack,
+                color: darkMode
+                    ? AppColors.textCoolBlackDark
+                    : AppColors.textCoolBlack,
                 height: 22 / 14,
                 leadingDistribution: TextLeadingDistribution.even,
               ),

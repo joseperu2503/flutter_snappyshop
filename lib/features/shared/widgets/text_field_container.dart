@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 
-class TextFieldContainer extends StatelessWidget {
+class TextFieldContainer extends ConsumerWidget {
   const TextFieldContainer({
     super.key,
     required this.child,
@@ -13,13 +15,17 @@ class TextFieldContainer extends StatelessWidget {
   final double? height;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final darkMode = ref.watch(darkModeProvider);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Container(
           decoration: BoxDecoration(
-            color: AppColors.primaryCultured,
+            color: darkMode
+                ? AppColors.backgroundColorDark2
+                : AppColors.primaryCultured,
             borderRadius: BorderRadius.circular(10),
           ),
           height: height,

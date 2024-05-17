@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/shared/inputs/email.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/text_field_container.dart';
 
-class InputEmail extends StatefulWidget {
+class InputEmail extends ConsumerStatefulWidget {
   const InputEmail({
     super.key,
     required this.value,
@@ -14,10 +16,10 @@ class InputEmail extends StatefulWidget {
   final void Function(Email value) onChanged;
 
   @override
-  State<InputEmail> createState() => _InputEmailState();
+  InputEmailState createState() => InputEmailState();
 }
 
-class _InputEmailState extends State<InputEmail> {
+class InputEmailState extends ConsumerState<InputEmail> {
   final TextEditingController controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
@@ -46,11 +48,14 @@ class _InputEmailState extends State<InputEmail> {
         offset: controller.selection.end,
       ),
     );
+
+    final darkMode = ref.watch(darkModeProvider);
+
     return TextFieldContainer(
       errorMessage: widget.value.errorMessage,
       child: TextFormField(
-        style: const TextStyle(
-          color: AppColors.textYankeesBlue,
+        style: TextStyle(
+          color: darkMode ? AppColors.white : AppColors.textYankeesBlue,
           fontSize: 14,
           fontWeight: FontWeight.w400,
           height: 22 / 14,
@@ -60,7 +65,9 @@ class _InputEmailState extends State<InputEmail> {
           isDense: true,
           hintText: 'Your email',
           hintStyle: TextStyle(
-            color: AppColors.textArsenic.withOpacity(0.5),
+            color: darkMode
+                ? AppColors.textCultured.withOpacity(0.5)
+                : AppColors.textArsenic.withOpacity(0.5),
             fontSize: 14,
             fontWeight: FontWeight.w400,
             height: 22 / 14,

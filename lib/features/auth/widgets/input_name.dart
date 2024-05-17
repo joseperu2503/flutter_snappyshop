@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/shared/inputs/name.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/text_field_container.dart';
 
-class InputName extends StatefulWidget {
+class InputName extends ConsumerStatefulWidget {
   const InputName({
     super.key,
     required this.value,
@@ -14,10 +16,10 @@ class InputName extends StatefulWidget {
   final void Function(Name value) onChanged;
 
   @override
-  State<InputName> createState() => _InputNameState();
+  InputNameState createState() => InputNameState();
 }
 
-class _InputNameState extends State<InputName> {
+class InputNameState extends ConsumerState<InputName> {
   final TextEditingController controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
@@ -46,11 +48,13 @@ class _InputNameState extends State<InputName> {
         offset: controller.selection.end,
       ),
     );
+    final darkMode = ref.watch(darkModeProvider);
+
     return TextFieldContainer(
       errorMessage: widget.value.errorMessage,
       child: TextFormField(
-        style: const TextStyle(
-          color: AppColors.textYankeesBlue,
+        style: TextStyle(
+          color: darkMode ? AppColors.white : AppColors.textYankeesBlue,
           fontSize: 14,
           fontWeight: FontWeight.w400,
           height: 22 / 14,
@@ -60,7 +64,9 @@ class _InputNameState extends State<InputName> {
           isDense: true,
           hintText: 'Name',
           hintStyle: TextStyle(
-            color: AppColors.textArsenic.withOpacity(0.5),
+            color: darkMode
+                ? AppColors.textCultured.withOpacity(0.5)
+                : AppColors.textArsenic.withOpacity(0.5),
             fontSize: 14,
             fontWeight: FontWeight.w400,
             height: 22 / 14,
