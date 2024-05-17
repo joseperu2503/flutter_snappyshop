@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/text_field_container.dart';
 
-class InputSearch extends StatefulWidget {
+class InputSearch extends ConsumerStatefulWidget {
   const InputSearch({
     super.key,
     required this.focusNode,
@@ -16,10 +19,10 @@ class InputSearch extends StatefulWidget {
   final String? hintText;
 
   @override
-  State<InputSearch> createState() => _InputSearchState();
+  InputSearchState createState() => InputSearchState();
 }
 
-class _InputSearchState extends State<InputSearch> {
+class InputSearchState extends ConsumerState<InputSearch> {
   final TextEditingController controller = TextEditingController();
 
   @override
@@ -30,55 +33,59 @@ class _InputSearchState extends State<InputSearch> {
         offset: controller.selection.end,
       ),
     );
+    final darkMode = ref.watch(darkModeProvider);
 
-    return Container(
-      height: 50,
-      padding: const EdgeInsets.symmetric(horizontal: 15),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: AppColors.primaryCultured,
-      ),
-      child: Row(
-        children: [
-          const Icon(
-            Icons.search,
-            color: AppColors.textArsenic,
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          Expanded(
-            child: TextFormField(
-              style: const TextStyle(
-                color: AppColors.textYankeesBlue,
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                height: 22 / 14,
-              ),
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(borderSide: BorderSide.none),
-                isDense: true,
-                hintText: widget.hintText,
-                hintStyle: const TextStyle(
-                  color: AppColors.textArsenic,
+    return TextFieldContainer(
+      child: Container(
+        padding: const EdgeInsets.only(left: 15),
+        child: Row(
+          children: [
+            Icon(
+              Icons.search,
+              color: darkMode
+                  ? AppColors.textCultured.withOpacity(0.5)
+                  : AppColors.textArsenic,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Expanded(
+              child: TextFormField(
+                style: TextStyle(
+                  color: darkMode ? AppColors.white : AppColors.textYankeesBlue,
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
                   height: 22 / 14,
                 ),
-                contentPadding: const EdgeInsets.only(
-                  left: 0,
-                  right: 20,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(borderSide: BorderSide.none),
+                  isDense: true,
+                  hintText: widget.hintText,
+                  hintStyle: TextStyle(
+                    color: darkMode
+                        ? AppColors.textCultured.withOpacity(0.5)
+                        : AppColors.textArsenic.withOpacity(0.5),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    height: 22 / 14,
+                  ),
+                  contentPadding: const EdgeInsets.only(
+                    top: 15,
+                    bottom: 15,
+                    right: 20,
+                    left: 0,
+                  ),
                 ),
+                focusNode: widget.focusNode,
+                controller: controller,
+                onChanged: (value) {
+                  widget.onChanged(value);
+                },
+                textInputAction: TextInputAction.search,
               ),
-              focusNode: widget.focusNode,
-              controller: controller,
-              onChanged: (value) {
-                widget.onChanged(value);
-              },
-              textInputAction: TextInputAction.search,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/search/models/filter_response.dart';
 import 'package:flutter_snappyshop/features/search/providers/search_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:go_router/go_router.dart';
 
 class BrandFilterButton extends ConsumerWidget {
@@ -13,14 +14,20 @@ class BrandFilterButton extends ConsumerWidget {
     final searchState = ref.watch(searchProvider);
     final BrandFilter brandFilter = searchState.brands
         .firstWhere((brand) => brand.id == searchState.filter?.brandId);
-
+    final darkMode = ref.watch(darkModeProvider);
+    final color = brandFilter.id != null
+        ? AppColors.secondaryMangoTango
+        : darkMode
+            ? AppColors.textCultured.withOpacity(0.5)
+            : AppColors.textCoolBlack.withOpacity(0.3);
     return SizedBox(
       height: 45,
       child: FilledButton(
         onPressed: () {
           FocusManager.instance.primaryFocus?.unfocus();
           showModalBottomSheet(
-            backgroundColor: AppColors.white,
+            backgroundColor:
+                darkMode ? AppColors.backgroundColorDark2 : AppColors.white,
             elevation: 0,
             showDragHandle: false,
             context: context,
@@ -37,9 +44,7 @@ class BrandFilterButton extends ConsumerWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
             side: BorderSide(
-              color: brandFilter.id != null
-                  ? AppColors.secondaryMangoTango
-                  : AppColors.textCoolBlack.withOpacity(0.3),
+              color: color,
             ),
           ),
           backgroundColor: Colors.transparent,
@@ -51,18 +56,14 @@ class BrandFilterButton extends ConsumerWidget {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
-                color: brandFilter.id != null
-                    ? AppColors.secondaryMangoTango
-                    : AppColors.textCoolBlack.withOpacity(0.7),
+                color: color,
                 height: 1.1,
                 leadingDistribution: TextLeadingDistribution.even,
               ),
             ),
             Icon(
               Icons.arrow_drop_down_rounded,
-              color: brandFilter.id != null
-                  ? AppColors.secondaryMangoTango
-                  : AppColors.textCoolBlack.withOpacity(0.7),
+              color: color,
               size: 30,
             ),
           ],
@@ -83,6 +84,7 @@ class BrandBottomSheetState extends ConsumerState<_BrandBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final searchState = ref.watch(searchProvider);
+    final darkMode = ref.watch(darkModeProvider);
 
     return SafeArea(
       child: Container(
@@ -99,12 +101,14 @@ class BrandBottomSheetState extends ConsumerState<_BrandBottomSheet> {
                 children: [
                   Container(
                     padding: const EdgeInsets.only(top: 15),
-                    child: const Text(
+                    child: Text(
                       'Brands',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.textYankeesBlue,
+                        color: darkMode
+                            ? AppColors.white
+                            : AppColors.textYankeesBlue,
                         height: 1,
                         leadingDistribution: TextLeadingDistribution.even,
                       ),
@@ -115,7 +119,8 @@ class BrandBottomSheetState extends ConsumerState<_BrandBottomSheet> {
                       context.pop();
                     },
                     icon: const Icon(Icons.close),
-                    color: AppColors.textYankeesBlue,
+                    color:
+                        darkMode ? AppColors.white : AppColors.textYankeesBlue,
                   )
                 ],
               ),
@@ -132,6 +137,7 @@ class BrandBottomSheetState extends ConsumerState<_BrandBottomSheet> {
                 itemBuilder: (context, index) {
                   final brand = searchState.brands[index];
                   final selected = brand.id == searchState.filter?.brandId;
+
                   return ListTile(
                     visualDensity: const VisualDensity(vertical: 0),
                     contentPadding: const EdgeInsets.only(
@@ -143,14 +149,18 @@ class BrandBottomSheetState extends ConsumerState<_BrandBottomSheet> {
                       style: TextStyle(
                         color: selected
                             ? AppColors.primaryPearlAqua
-                            : AppColors.textArsenic,
+                            : darkMode
+                                ? AppColors.textArsenicDark
+                                : AppColors.textArsenic,
                         fontSize: selected ? 17 : 16,
-                        fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+                        fontWeight:
+                            selected ? FontWeight.w600 : FontWeight.w400,
                       ),
                     ),
                     onTap: () {
                       ref.read(searchProvider.notifier).changeFilter(
-                            searchState.filter?.copyWith(brandId: () => brand.id),
+                            searchState.filter
+                                ?.copyWith(brandId: () => brand.id),
                           );
                       context.pop();
                     },

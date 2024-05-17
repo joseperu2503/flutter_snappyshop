@@ -23,9 +23,7 @@ class TextFieldContainer extends ConsumerWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-            color: darkMode
-                ? AppColors.backgroundColorDark2
-                : AppColors.primaryCultured,
+            color: darkMode ? AppColors.bgInputDark : AppColors.bgInput,
             borderRadius: BorderRadius.circular(10),
           ),
           height: height,

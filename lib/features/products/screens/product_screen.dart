@@ -3,6 +3,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
 import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
 import 'package:flutter_snappyshop/features/wishlist/providers/favorite_products_provider.dart';
 import 'package:flutter_snappyshop/features/products/providers/products_provider.dart';
@@ -94,6 +95,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
         ? product?.price ?? 1
         : ((product?.price ?? 1) * (1 - (product?.discount ?? 1) / 100));
     double safeAreaHeight = MediaQuery.of(context).padding.top;
+    final darkMode = ref.watch(darkModeProvider);
 
     return loadingProduct == LoadingStatus.success && product != null
         ? Scaffold(
@@ -177,16 +179,20 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                   scrolledUnderElevation: 0,
                   automaticallyImplyLeading: false,
                   pinned: true,
-                  backgroundColor: Colors.white,
+                  backgroundColor:
+                      darkMode ? AppColors.backgroundColorDark : Colors.white,
                   expandedHeight: size.height * 0.4,
-                  foregroundColor: Colors.white,
+                  foregroundColor:
+                      darkMode ? AppColors.backgroundColorDark : Colors.white,
                   flexibleSpace: FlexibleSpaceBar(
                     background: Container(
                       padding: EdgeInsets.only(
                         top: safeAreaHeight,
                       ),
                       width: double.maxFinite,
-                      color: AppColors.primaryCultured,
+                      color: darkMode
+                          ? AppColors.backgroundColorDark2
+                          : AppColors.primaryCultured,
                       child: Center(
                         child: ImageViewer(
                           radius: 0,
@@ -209,10 +215,12 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                       children: [
                         Text(
                           product.name,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.textYankeesBlue,
+                            color: darkMode
+                                ? AppColors.white
+                                : AppColors.textYankeesBlue,
                             height: 1.1,
                             leadingDistribution: TextLeadingDistribution.even,
                           ),
@@ -240,12 +248,17 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                             if (product.discount != null)
                               Text(
                                 '\$${product.price.toStringAsFixed(2)}',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w400,
-                                  color: AppColors.gray,
+                                  color: darkMode
+                                      ? AppColors.textCultured
+                                      : AppColors.gray,
                                   height: 1.6,
                                   decoration: TextDecoration.lineThrough,
+                                  decorationColor: darkMode
+                                      ? AppColors.textCultured
+                                      : AppColors.gray,
                                   leadingDistribution:
                                       TextLeadingDistribution.even,
                                 ),
@@ -257,13 +270,15 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                                 vertical: 6,
                               ),
                               decoration: BoxDecoration(
-                                color: AppColors.primaryCultured,
+                                color: darkMode
+                                    ? AppColors.backgroundColorDark2
+                                    : AppColors.primaryCultured,
                                 borderRadius:
                                     BorderRadiusDirectional.circular(50),
                               ),
-                              child: const Row(
+                              child: Row(
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.star_rounded,
                                     color: AppColors.star,
                                   ),
@@ -272,7 +287,9 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                                     style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
-                                      color: AppColors.textArsenic,
+                                      color: darkMode
+                                          ? AppColors.textArsenicDark
+                                          : AppColors.textArsenic,
                                       height: 22 / 14,
                                       leadingDistribution:
                                           TextLeadingDistribution.even,
@@ -286,12 +303,14 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                         const SizedBox(
                           height: 26,
                         ),
-                        const Text(
+                        Text(
                           'Description',
                           style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.textYankeesBlue,
+                            color: darkMode
+                                ? AppColors.white
+                                : AppColors.textYankeesBlue,
                             height: 1.1,
                             leadingDistribution: TextLeadingDistribution.even,
                           ),
@@ -301,10 +320,12 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                         ),
                         Text(
                           product.description,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
-                            color: AppColors.textArsenic,
+                            color: darkMode
+                                ? AppColors.textArsenicDark
+                                : AppColors.textArsenic,
                             height: 22 / 14,
                             leadingDistribution: TextLeadingDistribution.even,
                           ),
@@ -312,12 +333,14 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        const Text(
+                        Text(
                           'You might also like',
                           style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.textYankeesBlue,
+                            color: darkMode
+                                ? AppColors.white
+                                : AppColors.textYankeesBlue,
                             height: 1.1,
                             leadingDistribution: TextLeadingDistribution.even,
                           ),

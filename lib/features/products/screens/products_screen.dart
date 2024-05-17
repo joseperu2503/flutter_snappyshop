@@ -11,6 +11,7 @@ import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/text_field_container.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
@@ -139,42 +140,41 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                                   onTap: () {
                                     context.push('/search');
                                   },
-                                  child: Container(
-                                    height: 50,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 15,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: darkMode
-                                          ? AppColors.backgroundColorDark2
-                                          : AppColors.primaryCultured,
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Icons.search,
-                                          color: darkMode
-                                              ? AppColors.textCultured
-                                              : AppColors.textArsenic,
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          'Search...',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
+                                  child: TextFieldContainer(
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 15,
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.search,
                                             color: darkMode
                                                 ? AppColors.textCultured
-                                                : AppColors.textCoolBlack,
-                                            height: 22 / 14,
-                                            leadingDistribution:
-                                                TextLeadingDistribution.even,
+                                                    .withOpacity(0.5)
+                                                : AppColors.textArsenic
+                                                    .withOpacity(0.5),
                                           ),
-                                        )
-                                      ],
+                                          const SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            'Search...',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                              color: darkMode
+                                                  ? AppColors.textCultured
+                                                      .withOpacity(0.5)
+                                                  : AppColors.textArsenic
+                                                      .withOpacity(0.5),
+                                              height: 22 / 14,
+                                              leadingDistribution:
+                                                  TextLeadingDistribution.even,
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),

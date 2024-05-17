@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/text_field_container.dart';
 
-class InputPrice extends StatefulWidget {
+class InputPrice extends ConsumerStatefulWidget {
   const InputPrice({
     super.key,
     required this.value,
@@ -13,10 +16,10 @@ class InputPrice extends StatefulWidget {
   final void Function(String value) onChanged;
 
   @override
-  State<InputPrice> createState() => _InputPriceState();
+  InputPriceState createState() => InputPriceState();
 }
 
-class _InputPriceState extends State<InputPrice> {
+class InputPriceState extends ConsumerState<InputPrice> {
   final TextEditingController controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
@@ -45,49 +48,51 @@ class _InputPriceState extends State<InputPrice> {
         offset: controller.selection.end,
       ),
     );
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.primaryCultured,
-        borderRadius: BorderRadius.circular(10),
-      ),
+
+    final darkMode = ref.watch(darkModeProvider);
+
+    return TextFieldContainer(
       child: Row(
         children: [
           const SizedBox(
             width: 20,
           ),
-          const Text(
+          Text(
             '\$',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w500,
-              color: AppColors.textCoolBlack,
+              color: darkMode ? AppColors.white : AppColors.textCoolBlack,
               height: 1.1,
               leadingDistribution: TextLeadingDistribution.even,
             ),
           ),
           Expanded(
             child: TextFormField(
-              style: const TextStyle(
-                color: AppColors.textYankeesBlue,
+              style: TextStyle(
+                color: darkMode ? AppColors.white : AppColors.textYankeesBlue,
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
                 height: 22 / 14,
               ),
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(borderSide: BorderSide.none),
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(borderSide: BorderSide.none),
                 isDense: true,
                 hintStyle: TextStyle(
-                  color: AppColors.textArsenic,
+                  color: darkMode
+                      ? AppColors.textCultured.withOpacity(0.5)
+                      : AppColors.textArsenic.withOpacity(0.5),
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
                   height: 22 / 14,
                 ),
-                contentPadding: EdgeInsets.symmetric(
+                contentPadding: const EdgeInsets.symmetric(
                   horizontal: 10,
                   vertical: 15,
                 ),
               ),
-              keyboardType: TextInputType.number,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
               inputFormatters: [
                 MontoFormatter(),
               ],

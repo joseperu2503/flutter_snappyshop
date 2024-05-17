@@ -26,4 +26,6 @@ class AppColors {
   static const Color backgroundColorDark2 = Color(0xFF2b3036);
   static const Color textArsenicDark = Color.fromARGB(255, 181, 184, 189);
   static const Color textCoolBlackDark = Color(0xFFFFFFFF);
+  static const Color bgInputDark = Color.fromARGB(255, 51, 57, 66);
+  static const Color bgInput = primaryCultured;
 }

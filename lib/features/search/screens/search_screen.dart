@@ -6,6 +6,7 @@ import 'package:flutter_snappyshop/features/search/widgets/category_filter_butto
 import 'package:flutter_snappyshop/features/search/widgets/input_search.dart';
 import 'package:flutter_snappyshop/features/search/widgets/price_filter_button.dart';
 import 'package:flutter_snappyshop/features/products/widgets/product_card.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/back_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
@@ -52,6 +53,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
     final showResults = searchState.products.isNotEmpty;
     final noResults =
         !searchState.loadingProducts && searchState.products.isEmpty;
+    final darkMode = ref.watch(darkModeProvider);
 
     return VisibilityDetector(
       key: const Key('myWidgetKey'),
@@ -61,7 +63,6 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor: AppColors.white,
         body: SafeArea(
           bottom: false,
           child: CustomScrollView(
@@ -69,27 +70,32 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
             slivers: [
               SliverAppBar(
                 scrolledUnderElevation: 0,
-                backgroundColor: AppColors.white,
+                backgroundColor:
+                    darkMode ? AppColors.backgroundColorDark : AppColors.white,
                 automaticallyImplyLeading: false,
                 titleSpacing: 0,
                 title: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
-                  color: AppColors.white,
-                  child: const Row(
+                  color: darkMode
+                      ? AppColors.backgroundColorDark
+                      : AppColors.white,
+                  child: Row(
                     children: [
-                      CustomBackButton(),
-                      Spacer(),
+                      const CustomBackButton(),
+                      const Spacer(),
                       Text(
                         'Search',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.textYankeesBlue,
+                          color: darkMode
+                              ? AppColors.white
+                              : AppColors.textYankeesBlue,
                           leadingDistribution: TextLeadingDistribution.even,
                         ),
                       ),
-                      Spacer(),
-                      SizedBox(
+                      const Spacer(),
+                      const SizedBox(
                         width: 46,
                         height: 46,
                       )
@@ -99,7 +105,8 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                 floating: true,
               ),
               SliverAppBar(
-                backgroundColor: AppColors.white,
+                backgroundColor:
+                    darkMode ? AppColors.backgroundColorDark : AppColors.white,
                 automaticallyImplyLeading: false,
                 scrolledUnderElevation: 0,
                 titleSpacing: 0,
@@ -116,6 +123,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                       child: Hero(
                         tag: 'searchTag',
                         child: Material(
+                          color: Colors.transparent,
                           child: InputSearch(
                             focusNode: _focusNode,
                             value: searchState.filter?.search ?? '',
@@ -168,7 +176,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                       left: 24,
                       right: 24,
                     ),
-                    child: const Column(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
@@ -176,7 +184,9 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.textCoolBlack,
+                            color: darkMode
+                                ? AppColors.white
+                                : AppColors.textCoolBlack,
                             height: 1.1,
                             leadingDistribution: TextLeadingDistribution.even,
                           ),

@@ -3,7 +3,9 @@ import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/search/models/filter.dart';
 import 'package:flutter_snappyshop/features/search/providers/search_provider.dart';
 import 'package:flutter_snappyshop/features/search/widgets/input_price.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/custom_label.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_text_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -30,13 +32,21 @@ class PriceFilterButton extends ConsumerWidget {
                 : ''))
         : 'Price';
 
+    final darkMode = ref.watch(darkModeProvider);
+
+    final color = hasFilter
+        ? AppColors.secondaryMangoTango
+        : darkMode
+            ? AppColors.textCultured.withOpacity(0.5)
+            : AppColors.textCoolBlack.withOpacity(0.3);
     return SizedBox(
       height: 45,
       child: FilledButton(
         onPressed: () {
           FocusManager.instance.primaryFocus?.unfocus();
           showModalBottomSheet(
-            backgroundColor: AppColors.white,
+            backgroundColor:
+                darkMode ? AppColors.backgroundColorDark2 : AppColors.white,
             elevation: 0,
             showDragHandle: false,
             isScrollControlled: true,
@@ -56,9 +66,7 @@ class PriceFilterButton extends ConsumerWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
             side: BorderSide(
-              color: hasFilter
-                  ? AppColors.secondaryMangoTango
-                  : AppColors.textCoolBlack.withOpacity(0.3),
+              color: color,
             ),
           ),
           backgroundColor: Colors.transparent,
@@ -68,9 +76,7 @@ class PriceFilterButton extends ConsumerWidget {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: hasFilter
-                ? AppColors.secondaryMangoTango
-                : AppColors.textCoolBlack.withOpacity(0.7),
+            color: color,
             height: 1.1,
             leadingDistribution: TextLeadingDistribution.even,
           ),
@@ -105,6 +111,7 @@ class PriceBottomSheetState extends ConsumerState<_PriceBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final searchState = ref.watch(searchProvider);
+    final darkMode = ref.watch(darkModeProvider);
 
     return SafeArea(
       child: Padding(
@@ -121,20 +128,37 @@ class PriceBottomSheetState extends ConsumerState<_PriceBottomSheet> {
               Container(
                 padding: const EdgeInsets.only(left: 24, right: 15),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    Container(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: Text(
+                        'Filter by price',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: darkMode
+                              ? AppColors.white
+                              : AppColors.textYankeesBlue,
+                          height: 1,
+                          leadingDistribution: TextLeadingDistribution.even,
+                        ),
+                      ),
+                    ),
                     IconButton(
                       onPressed: () {
                         context.pop();
                       },
                       icon: const Icon(Icons.close),
-                      color: AppColors.textYankeesBlue,
+                      color: darkMode
+                          ? AppColors.white
+                          : AppColors.textYankeesBlue,
                     )
                   ],
                 ),
               ),
               const SizedBox(
-                height: 15,
+                height: 25,
               ),
               Expanded(
                 child: Container(
@@ -150,19 +174,9 @@ class PriceBottomSheetState extends ConsumerState<_PriceBottomSheet> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'Min price',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.textCoolBlack,
-                                    height: 1.1,
-                                    leadingDistribution:
-                                        TextLeadingDistribution.even,
-                                  ),
-                                ),
+                                const CustomLabel('Min price'),
                                 const SizedBox(
-                                  height: 16,
+                                  height: 4,
                                 ),
                                 InputPrice(
                                   value: minPrice,
@@ -182,19 +196,9 @@ class PriceBottomSheetState extends ConsumerState<_PriceBottomSheet> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'Max price',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: AppColors.textCoolBlack,
-                                    height: 1.1,
-                                    leadingDistribution:
-                                        TextLeadingDistribution.even,
-                                  ),
-                                ),
+                                const CustomLabel('Max price'),
                                 const SizedBox(
-                                  height: 16,
+                                  height: 4,
                                 ),
                                 InputPrice(
                                   value: maxPrice,
@@ -215,12 +219,14 @@ class PriceBottomSheetState extends ConsumerState<_PriceBottomSheet> {
                           SizedBox(
                             width: 100,
                             child: CustomTextButton(
-                              child: const Text(
+                              child: Text(
                                 'Reset',
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
-                                  color: AppColors.textYankeesBlue,
+                                  color: darkMode
+                                      ? AppColors.white
+                                      : AppColors.textYankeesBlue,
                                   height: 22 / 16,
                                   leadingDistribution:
                                       TextLeadingDistribution.even,
