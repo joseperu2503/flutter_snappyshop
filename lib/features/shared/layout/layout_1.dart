@@ -39,7 +39,8 @@ class Layout1 extends ConsumerWidget {
         appBar: AppBar(
           toolbarHeight: toolbarHeight,
           automaticallyImplyLeading: false,
-          backgroundColor: AppColors.white,
+          backgroundColor:
+              darkMode ? AppColors.backgroundColorDark : AppColors.white,
           forceMaterialTransparency: true,
           titleSpacing: 0,
           title: Container(

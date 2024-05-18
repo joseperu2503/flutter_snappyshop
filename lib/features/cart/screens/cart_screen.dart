@@ -47,12 +47,14 @@ class CartScreenState extends ConsumerState<CartScreen> {
                     children: [
                       Row(
                         children: [
-                          const Text(
+                          Text(
                             'Total',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
-                              color: AppColors.textArsenic,
+                              color: darkMode
+                                  ? AppColors.textArsenicDark
+                                  : AppColors.textArsenic,
                               height: 22 / 14,
                               leadingDistribution: TextLeadingDistribution.even,
                             ),
@@ -60,10 +62,12 @@ class CartScreenState extends ConsumerState<CartScreen> {
                           const Spacer(),
                           Text(
                             '\$${cartState.cart?.totalAmount.toStringAsFixed(2)}',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
-                              color: AppColors.textYankeesBlue,
+                              color: darkMode
+                                  ? AppColors.white
+                                  : AppColors.textYankeesBlue,
                               height: 32 / 20,
                               leadingDistribution: TextLeadingDistribution.even,
                             ),
@@ -180,6 +184,9 @@ class CartScreenState extends ConsumerState<CartScreen> {
                                               TextDecoration.lineThrough,
                                           leadingDistribution:
                                               TextLeadingDistribution.even,
+                                          decorationColor: darkMode
+                                              ? AppColors.textCultured
+                                              : AppColors.gray,
                                         ),
                                       ),
                                   ],
@@ -208,9 +215,11 @@ class CartScreenState extends ConsumerState<CartScreen> {
                                             .read(cartProvider.notifier)
                                             .deleteProduct(index);
                                       },
-                                      child: const Icon(
+                                      child: Icon(
                                         Icons.delete,
-                                        color: AppColors.textArsenic,
+                                        color: darkMode
+                                            ? AppColors.textArsenicDark
+                                            : AppColors.textArsenic,
                                       ),
                                     )
                                   ],
@@ -243,12 +252,14 @@ class CartScreenState extends ConsumerState<CartScreen> {
                     const SizedBox(
                       height: 40,
                     ),
-                    const Text(
+                    Text(
                       'your cart is empty',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.textYankeesBlue,
+                        color: darkMode
+                            ? AppColors.white
+                            : AppColors.textYankeesBlue,
                         height: 32 / 24,
                         leadingDistribution: TextLeadingDistribution.even,
                       ),
@@ -263,7 +274,9 @@ class CartScreenState extends ConsumerState<CartScreen> {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
-                          color: AppColors.textArsenic.withOpacity(0.7),
+                          color: darkMode
+                              ? AppColors.textArsenicDark
+                              : AppColors.textArsenic,
                           height: 22 / 14,
                           leadingDistribution: TextLeadingDistribution.even,
                         ),

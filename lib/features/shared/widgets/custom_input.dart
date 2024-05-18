@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/text_field_container.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -99,18 +100,19 @@ class CustomInputState extends ConsumerState<CustomInput> {
         for (var inputFormatter in widget.inputFormatters!) {
           newValue = inputFormatter
               .formatEditUpdate(
-                  TextEditingValue(
-                    text: controller.value.text,
-                    selection: controller.selection.copyWith(
-                      baseOffset: 0,
-                    ),
+                TextEditingValue(
+                  text: controller.value.text,
+                  selection: controller.selection.copyWith(
+                    baseOffset: 0,
                   ),
-                  TextEditingValue(
-                    text: newValue,
-                    selection: controller.selection.copyWith(
-                      baseOffset: 0,
-                    ),
-                  ))
+                ),
+                TextEditingValue(
+                  text: newValue,
+                  selection: controller.selection.copyWith(
+                    baseOffset: 0,
+                  ),
+                ),
+              )
               .text;
         }
       }
@@ -120,11 +122,13 @@ class CustomInputState extends ConsumerState<CustomInput> {
       );
     }
 
+    final darkMode = ref.watch(darkModeProvider);
+
     return TextFieldContainer(
       errorMessage: errorText,
       child: TextFormField(
-        style: const TextStyle(
-          color: AppColors.textYankeesBlue,
+        style: TextStyle(
+          color: darkMode ? AppColors.white : AppColors.textYankeesBlue,
           fontSize: 14,
           fontWeight: FontWeight.w400,
           height: 22 / 14,
@@ -134,7 +138,9 @@ class CustomInputState extends ConsumerState<CustomInput> {
           isDense: true,
           hintText: widget.hintText,
           hintStyle: TextStyle(
-            color: AppColors.textArsenic.withOpacity(0.5),
+            color: darkMode
+                ? AppColors.textCultured.withOpacity(0.5)
+                : AppColors.textArsenic.withOpacity(0.5),
             fontSize: 14,
             fontWeight: FontWeight.w400,
             height: 22 / 14,

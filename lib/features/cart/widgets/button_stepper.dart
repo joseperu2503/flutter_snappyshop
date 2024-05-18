@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 
-class ButtonStepper extends StatelessWidget {
+class ButtonStepper extends ConsumerWidget {
   const ButtonStepper({
     super.key,
     required this.value,
@@ -14,13 +16,15 @@ class ButtonStepper extends StatelessWidget {
   final void Function() onRemove;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final darkMode = ref.watch(darkModeProvider);
+
     return Container(
       width: 110,
       height: 45,
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: darkMode ? AppColors.textArsenicDark : AppColors.white,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
@@ -44,10 +48,12 @@ class ButtonStepper extends StatelessWidget {
           ),
           Text(
             value.toString(),
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w600,
-              color: AppColors.textYankeesBlue,
+              color: darkMode
+                  ? AppColors.textYankeesBlue
+                  : AppColors.textYankeesBlue,
               height: 22 / 14,
               leadingDistribution: TextLeadingDistribution.even,
             ),

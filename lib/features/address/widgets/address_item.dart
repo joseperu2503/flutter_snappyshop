@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/address/models/addresses_response.dart';
 import 'package:flutter_snappyshop/features/address/providers/address_provider.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 
 class AddressItem extends ConsumerWidget {
   const AddressItem({
@@ -14,9 +15,13 @@ class AddressItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final darkMode = ref.watch(darkModeProvider);
+
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.primaryCultured,
+        color: darkMode
+            ? AppColors.backgroundColorDark2
+            : AppColors.primaryCultured,
         borderRadius: BorderRadius.circular(14),
       ),
       child: TextButton(
@@ -55,17 +60,20 @@ class AddressItem extends ConsumerWidget {
                 Icon(
                   Icons.location_pin,
                   size: 14,
-                  color: AppColors.textCoolBlack,
+                  color: darkMode
+                      ? AppColors.textCoolBlackDark
+                      : AppColors.textCoolBlack,
                 ),
                 SizedBox(
                   width: 4,
                 ),
                 Text(
                   address.address,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.textYankeesBlue,
+                    color:
+                        darkMode ? AppColors.white : AppColors.textYankeesBlue,
                     height: 2,
                     leadingDistribution: TextLeadingDistribution.even,
                   ),
@@ -76,10 +84,12 @@ class AddressItem extends ConsumerWidget {
             ),
             Text(
               address.detail,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
-                color: AppColors.textArsenic,
+                color: darkMode
+                    ? AppColors.textArsenicDark
+                    : AppColors.textArsenic,
                 height: 22 / 14,
                 leadingDistribution: TextLeadingDistribution.even,
               ),
@@ -96,13 +106,16 @@ class AddressItem extends ConsumerWidget {
                   height: 24,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    color: AppColors.white,
+                    color: darkMode
+                        ? AppColors.backgroundColorDark
+                        : AppColors.white,
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Icon(
                       Icons.phone_outlined,
                       size: 14,
-                      color: AppColors.textCoolBlack,
+                      color:
+                          darkMode ? AppColors.white : AppColors.textCoolBlack,
                     ),
                   ),
                 ),
@@ -111,10 +124,12 @@ class AddressItem extends ConsumerWidget {
                 ),
                 Text(
                   address.phone,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
-                    color: AppColors.textArsenic,
+                    color: darkMode
+                        ? AppColors.textArsenicDark
+                        : AppColors.textArsenic,
                     height: 22 / 14,
                     leadingDistribution: TextLeadingDistribution.even,
                   ),
@@ -133,13 +148,16 @@ class AddressItem extends ConsumerWidget {
                   height: 24,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    color: AppColors.white,
+                    color: darkMode
+                        ? AppColors.backgroundColorDark
+                        : AppColors.white,
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Icon(
                       Icons.person,
                       size: 14,
-                      color: AppColors.textCoolBlack,
+                      color:
+                          darkMode ? AppColors.white : AppColors.textCoolBlack,
                     ),
                   ),
                 ),
@@ -148,10 +166,12 @@ class AddressItem extends ConsumerWidget {
                 ),
                 Text(
                   address.recipientName,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
-                    color: AppColors.textArsenic,
+                    color: darkMode
+                        ? AppColors.textArsenicDark
+                        : AppColors.textArsenic,
                     height: 22 / 14,
                     leadingDistribution: TextLeadingDistribution.even,
                   ),

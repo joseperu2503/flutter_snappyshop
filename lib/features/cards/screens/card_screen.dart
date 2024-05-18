@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/models/form_type.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_input.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/custom_label.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
 import 'package:mask_input_formatter/mask_input_formatter.dart';
 
@@ -96,16 +97,7 @@ class CardScreenState extends ConsumerState<CardScreen> {
                     const SizedBox(
                       height: 40,
                     ),
-                    const Text(
-                      'Card Number',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.textYankeesBlue,
-                        height: 22 / 14,
-                        leadingDistribution: TextLeadingDistribution.even,
-                      ),
-                    ),
+                    const CustomLabel('Card Number'),
                     const SizedBox(
                       height: labelInputSpacing,
                     ),
@@ -131,16 +123,7 @@ class CardScreenState extends ConsumerState<CardScreen> {
                     const SizedBox(
                       height: formInputSpacing,
                     ),
-                    const Text(
-                      'Card Holder Name',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.textYankeesBlue,
-                        height: 22 / 14,
-                        leadingDistribution: TextLeadingDistribution.even,
-                      ),
-                    ),
+                    const CustomLabel('Card Holder Name'),
                     const SizedBox(
                       height: labelInputSpacing,
                     ),
@@ -170,17 +153,7 @@ class CardScreenState extends ConsumerState<CardScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              const Text(
-                                'Expired',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.textYankeesBlue,
-                                  height: 22 / 14,
-                                  leadingDistribution:
-                                      TextLeadingDistribution.even,
-                                ),
-                              ),
+                              const CustomLabel('Expired'),
                               const SizedBox(
                                 height: labelInputSpacing,
                               ),
@@ -213,17 +186,7 @@ class CardScreenState extends ConsumerState<CardScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              const Text(
-                                'CVC/CCV',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.textYankeesBlue,
-                                  height: 22 / 14,
-                                  leadingDistribution:
-                                      TextLeadingDistribution.even,
-                                ),
-                              ),
+                              const CustomLabel('CVC/CCV'),
                               const SizedBox(
                                 height: labelInputSpacing,
                               ),

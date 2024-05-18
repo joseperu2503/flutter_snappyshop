@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/text_field_container.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class CustomTexarea extends StatefulWidget {
+class CustomTexarea extends ConsumerStatefulWidget {
   const CustomTexarea({
     super.key,
     required this.value,
@@ -35,10 +37,10 @@ class CustomTexarea extends StatefulWidget {
   final bool readOnly;
 
   @override
-  State<CustomTexarea> createState() => _CustomTexareaState();
+  CustomTexareaState createState() => CustomTexareaState();
 }
 
-class _CustomTexareaState extends State<CustomTexarea> {
+class CustomTexareaState extends ConsumerState<CustomTexarea> {
   final TextEditingController controller = TextEditingController();
   FocusNode _focusNode = FocusNode();
 
@@ -74,11 +76,13 @@ class _CustomTexareaState extends State<CustomTexarea> {
       text: newValue,
     );
 
+    final darkMode = ref.watch(darkModeProvider);
+
     return TextFieldContainer(
       height: 100,
       child: TextFormField(
-        style: const TextStyle(
-          color: AppColors.textYankeesBlue,
+        style: TextStyle(
+          color: darkMode ? AppColors.white : AppColors.textYankeesBlue,
           fontSize: 14,
           fontWeight: FontWeight.w400,
           height: 22 / 14,
@@ -87,7 +91,9 @@ class _CustomTexareaState extends State<CustomTexarea> {
           border: const OutlineInputBorder(borderSide: BorderSide.none),
           hintText: widget.hintText,
           hintStyle: TextStyle(
-            color: AppColors.textArsenic.withOpacity(0.5),
+            color: darkMode
+                ? AppColors.textCultured.withOpacity(0.5)
+                : AppColors.textArsenic.withOpacity(0.5),
             fontSize: 14,
             fontWeight: FontWeight.w400,
             height: 22 / 14,

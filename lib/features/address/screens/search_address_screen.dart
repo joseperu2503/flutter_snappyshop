@@ -5,6 +5,7 @@ import 'package:flutter_snappyshop/features/address/providers/address_provider.d
 import 'package:flutter_snappyshop/features/search/widgets/input_search.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/map_provider.dart';
 import 'package:flutter_snappyshop/features/shared/services/location_service.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
@@ -45,6 +46,7 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
     final noResults =
         addressState.searchingAddresses == LoadingStatus.success &&
             addressState.addressResults.isEmpty;
+    final darkMode = ref.watch(darkModeProvider);
 
     return Layout1(
       loading: loadingPosition,
@@ -52,7 +54,8 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            backgroundColor: AppColors.white,
+            backgroundColor:
+                darkMode ? AppColors.backgroundColorDark : AppColors.white,
             automaticallyImplyLeading: false,
             scrolledUnderElevation: 0,
             titleSpacing: 0,
@@ -69,6 +72,7 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
                   child: Hero(
                     tag: 'searchAddressTag',
                     child: Material(
+                      color: Colors.transparent,
                       child: InputSearch(
                         focusNode: _focusNode,
                         value: addressState.search,

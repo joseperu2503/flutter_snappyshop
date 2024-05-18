@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/orders/providers/order_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:go_router/go_router.dart';
 
 class OrderStatusFilterButton extends ConsumerWidget {
@@ -18,13 +19,22 @@ class OrderStatusFilterButton extends ConsumerWidget {
     if (orderIndex >= 0) {
       orderStatus = orderState.orderStatuses[orderIndex];
     }
+    final darkMode = ref.watch(darkModeProvider);
+
+    final color = orderStatus?.id != null
+        ? AppColors.secondaryMangoTango
+        : darkMode
+            ? AppColors.textCultured.withOpacity(0.5)
+            : AppColors.textCoolBlack.withOpacity(0.3);
+
     return SizedBox(
       height: 45,
       child: FilledButton(
         onPressed: () {
           FocusManager.instance.primaryFocus?.unfocus();
           showModalBottomSheet(
-            backgroundColor: AppColors.white,
+            backgroundColor:
+                darkMode ? AppColors.backgroundColorDark2 : AppColors.white,
             elevation: 0,
             showDragHandle: false,
             context: context,
@@ -41,9 +51,7 @@ class OrderStatusFilterButton extends ConsumerWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
             side: BorderSide(
-              color: orderStatus?.id != null
-                  ? AppColors.secondaryMangoTango
-                  : AppColors.textCoolBlack.withOpacity(0.3),
+              color: color,
             ),
           ),
           backgroundColor: Colors.transparent,
@@ -55,18 +63,14 @@ class OrderStatusFilterButton extends ConsumerWidget {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
-                color: orderStatus?.id != null
-                    ? AppColors.secondaryMangoTango
-                    : AppColors.textCoolBlack.withOpacity(0.7),
+                color: color,
                 height: 1.1,
                 leadingDistribution: TextLeadingDistribution.even,
               ),
             ),
             Icon(
               Icons.arrow_drop_down_rounded,
-              color: orderStatus?.id != null
-                  ? AppColors.secondaryMangoTango
-                  : AppColors.textCoolBlack.withOpacity(0.7),
+              color: color,
               size: 30,
             ),
           ],
@@ -87,6 +91,7 @@ class BrandBottomSheetState extends ConsumerState<_BrandBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final orderState = ref.watch(orderProvider);
+    final darkMode = ref.watch(darkModeProvider);
 
     return SafeArea(
       child: Container(
@@ -103,12 +108,14 @@ class BrandBottomSheetState extends ConsumerState<_BrandBottomSheet> {
                 children: [
                   Container(
                     padding: const EdgeInsets.only(top: 15),
-                    child: const Text(
+                    child: Text(
                       'Order Status',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.textYankeesBlue,
+                        color: darkMode
+                            ? AppColors.white
+                            : AppColors.textYankeesBlue,
                         height: 1,
                         leadingDistribution: TextLeadingDistribution.even,
                       ),
@@ -119,7 +126,8 @@ class BrandBottomSheetState extends ConsumerState<_BrandBottomSheet> {
                       context.pop();
                     },
                     icon: const Icon(Icons.close),
-                    color: AppColors.textYankeesBlue,
+                    color:
+                        darkMode ? AppColors.white : AppColors.textYankeesBlue,
                   )
                 ],
               ),
@@ -147,7 +155,9 @@ class BrandBottomSheetState extends ConsumerState<_BrandBottomSheet> {
                       style: TextStyle(
                         color: selected
                             ? AppColors.primaryPearlAqua
-                            : AppColors.textArsenic,
+                            : darkMode
+                                ? AppColors.textArsenicDark
+                                : AppColors.textArsenic,
                         fontSize: selected ? 16 : 16,
                         fontWeight:
                             selected ? FontWeight.w600 : FontWeight.w400,

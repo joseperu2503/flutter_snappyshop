@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 
 class Otp extends StatefulWidget {
   const Otp({
@@ -125,7 +127,7 @@ class _OtpState extends State<Otp> {
   }
 }
 
-class _TextFiledOTP extends StatefulWidget {
+class _TextFiledOTP extends ConsumerStatefulWidget {
   const _TextFiledOTP({
     required this.add,
     required this.delete,
@@ -139,10 +141,10 @@ class _TextFiledOTP extends StatefulWidget {
   final String value;
 
   @override
-  State<_TextFiledOTP> createState() => _TextFiledOTPState();
+  TextFiledOTPState createState() => TextFiledOTPState();
 }
 
-class _TextFiledOTPState extends State<_TextFiledOTP> {
+class TextFiledOTPState extends ConsumerState<_TextFiledOTP> {
   final TextEditingController controller = TextEditingController();
   bool hasFocus = false;
 
@@ -166,12 +168,15 @@ class _TextFiledOTPState extends State<_TextFiledOTP> {
         offset: widget.value.length,
       ),
     );
+    final darkMode = ref.watch(darkModeProvider);
 
     return Container(
       width: 52,
       height: 52,
       decoration: BoxDecoration(
-        color: AppColors.primaryCultured,
+        color: darkMode
+            ? AppColors.backgroundColorDark2
+            : AppColors.primaryCultured,
         borderRadius: BorderRadius.circular(10),
         border: hasFocus
             ? Border.all(
@@ -197,10 +202,12 @@ class _TextFiledOTPState extends State<_TextFiledOTP> {
             controller: controller,
             showCursor: true,
             readOnly: false,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w400,
-              color: AppColors.textCoolBlack,
+              color: darkMode
+                  ? AppColors.textCoolBlackDark
+                  : AppColors.textCoolBlack,
             ),
             textAlign: TextAlign.center,
             keyboardType: TextInputType.number,

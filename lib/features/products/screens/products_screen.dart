@@ -63,7 +63,8 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
         drawer: const CustomDrawer(),
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor: AppColors.white,
+          backgroundColor:
+              darkMode ? AppColors.backgroundColorDark : AppColors.white,
           forceMaterialTransparency: true,
           titleSpacing: 0,
           title: Container(

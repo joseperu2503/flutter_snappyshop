@@ -5,6 +5,7 @@ import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/auth/widgets/input_email.dart';
 import 'package:flutter_snappyshop/features/auth/widgets/input_name.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/custom_label.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/image_viewer.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
 import 'package:flutter_snappyshop/features/user/providers/account_information_provider.dart';
@@ -111,15 +112,8 @@ class AccountInformationScreenState
                     const SizedBox(
                       height: 30,
                     ),
-                    const Text(
+                    const CustomLabel(
                       'Name',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.textYankeesBlue,
-                        height: 22 / 14,
-                        leadingDistribution: TextLeadingDistribution.even,
-                      ),
                     ),
                     const SizedBox(
                       height: 4,
@@ -135,15 +129,8 @@ class AccountInformationScreenState
                     const SizedBox(
                       height: 16,
                     ),
-                    const Text(
+                    const CustomLabel(
                       'Email',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.textYankeesBlue,
-                        height: 22 / 14,
-                        leadingDistribution: TextLeadingDistribution.even,
-                      ),
                     ),
                     const SizedBox(
                       height: 4,

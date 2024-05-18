@@ -9,6 +9,7 @@ import 'package:flutter_snappyshop/features/checkout/providers/checkout_provider
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_snappyshop/features/shared/models/form_type.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/image_viewer.dart';
@@ -40,6 +41,7 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     final emptyCart = !(cartState.cart != null &&
         (cartState.cart?.products ?? []).isNotEmpty);
     final MediaQueryData screen = MediaQuery.of(context);
+    final darkMode = ref.watch(darkModeProvider);
 
     return Layout1(
       loading: addressState.loadingAddresses == LoadingStatus.loading ||
@@ -59,22 +61,15 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                       : (product.price * (1 - product.discount! / 100));
                   BorderRadius borderRadius =
                       const BorderRadius.all(Radius.circular(0));
-                  if (index == 0) {
-                    borderRadius = const BorderRadius.only(
-                      topLeft: Radius.circular(14),
-                      topRight: Radius.circular(
-                        14,
-                      ),
-                    );
-                  }
-                  if (index == cartState.cart!.products.length - 1) {
-                    borderRadius = const BorderRadius.only(
-                      bottomLeft: Radius.circular(14),
-                      bottomRight: Radius.circular(
-                        14,
-                      ),
-                    );
-                  }
+                  borderRadius = BorderRadius.only(
+                    topLeft: Radius.circular(index == 0 ? 14 : 0),
+                    topRight: Radius.circular(index == 0 ? 14 : 0),
+                    bottomLeft: Radius.circular(
+                        index == cartState.cart!.products.length - 1 ? 14 : 0),
+                    bottomRight: Radius.circular(
+                        index == cartState.cart!.products.length - 1 ? 14 : 0),
+                  );
+
                   return Container(
                     padding: const EdgeInsets.only(
                       left: 16,
@@ -83,7 +78,9 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                       right: 16,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.primaryCultured,
+                      color: darkMode
+                          ? AppColors.backgroundColorDark2
+                          : AppColors.primaryCultured,
                       borderRadius: borderRadius,
                     ),
                     child: Row(
@@ -106,10 +103,12 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                             children: [
                               Text(
                                 product.name,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,
-                                  color: AppColors.textArsenic,
+                                  color: darkMode
+                                      ? AppColors.textArsenicDark
+                                      : AppColors.textArsenic,
                                   height: 22 / 14,
                                   leadingDistribution:
                                       TextLeadingDistribution.even,
@@ -122,23 +121,27 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                               ),
                               Row(
                                 children: [
-                                  const Text(
+                                  Text(
                                     'Quantity: ',
                                     style: TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
-                                      color: AppColors.textArsenic,
+                                      color: darkMode
+                                          ? AppColors.textArsenicDark
+                                          : AppColors.textArsenic,
                                       height: 16 / 12,
                                       leadingDistribution:
                                           TextLeadingDistribution.even,
                                     ),
                                   ),
-                                  const Text(
+                                  Text(
                                     '2',
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
-                                      color: AppColors.textArsenic,
+                                      color: darkMode
+                                          ? AppColors.textArsenicDark
+                                          : AppColors.textArsenic,
                                       height: 22 / 16,
                                       leadingDistribution:
                                           TextLeadingDistribution.even,
@@ -147,10 +150,12 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                                   const Spacer(),
                                   Text(
                                     '\$${price.toStringAsFixed(2)}',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
-                                      color: AppColors.textYankeesBlue,
+                                      color: darkMode
+                                          ? AppColors.white
+                                          : AppColors.textYankeesBlue,
                                       height: 22 / 16,
                                       leadingDistribution:
                                           TextLeadingDistribution.even,
@@ -179,11 +184,13 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: AppColors.primaryCultured,
+                      color: darkMode
+                          ? AppColors.backgroundColorDark2
+                          : AppColors.primaryCultured,
                       borderRadius: BorderRadius.circular(14),
                     ),
                     padding: const EdgeInsets.all(16),
-                    child: const Column(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
@@ -191,12 +198,14 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.textYankeesBlue,
+                            color: darkMode
+                                ? AppColors.white
+                                : AppColors.textYankeesBlue,
                             height: 22 / 18,
                             leadingDistribution: TextLeadingDistribution.even,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 16,
                         ),
                         Row(
@@ -206,19 +215,23 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
-                                color: AppColors.textArsenic,
+                                color: darkMode
+                                    ? AppColors.textArsenicDark
+                                    : AppColors.textArsenic,
                                 height: 22 / 14,
                                 leadingDistribution:
                                     TextLeadingDistribution.even,
                               ),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             Text(
                               '\$2744.00',
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
-                                color: AppColors.textArsenic,
+                                color: darkMode
+                                    ? AppColors.textArsenicDark
+                                    : AppColors.textArsenic,
                                 height: 22 / 14,
                                 leadingDistribution:
                                     TextLeadingDistribution.even,
@@ -226,7 +239,7 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 16,
                         ),
                         Row(
@@ -236,19 +249,23 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
-                                color: AppColors.textArsenic,
+                                color: darkMode
+                                    ? AppColors.textArsenicDark
+                                    : AppColors.textArsenic,
                                 height: 22 / 14,
                                 leadingDistribution:
                                     TextLeadingDistribution.even,
                               ),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             Text(
                               '\$10.00',
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
-                                color: AppColors.textArsenic,
+                                color: darkMode
+                                    ? AppColors.textArsenicDark
+                                    : AppColors.textArsenic,
                                 height: 22 / 14,
                                 leadingDistribution:
                                     TextLeadingDistribution.even,
@@ -256,7 +273,7 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 16,
                         ),
                         Row(
@@ -266,19 +283,23 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
-                                color: AppColors.textArsenic,
+                                color: darkMode
+                                    ? AppColors.textArsenicDark
+                                    : AppColors.textArsenic,
                                 height: 22 / 14,
                                 leadingDistribution:
                                     TextLeadingDistribution.even,
                               ),
                             ),
-                            Spacer(),
+                            const Spacer(),
                             Text(
                               '\$2754.00',
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
-                                color: AppColors.textYankeesBlue,
+                                color: darkMode
+                                    ? AppColors.textArsenicDark
+                                    : AppColors.textYankeesBlue,
                                 height: 32 / 20,
                                 leadingDistribution:
                                     TextLeadingDistribution.even,
@@ -294,12 +315,14 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   ),
                   Row(
                     children: [
-                      const Text(
+                      Text(
                         'Shipping Details',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.textYankeesBlue,
+                          color: darkMode
+                              ? AppColors.white
+                              : AppColors.textYankeesBlue,
                           height: 22 / 18,
                           leadingDistribution: TextLeadingDistribution.even,
                         ),
@@ -343,7 +366,9 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                      color: AppColors.primaryCultured,
+                      color: darkMode
+                          ? AppColors.backgroundColorDark2
+                          : AppColors.primaryCultured,
                       borderRadius: BorderRadius.circular(14),
                     ),
                     padding: const EdgeInsets.all(16),
@@ -352,12 +377,14 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                       children: [
                         Row(
                           children: [
-                            const Text(
+                            Text(
                               'Address',
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
-                                color: AppColors.textArsenic,
+                                color: darkMode
+                                    ? AppColors.textArsenicDark
+                                    : AppColors.textArsenic,
                                 height: 22 / 14,
                                 leadingDistribution:
                                     TextLeadingDistribution.even,
@@ -369,10 +396,12 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                             Expanded(
                               child: Text(
                                 address?.address ?? '',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,
-                                  color: AppColors.textArsenic,
+                                  color: darkMode
+                                      ? AppColors.textArsenicDark
+                                      : AppColors.textArsenic,
                                   height: 22 / 14,
                                   leadingDistribution:
                                       TextLeadingDistribution.even,
@@ -392,10 +421,12 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                               Expanded(
                                 child: Text(
                                   address?.detail ?? '',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400,
-                                    color: AppColors.textArsenic,
+                                    color: darkMode
+                                        ? AppColors.textArsenicDark
+                                        : AppColors.textArsenic,
                                     height: 22 / 14,
                                     leadingDistribution:
                                         TextLeadingDistribution.even,
@@ -413,12 +444,14 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
+                              Text(
                                 'References',
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,
-                                  color: AppColors.textArsenic,
+                                  color: darkMode
+                                      ? AppColors.textArsenicDark
+                                      : AppColors.textArsenic,
                                   height: 22 / 14,
                                   leadingDistribution:
                                       TextLeadingDistribution.even,
@@ -430,10 +463,12 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                               Expanded(
                                 child: Text(
                                   address?.references ?? '',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400,
-                                    color: AppColors.textArsenic,
+                                    color: darkMode
+                                        ? AppColors.textArsenicDark
+                                        : AppColors.textArsenic,
                                     height: 22 / 14,
                                     leadingDistribution:
                                         TextLeadingDistribution.even,
@@ -448,12 +483,14 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         ),
                         Row(
                           children: [
-                            const Text(
+                            Text(
                               'Recipient',
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
-                                color: AppColors.textArsenic,
+                                color: darkMode
+                                    ? AppColors.textArsenicDark
+                                    : AppColors.textArsenic,
                                 height: 22 / 14,
                                 leadingDistribution:
                                     TextLeadingDistribution.even,
@@ -465,10 +502,12 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                             Expanded(
                               child: Text(
                                 address?.recipientName ?? '',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,
-                                  color: AppColors.textArsenic,
+                                  color: darkMode
+                                      ? AppColors.textArsenicDark
+                                      : AppColors.textArsenic,
                                   height: 22 / 14,
                                   leadingDistribution:
                                       TextLeadingDistribution.even,
@@ -483,12 +522,14 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         ),
                         Row(
                           children: [
-                            const Text(
+                            Text(
                               'Phone',
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
-                                color: AppColors.textArsenic,
+                                color: darkMode
+                                    ? AppColors.textArsenicDark
+                                    : AppColors.textArsenic,
                                 height: 22 / 14,
                                 leadingDistribution:
                                     TextLeadingDistribution.even,
@@ -500,10 +541,12 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                             Expanded(
                               child: Text(
                                 address?.phone ?? '',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400,
-                                  color: AppColors.textArsenic,
+                                  color: darkMode
+                                      ? AppColors.textArsenicDark
+                                      : AppColors.textArsenic,
                                   height: 22 / 14,
                                   leadingDistribution:
                                       TextLeadingDistribution.even,
@@ -524,12 +567,14 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   ),
                   Row(
                     children: [
-                      const Text(
+                      Text(
                         'Payment Method',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.textYankeesBlue,
+                          color: darkMode
+                              ? AppColors.white
+                              : AppColors.textYankeesBlue,
                           height: 22 / 18,
                           leadingDistribution: TextLeadingDistribution.even,
                         ),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/address/providers/address_provider.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/map_provider.dart';
 import 'package:flutter_snappyshop/features/shared/services/location_service.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
@@ -126,6 +127,7 @@ class BottomModal extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final MediaQueryData screen = MediaQuery.of(context);
     final addressState = ref.watch(addressProvider);
+    final darkMode = ref.watch(darkModeProvider);
 
     return Container(
       width: screen.size.width,
@@ -133,13 +135,13 @@ class BottomModal extends ConsumerWidget {
       padding: EdgeInsets.only(
         bottom: screen.padding.bottom,
       ),
-      decoration: const BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: darkMode ? AppColors.backgroundColorDark : AppColors.white,
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(radiusBottomSheet),
           topRight: Radius.circular(radiusBottomSheet),
         ),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Color.fromRGBO(63, 76, 95, 0.12),
             offset: Offset(0, -4),
@@ -163,10 +165,12 @@ class BottomModal extends ConsumerWidget {
                 Expanded(
                   child: Text(
                     addressState.address.value ?? '',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
-                      color: AppColors.textArsenic,
+                      color: darkMode
+                          ? AppColors.textArsenicDark
+                          : AppColors.textArsenic,
                       leadingDistribution: TextLeadingDistribution.even,
                     ),
                     maxLines: 2,
@@ -176,18 +180,8 @@ class BottomModal extends ConsumerWidget {
                 const SizedBox(
                   width: 8,
                 ),
-                Container(
+                SizedBox(
                   height: 40,
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0xffD3D1D8).withOpacity(0.25),
-                        offset: const Offset(0, 20),
-                        blurRadius: 30,
-                        spreadRadius: 0,
-                      )
-                    ],
-                  ),
                   child: TextButton(
                     onPressed: () async {
                       try {
@@ -202,11 +196,18 @@ class BottomModal extends ConsumerWidget {
                     },
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
-                      backgroundColor: AppColors.white,
+                      backgroundColor: darkMode
+                          ? AppColors.backgroundColorDark2
+                          : AppColors.white,
                     ),
-                    child: const Row(
+                    child: Row(
                       children: [
-                        Icon(Icons.location_searching),
+                        Icon(
+                          Icons.location_searching,
+                          color: darkMode
+                              ? AppColors.textArsenicDark
+                              : AppColors.textArsenic,
+                        ),
                         SizedBox(
                           width: 8,
                         ),
@@ -215,7 +216,9 @@ class BottomModal extends ConsumerWidget {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
-                            color: AppColors.textArsenic,
+                            color: darkMode
+                                ? AppColors.textArsenicDark
+                                : AppColors.textArsenic,
                             height: 1,
                             leadingDistribution: TextLeadingDistribution.even,
                           ),

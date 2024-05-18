@@ -4,6 +4,7 @@ import 'package:flutter_snappyshop/features/auth/providers/forgot_password_provi
 import 'package:flutter_snappyshop/features/auth/widgets/otp.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/timer_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 
@@ -24,6 +25,7 @@ class VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
   Widget build(BuildContext context) {
     final forgotState = ref.watch(forgotPasswordProvider);
     final timerState = ref.watch(timerProvider);
+    final darkMode = ref.watch(darkModeProvider);
 
     return Layout1(
       loading: forgotState.loading,
@@ -41,13 +43,15 @@ class VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Center(
+                  Center(
                     child: Text(
                       'Verify Code',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.textYankeesBlue,
+                        color: darkMode
+                            ? AppColors.white
+                            : AppColors.textYankeesBlue,
                         height: 32 / 24,
                         leadingDistribution: TextLeadingDistribution.even,
                       ),
@@ -56,13 +60,15 @@ class VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
                   const SizedBox(
                     height: 16,
                   ),
-                  const Center(
+                  Center(
                     child: Text(
                       'Please enter verify code that we\'ve \n sent to your email',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        color: AppColors.textArsenic,
+                        color: darkMode
+                            ? AppColors.textArsenicDark
+                            : AppColors.textArsenic,
                         height: 1.5,
                         leadingDistribution: TextLeadingDistribution.even,
                       ),
@@ -87,19 +93,24 @@ class VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.schedule_rounded,
                           size: 16,
+                          color: darkMode
+                              ? AppColors.textArsenicDark
+                              : AppColors.textArsenic,
                         ),
                         const SizedBox(
                           width: 6,
                         ),
                         Text(
                           timerState.timerText,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            color: AppColors.textArsenic,
+                            color: darkMode
+                                ? AppColors.textArsenicDark
+                                : AppColors.textArsenic,
                             height: 1.5,
                             leadingDistribution: TextLeadingDistribution.even,
                           ),

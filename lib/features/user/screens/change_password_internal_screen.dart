@@ -3,7 +3,9 @@ import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/auth/widgets/input_password.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/custom_label.dart';
 import 'package:flutter_snappyshop/features/user/providers/change_password_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,6 +30,7 @@ class ChangePasswordInternalScreenState
   @override
   Widget build(BuildContext context) {
     final passwordState = ref.watch(changePasswordProvider);
+    final darkMode = ref.watch(darkModeProvider);
 
     return Layout1(
       loading: passwordState.loading == LoadingStatus.loading,
@@ -49,13 +52,15 @@ class ChangePasswordInternalScreenState
                   const SizedBox(
                     height: 16,
                   ),
-                  const Center(
+                  Center(
                     child: Text(
                       'Please change your old password, \n and put new password',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        color: AppColors.textArsenic,
+                        color: darkMode
+                            ? AppColors.textArsenicDark
+                            : AppColors.textArsenic,
                         height: 1.5,
                         leadingDistribution: TextLeadingDistribution.even,
                       ),
@@ -65,16 +70,7 @@ class ChangePasswordInternalScreenState
                   const SizedBox(
                     height: 40,
                   ),
-                  const Text(
-                    'New Password',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.textYankeesBlue,
-                      height: 22 / 14,
-                      leadingDistribution: TextLeadingDistribution.even,
-                    ),
-                  ),
+                  const CustomLabel('New Password'),
                   const SizedBox(
                     height: 4,
                   ),
@@ -89,16 +85,7 @@ class ChangePasswordInternalScreenState
                   const SizedBox(
                     height: 16,
                   ),
-                  const Text(
-                    'Confirm new password',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.textYankeesBlue,
-                      height: 22 / 14,
-                      leadingDistribution: TextLeadingDistribution.even,
-                    ),
-                  ),
+                  const CustomLabel('Confirm new Password'),
                   const SizedBox(
                     height: 4,
                   ),

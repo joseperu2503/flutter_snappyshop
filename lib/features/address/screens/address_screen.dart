@@ -7,8 +7,10 @@ import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/models/form_type.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_input.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/custom_label.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_textarea.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
 
@@ -30,6 +32,7 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
     final MediaQueryData screen = MediaQuery.of(context);
     final addressState = ref.watch(addressProvider);
     final changeForm = ref.read(addressProvider.notifier).changeForm;
+    final darkMode = ref.watch(darkModeProvider);
 
     return Loader(
       loading: addressState.savingAddress == LoadingStatus.loading,
@@ -39,9 +42,11 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
             ? Container(
                 width: 46,
                 height: 46,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColors.primaryCultured,
+                  color: darkMode
+                      ? AppColors.backgroundColorDark2
+                      : AppColors.primaryCultured,
                 ),
                 child: TextButton(
                   onPressed: () {},
@@ -66,16 +71,7 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const Text(
-                      'Address',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.textYankeesBlue,
-                        height: 22 / 14,
-                        leadingDistribution: TextLeadingDistribution.even,
-                      ),
-                    ),
+                    const CustomLabel('Address'),
                     const SizedBox(
                       height: labelInputSpacing,
                     ),
@@ -90,16 +86,7 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                     const SizedBox(
                       height: formInputSpacing,
                     ),
-                    const Text(
-                      'Detail: apt/flat/house',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.textYankeesBlue,
-                        height: 22 / 14,
-                        leadingDistribution: TextLeadingDistribution.even,
-                      ),
-                    ),
+                    const CustomLabel('Detail: apt/flat/house'),
                     const SizedBox(
                       height: labelInputSpacing,
                     ),
@@ -121,16 +108,7 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                     const SizedBox(
                       height: formInputSpacing,
                     ),
-                    const Text(
-                      'Name',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.textYankeesBlue,
-                        height: 22 / 14,
-                        leadingDistribution: TextLeadingDistribution.even,
-                      ),
-                    ),
+                    const CustomLabel('Name'),
                     const SizedBox(
                       height: labelInputSpacing,
                     ),
@@ -152,16 +130,7 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                     const SizedBox(
                       height: formInputSpacing,
                     ),
-                    const Text(
-                      'Phone Number',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.textYankeesBlue,
-                        height: 22 / 14,
-                        leadingDistribution: TextLeadingDistribution.even,
-                      ),
-                    ),
+                    const CustomLabel('Phone Number'),
                     const SizedBox(
                       height: labelInputSpacing,
                     ),
@@ -183,16 +152,7 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                     const SizedBox(
                       height: formInputSpacing,
                     ),
-                    const Text(
-                      'References',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.textYankeesBlue,
-                        height: 22 / 14,
-                        leadingDistribution: TextLeadingDistribution.even,
-                      ),
-                    ),
+                    const CustomLabel('References'),
                     const SizedBox(
                       height: labelInputSpacing,
                     ),
@@ -220,7 +180,7 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
             bottom: screen.padding.bottom,
           ),
           height: 120,
-          color: AppColors.white,
+          color: darkMode ? AppColors.backgroundColorDark : AppColors.white,
           child: Column(
             children: [
               if (addressState.formType == FormType.edit)
