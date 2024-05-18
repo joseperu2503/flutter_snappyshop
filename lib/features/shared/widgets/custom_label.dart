@@ -17,9 +17,7 @@ class CustomLabel extends ConsumerWidget {
       style: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w500,
-        color: darkMode
-            ? AppColors.textYankeesBlueDark
-            : AppColors.textYankeesBlue,
+        color: darkMode ? AppColors.textArsenicDark : AppColors.textArsenic,
         height: 22 / 14,
         leadingDistribution: TextLeadingDistribution.even,
       ),

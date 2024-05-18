@@ -49,7 +49,7 @@ class CustomDrawer extends ConsumerWidget {
     return Drawer(
       elevation: 0,
       backgroundColor:
-          darkMode ? AppColors.primaryCulturedDark : AppColors.white,
+          darkMode ? AppColors.backgroundColorDark : AppColors.backgroundColor,
       child: CustomScrollView(
         slivers: [
           SliverFillRemaining(
@@ -85,16 +85,18 @@ class CustomDrawer extends ConsumerWidget {
                               : Container(
                                   width: 46,
                                   height: 46,
-                                  decoration: const BoxDecoration(
+                                  decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: AppColors.primaryCultured,
+                                    color: darkMode
+                                        ? AppColors.primaryCulturedDark
+                                        : AppColors.primaryCultured,
                                   ),
                                   child: Center(
                                     child: SvgPicture.asset(
                                       'assets/icons/profile.svg',
                                       colorFilter: ColorFilter.mode(
                                         darkMode
-                                            ? AppColors.textArsenic
+                                            ? AppColors.textArsenicDark
                                             : AppColors.textArsenic,
                                         BlendMode.srcIn,
                                       ),

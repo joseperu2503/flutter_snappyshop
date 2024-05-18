@@ -5,12 +5,15 @@ import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/auth/widgets/input_email.dart';
 import 'package:flutter_snappyshop/features/auth/widgets/input_name.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_label.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/image_viewer.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
 import 'package:flutter_snappyshop/features/user/providers/account_information_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 class AccountInformationScreen extends ConsumerStatefulWidget {
@@ -34,6 +37,7 @@ class AccountInformationScreenState
   @override
   Widget build(BuildContext context) {
     final accountState = ref.watch(accountInformationProvider);
+    final darkMode = ref.watch(darkModeProvider);
 
     return Loader(
       loading: accountState.loading,
@@ -61,7 +65,9 @@ class AccountInformationScreenState
                         onTap: () {
                           FocusManager.instance.primaryFocus?.unfocus();
                           showModalBottomSheet(
-                            backgroundColor: AppColors.white,
+                            backgroundColor: darkMode
+                                ? AppColors.backgroundColorDark
+                                : AppColors.backgroundColor,
                             elevation: 0,
                             showDragHandle: false,
                             context: context,
@@ -97,14 +103,24 @@ class AccountInformationScreenState
                                 : Container(
                                     width: 180,
                                     height: 180,
-                                    decoration: const BoxDecoration(
+                                    decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color: AppColors.primaryCultured,
+                                      color: darkMode
+                                          ? AppColors.primaryCulturedDark
+                                          : AppColors.primaryCultured,
                                     ),
-                                    child: const Icon(
-                                      Icons.person,
-                                      color: AppColors.textArsenic,
-                                      size: 60,
+                                    child: Center(
+                                      child: SvgPicture.asset(
+                                        'assets/icons/profile.svg',
+                                        colorFilter: ColorFilter.mode(
+                                          darkMode
+                                              ? AppColors.textArsenicDark
+                                              : AppColors.textArsenic,
+                                          BlendMode.srcIn,
+                                        ),
+                                        width: 60,
+                                        height: 60,
+                                      ),
                                     ),
                                   ),
                       ),
@@ -149,30 +165,13 @@ class AccountInformationScreenState
                     FadeIn(
                       animate: accountState.showButton,
                       duration: const Duration(milliseconds: 150),
-                      child: Container(
-                        height: 52,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryPearlAqua,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: TextButton(
-                          onPressed: () {
-                            ref
-                                .read(accountInformationProvider.notifier)
-                                .submit();
-                          },
-                          child: const Text(
-                            'Save Changes',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.textCultured,
-                              height: 22 / 16,
-                              leadingDistribution: TextLeadingDistribution.even,
-                            ),
-                          ),
-                        ),
+                      child: CustomButton(
+                        onPressed: () {
+                          ref
+                              .read(accountInformationProvider.notifier)
+                              .submit();
+                        },
+                        text: 'Save Changes',
                       ),
                     ),
                   ],
@@ -191,6 +190,8 @@ class _PhotoBottomSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final darkMode = ref.watch(darkModeProvider);
+
     return SafeArea(
       child: Container(
         padding: const EdgeInsets.only(top: 10),
@@ -206,12 +207,14 @@ class _PhotoBottomSheet extends ConsumerWidget {
                 children: [
                   Container(
                     padding: const EdgeInsets.only(top: 15),
-                    child: const Text(
+                    child: Text(
                       'Update profile photo',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.textYankeesBlue,
+                        color: darkMode
+                            ? AppColors.textYankeesBlueDark
+                            : AppColors.textYankeesBlue,
                         height: 1,
                         leadingDistribution: TextLeadingDistribution.even,
                       ),
@@ -222,7 +225,9 @@ class _PhotoBottomSheet extends ConsumerWidget {
                       context.pop();
                     },
                     icon: const Icon(Icons.close),
-                    color: AppColors.textYankeesBlue,
+                    color: darkMode
+                        ? AppColors.textYankeesBlueDark
+                        : AppColors.textYankeesBlue,
                   )
                 ],
               ),
@@ -231,12 +236,14 @@ class _PhotoBottomSheet extends ConsumerWidget {
               height: 15,
             ),
             ListTile(
-              title: const Text(
+              title: Text(
                 'Take photo',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
-                  color: AppColors.textYankeesBlue,
+                  color: darkMode
+                      ? AppColors.textArsenicDark
+                      : AppColors.textArsenic,
                   height: 1,
                   leadingDistribution: TextLeadingDistribution.even,
                 ),
@@ -244,9 +251,14 @@ class _PhotoBottomSheet extends ConsumerWidget {
               contentPadding: const EdgeInsetsDirectional.symmetric(
                 horizontal: 24,
               ),
-              leading: const Icon(
-                Icons.camera_alt_rounded,
-                color: AppColors.textArsenic,
+              leading: SvgPicture.asset(
+                'assets/icons/camera.svg',
+                colorFilter: ColorFilter.mode(
+                  darkMode ? AppColors.textArsenicDark : AppColors.textArsenic,
+                  BlendMode.srcIn,
+                ),
+                width: 24,
+                height: 24,
               ),
               onTap: () {
                 context.pop();
@@ -254,12 +266,14 @@ class _PhotoBottomSheet extends ConsumerWidget {
               },
             ),
             ListTile(
-              title: const Text(
+              title: Text(
                 'Choose from gallery',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
-                  color: AppColors.textYankeesBlue,
+                  color: darkMode
+                      ? AppColors.textArsenicDark
+                      : AppColors.textArsenic,
                   height: 1,
                   leadingDistribution: TextLeadingDistribution.even,
                 ),
@@ -267,9 +281,14 @@ class _PhotoBottomSheet extends ConsumerWidget {
               contentPadding: const EdgeInsetsDirectional.symmetric(
                 horizontal: 24,
               ),
-              leading: const Icon(
-                Icons.add_photo_alternate_rounded,
-                color: AppColors.textArsenic,
+              leading: SvgPicture.asset(
+                'assets/icons/gallery.svg',
+                colorFilter: ColorFilter.mode(
+                  darkMode ? AppColors.textArsenicDark : AppColors.textArsenic,
+                  BlendMode.srcIn,
+                ),
+                width: 24,
+                height: 24,
               ),
               onTap: () {
                 context.pop();
@@ -290,9 +309,14 @@ class _PhotoBottomSheet extends ConsumerWidget {
               contentPadding: const EdgeInsetsDirectional.symmetric(
                 horizontal: 24,
               ),
-              leading: const Icon(
-                Icons.delete,
-                color: AppColors.error,
+              leading: SvgPicture.asset(
+                'assets/icons/delete.svg',
+                colorFilter: ColorFilter.mode(
+                  darkMode ? AppColors.error : AppColors.error,
+                  BlendMode.srcIn,
+                ),
+                width: 24,
+                height: 24,
               ),
               onTap: () {
                 context.pop();
