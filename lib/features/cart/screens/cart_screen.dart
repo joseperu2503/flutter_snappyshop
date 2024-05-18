@@ -143,10 +143,10 @@ class CartScreenState extends ConsumerState<CartScreen> {
                                   product.name,
                                   style: TextStyle(
                                     fontSize: 14,
-                                    fontWeight: FontWeight.w400,
+                                    fontWeight: FontWeight.w500,
                                     color: darkMode
-                                        ? AppColors.white
-                                        : AppColors.textArsenic,
+                                        ? AppColors.textYankeesBlueDark
+                                        : AppColors.textYankeesBlue,
                                     height: 22 / 14,
                                     leadingDistribution:
                                         TextLeadingDistribution.even,
@@ -174,19 +174,19 @@ class CartScreenState extends ConsumerState<CartScreen> {
                                       Text(
                                         '\$${product.price.toStringAsFixed(2)}',
                                         style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.w400,
                                           color: darkMode
-                                              ? AppColors.textCultured
-                                              : AppColors.gray,
+                                              ? AppColors.textArsenicDark
+                                              : AppColors.textArsenic,
                                           height: 22 / 16,
                                           decoration:
                                               TextDecoration.lineThrough,
                                           leadingDistribution:
                                               TextLeadingDistribution.even,
                                           decorationColor: darkMode
-                                              ? AppColors.textCultured
-                                              : AppColors.gray,
+                                              ? AppColors.textArsenicDark
+                                              : AppColors.textArsenic,
                                         ),
                                       ),
                                   ],

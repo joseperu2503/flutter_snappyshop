@@ -59,8 +59,13 @@ class CartButton extends ConsumerWidget {
           ),
           showBadge: numProducts != 0,
           badgeAnimation: const badges.BadgeAnimation.fade(),
-          badgeStyle: badges.BadgeStyle(
-            badgeColor: AppColors.primaryPearlAqua.withOpacity(0.8),
+          badgeStyle: const badges.BadgeStyle(
+            badgeGradient: badges.BadgeGradient.linear(
+              colors: [Color(0xff905bd2), Color(0xff8034da)],
+              stops: [0, 1],
+              begin: Alignment(-0.9, -0.5),
+              end: Alignment(0.3, 1.0),
+            ),
           ),
           child: SvgPicture.asset(
             'assets/icons/shopping_cart.svg',

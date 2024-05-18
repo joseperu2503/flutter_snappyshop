@@ -15,12 +15,7 @@ List<ButtonTypeStyle> buttonTypes = [
     textColorDisabled: AppColors.textArsenicDark,
     foregroundColor: Colors.white60,
     borderColor: Colors.transparent,
-    gradient: const LinearGradient(
-      colors: [Color(0xff905bd2), Color(0xff8034da)],
-      stops: [0, 1],
-      begin: Alignment(-0.9, -0.5),
-      end: Alignment(0.3, 1.0),
-    ),
+    gradient: primaryGradient,
     colorDisabled: AppColors.textArsenicDark.withOpacity(0.5),
     textColor: AppColors.textCultured,
     colorDisabledDark: AppColors.textArsenic.withOpacity(0.5),

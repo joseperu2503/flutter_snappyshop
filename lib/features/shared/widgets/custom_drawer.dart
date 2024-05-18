@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/address/providers/address_provider.dart';
 import 'package:flutter_snappyshop/features/auth/providers/auth_provider.dart';
 import 'package:flutter_snappyshop/features/cards/providers/card_provider.dart';
@@ -196,8 +197,9 @@ class CustomDrawer extends ConsumerWidget {
                             width: 30,
                             height: 30,
                             decoration: BoxDecoration(
-                                color: AppColors.primaryPearlAqua,
-                                borderRadius: BorderRadius.circular(15)),
+                              borderRadius: BorderRadius.circular(15),
+                              gradient: primaryGradient,
+                            ),
                             child: Center(
                               child: Text(
                                 numProducts.toString(),

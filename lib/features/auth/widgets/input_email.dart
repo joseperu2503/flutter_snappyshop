@@ -68,7 +68,7 @@ class InputEmailState extends ConsumerState<InputEmail> {
           hintText: 'Your email',
           hintStyle: TextStyle(
             color: darkMode
-                ? AppColors.textCultured.withOpacity(0.5)
+                ? AppColors.textArsenicDark.withOpacity(0.5)
                 : AppColors.textArsenic.withOpacity(0.5),
             fontSize: 14,
             fontWeight: FontWeight.w400,

@@ -24,7 +24,9 @@ class ButtonStepper extends ConsumerWidget {
       height: 45,
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        color: darkMode ? AppColors.textArsenicDark : AppColors.white,
+        color: darkMode
+            ? AppColors.backgroundColorDark
+            : AppColors.backgroundColor,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
