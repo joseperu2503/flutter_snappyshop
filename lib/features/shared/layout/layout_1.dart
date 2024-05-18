@@ -39,8 +39,9 @@ class Layout1 extends ConsumerWidget {
         appBar: AppBar(
           toolbarHeight: toolbarHeight,
           automaticallyImplyLeading: false,
-          backgroundColor:
-              darkMode ? AppColors.backgroundColorDark : AppColors.white,
+          backgroundColor: darkMode
+              ? AppColors.backgroundColorDark
+              : AppColors.backgroundColor,
           forceMaterialTransparency: true,
           titleSpacing: 0,
           title: Container(
@@ -56,7 +57,7 @@ class Layout1 extends ConsumerWidget {
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                       color: darkMode
-                          ? AppColors.white
+                          ? AppColors.textYankeesBlueDark
                           : AppColors.textYankeesBlue,
                       leadingDistribution: TextLeadingDistribution.even,
                     ),

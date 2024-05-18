@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/address/providers/address_provider.dart';
@@ -39,7 +40,8 @@ class CustomDrawer extends ConsumerWidget {
     final textLabelStyle = TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.w400,
-      color: darkMode ? AppColors.white : AppColors.textYankeesBlue,
+      color:
+          darkMode ? AppColors.textYankeesBlueDark : AppColors.textYankeesBlue,
       height: 16 / 16,
       leadingDistribution: TextLeadingDistribution.even,
     );
@@ -47,7 +49,7 @@ class CustomDrawer extends ConsumerWidget {
     return Drawer(
       elevation: 0,
       backgroundColor:
-          darkMode ? AppColors.backgroundColorDark2 : AppColors.white,
+          darkMode ? AppColors.primaryCulturedDark : AppColors.white,
       child: CustomScrollView(
         slivers: [
           SliverFillRemaining(
@@ -114,7 +116,7 @@ class CustomDrawer extends ConsumerWidget {
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
                                     color: darkMode
-                                        ? AppColors.white
+                                        ? AppColors.textYankeesBlueDark
                                         : AppColors.textYankeesBlue,
                                     height: 1.1,
                                     leadingDistribution:
@@ -155,7 +157,9 @@ class CustomDrawer extends ConsumerWidget {
                     leading: SvgPicture.asset(
                       'assets/icons/profile.svg',
                       colorFilter: ColorFilter.mode(
-                        darkMode ? AppColors.white : AppColors.textYankeesBlue,
+                        darkMode
+                            ? AppColors.textYankeesBlueDark
+                            : AppColors.textYankeesBlue,
                         BlendMode.srcIn,
                       ),
                       width: 24,
@@ -177,7 +181,9 @@ class CustomDrawer extends ConsumerWidget {
                     leading: SvgPicture.asset(
                       'assets/icons/shopping_cart.svg',
                       colorFilter: ColorFilter.mode(
-                        darkMode ? AppColors.white : AppColors.textYankeesBlue,
+                        darkMode
+                            ? AppColors.textYankeesBlueDark
+                            : AppColors.textYankeesBlue,
                         BlendMode.srcIn,
                       ),
                       width: 24,
@@ -219,7 +225,9 @@ class CustomDrawer extends ConsumerWidget {
                     leading: SvgPicture.asset(
                       'assets/icons/card.svg',
                       colorFilter: ColorFilter.mode(
-                        darkMode ? AppColors.white : AppColors.textYankeesBlue,
+                        darkMode
+                            ? AppColors.textYankeesBlueDark
+                            : AppColors.textYankeesBlue,
                         BlendMode.srcIn,
                       ),
                       width: 24,
@@ -246,7 +254,9 @@ class CustomDrawer extends ConsumerWidget {
                     leading: SvgPicture.asset(
                       'assets/icons/order.svg',
                       colorFilter: ColorFilter.mode(
-                        darkMode ? AppColors.white : AppColors.textYankeesBlue,
+                        darkMode
+                            ? AppColors.textYankeesBlueDark
+                            : AppColors.textYankeesBlue,
                         BlendMode.srcIn,
                       ),
                       width: 24,
@@ -268,7 +278,9 @@ class CustomDrawer extends ConsumerWidget {
                     leading: SvgPicture.asset(
                       'assets/icons/heart_outlined.svg',
                       colorFilter: ColorFilter.mode(
-                        darkMode ? AppColors.white : AppColors.textYankeesBlue,
+                        darkMode
+                            ? AppColors.textYankeesBlueDark
+                            : AppColors.textYankeesBlue,
                         BlendMode.srcIn,
                       ),
                       width: 24,
@@ -290,7 +302,9 @@ class CustomDrawer extends ConsumerWidget {
                     leading: SvgPicture.asset(
                       'assets/icons/box.svg',
                       colorFilter: ColorFilter.mode(
-                        darkMode ? AppColors.white : AppColors.textYankeesBlue,
+                        darkMode
+                            ? AppColors.textYankeesBlueDark
+                            : AppColors.textYankeesBlue,
                         BlendMode.srcIn,
                       ),
                       width: 24,
@@ -315,7 +329,9 @@ class CustomDrawer extends ConsumerWidget {
                     leading: SvgPicture.asset(
                       'assets/icons/lock.svg',
                       colorFilter: ColorFilter.mode(
-                        darkMode ? AppColors.white : AppColors.textYankeesBlue,
+                        darkMode
+                            ? AppColors.textYankeesBlueDark
+                            : AppColors.textYankeesBlue,
                         BlendMode.srcIn,
                       ),
                       width: 24,
@@ -337,7 +353,9 @@ class CustomDrawer extends ConsumerWidget {
                     leading: SvgPicture.asset(
                       'assets/icons/settings.svg',
                       colorFilter: ColorFilter.mode(
-                        darkMode ? AppColors.white : AppColors.textYankeesBlue,
+                        darkMode
+                            ? AppColors.textYankeesBlueDark
+                            : AppColors.textYankeesBlue,
                         BlendMode.srcIn,
                       ),
                       width: 24,
@@ -347,6 +365,33 @@ class CustomDrawer extends ConsumerWidget {
                       context.pop();
                       context.push('/settings');
                     },
+                  ),
+                  ListTile(
+                    contentPadding: const EdgeInsetsDirectional.symmetric(
+                      horizontal: 24,
+                    ),
+                    title: Text(
+                      'Dark mode',
+                      style: textLabelStyle,
+                    ),
+                    leading: SvgPicture.asset(
+                      'assets/icons/moon.svg',
+                      colorFilter: ColorFilter.mode(
+                        darkMode
+                            ? AppColors.textYankeesBlueDark
+                            : AppColors.textYankeesBlue,
+                        BlendMode.srcIn,
+                      ),
+                      width: 24,
+                      height: 24,
+                    ),
+                    trailing: CupertinoSwitch(
+                      value: darkMode,
+                      onChanged: (value) {
+                        ref.read(darkModeProvider.notifier).changeDarkMode();
+                      },
+                      activeColor: AppColors.primaryPearlAqua,
+                    ),
                   ),
                   const Spacer(),
                   Container(

@@ -63,8 +63,9 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
         drawer: const CustomDrawer(),
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          backgroundColor:
-              darkMode ? AppColors.backgroundColorDark : AppColors.white,
+          backgroundColor: darkMode
+              ? AppColors.backgroundColorDark
+              : AppColors.backgroundColor,
           forceMaterialTransparency: true,
           titleSpacing: 0,
           title: Container(
@@ -84,7 +85,9 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                     child: SvgPicture.asset(
                       'assets/icons/menu.svg',
                       colorFilter: ColorFilter.mode(
-                        darkMode ? AppColors.white : AppColors.textYankeesBlue,
+                        darkMode
+                            ? AppColors.textYankeesBlueDark
+                            : AppColors.textYankeesBlue,
                         BlendMode.srcIn,
                       ),
                       width: 24,
@@ -223,7 +226,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                                   child: Container(
                                     decoration: BoxDecoration(
                                       color: darkMode
-                                          ? AppColors.backgroundColorDark2
+                                          ? AppColors.primaryCulturedDark
                                           : AppColors.primaryCultured,
                                       borderRadius: BorderRadius.circular(10),
                                     ),

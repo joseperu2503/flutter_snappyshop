@@ -70,15 +70,16 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
             slivers: [
               SliverAppBar(
                 scrolledUnderElevation: 0,
-                backgroundColor:
-                    darkMode ? AppColors.backgroundColorDark : AppColors.white,
+                backgroundColor: darkMode
+                    ? AppColors.backgroundColorDark
+                    : AppColors.backgroundColor,
                 automaticallyImplyLeading: false,
                 titleSpacing: 0,
                 title: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   color: darkMode
                       ? AppColors.backgroundColorDark
-                      : AppColors.white,
+                      : AppColors.backgroundColor,
                   child: Row(
                     children: [
                       const CustomBackButton(),
@@ -89,7 +90,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
                           color: darkMode
-                              ? AppColors.white
+                              ? AppColors.textYankeesBlueDark
                               : AppColors.textYankeesBlue,
                           leadingDistribution: TextLeadingDistribution.even,
                         ),
@@ -105,8 +106,9 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                 floating: true,
               ),
               SliverAppBar(
-                backgroundColor:
-                    darkMode ? AppColors.backgroundColorDark : AppColors.white,
+                backgroundColor: darkMode
+                    ? AppColors.backgroundColorDark
+                    : AppColors.backgroundColor,
                 automaticallyImplyLeading: false,
                 scrolledUnderElevation: 0,
                 titleSpacing: 0,

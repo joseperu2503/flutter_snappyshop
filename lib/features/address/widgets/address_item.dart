@@ -20,7 +20,7 @@ class AddressItem extends ConsumerWidget {
     return Container(
       decoration: BoxDecoration(
         color: darkMode
-            ? AppColors.backgroundColorDark2
+            ? AppColors.primaryCulturedDark
             : AppColors.primaryCultured,
         borderRadius: BorderRadius.circular(14),
       ),
@@ -72,8 +72,9 @@ class AddressItem extends ConsumerWidget {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color:
-                        darkMode ? AppColors.white : AppColors.textYankeesBlue,
+                    color: darkMode
+                        ? AppColors.textYankeesBlueDark
+                        : AppColors.textYankeesBlue,
                     height: 2,
                     leadingDistribution: TextLeadingDistribution.even,
                   ),
@@ -108,7 +109,7 @@ class AddressItem extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(5),
                     color: darkMode
                         ? AppColors.backgroundColorDark
-                        : AppColors.white,
+                        : AppColors.backgroundColor,
                   ),
                   child: Center(
                     child: Icon(
@@ -150,7 +151,7 @@ class AddressItem extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(5),
                     color: darkMode
                         ? AppColors.backgroundColorDark
-                        : AppColors.white,
+                        : AppColors.backgroundColor,
                   ),
                   child: Center(
                     child: Icon(

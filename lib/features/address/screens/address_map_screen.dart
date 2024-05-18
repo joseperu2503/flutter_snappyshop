@@ -136,7 +136,9 @@ class BottomModal extends ConsumerWidget {
         bottom: screen.padding.bottom,
       ),
       decoration: BoxDecoration(
-        color: darkMode ? AppColors.backgroundColorDark : AppColors.white,
+        color: darkMode
+            ? AppColors.backgroundColorDark
+            : AppColors.backgroundColor,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(radiusBottomSheet),
           topRight: Radius.circular(radiusBottomSheet),
@@ -197,7 +199,7 @@ class BottomModal extends ConsumerWidget {
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       backgroundColor: darkMode
-                          ? AppColors.backgroundColorDark2
+                          ? AppColors.primaryCulturedDark
                           : AppColors.white,
                     ),
                     child: Row(

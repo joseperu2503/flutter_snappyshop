@@ -52,7 +52,7 @@ class ButtonStepper extends ConsumerWidget {
               fontSize: 14,
               fontWeight: FontWeight.w600,
               color: darkMode
-                  ? AppColors.textYankeesBlue
+                  ? AppColors.textYankeesBlueDark
                   : AppColors.textYankeesBlue,
               height: 22 / 14,
               leadingDistribution: TextLeadingDistribution.even,

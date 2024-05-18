@@ -79,7 +79,7 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                     ),
                     decoration: BoxDecoration(
                       color: darkMode
-                          ? AppColors.backgroundColorDark2
+                          ? AppColors.primaryCulturedDark
                           : AppColors.primaryCultured,
                       borderRadius: borderRadius,
                     ),
@@ -154,7 +154,7 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
                                       color: darkMode
-                                          ? AppColors.white
+                                          ? AppColors.textYankeesBlueDark
                                           : AppColors.textYankeesBlue,
                                       height: 22 / 16,
                                       leadingDistribution:
@@ -185,7 +185,7 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   Container(
                     decoration: BoxDecoration(
                       color: darkMode
-                          ? AppColors.backgroundColorDark2
+                          ? AppColors.primaryCulturedDark
                           : AppColors.primaryCultured,
                       borderRadius: BorderRadius.circular(14),
                     ),
@@ -199,7 +199,7 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
                             color: darkMode
-                                ? AppColors.white
+                                ? AppColors.textYankeesBlueDark
                                 : AppColors.textYankeesBlue,
                             height: 22 / 18,
                             leadingDistribution: TextLeadingDistribution.even,
@@ -298,7 +298,7 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
                                 color: darkMode
-                                    ? AppColors.textArsenicDark
+                                    ? AppColors.textYankeesBlueDark
                                     : AppColors.textYankeesBlue,
                                 height: 32 / 20,
                                 leadingDistribution:
@@ -321,7 +321,7 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
                           color: darkMode
-                              ? AppColors.white
+                              ? AppColors.textYankeesBlueDark
                               : AppColors.textYankeesBlue,
                           height: 22 / 18,
                           leadingDistribution: TextLeadingDistribution.even,
@@ -367,7 +367,7 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   Container(
                     decoration: BoxDecoration(
                       color: darkMode
-                          ? AppColors.backgroundColorDark2
+                          ? AppColors.primaryCulturedDark
                           : AppColors.primaryCultured,
                       borderRadius: BorderRadius.circular(14),
                     ),
@@ -573,7 +573,7 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
                           color: darkMode
-                              ? AppColors.white
+                              ? AppColors.textYankeesBlueDark
                               : AppColors.textYankeesBlue,
                           height: 22 / 18,
                           leadingDistribution: TextLeadingDistribution.even,

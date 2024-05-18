@@ -11,10 +11,10 @@ class DarkModeNotifier extends StateNotifier<bool> {
 
   getThemeState() async {
     final darkMode = await DarkModeService.getDarkMode();
-    changeSwitchState(darkMode);
+    changeDarkMode(darkMode: darkMode);
   }
 
-  changeSwitchState(bool? darkMode) async {
+  changeDarkMode({bool? darkMode}) async {
     state = darkMode ?? !state;
     await DarkModeService.setDarkMode(state);
   }

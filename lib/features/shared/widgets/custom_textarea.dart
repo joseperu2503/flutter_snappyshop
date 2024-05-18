@@ -82,7 +82,9 @@ class CustomTexareaState extends ConsumerState<CustomTexarea> {
       height: 100,
       child: TextFormField(
         style: TextStyle(
-          color: darkMode ? AppColors.white : AppColors.textYankeesBlue,
+          color: darkMode
+              ? AppColors.textYankeesBlueDark
+              : AppColors.textYankeesBlue,
           fontSize: 14,
           fontWeight: FontWeight.w400,
           height: 22 / 14,

@@ -60,7 +60,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                         fontSize: 28,
                         fontWeight: FontWeight.w700,
                         color: darkMode
-                            ? AppColors.white
+                            ? AppColors.textYankeesBlueDark
                             : AppColors.textYankeesBlue,
                         height: 1.1,
                         leadingDistribution: TextLeadingDistribution.even,

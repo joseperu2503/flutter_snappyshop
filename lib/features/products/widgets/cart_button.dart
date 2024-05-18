@@ -65,7 +65,9 @@ class CartButton extends ConsumerWidget {
           child: SvgPicture.asset(
             'assets/icons/shopping_cart.svg',
             colorFilter: ColorFilter.mode(
-              darkMode ? AppColors.white : AppColors.textYankeesBlue,
+              darkMode
+                  ? AppColors.textYankeesBlueDark
+                  : AppColors.textYankeesBlue,
               BlendMode.srcIn,
             ),
             width: 24,

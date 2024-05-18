@@ -175,7 +175,7 @@ class TextFiledOTPState extends ConsumerState<_TextFiledOTP> {
       height: 52,
       decoration: BoxDecoration(
         color: darkMode
-            ? AppColors.backgroundColorDark2
+            ? AppColors.primaryCulturedDark
             : AppColors.primaryCultured,
         borderRadius: BorderRadius.circular(10),
         border: hasFocus

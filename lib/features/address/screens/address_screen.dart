@@ -45,7 +45,7 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: darkMode
-                      ? AppColors.backgroundColorDark2
+                      ? AppColors.primaryCulturedDark
                       : AppColors.primaryCultured,
                 ),
                 child: TextButton(
@@ -180,7 +180,9 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
             bottom: screen.padding.bottom,
           ),
           height: 120,
-          color: darkMode ? AppColors.backgroundColorDark : AppColors.white,
+          color: darkMode
+              ? AppColors.backgroundColorDark
+              : AppColors.backgroundColor,
           child: Column(
             children: [
               if (addressState.formType == FormType.edit)

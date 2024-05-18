@@ -74,7 +74,7 @@ class ProductCardState extends ConsumerState<ProductCard> {
                 height: 140,
                 decoration: BoxDecoration(
                   color: darkMode
-                      ? AppColors.backgroundColorDark2
+                      ? AppColors.primaryCulturedDark
                       : AppColors.primaryCultured,
                   borderRadius: BorderRadiusDirectional.circular(15),
                 ),

@@ -34,7 +34,7 @@ class OrderStatusFilterButton extends ConsumerWidget {
           FocusManager.instance.primaryFocus?.unfocus();
           showModalBottomSheet(
             backgroundColor:
-                darkMode ? AppColors.backgroundColorDark2 : AppColors.white,
+                darkMode ? AppColors.primaryCulturedDark : AppColors.white,
             elevation: 0,
             showDragHandle: false,
             context: context,
@@ -114,7 +114,7 @@ class BrandBottomSheetState extends ConsumerState<_BrandBottomSheet> {
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
                         color: darkMode
-                            ? AppColors.white
+                            ? AppColors.textYankeesBlueDark
                             : AppColors.textYankeesBlue,
                         height: 1,
                         leadingDistribution: TextLeadingDistribution.even,
@@ -126,8 +126,9 @@ class BrandBottomSheetState extends ConsumerState<_BrandBottomSheet> {
                       context.pop();
                     },
                     icon: const Icon(Icons.close),
-                    color:
-                        darkMode ? AppColors.white : AppColors.textYankeesBlue,
+                    color: darkMode
+                        ? AppColors.textYankeesBlueDark
+                        : AppColors.textYankeesBlue,
                   )
                 ],
               ),

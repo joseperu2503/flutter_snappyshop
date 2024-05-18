@@ -66,7 +66,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
                               color: darkMode
-                                  ? AppColors.white
+                                  ? AppColors.textYankeesBlueDark
                                   : AppColors.textYankeesBlue,
                               height: 32 / 20,
                               leadingDistribution: TextLeadingDistribution.even,
@@ -117,7 +117,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
                       ),
                       decoration: BoxDecoration(
                         color: darkMode
-                            ? AppColors.backgroundColorDark2
+                            ? AppColors.primaryCulturedDark
                             : AppColors.primaryCultured,
                         borderRadius: BorderRadius.circular(14),
                       ),
@@ -258,7 +258,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
                         fontSize: 24,
                         fontWeight: FontWeight.w700,
                         color: darkMode
-                            ? AppColors.white
+                            ? AppColors.textYankeesBlueDark
                             : AppColors.textYankeesBlue,
                         height: 32 / 24,
                         leadingDistribution: TextLeadingDistribution.even,

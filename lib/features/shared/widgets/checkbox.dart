@@ -32,7 +32,7 @@ class CustomCheckbox extends ConsumerWidget {
               border: Border.all(
                 width: 1,
                 color: value
-                    ? AppColors.primaryPearlAqua
+                    ? AppColors.textYankeesBlueDark
                     : AppColors.textYankeesBlue,
               ),
               borderRadius: BorderRadius.circular(5),

@@ -25,7 +25,7 @@ class OrderItem extends ConsumerWidget {
       ),
       decoration: BoxDecoration(
         color: darkMode
-            ? AppColors.backgroundColorDark2
+            ? AppColors.primaryCulturedDark
             : AppColors.primaryCultured,
         borderRadius: BorderRadius.circular(14),
       ),

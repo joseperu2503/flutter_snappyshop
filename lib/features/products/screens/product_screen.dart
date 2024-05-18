@@ -179,11 +179,13 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                   scrolledUnderElevation: 0,
                   automaticallyImplyLeading: false,
                   pinned: true,
-                  backgroundColor:
-                      darkMode ? AppColors.backgroundColorDark : Colors.white,
+                  backgroundColor: darkMode
+                      ? AppColors.backgroundColorDark
+                      : AppColors.backgroundColor,
                   expandedHeight: size.height * 0.4,
-                  foregroundColor:
-                      darkMode ? AppColors.backgroundColorDark : Colors.white,
+                  foregroundColor: darkMode
+                      ? AppColors.backgroundColorDark
+                      : AppColors.backgroundColor,
                   flexibleSpace: FlexibleSpaceBar(
                     background: Container(
                       padding: EdgeInsets.only(
@@ -191,7 +193,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                       ),
                       width: double.maxFinite,
                       color: darkMode
-                          ? AppColors.backgroundColorDark2
+                          ? AppColors.primaryCulturedDark
                           : AppColors.primaryCultured,
                       child: Center(
                         child: ImageViewer(
@@ -219,7 +221,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
                             color: darkMode
-                                ? AppColors.white
+                                ? AppColors.textYankeesBlueDark
                                 : AppColors.textYankeesBlue,
                             height: 1.1,
                             leadingDistribution: TextLeadingDistribution.even,
@@ -271,7 +273,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                               ),
                               decoration: BoxDecoration(
                                 color: darkMode
-                                    ? AppColors.backgroundColorDark2
+                                    ? AppColors.primaryCulturedDark
                                     : AppColors.primaryCultured,
                                 borderRadius:
                                     BorderRadiusDirectional.circular(50),
@@ -309,7 +311,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
                             color: darkMode
-                                ? AppColors.white
+                                ? AppColors.textYankeesBlueDark
                                 : AppColors.textYankeesBlue,
                             height: 1.1,
                             leadingDistribution: TextLeadingDistribution.even,
@@ -339,7 +341,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
                             color: darkMode
-                                ? AppColors.white
+                                ? AppColors.textYankeesBlueDark
                                 : AppColors.textYankeesBlue,
                             height: 1.1,
                             leadingDistribution: TextLeadingDistribution.even,

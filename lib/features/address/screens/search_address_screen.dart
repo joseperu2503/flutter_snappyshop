@@ -54,8 +54,9 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            backgroundColor:
-                darkMode ? AppColors.backgroundColorDark : AppColors.white,
+            backgroundColor: darkMode
+                ? AppColors.backgroundColorDark
+                : AppColors.backgroundColor,
             automaticallyImplyLeading: false,
             scrolledUnderElevation: 0,
             titleSpacing: 0,

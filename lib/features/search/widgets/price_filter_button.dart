@@ -46,7 +46,7 @@ class PriceFilterButton extends ConsumerWidget {
           FocusManager.instance.primaryFocus?.unfocus();
           showModalBottomSheet(
             backgroundColor:
-                darkMode ? AppColors.backgroundColorDark2 : AppColors.white,
+                darkMode ? AppColors.primaryCulturedDark : AppColors.white,
             elevation: 0,
             showDragHandle: false,
             isScrollControlled: true,
@@ -138,7 +138,7 @@ class PriceBottomSheetState extends ConsumerState<_PriceBottomSheet> {
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
                           color: darkMode
-                              ? AppColors.white
+                              ? AppColors.textYankeesBlueDark
                               : AppColors.textYankeesBlue,
                           height: 1,
                           leadingDistribution: TextLeadingDistribution.even,
@@ -151,7 +151,7 @@ class PriceBottomSheetState extends ConsumerState<_PriceBottomSheet> {
                       },
                       icon: const Icon(Icons.close),
                       color: darkMode
-                          ? AppColors.white
+                          ? AppColors.textYankeesBlueDark
                           : AppColors.textYankeesBlue,
                     )
                   ],
@@ -225,7 +225,7 @@ class PriceBottomSheetState extends ConsumerState<_PriceBottomSheet> {
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                   color: darkMode
-                                      ? AppColors.white
+                                      ? AppColors.textYankeesBlueDark
                                       : AppColors.textYankeesBlue,
                                   height: 22 / 16,
                                   leadingDistribution:

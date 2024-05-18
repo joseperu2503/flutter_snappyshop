@@ -54,7 +54,7 @@ class RegisterScreenState extends ConsumerState<RegisterScreen> {
                         fontSize: 24,
                         fontWeight: FontWeight.w700,
                         color: darkMode
-                            ? AppColors.white
+                            ? AppColors.textYankeesBlueDark
                             : AppColors.textYankeesBlue,
                         height: 32 / 24,
                         leadingDistribution: TextLeadingDistribution.even,

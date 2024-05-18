@@ -21,7 +21,7 @@ class CustomBackButton extends ConsumerWidget {
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: darkMode
-            ? AppColors.backgroundColorDark2
+            ? AppColors.primaryCulturedDark
             : AppColors.primaryCultured,
       ),
       child: TextButton(
@@ -35,7 +35,9 @@ class CustomBackButton extends ConsumerWidget {
           width: 24,
           height: 24,
           colorFilter: ColorFilter.mode(
-            darkMode ? AppColors.white : AppColors.textYankeesBlue,
+            darkMode
+                ? AppColors.textYankeesBlueDark
+                : AppColors.textYankeesBlue,
             BlendMode.srcIn,
           ),
         ),
