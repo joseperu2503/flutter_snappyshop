@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/text_field_container.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class InputSearch extends ConsumerStatefulWidget {
   const InputSearch({
@@ -40,11 +41,16 @@ class InputSearchState extends ConsumerState<InputSearch> {
         padding: const EdgeInsets.only(left: 15),
         child: Row(
           children: [
-            Icon(
-              Icons.search,
-              color: darkMode
-                  ? AppColors.textCultured.withOpacity(0.5)
-                  : AppColors.textArsenic,
+            SvgPicture.asset(
+              'assets/icons/search.svg',
+              colorFilter: ColorFilter.mode(
+                darkMode
+                    ? AppColors.textArsenicDark.withOpacity(0.5)
+                    : AppColors.textArsenic.withOpacity(0.5),
+                BlendMode.srcIn,
+              ),
+              width: 28,
+              height: 28,
             ),
             const SizedBox(
               width: 10,
@@ -65,7 +71,7 @@ class InputSearchState extends ConsumerState<InputSearch> {
                   hintText: widget.hintText,
                   hintStyle: TextStyle(
                     color: darkMode
-                        ? AppColors.textCultured.withOpacity(0.5)
+                        ? AppColors.textArsenicDark.withOpacity(0.5)
                         : AppColors.textArsenic.withOpacity(0.5),
                     fontSize: 14,
                     fontWeight: FontWeight.w400,

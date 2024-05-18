@@ -28,6 +28,8 @@ class AppColors {
 
   static const Color textYankeesBlueDark = Color(0xFFFFFFFF);
   static const Color primaryCulturedDark = Color(0xFF2b3036);
+  static const Color textCulturedDark = primaryCulturedDark;
+
   static const Color textArsenicDark = Color.fromARGB(255, 181, 184, 189);
 
   static const Color textCoolBlackDark = Color.fromARGB(255, 231, 231, 231);

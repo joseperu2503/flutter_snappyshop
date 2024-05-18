@@ -138,20 +138,24 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
                               children: [
                                 Text(
                                   result.properties.name ?? '',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
-                                    color: AppColors.textCoolBlack,
+                                    color: darkMode
+                                        ? AppColors.textCoolBlackDark
+                                        : AppColors.textCoolBlack,
                                     leadingDistribution:
                                         TextLeadingDistribution.even,
                                   ),
                                 ),
                                 Text(
                                   result.properties.placeFormatted ?? '',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400,
-                                    color: AppColors.textArsenic,
+                                    color: darkMode
+                                        ? AppColors.textArsenicDark
+                                        : AppColors.textArsenic,
                                     height: 1,
                                     leadingDistribution:
                                         TextLeadingDistribution.even,
@@ -171,7 +175,9 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
                     margin: const EdgeInsets.symmetric(
                       horizontal: 24,
                     ),
-                    color: AppColors.textArsenic.withOpacity(0.1),
+                    color: darkMode
+                        ? AppColors.textArsenicDark.withOpacity(0.1)
+                        : AppColors.textArsenic.withOpacity(0.1),
                   );
                 },
                 itemCount: addressState.addressResults.length,

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class ImageViewer extends StatelessWidget {
+class ImageViewer extends ConsumerWidget {
   const ImageViewer({
     super.key,
     required this.images,
@@ -12,12 +15,20 @@ class ImageViewer extends StatelessWidget {
   final double radius;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final darkMode = ref.watch(darkModeProvider);
+
     if (images.isEmpty) {
-      return Icon(
-        Icons.image_not_supported,
-        color: AppColors.textYankeesBlue.withOpacity(0.5),
-        size: 40,
+      return SvgPicture.asset(
+        'assets/icons/no_image.svg',
+        colorFilter: ColorFilter.mode(
+          darkMode
+              ? AppColors.textArsenicDark.withOpacity(0.5)
+              : AppColors.textArsenic.withOpacity(0.5),
+          BlendMode.srcIn,
+        ),
+        width: 40,
+        height: 40,
       );
     }
 

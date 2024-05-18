@@ -51,7 +51,7 @@ class OrderScreenState extends ConsumerState<AddressMapScreen> {
                                 height: sizeMarker,
                                 width: sizeMarker,
                                 colorFilter: const ColorFilter.mode(
-                                  AppColors.textArsenic,
+                                  AppColors.primaryPearlAqua,
                                   BlendMode.srcIn,
                                 ),
                               ),
@@ -197,20 +197,25 @@ class BottomModal extends ConsumerWidget {
                       } catch (_) {}
                     },
                     style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
                       backgroundColor: darkMode
                           ? AppColors.primaryCulturedDark
                           : AppColors.white,
                     ),
                     child: Row(
                       children: [
-                        Icon(
-                          Icons.location_searching,
-                          color: darkMode
-                              ? AppColors.textArsenicDark
-                              : AppColors.textArsenic,
+                        SvgPicture.asset(
+                          'assets/icons/find_me.svg',
+                          height: 18,
+                          width: 18,
+                          colorFilter: ColorFilter.mode(
+                            darkMode
+                                ? AppColors.textArsenicDark
+                                : AppColors.textArsenic,
+                            BlendMode.srcIn,
+                          ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 8,
                         ),
                         Text(

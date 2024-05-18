@@ -151,16 +151,21 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                                       ),
                                       child: Row(
                                         children: [
-                                          Icon(
-                                            Icons.search,
-                                            color: darkMode
-                                                ? AppColors.textCultured
-                                                    .withOpacity(0.5)
-                                                : AppColors.textArsenic
-                                                    .withOpacity(0.5),
+                                          SvgPicture.asset(
+                                            'assets/icons/search.svg',
+                                            colorFilter: ColorFilter.mode(
+                                              darkMode
+                                                  ? AppColors.textArsenicDark
+                                                      .withOpacity(0.5)
+                                                  : AppColors.textArsenic
+                                                      .withOpacity(0.5),
+                                              BlendMode.srcIn,
+                                            ),
+                                            width: 28,
+                                            height: 28,
                                           ),
                                           const SizedBox(
-                                            width: 10,
+                                            width: 8,
                                           ),
                                           Text(
                                             'Search...',
@@ -168,7 +173,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                                               fontSize: 14,
                                               fontWeight: FontWeight.w400,
                                               color: darkMode
-                                                  ? AppColors.textCultured
+                                                  ? AppColors.textArsenicDark
                                                       .withOpacity(0.5)
                                                   : AppColors.textArsenic
                                                       .withOpacity(0.5),

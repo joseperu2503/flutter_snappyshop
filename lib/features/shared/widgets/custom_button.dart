@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/config/constants/styles.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 
 enum ButtonType { primary, delete, text, outlined }
 
@@ -10,9 +12,7 @@ List<ButtonTypeStyle> buttonTypes = [
   ButtonTypeStyle(
     buttonType: ButtonType.primary,
     color: AppColors.primaryPearlAqua,
-    colorDisabled: AppColors.textArsenic.withOpacity(0.2),
-    textColor: AppColors.textCultured,
-    textColorDisabled: AppColors.textCultured,
+    textColorDisabled: AppColors.textArsenicDark,
     foregroundColor: Colors.white60,
     borderColor: Colors.transparent,
     gradient: const LinearGradient(
@@ -21,6 +21,10 @@ List<ButtonTypeStyle> buttonTypes = [
       begin: Alignment(-0.9, -0.5),
       end: Alignment(0.3, 1.0),
     ),
+    colorDisabled: AppColors.textArsenicDark.withOpacity(0.5),
+    textColor: AppColors.textCultured,
+    colorDisabledDark: AppColors.textArsenic.withOpacity(0.5),
+    textColorDisabledDark: AppColors.textArsenic,
   ),
   ButtonTypeStyle(
     buttonType: ButtonType.outlined,
@@ -51,7 +55,7 @@ List<ButtonTypeStyle> buttonTypes = [
   ),
 ];
 
-class CustomButton extends StatelessWidget {
+class CustomButton extends ConsumerWidget {
   const CustomButton({
     super.key,
     this.onPressed,
@@ -72,19 +76,27 @@ class CustomButton extends StatelessWidget {
   final ButtonType type;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final buttonStyle = buttonTypes.firstWhere((b) => b.buttonType == type);
+    final darkMode = ref.watch(darkModeProvider);
 
     return Container(
       height: height,
       width: width,
       decoration: BoxDecoration(
-        color: disabled ? buttonStyle.colorDisabled : buttonStyle.color,
+        color: disabled
+            ? darkMode
+                ? buttonStyle.colorDisabledDark
+                : buttonStyle.colorDisabled
+            : darkMode
+                ? buttonStyle.colorDark
+                : buttonStyle.color,
         borderRadius: BorderRadius.circular(radiusButton),
         border: Border.all(
           color: buttonStyle.borderColor,
         ),
-        gradient: buttonStyle.gradient,
+        gradient:
+            disabled ? buttonStyle.gradientDisabled : buttonStyle.gradient,
       ),
       child: TextButton(
         style: TextButton.styleFrom(
@@ -115,8 +127,12 @@ class CustomButton extends StatelessWidget {
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                   color: disabled
-                      ? buttonStyle.textColorDisabled
-                      : buttonStyle.textColor,
+                      ? darkMode
+                          ? buttonStyle.textColorDisabledDark
+                          : buttonStyle.textColorDisabled
+                      : darkMode
+                          ? buttonStyle.textColorDark
+                          : buttonStyle.textColor,
                   height: 22 / 16,
                   leadingDistribution: TextLeadingDistribution.even,
                 ),
@@ -131,12 +147,17 @@ class CustomButton extends StatelessWidget {
 class ButtonTypeStyle {
   final ButtonType buttonType;
   final Color color;
+  final Color colorDark;
   final Color colorDisabled;
+  final Color colorDisabledDark;
   final Color textColor;
+  final Color textColorDark;
   final Color textColorDisabled;
+  final Color textColorDisabledDark;
   final Color foregroundColor;
   final Color borderColor;
   final Gradient? gradient;
+  final Gradient? gradientDisabled;
 
   ButtonTypeStyle({
     required this.buttonType,
@@ -147,5 +168,13 @@ class ButtonTypeStyle {
     required this.foregroundColor,
     required this.borderColor,
     this.gradient,
-  });
+    this.gradientDisabled,
+    Color? colorDark,
+    Color? colorDisabledDark,
+    Color? textColorDark,
+    Color? textColorDisabledDark,
+  })  : colorDark = colorDark ?? color,
+        colorDisabledDark = colorDisabledDark ?? colorDisabled,
+        textColorDark = textColorDark ?? textColor,
+        textColorDisabledDark = textColorDisabledDark ?? textColorDisabled;
 }
