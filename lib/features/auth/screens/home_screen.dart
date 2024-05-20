@@ -52,10 +52,16 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Spacer(),
-                    const Icon(
-                      Icons.shopping_bag,
-                      color: AppColors.primaryPearlAqua,
-                      size: 88,
+                    SvgPicture.asset(
+                      'assets/icons/shopping_bag.svg',
+                      colorFilter: ColorFilter.mode(
+                        darkMode
+                            ? AppColors.primaryPearlAqua
+                            : AppColors.primaryPearlAqua,
+                        BlendMode.srcIn,
+                      ),
+                      width: 88,
+                      height: 88,
                     ),
                     const SizedBox(
                       height: 16,
