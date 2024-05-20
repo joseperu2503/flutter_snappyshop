@@ -6,7 +6,6 @@ import 'package:flutter_snappyshop/features/search/widgets/input_price.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_label.dart';
-import 'package:flutter_snappyshop/features/shared/widgets/custom_text_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -45,8 +44,9 @@ class PriceFilterButton extends ConsumerWidget {
         onPressed: () {
           FocusManager.instance.primaryFocus?.unfocus();
           showModalBottomSheet(
-            backgroundColor:
-                darkMode ? AppColors.primaryCulturedDark : AppColors.white,
+            backgroundColor: darkMode
+                ? AppColors.backgroundColorDark
+                : AppColors.backgroundColor,
             elevation: 0,
             showDragHandle: false,
             isScrollControlled: true,
@@ -216,29 +216,16 @@ class PriceBottomSheetState extends ConsumerState<_PriceBottomSheet> {
                       const Spacer(),
                       Row(
                         children: [
-                          SizedBox(
+                          CustomButton(
                             width: 100,
-                            child: CustomTextButton(
-                              child: Text(
-                                'Reset',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: darkMode
-                                      ? AppColors.textYankeesBlueDark
-                                      : AppColors.textYankeesBlue,
-                                  height: 22 / 16,
-                                  leadingDistribution:
-                                      TextLeadingDistribution.even,
-                                ),
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  minPrice = '';
-                                  maxPrice = '';
-                                });
-                              },
-                            ),
+                            text: 'Reset',
+                            onPressed: () {
+                              setState(() {
+                                minPrice = '';
+                                maxPrice = '';
+                              });
+                            },
+                            type: ButtonType.text,
                           ),
                           const SizedBox(
                             width: 10,

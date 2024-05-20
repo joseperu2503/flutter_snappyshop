@@ -4,6 +4,7 @@ import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/address/models/addresses_response.dart';
 import 'package:flutter_snappyshop/features/address/providers/address_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
+import 'package:flutter_svg/svg.dart';
 
 class AddressItem extends ConsumerWidget {
   const AddressItem({
@@ -57,12 +58,16 @@ class AddressItem extends ConsumerWidget {
               ),
             Row(
               children: [
-                Icon(
-                  Icons.location_pin,
-                  size: 14,
-                  color: darkMode
-                      ? AppColors.textCoolBlackDark
-                      : AppColors.textCoolBlack,
+                SvgPicture.asset(
+                  'assets/icons/map_pin.svg',
+                  colorFilter: ColorFilter.mode(
+                    darkMode
+                        ? AppColors.textCoolBlackDark
+                        : AppColors.textCoolBlack,
+                    BlendMode.srcIn,
+                  ),
+                  width: 16,
+                  height: 16,
                 ),
                 SizedBox(
                   width: 4,
@@ -112,11 +117,16 @@ class AddressItem extends ConsumerWidget {
                         : AppColors.backgroundColor,
                   ),
                   child: Center(
-                    child: Icon(
-                      Icons.phone_outlined,
-                      size: 14,
-                      color:
-                          darkMode ? AppColors.white : AppColors.textCoolBlack,
+                    child: SvgPicture.asset(
+                      'assets/icons/phone.svg',
+                      colorFilter: ColorFilter.mode(
+                        darkMode
+                            ? AppColors.textCoolBlackDark
+                            : AppColors.textCoolBlack,
+                        BlendMode.srcIn,
+                      ),
+                      width: 16,
+                      height: 16,
                     ),
                   ),
                 ),
@@ -154,11 +164,16 @@ class AddressItem extends ConsumerWidget {
                         : AppColors.backgroundColor,
                   ),
                   child: Center(
-                    child: Icon(
-                      Icons.person,
-                      size: 14,
-                      color:
-                          darkMode ? AppColors.white : AppColors.textCoolBlack,
+                    child: SvgPicture.asset(
+                      'assets/icons/profile.svg',
+                      colorFilter: ColorFilter.mode(
+                        darkMode
+                            ? AppColors.textCoolBlackDark
+                            : AppColors.textCoolBlack,
+                        BlendMode.srcIn,
+                      ),
+                      width: 16,
+                      height: 16,
                     ),
                   ),
                 ),

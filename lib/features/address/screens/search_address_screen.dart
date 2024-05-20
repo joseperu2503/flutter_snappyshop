@@ -10,6 +10,7 @@ import 'package:flutter_snappyshop/features/shared/providers/map_provider.dart';
 import 'package:flutter_snappyshop/features/shared/services/location_service.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -184,22 +185,28 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
               ),
             ),
           if (noResults)
-            const SliverToBoxAdapter(
+            SliverToBoxAdapter(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
-                  Icon(
-                    Icons.search,
-                    size: 80,
-                    color: AppColors.textArsenic,
+                  SvgPicture.asset(
+                    'assets/icons/search.svg',
+                    colorFilter: ColorFilter.mode(
+                      darkMode
+                          ? AppColors.textArsenicDark
+                          : AppColors.textArsenic,
+                      BlendMode.srcIn,
+                    ),
+                    width: 80,
+                    height: 80,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
-                  Text(
+                  const Text(
                     'No Results',
                     style: TextStyle(
                       fontSize: 18,
@@ -209,7 +216,7 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
                       leadingDistribution: TextLeadingDistribution.even,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 40,
                   ),
                 ],

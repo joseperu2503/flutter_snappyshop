@@ -402,9 +402,14 @@ class CustomDrawer extends ConsumerWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: CustomButton(
                       text: 'Logout',
-                      iconLeft: const Icon(
-                        Icons.logout,
-                        color: AppColors.primaryCultured,
+                      iconLeft: SvgPicture.asset(
+                        'assets/icons/logout.svg',
+                        colorFilter: const ColorFilter.mode(
+                          AppColors.textCultured,
+                          BlendMode.srcIn,
+                        ),
+                        width: 22,
+                        height: 22,
                       ),
                       onPressed: () {
                         ref.read(authProvider.notifier).logout();

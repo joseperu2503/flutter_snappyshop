@@ -3,6 +3,7 @@ import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/orders/providers/order_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 class OrderStatusFilterButton extends ConsumerWidget {
@@ -68,10 +69,17 @@ class OrderStatusFilterButton extends ConsumerWidget {
                 leadingDistribution: TextLeadingDistribution.even,
               ),
             ),
-            Icon(
-              Icons.arrow_drop_down_rounded,
-              color: color,
-              size: 30,
+            const SizedBox(
+              width: 4,
+            ),
+            SvgPicture.asset(
+              'assets/icons/arrow_down.svg',
+              colorFilter: ColorFilter.mode(
+                color,
+                BlendMode.srcIn,
+              ),
+              width: 22,
+              height: 22,
             ),
           ],
         ),

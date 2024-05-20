@@ -11,6 +11,7 @@ import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_input.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_label.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:mask_input_formatter/mask_input_formatter.dart';
 
 class CardScreen extends ConsumerStatefulWidget {
@@ -52,6 +53,29 @@ class CardScreenState extends ConsumerState<CardScreen> {
       loading: false,
       child: Layout1(
         title: 'Card',
+        action: cardState.formType == FormType.edit
+            ? Container(
+                width: 46,
+                height: 46,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    ref.read(cardProvider.notifier).deleteCard();
+                  },
+                  child: SvgPicture.asset(
+                    'assets/icons/delete.svg',
+                    colorFilter: const ColorFilter.mode(
+                      AppColors.secondaryPastelRed,
+                      BlendMode.srcIn,
+                    ),
+                    width: 24,
+                    height: 24,
+                  ),
+                ),
+              )
+            : null,
         body: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
@@ -218,25 +242,14 @@ class CardScreenState extends ConsumerState<CardScreen> {
                     const SizedBox(
                       height: 80,
                     ),
-                    cardState.formType == FormType.edit
-                        ? CustomButton(
-                            onPressed: () {
-                              ref.read(cardProvider.notifier).deleteCard();
-                            },
-                            text: 'Delete Card',
-                            type: ButtonType.delete,
-                            iconLeft: const Icon(
-                              Icons.delete,
-                              color: AppColors.error,
-                            ),
-                          )
-                        : CustomButton(
-                            onPressed: () {
-                              ref.read(cardProvider.notifier).saveCard();
-                            },
-                            disabled: !cardState.isFormValue,
-                            text: 'Save Card',
-                          ),
+                    if (cardState.formType == FormType.create)
+                      CustomButton(
+                        onPressed: () {
+                          ref.read(cardProvider.notifier).saveCard();
+                        },
+                        disabled: !cardState.isFormValue,
+                        text: 'Save Card',
+                      ),
                   ],
                 ),
               ),

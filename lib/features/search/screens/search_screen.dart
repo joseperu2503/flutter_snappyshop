@@ -10,6 +10,7 @@ import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.
 import 'package:flutter_snappyshop/features/shared/widgets/back_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
@@ -198,20 +199,26 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                   ),
                 ),
               if (noResults)
-                const SliverFillRemaining(
+                SliverFillRemaining(
                   hasScrollBody: false,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 80,
                       ),
-                      Icon(
-                        Icons.search,
-                        size: 80,
-                        color: AppColors.textArsenic,
+                      SvgPicture.asset(
+                        'assets/icons/search.svg',
+                        colorFilter: ColorFilter.mode(
+                          darkMode
+                              ? AppColors.textArsenicDark
+                              : AppColors.textArsenic,
+                          BlendMode.srcIn,
+                        ),
+                        width: 80,
+                        height: 80,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 8,
                       ),
                       Text(
@@ -219,7 +226,9 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.textCoolBlack,
+                          color: darkMode
+                              ? AppColors.textCoolBlackDark
+                              : AppColors.textCoolBlack,
                           height: 1.1,
                           leadingDistribution: TextLeadingDistribution.even,
                         ),

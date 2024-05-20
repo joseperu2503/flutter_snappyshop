@@ -32,11 +32,10 @@ List<ButtonTypeStyle> buttonTypes = [
   ),
   ButtonTypeStyle(
     buttonType: ButtonType.text,
-    color: AppColors.textCultured.withOpacity(0.6),
+    color: Colors.transparent,
     colorDisabled: AppColors.textArsenic.withOpacity(0.2),
     textColor: AppColors.secondaryPastelRed,
     textColorDisabled: AppColors.primaryPearlAqua,
-    foregroundColor: AppColors.textArsenic,
     borderColor: Colors.transparent,
   ),
   ButtonTypeStyle(
@@ -149,7 +148,7 @@ class ButtonTypeStyle {
   final Color textColorDark;
   final Color textColorDisabled;
   final Color textColorDisabledDark;
-  final Color foregroundColor;
+  final Color? foregroundColor;
   final Color borderColor;
   final Gradient? gradient;
   final Gradient? gradientDisabled;
@@ -160,7 +159,7 @@ class ButtonTypeStyle {
     required this.colorDisabled,
     required this.textColor,
     required this.textColorDisabled,
-    required this.foregroundColor,
+    this.foregroundColor,
     required this.borderColor,
     this.gradient,
     this.gradientDisabled,

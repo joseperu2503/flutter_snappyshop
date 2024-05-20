@@ -107,128 +107,140 @@ class CartScreenState extends ConsumerState<CartScreen> {
                         ? product.price
                         : (product.price * (1 - product.discount! / 100));
 
-                    return Container(
-                      height: 136,
-                      padding: const EdgeInsets.only(
-                        left: 16,
-                        top: 18,
-                        bottom: 18,
-                        right: 23,
-                      ),
-                      decoration: BoxDecoration(
-                        color: darkMode
-                            ? AppColors.primaryCulturedDark
-                            : AppColors.primaryCultured,
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: 100,
-                            height: 100,
-                            child: ImageViewer(
-                              images: product.images,
-                              radius: 13,
-                            ),
+                    return Stack(
+                      children: [
+                        Container(
+                          height: 110,
+                          padding: const EdgeInsets.only(
+                            left: 12,
+                            top: 16,
+                            bottom: 12,
+                            right: 16,
                           ),
-                          const SizedBox(
-                            width: 14,
+                          decoration: BoxDecoration(
+                            color: darkMode
+                                ? AppColors.primaryCulturedDark
+                                : AppColors.primaryCultured,
+                            borderRadius: BorderRadius.circular(14),
                           ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  product.name,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: darkMode
-                                        ? AppColors.textYankeesBlueDark
-                                        : AppColors.textYankeesBlue,
-                                    height: 22 / 14,
-                                    leadingDistribution:
-                                        TextLeadingDistribution.even,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: 80,
+                                height: 80,
+                                child: ImageViewer(
+                                  images: product.images,
+                                  radius: 13,
                                 ),
-                                Row(
+                              ),
+                              const SizedBox(
+                                width: 14,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
                                   children: [
-                                    Text(
-                                      '\$${price.toStringAsFixed(2)}',
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                        color: AppColors.secondaryPastelRed,
-                                        height: 22 / 16,
-                                        leadingDistribution:
-                                            TextLeadingDistribution.even,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    if (product.discount != null)
-                                      Text(
-                                        '\$${product.price.toStringAsFixed(2)}',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                          color: darkMode
-                                              ? AppColors.textArsenicDark
-                                              : AppColors.textArsenic,
-                                          height: 22 / 16,
-                                          decoration:
-                                              TextDecoration.lineThrough,
-                                          leadingDistribution:
-                                              TextLeadingDistribution.even,
-                                          decorationColor: darkMode
-                                              ? AppColors.textArsenicDark
-                                              : AppColors.textArsenic,
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            product.name,
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500,
+                                              color: darkMode
+                                                  ? AppColors
+                                                      .textYankeesBlueDark
+                                                  : AppColors.textYankeesBlue,
+                                              height: 16 / 12,
+                                              leadingDistribution:
+                                                  TextLeadingDistribution.even,
+                                            ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
                                         ),
-                                      ),
-                                  ],
-                                ),
-                                const Spacer(),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    ButtonStepper(
-                                      value: productCart.quantity,
-                                      onAdd: () {
-                                        ref
-                                            .read(cartProvider.notifier)
-                                            .addUnitProduct(index);
-                                      },
-                                      onRemove: () {
-                                        ref
-                                            .read(cartProvider.notifier)
-                                            .removeUnitProduct(index);
-                                      },
+                                        const SizedBox(
+                                          width: 30,
+                                        ),
+                                      ],
                                     ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        ref
-                                            .read(cartProvider.notifier)
-                                            .deleteProduct(index);
-                                      },
-                                      child: Icon(
-                                        Icons.delete,
-                                        color: darkMode
-                                            ? AppColors.textArsenicDark
-                                            : AppColors.textArsenic,
-                                      ),
+                                    const Spacer(),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        ButtonStepper(
+                                          value: productCart.quantity,
+                                          onAdd: () {
+                                            ref
+                                                .read(cartProvider.notifier)
+                                                .addUnitProduct(index);
+                                          },
+                                          onRemove: () {
+                                            ref
+                                                .read(cartProvider.notifier)
+                                                .removeUnitProduct(index);
+                                          },
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              '\$${price.toStringAsFixed(2)}',
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600,
+                                                color: AppColors
+                                                    .secondaryPastelRed,
+                                                height: 22 / 16,
+                                                leadingDistribution:
+                                                    TextLeadingDistribution
+                                                        .even,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     )
                                   ],
-                                )
-                              ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Positioned(
+                          right: 8,
+                          top: 8,
+                          child: Container(
+                            width: 30,
+                            height: 30,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
                             ),
-                          )
-                        ],
-                      ),
+                            child: TextButton(
+                              onPressed: () {
+                                context.push('/cart');
+                              },
+                              style: TextButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                              ),
+                              child: SvgPicture.asset(
+                                'assets/icons/delete.svg',
+                                colorFilter: ColorFilter.mode(
+                                  darkMode
+                                      ? AppColors.textArsenicDark
+                                      : AppColors.textArsenic,
+                                  BlendMode.srcIn,
+                                ),
+                                width: 20,
+                                height: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     );
                   },
                   separatorBuilder: (context, index) {

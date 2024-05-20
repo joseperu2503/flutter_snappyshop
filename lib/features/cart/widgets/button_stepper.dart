@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 
 class ButtonStepper extends ConsumerWidget {
@@ -19,35 +20,38 @@ class ButtonStepper extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final darkMode = ref.watch(darkModeProvider);
 
-    return Container(
-      width: 110,
-      height: 45,
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(
-        color: darkMode
-            ? AppColors.backgroundColorDark
-            : AppColors.backgroundColor,
-        borderRadius: BorderRadius.circular(10),
-      ),
+    return SizedBox(
+      width: 96,
+      height: 36,
       child: Row(
         children: [
-          Expanded(
-            child: GestureDetector(
-              onTap: () {
+          Container(
+            width: 30,
+            height: 30,
+            decoration: const BoxDecoration(
+              gradient: primaryGradient,
+              shape: BoxShape.circle,
+            ),
+            child: TextButton(
+              onPressed: () {
                 onRemove();
               },
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.zero,
+              ),
               child: const Text(
                 '-',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w400,
-                  color: AppColors.secondaryMangoTango,
+                  color: AppColors.white,
                   height: 1,
                   leadingDistribution: TextLeadingDistribution.even,
                 ),
               ),
             ),
           ),
+          const Spacer(),
           Text(
             value.toString(),
             style: TextStyle(
@@ -60,21 +64,30 @@ class ButtonStepper extends ConsumerWidget {
               leadingDistribution: TextLeadingDistribution.even,
             ),
           ),
-          Expanded(
-            child: GestureDetector(
-              onTap: () {
+          const Spacer(),
+          Container(
+            width: 30,
+            height: 30,
+            decoration: const BoxDecoration(
+              gradient: primaryGradient,
+              shape: BoxShape.circle,
+            ),
+            child: TextButton(
+              onPressed: () {
                 onAdd();
               },
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.zero,
+              ),
               child: const Text(
                 '+',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w400,
-                  color: AppColors.secondaryMangoTango,
+                  color: AppColors.white,
                   height: 1,
                   leadingDistribution: TextLeadingDistribution.even,
                 ),
-                textAlign: TextAlign.end,
               ),
             ),
           ),

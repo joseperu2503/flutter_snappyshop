@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/timer_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class VerifyCodeScreen extends ConsumerStatefulWidget {
   const VerifyCodeScreen({super.key});
@@ -93,12 +94,16 @@ class VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.schedule_rounded,
-                          size: 16,
-                          color: darkMode
-                              ? AppColors.textArsenicDark
-                              : AppColors.textArsenic,
+                        SvgPicture.asset(
+                          'assets/icons/clock.svg',
+                          colorFilter: ColorFilter.mode(
+                            darkMode
+                                ? AppColors.textArsenicDark
+                                : AppColors.textArsenic,
+                            BlendMode.srcIn,
+                          ),
+                          width: 16,
+                          height: 16,
                         ),
                         const SizedBox(
                           width: 6,

@@ -91,7 +91,7 @@ class Address {
         "address": address,
         "detail": detail,
         "phone": phone,
-        "name": recipientName,
+        "recipient_name": recipientName,
         "references": references,
         "latitude": latitude,
         "longitude": longitude,

@@ -4,6 +4,7 @@ import 'package:flutter_snappyshop/features/search/models/filter_response.dart';
 import 'package:flutter_snappyshop/features/search/providers/search_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 class CategoryFilterButton extends ConsumerWidget {
@@ -61,10 +62,17 @@ class CategoryFilterButton extends ConsumerWidget {
                 leadingDistribution: TextLeadingDistribution.even,
               ),
             ),
-            Icon(
-              Icons.arrow_drop_down_rounded,
-              color: color,
-              size: 30,
+            const SizedBox(
+              width: 4,
+            ),
+            SvgPicture.asset(
+              'assets/icons/arrow_down.svg',
+              colorFilter: ColorFilter.mode(
+                color,
+                BlendMode.srcIn,
+              ),
+              width: 22,
+              height: 22,
             ),
           ],
         ),

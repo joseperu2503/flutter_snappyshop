@@ -13,6 +13,7 @@ import 'package:flutter_snappyshop/features/shared/widgets/custom_input.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_label.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_textarea.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
+import 'package:flutter_svg/svg.dart';
 
 class AddressScreen extends ConsumerStatefulWidget {
   const AddressScreen({super.key});
@@ -42,17 +43,19 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
             ? Container(
                 width: 46,
                 height: 46,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  color: darkMode
-                      ? AppColors.primaryCulturedDark
-                      : AppColors.primaryCultured,
                 ),
                 child: TextButton(
                   onPressed: () {},
-                  child: const Icon(
-                    Icons.delete,
-                    color: AppColors.secondaryPastelRed,
+                  child: SvgPicture.asset(
+                    'assets/icons/delete.svg',
+                    colorFilter: const ColorFilter.mode(
+                      AppColors.secondaryPastelRed,
+                      BlendMode.srcIn,
+                    ),
+                    width: 24,
+                    height: 24,
                   ),
                 ),
               )

@@ -4,6 +4,7 @@ import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/shared/inputs/password.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/text_field_container.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class InputPassword extends ConsumerStatefulWidget {
   const InputPassword({
@@ -103,11 +104,18 @@ class InputPasswordState extends ConsumerState<InputPassword> {
                 showPassword = !showPassword;
               });
             },
-            icon: Icon(
-              showPassword ? Icons.visibility : Icons.visibility_off,
-              color: darkMode
-                  ? AppColors.textArsenicDark
-                  : AppColors.textArsenic.withOpacity(0.9),
+            icon: SvgPicture.asset(
+              showPassword
+                  ? 'assets/icons/eye.svg'
+                  : 'assets/icons/eye_closed.svg',
+              colorFilter: ColorFilter.mode(
+                darkMode
+                    ? AppColors.textArsenicDark.withOpacity(0.5)
+                    : AppColors.textArsenic.withOpacity(0.5),
+                BlendMode.srcIn,
+              ),
+              width: 22,
+              height: 22,
             ),
           )
         ],

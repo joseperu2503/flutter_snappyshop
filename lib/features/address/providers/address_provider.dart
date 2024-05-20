@@ -348,7 +348,7 @@ class AddressState {
 class AddressForm {
   static String address = 'address';
   static String detail = 'detail';
-  static String recipientName = 'recipientName';
+  static String recipientName = 'recipient_name';
   static String phone = 'phone';
   static String references = 'references';
 
