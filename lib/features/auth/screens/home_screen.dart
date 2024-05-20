@@ -127,14 +127,17 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                               TextSpan(
                                 text: 'I already have an account? ',
                                 style: TextStyle(
-                                    color: darkMode
-                                        ? AppColors.textArsenicDark
-                                        : AppColors.textArsenic),
+                                  color: darkMode
+                                      ? AppColors.textArsenicDark
+                                      : AppColors.textArsenic,
+                                ),
                               ),
-                              const TextSpan(
+                              TextSpan(
                                 text: 'Log in',
                                 style: TextStyle(
-                                    color: AppColors.primaryPearlAqua),
+                                    color: darkMode
+                                        ? AppColors.white
+                                        : AppColors.primaryPearlAqua),
                               ),
                             ],
                           ),

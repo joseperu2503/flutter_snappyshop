@@ -163,13 +163,14 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(radiusButton),
                       ),
-                      child: ElevatedButton(
+                      child: TextButton(
                         onPressed: () {
                           ref.read(loginProvider.notifier).loginGoogle();
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primaryCultured,
-                          surfaceTintColor: Colors.white,
+                        style: TextButton.styleFrom(
+                          backgroundColor: darkMode
+                              ? AppColors.primaryCulturedDark
+                              : AppColors.primaryCultured,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(radiusButton),
                           ),
@@ -185,12 +186,14 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                             const SizedBox(
                               width: 8,
                             ),
-                            const Text(
+                            Text(
                               'Log In with Google',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
-                                color: AppColors.textCoolBlack,
+                                color: darkMode
+                                    ? AppColors.textCoolBlackDark
+                                    : AppColors.textCoolBlack,
                                 height: 22 / 16,
                                 leadingDistribution:
                                     TextLeadingDistribution.even,

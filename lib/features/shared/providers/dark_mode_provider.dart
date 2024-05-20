@@ -9,7 +9,7 @@ class DarkModeNotifier extends StateNotifier<bool> {
   DarkModeNotifier(this.ref) : super(true);
   final StateNotifierProviderRef ref;
 
-  getThemeState() async {
+  getDarkMode() async {
     final darkMode = await DarkModeService.getDarkMode();
     changeDarkMode(darkMode: darkMode);
   }

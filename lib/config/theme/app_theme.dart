@@ -8,6 +8,10 @@ class AppTheme {
             ? AppColors.backgroundColorDark
             : AppColors.backgroundColor,
         useMaterial3: true,
+        colorScheme: ColorScheme.fromSwatch(
+          accentColor: Colors.black12,
+          backgroundColor: Colors.white,
+        ),
         bottomSheetTheme: const BottomSheetThemeData(
           modalBackgroundColor: Colors.white,
           showDragHandle: true,

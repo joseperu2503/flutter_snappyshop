@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/features/auth/providers/auth_provider.dart';
+import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_snappyshop/features/shared/services/snackbar_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,7 +18,8 @@ class ServicesState extends ConsumerState<Services> {
   void initState() {
     super.initState();
     Future.microtask(() async {
-      await ref.read(authProvider.notifier).initAutoLogout();
+      ref.read(authProvider.notifier).initAutoLogout();
+      ref.read(darkModeProvider.notifier).getDarkMode();
     });
   }
 
