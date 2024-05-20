@@ -43,16 +43,23 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icon/icon.png"
+  image_path: "assets/icon/icon2.png"
   min_sdk_android: 21
 
 flutter_native_splash:
-  color: "#8034DA"
+  color: "#FFFFFF"
+  color_dark: "#232427"
+
   # background_image: assets/icon/splash.png
-  image: assets/icon/splash.png
+  image: assets/icon/splash1.png
+  image_dark: assets/icon/splash1.png
+
   android_12:
-    image: assets/icon/splash.png
-    color: "#8034DA"
+    image: assets/icon/splash1.png
+    image_dark: assets/icon/splash1.png
+    color: "#FFFFFF"
+    color_dark: "#232427"
+
 
 flutter:
   uses-material-design: true
@@ -61,6 +68,7 @@ flutter:
     - assets/icons/
     - assets/fonts/
     - assets/icon/
+    - assets/images/
 
   fonts:
     - family: Poppins

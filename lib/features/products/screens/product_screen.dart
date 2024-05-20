@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
@@ -39,7 +38,6 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
     super.initState();
 
     loadProduct();
-    FlutterNativeSplash.remove();
   }
 
   loadProduct() async {

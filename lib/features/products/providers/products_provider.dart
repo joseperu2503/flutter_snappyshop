@@ -7,7 +7,6 @@ import 'package:flutter_snappyshop/features/products/services/products_services.
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final productsProvider =
@@ -36,7 +35,6 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
     );
     ref.read(cartProvider.notifier).initData();
     initData();
-    FlutterNativeSplash.remove();
 
     try {
       ref.read(authProvider.notifier).setuser(null);

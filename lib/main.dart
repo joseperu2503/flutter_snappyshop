@@ -35,11 +35,25 @@ void main() async {
   );
 }
 
-class MainApp extends ConsumerWidget {
+class MainApp extends ConsumerStatefulWidget {
   const MainApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  MainAppState createState() => MainAppState();
+}
+
+class MainAppState extends ConsumerState<MainApp> {
+  @override
+  void initState() {
+    Future.microtask(() async {
+      await ref.read(darkModeProvider.notifier).getDarkMode();
+      FlutterNativeSplash.remove();
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final darkMode = ref.watch(darkModeProvider);
 
     return MaterialApp.router(

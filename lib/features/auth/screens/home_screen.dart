@@ -4,7 +4,6 @@ import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/settings/providers/notification_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -19,7 +18,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 class HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
-    FlutterNativeSplash.remove();
     Future.microtask(() {
       ref.read(notificationProvider.notifier).disableNotifications();
     });
@@ -52,14 +50,8 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const Spacer(),
-                    SvgPicture.asset(
-                      'assets/icons/shopping_bag.svg',
-                      colorFilter: ColorFilter.mode(
-                        darkMode
-                            ? AppColors.primaryPearlAqua
-                            : AppColors.primaryPearlAqua,
-                        BlendMode.srcIn,
-                      ),
+                    Image.asset(
+                      'assets/images/logo.png',
                       width: 88,
                       height: 88,
                     ),
