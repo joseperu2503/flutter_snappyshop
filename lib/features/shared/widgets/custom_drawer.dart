@@ -386,8 +386,8 @@ class CustomDrawer extends ConsumerWidget {
                             : AppColors.textYankeesBlue,
                         BlendMode.srcIn,
                       ),
-                      width: 24,
-                      height: 24,
+                      width: 22,
+                      height: 22,
                     ),
                     trailing: CupertinoSwitch(
                       value: darkMode,

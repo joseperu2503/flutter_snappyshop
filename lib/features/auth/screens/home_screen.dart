@@ -31,6 +31,12 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
     final darkMode = ref.watch(darkModeProvider);
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: darkMode
+            ? AppColors.backgroundColorDark
+            : AppColors.backgroundColor,
+        toolbarHeight: 0,
+      ),
       body: SafeArea(
         child: CustomScrollView(
           physics: const ClampingScrollPhysics(),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
 import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
@@ -18,6 +19,7 @@ import 'package:flutter_snappyshop/features/shared/widgets/back_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/image_viewer.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ProductScreen extends ConsumerStatefulWidget {
   const ProductScreen({
@@ -112,17 +114,16 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                       width: 52,
                       decoration: BoxDecoration(
                         color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(radiusButton),
                         border: Border.all(
-                          color: AppColors.primaryPearlAqua,
+                          color: AppColors.secondaryPastelRed,
                         ),
                       ),
                       child: TextButton(
                         style: TextButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(radiusButton),
                           ),
-                          foregroundColor: AppColors.primaryPearlAqua,
                         ),
                         onPressed: loadingFavorite
                             ? null
@@ -134,13 +135,19 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                                 child: CustomProgressIndicator(
                                   size: 20,
                                   strokeWidth: 2,
+                                  color: AppColors.secondaryPastelRed,
                                 ),
                               )
-                            : Icon(
+                            : SvgPicture.asset(
                                 product.isFavorite
-                                    ? Icons.favorite_rounded
-                                    : Icons.favorite_outline_rounded,
-                                color: AppColors.primaryPearlAqua,
+                                    ? 'assets/icons/heart_solid.svg'
+                                    : 'assets/icons/heart_outlined.svg',
+                                colorFilter: ColorFilter.mode(
+                                  AppColors.secondaryPastelRed,
+                                  BlendMode.srcIn,
+                                ),
+                                width: 24,
+                                height: 24,
                               ),
                       ),
                     ),

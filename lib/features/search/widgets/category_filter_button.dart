@@ -27,8 +27,9 @@ class CategoryFilterButton extends ConsumerWidget {
         onPressed: () {
           FocusManager.instance.primaryFocus?.unfocus();
           showModalBottomSheet(
-            backgroundColor:
-                darkMode ? AppColors.primaryCulturedDark : AppColors.white,
+            backgroundColor: darkMode
+                ? AppColors.backgroundColorDark
+                : AppColors.backgroundColor,
             elevation: 0,
             showDragHandle: false,
             context: context,
