@@ -36,8 +36,8 @@ class PriceFilterButton extends ConsumerWidget {
     final color = hasFilter
         ? AppColors.secondaryMangoTango
         : darkMode
-            ? AppColors.textCultured.withOpacity(0.5)
-            : AppColors.textCoolBlack.withOpacity(0.3);
+            ? AppColors.textCoolBlackDark.withOpacity(0.7)
+            : AppColors.textCoolBlack.withOpacity(0.7);
     return SizedBox(
       height: 45,
       child: FilledButton(

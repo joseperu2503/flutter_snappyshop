@@ -19,8 +19,8 @@ class CategoryFilterButton extends ConsumerWidget {
     final color = categoryFilter.id != null
         ? AppColors.secondaryMangoTango
         : darkMode
-            ? AppColors.textCultured.withOpacity(0.5)
-            : AppColors.textCoolBlack.withOpacity(0.3);
+            ? AppColors.textCoolBlackDark.withOpacity(0.7)
+            : AppColors.textCoolBlack.withOpacity(0.7);
     return SizedBox(
       height: 45,
       child: FilledButton(
