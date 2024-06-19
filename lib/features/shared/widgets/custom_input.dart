@@ -32,14 +32,14 @@ class CustomInput extends ConsumerStatefulWidget {
   final void Function(String value)? onFieldSubmitted;
   final bool autofocus;
   final bool readOnly;
+  final Map<String, ValidationMessageFunction>? validationMessages;
 
   @override
   CustomInputState createState() => CustomInputState();
-  final Map<String, ValidationMessageFunction>? validationMessages;
 }
 
 class CustomInputState extends ConsumerState<CustomInput> {
-  final TextEditingController controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
   FocusNode _focusNode = FocusNode();
 
   @override
@@ -61,7 +61,7 @@ class CustomInputState extends ConsumerState<CustomInput> {
   @override
   void dispose() {
     _focusNode.dispose();
-    controller.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -95,20 +95,20 @@ class CustomInputState extends ConsumerState<CustomInput> {
   @override
   Widget build(BuildContext context) {
     String newValue = widget.value.value ?? '';
-    if (newValue != controller.value.text) {
+    if (newValue != _controller.value.text) {
       if (widget.inputFormatters != null) {
         for (var inputFormatter in widget.inputFormatters!) {
           newValue = inputFormatter
               .formatEditUpdate(
                 TextEditingValue(
-                  text: controller.value.text,
-                  selection: controller.selection.copyWith(
+                  text: _controller.value.text,
+                  selection: _controller.selection.copyWith(
                     baseOffset: 0,
                   ),
                 ),
                 TextEditingValue(
                   text: newValue,
-                  selection: controller.selection.copyWith(
+                  selection: _controller.selection.copyWith(
                     baseOffset: 0,
                   ),
                 ),
@@ -117,7 +117,7 @@ class CustomInputState extends ConsumerState<CustomInput> {
         }
       }
 
-      controller.value = controller.value.copyWith(
+      _controller.value = _controller.value.copyWith(
         text: newValue,
       );
     }
@@ -152,7 +152,7 @@ class CustomInputState extends ConsumerState<CustomInput> {
             vertical: 15,
           ),
         ),
-        controller: controller,
+        controller: _controller,
         onChanged: (value) {
           String newValue = value;
 
