@@ -15,13 +15,13 @@ class MapNotifier extends StateNotifier<MapState> {
     );
   }
 
-  goToLocation(double latitude, double longitude) {
+  Future<void> goToLocation(double latitude, double longitude) async {
     final newPosition = CameraPosition(
       target: LatLng(latitude, longitude),
       zoom: 18,
     );
 
-    state.controller
+    await state.controller
         ?.animateCamera(CameraUpdate.newCameraPosition(newPosition));
   }
 
