@@ -115,7 +115,9 @@ class AccountInformationScreenState
                                         colorFilter: ColorFilter.mode(
                                           darkMode
                                               ? AppColors.textArsenicDark
-                                              : AppColors.textArsenic,
+                                                  .withOpacity(0.5)
+                                              : AppColors.textArsenic
+                                                  .withOpacity(0.5),
                                           BlendMode.srcIn,
                                         ),
                                         width: 60,
