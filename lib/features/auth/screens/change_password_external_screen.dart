@@ -22,7 +22,7 @@ class ChangePasswordExternalScreenState
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       ref
           .read(forgotPasswordProvider.notifier)
           .changePassword(const Password.pure(''));

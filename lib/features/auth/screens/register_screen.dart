@@ -22,7 +22,7 @@ class RegisterScreenState extends ConsumerState<RegisterScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       ref.read(registerProvider.notifier).initData();
     });
   }

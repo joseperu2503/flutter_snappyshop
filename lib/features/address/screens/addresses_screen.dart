@@ -21,7 +21,7 @@ class AddressesScreenState extends ConsumerState<AddressesScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       ref.read(addressProvider.notifier).resetMyAddresses();
       ref.read(addressProvider.notifier).getMyAddresses();
 

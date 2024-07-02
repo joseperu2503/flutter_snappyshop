@@ -18,7 +18,7 @@ class CardsScreen extends ConsumerStatefulWidget {
 class CardsScreenState extends ConsumerState<CardsScreen> {
   @override
   void initState() {
-    Future.microtask(() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       ref.read(cardProvider.notifier).getCards();
     });
     super.initState();

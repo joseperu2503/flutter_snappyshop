@@ -17,7 +17,7 @@ class MyOrdersScreenState extends ConsumerState<MyOrdersScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       ref.invalidate(orderProvider);
       ref.read(orderProvider.notifier).getOrders();
       ref.read(orderProvider.notifier).getOrderStatuses();

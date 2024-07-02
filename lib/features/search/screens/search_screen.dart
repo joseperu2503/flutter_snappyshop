@@ -27,7 +27,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       ref.read(searchProvider.notifier).initState();
       ref.read(searchProvider.notifier).loadMoreProducts();
     });

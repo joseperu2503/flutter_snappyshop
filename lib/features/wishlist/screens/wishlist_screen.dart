@@ -28,7 +28,7 @@ class WishlistScreenState extends ConsumerState<WishlistScreen> {
         ref.read(favoriteProductsProvider.notifier).getProducts();
       }
     });
-    Future.microtask(() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       ref.read(favoriteProductsProvider.notifier).initState();
       ref.read(favoriteProductsProvider.notifier).getProducts();
     });

@@ -19,7 +19,7 @@ class ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       ref.read(forgotPasswordProvider.notifier).initData();
     });
   }

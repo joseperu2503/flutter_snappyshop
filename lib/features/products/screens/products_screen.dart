@@ -31,7 +31,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
         ref.read(productsProvider.notifier).getProducts();
       }
     });
-    Future.microtask(() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       loadData();
       NotificationService().initListeners();
     });

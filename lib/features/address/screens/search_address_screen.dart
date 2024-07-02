@@ -26,7 +26,7 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       _focusNode.requestFocus();
     });
   }

@@ -16,7 +16,7 @@ class ServicesState extends ConsumerState<Services> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       ref.read(authProvider.notifier).initAutoLogout();
     });
   }

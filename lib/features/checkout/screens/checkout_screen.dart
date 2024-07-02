@@ -25,7 +25,7 @@ class CheckoutScreen extends ConsumerStatefulWidget {
 class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   @override
   void initState() {
-    Future.microtask(() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       ref.read(checkoutProvider.notifier).initData();
     });
     super.initState();

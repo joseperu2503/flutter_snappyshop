@@ -16,7 +16,7 @@ class SettingsScreenState extends ConsumerState<SettingsScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       ref.read(notificationProvider.notifier).getNotificationsEnabled();
     });
   }

@@ -45,10 +45,11 @@ class MainApp extends ConsumerStatefulWidget {
 class MainAppState extends ConsumerState<MainApp> {
   @override
   void initState() {
-    Future.microtask(() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       await ref.read(darkModeProvider.notifier).getDarkMode();
       FlutterNativeSplash.remove();
     });
+
     super.initState();
   }
 
