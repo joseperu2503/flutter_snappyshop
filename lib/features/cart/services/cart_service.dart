@@ -1,4 +1,5 @@
 import 'package:flutter_snappyshop/config/api/api.dart';
+import 'package:flutter_snappyshop/config/constants/api_routes.dart';
 import 'package:flutter_snappyshop/features/cart/models/cart.dart';
 import 'package:flutter_snappyshop/features/cart/models/create_cart.dart';
 import 'package:flutter_snappyshop/features/cart/models/create_cart_response.dart';
@@ -9,7 +10,7 @@ final api = Api();
 class CartService {
   static Future<Cart> getCart() async {
     try {
-      final response = await api.get('/my-cart');
+      final response = await api.get(ApiRoutes.getCart);
 
       return Cart.fromJson(response.data);
     } catch (e) {
@@ -27,7 +28,7 @@ class CartService {
         "products": productsList,
       };
 
-      final response = await api.post('/cart', data: form);
+      final response = await api.post(ApiRoutes.updateCart, data: form);
 
       return CreateCartResponse.fromJson(response.data);
     } catch (e) {

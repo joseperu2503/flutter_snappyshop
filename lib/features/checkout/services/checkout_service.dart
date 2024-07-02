@@ -1,4 +1,5 @@
 import 'package:flutter_snappyshop/config/api/api.dart';
+import 'package:flutter_snappyshop/config/constants/api_routes.dart';
 import 'package:flutter_snappyshop/features/orders/models/create_order.dart';
 import 'package:flutter_snappyshop/features/orders/models/create_order_response.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
@@ -25,7 +26,7 @@ class CheckoutService {
         "address_id": addresId,
       };
 
-      final response = await api.post('/v2/orders', data: form);
+      final response = await api.post(ApiRoutes.createOrder, data: form);
 
       return CreateOrderResponse.fromJson(response.data);
     } catch (e) {

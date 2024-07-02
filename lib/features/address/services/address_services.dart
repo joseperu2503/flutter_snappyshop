@@ -1,4 +1,5 @@
 import 'package:flutter_snappyshop/config/api/api.dart';
+import 'package:flutter_snappyshop/config/constants/api_routes.dart';
 import 'package:flutter_snappyshop/features/address/models/addresses_response.dart';
 import 'package:flutter_snappyshop/features/address/models/create_address_response.dart';
 import 'package:flutter_snappyshop/features/address/models/delete_address_response.dart';
@@ -14,7 +15,7 @@ class AddressService {
       "page": page,
     };
     try {
-      final response = await api.get('/v2/addresses/my-addresses',
+      final response = await api.get(ApiRoutes.getMyAddresses,
           queryParameters: queryParameters);
 
       return AddressesResponse.fromJson(response.data);
@@ -25,7 +26,7 @@ class AddressService {
 
   static Future<Address> getAddress({required String addressId}) async {
     try {
-      final response = await api.get('/v2/addresses/$addressId');
+      final response = await api.get('${ApiRoutes.getAddress}/$addressId');
 
       return Address.fromJson(response.data);
     } catch (e) {
@@ -36,7 +37,7 @@ class AddressService {
   static Future<DeleteAddressResponse> deleteAddress(
       {required int addressId}) async {
     try {
-      final response = await api.delete('/v2/addresses/$addressId');
+      final response = await api.delete('${ApiRoutes.deleteAddress}/$addressId');
 
       return DeleteAddressResponse.fromJson(response.data);
     } catch (e) {
@@ -47,8 +48,7 @@ class AddressService {
   static Future<CreateAddressResponse> markAsPrimary(
       {required int addressId}) async {
     try {
-      final response =
-          await api.delete('/v2/addresses/mark-as-primary/$addressId');
+      final response = await api.delete('${ApiRoutes.markAsPrimary}/$addressId');
 
       return CreateAddressResponse.fromJson(response.data);
     } catch (e) {
@@ -76,7 +76,7 @@ class AddressService {
     };
 
     try {
-      final response = await api.post('/v2/addresses', data: form);
+      final response = await api.post(ApiRoutes.createAddress, data: form);
 
       return CreateAddressResponse.fromJson(response.data);
     } catch (e) {

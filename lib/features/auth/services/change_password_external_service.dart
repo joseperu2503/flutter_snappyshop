@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_snappyshop/config/api/api.dart';
+import 'package:flutter_snappyshop/config/constants/api_routes.dart';
 import 'package:flutter_snappyshop/features/auth/models/send_verify_code_response.dart';
 import 'package:flutter_snappyshop/features/auth/models/validate_verify_code_response.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
@@ -16,7 +17,7 @@ class ChangePasswordExternalService {
         "email": email,
       };
 
-      final response = await api.post('/send-verify-code', data: form);
+      final response = await api.post(ApiRoutes.sendVerifyCode, data: form);
 
       return SendVerifyCodeResponse.fromJson(response.data);
     } on DioException catch (e) {
@@ -45,7 +46,7 @@ class ChangePasswordExternalService {
         "code": code,
       };
 
-      final response = await api.post('/validate-verify-code', data: form);
+      final response = await api.post(ApiRoutes.validateVerifyCode, data: form);
 
       return ValidateVerifyCodeResponse.fromJson(response.data);
     } on DioException catch (e) {
@@ -78,7 +79,7 @@ class ChangePasswordExternalService {
         "code": code,
       };
 
-      final response = await api.post('/change-password-external', data: form);
+      final response = await api.post(ApiRoutes.changePassword, data: form);
 
       return ChangePasswordResponse.fromJson(response.data);
     } on DioException catch (e) {

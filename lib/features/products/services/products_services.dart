@@ -1,4 +1,5 @@
 import 'package:flutter_snappyshop/config/api/api.dart';
+import 'package:flutter_snappyshop/config/constants/api_routes.dart';
 import 'package:flutter_snappyshop/features/products/models/brand.dart';
 import 'package:flutter_snappyshop/features/products/models/category.dart';
 import 'package:flutter_snappyshop/features/search/models/filter_response.dart';
@@ -28,7 +29,7 @@ class ProductsService {
 
     try {
       final response =
-          await api.get('/v2/products', queryParameters: queryParameters);
+          await api.get(ApiRoutes.getProducts, queryParameters: queryParameters);
 
       return ProductsResponse.fromJson(response.data);
     } catch (e) {
@@ -38,7 +39,7 @@ class ProductsService {
 
   static Future<Product> getProductDetail({required String productId}) async {
     try {
-      final response = await api.get('/v2/products/$productId');
+      final response = await api.get('${ApiRoutes.getProduct}/$productId');
 
       return Product.fromJson(response.data);
     } catch (e) {
@@ -48,7 +49,7 @@ class ProductsService {
 
   static Future<List<Brand>> getBrands() async {
     try {
-      final response = await api.get('/brands');
+      final response = await api.get(ApiRoutes.brands);
 
       return List<Brand>.from(response.data.map((x) => Brand.fromJson(x)));
     } catch (e) {
@@ -58,7 +59,7 @@ class ProductsService {
 
   static Future<List<Category>> getCategories() async {
     try {
-      final response = await api.get('/categories');
+      final response = await api.get(ApiRoutes.categories);
 
       return List<Category>.from(
           response.data.map((x) => Category.fromJson(x)));
@@ -69,7 +70,7 @@ class ProductsService {
 
   static Future<FilterResponse> getFilterData() async {
     try {
-      final response = await api.get('/v2/products/filter-data');
+      final response = await api.get(ApiRoutes.productsFilterData);
 
       return FilterResponse.fromJson(response.data);
     } catch (e) {
@@ -85,7 +86,7 @@ class ProductsService {
     };
 
     try {
-      final response = await api.get('/v2/my-favorite-products',
+      final response = await api.get(ApiRoutes.myFavoriteProducts,
           queryParameters: queryParameters);
 
       return ProductsResponse.fromJson(response.data);
@@ -105,7 +106,7 @@ class ProductsService {
 
     try {
       final response =
-          await api.post('/v2/toggle-favorite-product', data: form);
+          await api.post(ApiRoutes.toggleFavoriteProduct, data: form);
 
       return ToggleFavoriteResponse.fromJson(response.data);
     } catch (e) {

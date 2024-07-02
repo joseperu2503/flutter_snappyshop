@@ -1,4 +1,5 @@
 import 'package:flutter_snappyshop/config/api/api.dart';
+import 'package:flutter_snappyshop/config/constants/api_routes.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/user/models/change_password_response.dart';
 import 'package:flutter_snappyshop/features/user/models/change_personal_data_response.dart';
@@ -16,7 +17,10 @@ class UserService {
         "password_confirmation": confirmPassword,
       };
 
-      final response = await api.post('/change-password-internal', data: form);
+      final response = await api.post(
+        ApiRoutes.changePasswordInternal,
+        data: form,
+      );
 
       return ChangePasswordResponse.fromJson(response.data);
     } catch (e) {
@@ -38,7 +42,10 @@ class UserService {
         'profile_photo': photo,
       };
 
-      final response = await api.post('/change-personal-data', data: form);
+      final response = await api.post(
+        ApiRoutes.changePersonalData,
+        data: form,
+      );
 
       return ChangePersonalDataResponse.fromJson(response.data);
     } catch (e) {

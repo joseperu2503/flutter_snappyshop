@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_snappyshop/config/api/api.dart';
+import 'package:flutter_snappyshop/config/constants/api_routes.dart';
 import 'package:flutter_snappyshop/config/router/app_router.dart';
 import 'package:flutter_snappyshop/features/auth/services/auth_service.dart';
 import 'package:flutter_snappyshop/features/settings/models/save_snappy_token_response.dart';
@@ -11,7 +12,7 @@ final api = Api();
 final FirebaseMessaging messaging = FirebaseMessaging.instance;
 
 class NotificationService {
-  static Future<SaveSnappyTokenResponse> saveSnappyToken({
+  static Future<SaveSnappyTokenResponse> saveDeviceFcmToken({
     required String token,
   }) async {
     try {
@@ -19,8 +20,7 @@ class NotificationService {
         "token": token,
       };
 
-      final response =
-          await api.post('/snappyshop/save-snappy-token', data: form);
+      final response = await api.post(ApiRoutes.saveDeviceFcmToken, data: form);
 
       return SaveSnappyTokenResponse.fromJson(response.data);
     } on DioException catch (e) {
@@ -39,7 +39,7 @@ class NotificationService {
       final token = await messaging.getToken();
       if (token != null) {
         try {
-          await saveSnappyToken(token: token);
+          await saveDeviceFcmToken(token: token);
         } on ServiceException catch (e) {
           throw ServiceException(e.message);
         }

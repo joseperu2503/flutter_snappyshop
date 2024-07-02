@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_snappyshop/config/api/api.dart';
 import 'package:flutter_snappyshop/config/api/api_images.dart';
+import 'package:flutter_snappyshop/config/constants/api_routes.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/user/models/upload_photo_response.dart';
 import 'package:image_picker/image_picker.dart';
@@ -40,7 +41,7 @@ class CameraService {
         'folder_name': 'profile_photos',
       });
 
-      final response = await ApiImages().post('/upload_image', data: data);
+      final response = await ApiImages().post(ApiRoutes.uploadPhoto, data: data);
 
       return UploadPhotoResponse.fromJson(response.data);
     } catch (e) {

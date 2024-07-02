@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_snappyshop/config/api/api.dart';
 import 'package:flutter_snappyshop/config/constants/storage_keys.dart';
+import 'package:flutter_snappyshop/config/constants/api_routes.dart';
 import 'package:flutter_snappyshop/features/auth/models/auth_user.dart';
 import 'package:flutter_snappyshop/features/auth/models/login_response.dart';
 import 'package:flutter_snappyshop/features/auth/models/register_response.dart';
@@ -21,7 +22,7 @@ class AuthService {
         "password": password,
       };
 
-      final response = await api.post('/v2/login', data: form);
+      final response = await api.post(ApiRoutes.login, data: form);
 
       return LoginResponse.fromJson(response.data);
     } catch (e) {
@@ -51,7 +52,7 @@ class AuthService {
         "password_confirmation": confirmPassword,
       };
 
-      final response = await api.post('/register', data: form);
+      final response = await api.post(ApiRoutes.register, data: form);
 
       return RegisterResponse.fromJson(response.data);
     } on DioException catch (e) {
@@ -92,7 +93,7 @@ class AuthService {
 
   static Future<AuthUser> getUser() async {
     try {
-      final response = await api.get('/me');
+      final response = await api.get(ApiRoutes.me);
 
       return AuthUser.fromJson(response.data);
     } catch (e) {
@@ -106,7 +107,7 @@ class AuthService {
         "id_token": idToken,
       };
 
-      final response = await api.post('/snappyshop/login-google', data: form);
+      final response = await api.post(ApiRoutes.loginGoogle, data: form);
 
       return LoginResponse.fromJson(response.data);
     } catch (e) {
