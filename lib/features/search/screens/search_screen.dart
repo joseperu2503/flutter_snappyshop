@@ -47,6 +47,12 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
     super.dispose();
   }
 
+  double get widthProductCard {
+    final MediaQueryData screen = MediaQuery.of(context);
+
+    return (screen.size.width - 2 * 24 - 16) / 2;
+  }
+
   @override
   Widget build(BuildContext context) {
     final searchState = ref.watch(searchProvider);
@@ -252,12 +258,11 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                       },
                       childCount: searchState.products.length,
                     ),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      crossAxisSpacing: 15,
-                      mainAxisSpacing: 20,
-                      mainAxisExtent: 210,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 12,
+                      mainAxisExtent: widthProductCard + 80,
                     ),
                   ),
                 ),

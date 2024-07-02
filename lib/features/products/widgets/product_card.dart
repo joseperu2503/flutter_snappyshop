@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/custom_image.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
 import 'package:flutter_snappyshop/features/wishlist/providers/favorite_products_provider.dart';
 import 'package:flutter_snappyshop/features/products/providers/products_provider.dart';
@@ -9,14 +10,15 @@ import 'package:flutter_snappyshop/features/products/services/products_services.
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_snappyshop/features/shared/widgets/image_viewer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 class ProductCard extends ConsumerStatefulWidget {
+  const ProductCard({
+    super.key,
+    required this.product,
+  });
   final Product product;
-
-  const ProductCard({super.key, required this.product});
 
   @override
   ProductCardState createState() => ProductCardState();
@@ -70,21 +72,14 @@ class ProductCardState extends ConsumerState<ProductCard> {
         children: [
           Stack(
             children: [
-              Container(
-                height: 140,
-                decoration: BoxDecoration(
-                  color: darkMode
-                      ? AppColors.primaryCulturedDark
-                      : AppColors.primaryCultured,
-                  borderRadius: BorderRadiusDirectional.circular(15),
-                ),
-                child: Center(
-                  child: SizedBox(
-                    width: 120,
-                    child: ImageViewer(
-                      images: widget.product.images,
-                      radius: 0,
-                    ),
+              ClipRRect(
+                borderRadius: BorderRadiusDirectional.circular(15),
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: CustomImage(
+                    path: widget.product.images.isEmpty
+                        ? null
+                        : widget.product.images[0],
                   ),
                 ),
               ),
@@ -145,53 +140,62 @@ class ProductCardState extends ConsumerState<ProductCard> {
               )
             ],
           ),
-          const SizedBox(
-            height: 8,
-          ),
-          Text(
-            widget.product.name,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-              color: darkMode ? AppColors.white : AppColors.textCoolBlack,
-              height: 1.4,
-              leadingDistribution: TextLeadingDistribution.even,
+          Container(
+            padding: const EdgeInsets.only(
+              top: 8,
+              bottom: 8,
             ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Row(
-            children: [
-              Text(
-                '\$${price.toStringAsFixed(2)}',
-                style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.secondaryPastelRed,
-                  height: 1.1,
-                  leadingDistribution: TextLeadingDistribution.even,
-                ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              if (widget.product.discount != null)
+            height: 80,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
                 Text(
-                  '\$${widget.product.price.toStringAsFixed(2)}',
-                  style: const TextStyle(
+                  widget.product.name,
+                  style: TextStyle(
                     fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.gray,
-                    height: 1.1,
-                    decoration: TextDecoration.lineThrough,
+                    fontWeight: FontWeight.w500,
+                    color: darkMode ? AppColors.white : AppColors.textCoolBlack,
+                    height: 1.4,
                     leadingDistribution: TextLeadingDistribution.even,
                   ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
-            ],
-          ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      '\$${price.toStringAsFixed(2)}',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.secondaryPastelRed,
+                        height: 1.1,
+                        leadingDistribution: TextLeadingDistribution.even,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    if (widget.product.discount != null)
+                      Text(
+                        '\$${widget.product.price.toStringAsFixed(2)}',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.gray,
+                          height: 1.1,
+                          decoration: TextDecoration.lineThrough,
+                          leadingDistribution: TextLeadingDistribution.even,
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );

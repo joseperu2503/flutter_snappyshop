@@ -1,9 +1,11 @@
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
 import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/custom_image.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
 import 'package:flutter_snappyshop/features/wishlist/providers/favorite_products_provider.dart';
 import 'package:flutter_snappyshop/features/products/providers/products_provider.dart';
@@ -17,7 +19,6 @@ import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.d
 import 'package:flutter_snappyshop/features/shared/widgets/back_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_snappyshop/features/shared/widgets/image_viewer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ProductScreen extends ConsumerStatefulWidget {
@@ -94,76 +95,10 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
     final double price = product?.discount == null
         ? product?.price ?? 1
         : ((product?.price ?? 1) * (1 - (product?.discount ?? 1) / 100));
-    double safeAreaHeight = MediaQuery.of(context).padding.top;
     final darkMode = ref.watch(darkModeProvider);
 
     return loadingProduct == LoadingStatus.success && product != null
         ? Scaffold(
-            bottomNavigationBar: SafeArea(
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 16,
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      height: 52,
-                      width: 52,
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(radiusButton),
-                        border: Border.all(
-                          color: AppColors.secondaryPastelRed,
-                        ),
-                      ),
-                      child: TextButton(
-                        style: TextButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(radiusButton),
-                          ),
-                        ),
-                        onPressed: loadingFavorite
-                            ? null
-                            : () {
-                                toggleFavorite(product);
-                              },
-                        child: loadingFavorite
-                            ? const Center(
-                                child: CustomProgressIndicator(
-                                  size: 20,
-                                  strokeWidth: 2,
-                                  color: AppColors.secondaryPastelRed,
-                                ),
-                              )
-                            : SvgPicture.asset(
-                                product.isFavorite
-                                    ? 'assets/icons/heart_solid.svg'
-                                    : 'assets/icons/heart_outlined.svg',
-                                colorFilter: ColorFilter.mode(
-                                  AppColors.secondaryPastelRed,
-                                  BlendMode.srcIn,
-                                ),
-                                width: 24,
-                                height: 24,
-                              ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      child: CustomButton(
-                        text: 'Add to cart',
-                        onPressed: () {
-                          ref.read(cartProvider.notifier).addToCart(product);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
             body: CustomScrollView(
               physics: const ClampingScrollPhysics(),
               slivers: [
@@ -187,23 +122,31 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                   backgroundColor: darkMode
                       ? AppColors.backgroundColorDark
                       : AppColors.backgroundColor,
-                  expandedHeight: size.height * 0.4,
+                  expandedHeight: size.width,
                   foregroundColor: darkMode
                       ? AppColors.backgroundColorDark
                       : AppColors.backgroundColor,
                   flexibleSpace: FlexibleSpaceBar(
                     background: Container(
-                      padding: EdgeInsets.only(
-                        top: safeAreaHeight,
-                      ),
-                      width: double.maxFinite,
                       color: darkMode
                           ? AppColors.primaryCulturedDark
                           : AppColors.primaryCultured,
-                      child: Center(
-                        child: ImageViewer(
-                          radius: 0,
-                          images: product.images,
+                      child: Swiper(
+                        itemBuilder: (BuildContext context, int index) {
+                          return CustomImage(
+                            path: product.images[index],
+                          );
+                        },
+                        scale: 1,
+                        viewportFraction: 0.8,
+                        scrollDirection: Axis.vertical,
+                        itemCount: product.images.length,
+                        pagination: const SwiperPagination(
+                          margin: EdgeInsets.only(top: 0),
+                          builder: DotSwiperPaginationBuilder(
+                            activeColor: AppColors.primaryPearlAqua,
+                            color: AppColors.textArsenicDark,
+                          ),
                         ),
                       ),
                     ),
@@ -383,6 +326,71 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                   ),
                 )
               ],
+            ),
+            bottomNavigationBar: SafeArea(
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 16,
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      height: 52,
+                      width: 52,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(radiusButton),
+                        border: Border.all(
+                          color: AppColors.secondaryPastelRed,
+                        ),
+                      ),
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(radiusButton),
+                          ),
+                        ),
+                        onPressed: loadingFavorite
+                            ? null
+                            : () {
+                                toggleFavorite(product);
+                              },
+                        child: loadingFavorite
+                            ? const Center(
+                                child: CustomProgressIndicator(
+                                  size: 20,
+                                  strokeWidth: 2,
+                                  color: AppColors.secondaryPastelRed,
+                                ),
+                              )
+                            : SvgPicture.asset(
+                                product.isFavorite
+                                    ? 'assets/icons/heart_solid.svg'
+                                    : 'assets/icons/heart_outlined.svg',
+                                colorFilter: const ColorFilter.mode(
+                                  AppColors.secondaryPastelRed,
+                                  BlendMode.srcIn,
+                                ),
+                                width: 24,
+                                height: 24,
+                              ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: CustomButton(
+                        text: 'Add to cart',
+                        onPressed: () {
+                          ref.read(cartProvider.notifier).addToCart(product);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           )
         : Layout1(
