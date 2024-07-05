@@ -36,6 +36,12 @@ class WishlistScreenState extends ConsumerState<WishlistScreen> {
 
   final ScrollController scrollController = ScrollController();
 
+  double get widthProductCard {
+    final MediaQueryData screen = MediaQuery.of(context);
+
+    return (screen.size.width - 2 * 24 - 16) / 2;
+  }
+
   @override
   void dispose() {
     scrollController.dispose();
@@ -68,11 +74,11 @@ class WishlistScreenState extends ConsumerState<WishlistScreen> {
                   },
                   childCount: favoriteState.products.length,
                 ),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  crossAxisSpacing: 15,
-                  mainAxisSpacing: 20,
-                  mainAxisExtent: 210,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 12,
+                  mainAxisExtent: widthProductCard + 80,
                 ),
               ),
             ),
