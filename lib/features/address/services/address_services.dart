@@ -37,7 +37,8 @@ class AddressService {
   static Future<DeleteAddressResponse> deleteAddress(
       {required int addressId}) async {
     try {
-      final response = await api.delete('${ApiRoutes.deleteAddress}/$addressId');
+      final response =
+          await api.delete('${ApiRoutes.deleteAddress}/$addressId');
 
       return DeleteAddressResponse.fromJson(response.data);
     } catch (e) {
@@ -48,7 +49,7 @@ class AddressService {
   static Future<CreateAddressResponse> markAsPrimary(
       {required int addressId}) async {
     try {
-      final response = await api.delete('${ApiRoutes.markAsPrimary}/$addressId');
+      final response = await api.put('${ApiRoutes.markAsPrimary}/$addressId');
 
       return CreateAddressResponse.fromJson(response.data);
     } catch (e) {

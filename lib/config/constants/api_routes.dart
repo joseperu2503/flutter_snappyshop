@@ -1,20 +1,20 @@
 class ApiRoutes {
-  static const login = '/login';
-  static const register = '/register';
-  static const me = '/me';
-  static const loginGoogle = '/login-google';
-  static const getProducts = '/products';
-  static const getProduct = '/product';
+  static const login = '/auth/login';
+  static const register = '/auth/register';
+  static const loginGoogle = '/auth/login-google';
+
   static const brands = '/brands';
   static const categories = '/categories';
+
   static const productsFilterData = '/products/filter-data';
+  static const myFavoriteProducts = '/products/my-favorite-products';
+  static const toggleFavoriteProduct = '/products/toggle-favorite-product';
+  static const getProducts = '/products';
+  static const getProduct = '/products';
 
-  static const myFavoriteProducts = '/my-favorite-products';
-  static const toggleFavoriteProduct = '/toggle-favorite-product';
+  static const saveDeviceFcmToken = '/notification/save-device-fcm-token';
 
-  static const saveDeviceFcmToken = '/save-snappy-token';
-  static const myOrders = '/orders/my-orders';
-  static const getCart = '/my-cart';
+  static const getCart = '/cart/my-cart';
   static const updateCart = '/cart';
 
   static const getMyAddresses = '/addresses/my-addresses';
@@ -23,14 +23,15 @@ class ApiRoutes {
   static const markAsPrimary = '/addresses/mark-as-primary';
   static const createAddress = '/addresses';
 
-  static const changePasswordInternal = '/change-password-internal';
-  static const changePersonalData = '/change-personal-data';
-
   static const uploadPhoto = '/upload_image';
 
   static const createOrder = '/orders';
+  static const myOrders = '/orders/my-orders';
 
-  static const sendVerifyCode = '/send-verify-code';
-  static const validateVerifyCode = '/validate-verify-code';
-  static const changePassword = '/change-password-external';
+  static const sendVerifyCode = '/user/send-verify-code';
+  static const validateVerifyCode = '/user/validate-verify-code';
+  static const changePassword = '/user/change-password-external';
+  static const me = '/user/me';
+  static const changePasswordInternal = '/user/change-password-internal';
+  static const changePersonalData = '/user/change-personal-data';
 }

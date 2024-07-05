@@ -28,8 +28,12 @@ class Api {
     return _dioBase.get(path, queryParameters: queryParameters);
   }
 
-  Future<Response> post(String path, {required Object data}) async {
+  Future<Response> post(String path, {Object? data}) async {
     return _dioBase.post(path, data: data);
+  }
+
+  Future<Response> put(String path, {Object? data}) async {
+    return _dioBase.put(path, data: data);
   }
 
   Future<Response> delete(
