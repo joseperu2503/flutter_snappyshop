@@ -24,7 +24,8 @@ class UserService {
 
       return ChangePasswordResponse.fromJson(response.data);
     } catch (e) {
-      throw ServiceException('An error occurred while changing the password.');
+      throw ServiceException(
+          e, 'An error occurred while changing the password.');
     }
   }
 
@@ -50,7 +51,7 @@ class UserService {
       return ChangePersonalDataResponse.fromJson(response.data);
     } catch (e) {
       throw ServiceException(
-          'An error occurred while changing the personal data.');
+          e, 'An error occurred while changing the personal data.');
     }
   }
 }

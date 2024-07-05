@@ -74,7 +74,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
       );
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
-      throw ServiceException(e.message);
+      throw ServiceException(null, e.message);
     }
 
     state = state.copyWith(
@@ -89,7 +89,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
         brands: response,
       );
     } on ServiceException catch (e) {
-      throw ServiceException(e.message);
+      throw ServiceException(null, e.message);
     }
   }
 
@@ -114,7 +114,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
         );
       } on ServiceException catch (e) {
         ref.read(snackbarProvider.notifier).showSnackbar(e.message);
-        throw ServiceException(e.message);
+        throw ServiceException(null, e.message);
       }
     }
   }

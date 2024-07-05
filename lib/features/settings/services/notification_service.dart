@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_snappyshop/config/api/api.dart';
@@ -23,13 +22,9 @@ class NotificationService {
       final response = await api.post(ApiRoutes.saveDeviceFcmToken, data: form);
 
       return SaveSnappyTokenResponse.fromJson(response.data);
-    } on DioException catch (e) {
-      if (e.response?.data['message'] != null) {
-        throw ServiceException(e.response?.data['message']);
-      }
-      throw ServiceException('An error occurred while saving the SnappyToken.');
     } catch (e) {
-      throw ServiceException('An error occurred while saving the SnappyToken.');
+      throw ServiceException(
+          e, 'An error occurred while saving the fcm token.');
     }
   }
 
@@ -41,13 +36,14 @@ class NotificationService {
         try {
           await saveDeviceFcmToken(token: token);
         } on ServiceException catch (e) {
-          throw ServiceException(e.message);
+          throw ServiceException(null, e.message);
         }
       } else {
-        throw ServiceException('An error occurred while obtaining the token.');
+        throw ServiceException(
+            null, 'An error occurred while obtaining the token.');
       }
     } else {
-      throw ServiceException('Notification permissions not authorized.');
+      throw ServiceException(null, 'Notification permissions not authorized.');
     }
   }
 

@@ -28,12 +28,13 @@ class ProductsService {
     };
 
     try {
-      final response =
-          await api.get(ApiRoutes.getProducts, queryParameters: queryParameters);
+      final response = await api.get(ApiRoutes.getProducts,
+          queryParameters: queryParameters);
 
       return ProductsResponse.fromJson(response.data);
     } catch (e) {
-      throw ServiceException('An error occurred while loading the products.');
+      throw ServiceException(
+          e, 'An error occurred while loading the products.');
     }
   }
 
@@ -43,7 +44,7 @@ class ProductsService {
 
       return Product.fromJson(response.data);
     } catch (e) {
-      throw ServiceException('An error occurred while loading the product.');
+      throw ServiceException(e, 'An error occurred while loading the product.');
     }
   }
 
@@ -53,7 +54,7 @@ class ProductsService {
 
       return List<Brand>.from(response.data.map((x) => Brand.fromJson(x)));
     } catch (e) {
-      throw ServiceException('An error occurred while loading the brands.');
+      throw ServiceException(e, 'An error occurred while loading the brands.');
     }
   }
 
@@ -64,7 +65,7 @@ class ProductsService {
       return List<Category>.from(
           response.data.map((x) => Category.fromJson(x)));
     } catch (e) {
-      throw ServiceException('An error occurred while loading the brands.');
+      throw ServiceException(e, 'An error occurred while loading the brands.');
     }
   }
 
@@ -74,7 +75,7 @@ class ProductsService {
 
       return FilterResponse.fromJson(response.data);
     } catch (e) {
-      throw ServiceException('An error occurred while loading the filters.');
+      throw ServiceException(e, 'An error occurred while loading the filters.');
     }
   }
 
@@ -91,7 +92,8 @@ class ProductsService {
 
       return ProductsResponse.fromJson(response.data);
     } catch (e) {
-      throw ServiceException('An error occurred while loading the products.');
+      throw ServiceException(
+          e, 'An error occurred while loading the products.');
     }
   }
 
@@ -110,7 +112,8 @@ class ProductsService {
 
       return ToggleFavoriteResponse.fromJson(response.data);
     } catch (e) {
-      throw ServiceException('An error occurred while setting up the product.');
+      throw ServiceException(
+          e, 'An error occurred while setting up the product.');
     }
   }
 }

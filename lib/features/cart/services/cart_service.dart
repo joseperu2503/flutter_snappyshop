@@ -14,7 +14,7 @@ class CartService {
 
       return Cart.fromJson(response.data);
     } catch (e) {
-      throw ServiceException('An error occurred while loading the cart.');
+      throw ServiceException(e, 'An error occurred while loading the cart.');
     }
   }
 
@@ -32,7 +32,7 @@ class CartService {
 
       return CreateCartResponse.fromJson(response.data);
     } catch (e) {
-      throw ServiceException('An error occurred while updating the cart.');
+      throw ServiceException(e, 'An error occurred while updating the cart.');
     }
   }
 }

@@ -23,7 +23,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
       setuser(user);
     } on ServiceException catch (e) {
-      throw ServiceException(e.message);
+      throw ServiceException(null, e.message);
     }
   }
 

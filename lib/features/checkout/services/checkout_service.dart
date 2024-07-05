@@ -30,7 +30,7 @@ class CheckoutService {
 
       return CreateOrderResponse.fromJson(response.data);
     } catch (e) {
-      throw ServiceException('An error occurred while creating the order.');
+      throw ServiceException(e, 'An error occurred while creating the order.');
     }
   }
 }

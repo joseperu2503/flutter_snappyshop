@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_snappyshop/config/api/api.dart';
 import 'package:flutter_snappyshop/config/constants/api_routes.dart';
 import 'package:flutter_snappyshop/features/auth/models/send_verify_code_response.dart';
@@ -20,17 +19,9 @@ class ChangePasswordExternalService {
       final response = await api.post(ApiRoutes.sendVerifyCode, data: form);
 
       return SendVerifyCodeResponse.fromJson(response.data);
-    } on DioException catch (e) {
-      String errorMessage = '';
-      if (e.response?.data['message'] != null) {
-        errorMessage = e.response?.data['message'];
-      } else {
-        errorMessage = 'An error occurred while sending the verify code.';
-      }
-      throw ServiceException(errorMessage);
     } catch (e) {
       throw ServiceException(
-          'An error occurred while sending the verify code.');
+          e, 'An error occurred while sending the verify code.');
     }
   }
 
@@ -49,17 +40,9 @@ class ChangePasswordExternalService {
       final response = await api.post(ApiRoutes.validateVerifyCode, data: form);
 
       return ValidateVerifyCodeResponse.fromJson(response.data);
-    } on DioException catch (e) {
-      String errorMessage = '';
-      if (e.response?.data['message'] != null) {
-        errorMessage = e.response?.data['message'];
-      } else {
-        errorMessage = 'An error occurred while validating the verify code.';
-      }
-      throw ServiceException(errorMessage);
     } catch (e) {
       throw ServiceException(
-          'An error occurred while validating the verify code.');
+          e, 'An error occurred while validating the verify code.');
     }
   }
 
@@ -82,16 +65,9 @@ class ChangePasswordExternalService {
       final response = await api.post(ApiRoutes.changePassword, data: form);
 
       return ChangePasswordResponse.fromJson(response.data);
-    } on DioException catch (e) {
-      String errorMessage = '';
-      if (e.response?.data['message'] != null) {
-        errorMessage = e.response?.data['message'];
-      } else {
-        errorMessage = 'An error occurred while changing the password.';
-      }
-      throw ServiceException(errorMessage);
     } catch (e) {
-      throw ServiceException('An error occurred while changing the password.');
+      throw ServiceException(
+          e, 'An error occurred while changing the password.');
     }
   }
 }

@@ -117,7 +117,7 @@ class SearchNotifier extends StateNotifier<SearchState> {
         categories: response.categories,
       );
     } on ServiceException catch (e) {
-      throw ServiceException(e.message);
+      throw ServiceException(null, e.message);
     }
   }
 

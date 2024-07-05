@@ -19,7 +19,8 @@ class MapBoxService {
 
       return MapboxResponse.fromJson(response.data);
     } catch (e) {
-      throw ServiceException('An error occurred while searching the address.');
+      throw ServiceException(
+          e, 'An error occurred while searching the address.');
     }
   }
 
@@ -43,7 +44,8 @@ class MapBoxService {
 
       return MapboxResponse.fromJson(response.data);
     } catch (e) {
-      throw ServiceException('An error occurred while searching the address.');
+      throw ServiceException(
+          e, 'An error occurred while searching the address.');
     }
   }
 }

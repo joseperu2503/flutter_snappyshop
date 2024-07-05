@@ -20,7 +20,8 @@ class AddressService {
 
       return AddressesResponse.fromJson(response.data);
     } catch (e) {
-      throw ServiceException('An error occurred while loading the addresses.');
+      throw ServiceException(
+          e, 'An error occurred while loading the addresses.');
     }
   }
 
@@ -30,7 +31,7 @@ class AddressService {
 
       return Address.fromJson(response.data);
     } catch (e) {
-      throw ServiceException('An error occurred while loading the address.');
+      throw ServiceException(e, 'An error occurred while loading the address.');
     }
   }
 
@@ -42,7 +43,8 @@ class AddressService {
 
       return DeleteAddressResponse.fromJson(response.data);
     } catch (e) {
-      throw ServiceException('An error occurred while deleting the address.');
+      throw ServiceException(
+          e, 'An error occurred while deleting the address.');
     }
   }
 
@@ -53,7 +55,8 @@ class AddressService {
 
       return CreateAddressResponse.fromJson(response.data);
     } catch (e) {
-      throw ServiceException('An error occurred while updating the address.');
+      throw ServiceException(
+          e, 'An error occurred while updating the address.');
     }
   }
 
@@ -82,7 +85,7 @@ class AddressService {
       return CreateAddressResponse.fromJson(response.data);
     } catch (e) {
       throw ServiceException(
-          'An error occurred while registering the address.');
+          e, 'An error occurred while registering the address.');
     }
   }
 }

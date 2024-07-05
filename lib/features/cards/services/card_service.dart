@@ -12,7 +12,7 @@ class CardService {
       return List<BankCard>.from(cards.map((x) => BankCard.fromJson(x)));
     } catch (e) {
       throw ServiceException(
-          'An error occurred while getting the credit cards.');
+          e, 'An error occurred while getting the credit cards.');
     }
   }
 
@@ -23,7 +23,7 @@ class CardService {
       await StorageService.set<List<dynamic>>(StorageKeys.cards, cardsStorage);
     } catch (e) {
       throw ServiceException(
-          'An error occurred while saving the credit card information.');
+          e, 'An error occurred while saving the credit card information.');
     }
   }
 
@@ -35,7 +35,7 @@ class CardService {
       await StorageService.set<List<dynamic>>(StorageKeys.cards, cardsStorage);
     } catch (e) {
       throw ServiceException(
-          'An error occurred while deleting the credit card information.');
+          e, 'An error occurred while deleting the credit card information.');
     }
   }
 }

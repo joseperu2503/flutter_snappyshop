@@ -48,7 +48,7 @@ class CartNotifier extends StateNotifier<CartState> {
         showUpdateBtn: false,
       );
     } on ServiceException catch (e) {
-      throw ServiceException(e.message);
+      throw ServiceException(null, e.message);
     }
   }
 
@@ -114,7 +114,7 @@ class CartNotifier extends StateNotifier<CartState> {
         showUpdateBtn: false,
       );
     } on ServiceException catch (e) {
-      throw ServiceException(e.message);
+      throw ServiceException(null, e.message);
     }
   }
 

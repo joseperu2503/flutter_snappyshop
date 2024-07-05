@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_snappyshop/config/api/api.dart';
 import 'package:flutter_snappyshop/config/constants/storage_keys.dart';
 import 'package:flutter_snappyshop/config/constants/api_routes.dart';
@@ -26,15 +25,7 @@ class AuthService {
 
       return LoginResponse.fromJson(response.data);
     } catch (e) {
-      String errorMessage = 'An error occurred while trying to log in.';
-
-      if (e is DioException) {
-        if (e.response?.data['message'] != null) {
-          errorMessage = e.response?.data['message'];
-        }
-      }
-
-      throw ServiceException(errorMessage);
+      throw ServiceException(e, 'An error occurred while trying to log in.');
     }
   }
 
@@ -55,16 +46,8 @@ class AuthService {
       final response = await api.post(ApiRoutes.register, data: form);
 
       return RegisterResponse.fromJson(response.data);
-    } on DioException catch (e) {
-      String errorMessage = '';
-      if (e.response?.data['message'] != null) {
-        errorMessage = e.response?.data['message'];
-      } else {
-        throw ServiceException('An error occurred while trying to register.');
-      }
-      throw ServiceException(errorMessage);
     } catch (e) {
-      throw ServiceException('An error occurred while trying to register.');
+      throw ServiceException(e, 'An error occurred while trying to register.');
     }
   }
 
@@ -97,7 +80,7 @@ class AuthService {
 
       return AuthUser.fromJson(response.data);
     } catch (e) {
-      throw ServiceException('An error occurred while loading the user.');
+      throw ServiceException(e, 'An error occurred while loading the user.');
     }
   }
 
@@ -111,15 +94,7 @@ class AuthService {
 
       return LoginResponse.fromJson(response.data);
     } catch (e) {
-      String errorMessage = 'An error occurred while trying to log in.';
-
-      if (e is DioException) {
-        if (e.response?.data['message'] != null) {
-          errorMessage = e.response?.data['message'];
-        }
-      }
-
-      throw ServiceException(errorMessage);
+      throw ServiceException(e, 'An error occurred while trying to log in.');
     }
   }
 }

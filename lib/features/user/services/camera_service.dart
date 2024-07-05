@@ -41,11 +41,12 @@ class CameraService {
         'folder_name': 'profile_photos',
       });
 
-      final response = await ApiImages().post(ApiRoutes.uploadPhoto, data: data);
+      final response =
+          await ApiImages().post(ApiRoutes.uploadPhoto, data: data);
 
       return UploadPhotoResponse.fromJson(response.data);
     } catch (e) {
-      throw ServiceException('An error occurred while upload photo.');
+      throw ServiceException(e, 'An error occurred while upload photo.');
     }
   }
 }

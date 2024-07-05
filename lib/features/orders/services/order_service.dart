@@ -23,7 +23,7 @@ class OrderService {
 
       return MyOrdersResponse.fromJson(response.data);
     } catch (e) {
-      throw ServiceException('An error occurred while loading the orders.');
+      throw ServiceException(e, 'An error occurred while loading the orders.');
     }
   }
 }
