@@ -44,20 +44,19 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icon/icon2.png"
+  image_path: "assets/app/icon.png"
   min_sdk_android: 21
 
 flutter_native_splash:
   color: "#FFFFFF"
   color_dark: "#232427"
 
-  # background_image: assets/icon/splash.png
-  image: assets/icon/splash1.png
-  image_dark: assets/icon/splash1.png
+  image: assets/app/splash.png
+  image_dark: assets/app/splash.png
 
   android_12:
-    image: assets/icon/splash1.png
-    image_dark: assets/icon/splash1.png
+    image: assets/app/splash.png
+    image_dark: assets/app/splash.png
     color: "#FFFFFF"
     color_dark: "#232427"
 
@@ -67,7 +66,7 @@ flutter:
     - .env
     - assets/icons/
     - assets/fonts/
-    - assets/icon/
+    - assets/app/
     - assets/images/
 
   fonts:
