@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
 import 'package:flutter_snappyshop/features/products/providers/products_provider.dart';
 import 'package:flutter_snappyshop/features/products/services/products_services.dart';
-import 'package:flutter_snappyshop/features/products/widgets/product_card.dart';
+import 'package:flutter_snappyshop/features/products/widgets/product_item.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
@@ -105,7 +105,7 @@ class BrandScreenState extends ConsumerState<BrandScreen> {
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
                   final product = products[index];
-                  return ProductCard(product: product);
+                  return ProductItem(product: product);
                 },
                 childCount: products.length,
               ),

@@ -13,8 +13,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-class ProductCard extends ConsumerStatefulWidget {
-  const ProductCard({
+class ProductItem extends ConsumerStatefulWidget {
+  const ProductItem({
     super.key,
     required this.product,
   });
@@ -24,7 +24,7 @@ class ProductCard extends ConsumerStatefulWidget {
   ProductCardState createState() => ProductCardState();
 }
 
-class ProductCardState extends ConsumerState<ProductCard> {
+class ProductCardState extends ConsumerState<ProductItem> {
   @override
   void initState() {
     super.initState();

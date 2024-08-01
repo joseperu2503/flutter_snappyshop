@@ -4,7 +4,7 @@ import 'package:flutter_snappyshop/features/products/providers/products_provider
 import 'package:flutter_snappyshop/features/products/widgets/cart_button.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_drawer.dart';
-import 'package:flutter_snappyshop/features/products/widgets/product_card.dart';
+import 'package:flutter_snappyshop/features/products/widgets/product_item.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/settings/services/notification_service.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
@@ -305,7 +305,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                         delegate: SliverChildBuilderDelegate(
                           (BuildContext context, int index) {
                             final product = productsState.products[index];
-                            return ProductCard(product: product);
+                            return ProductItem(product: product);
                           },
                           childCount: productsState.products.length,
                         ),

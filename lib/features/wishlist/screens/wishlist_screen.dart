@@ -4,7 +4,7 @@ import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
 import 'package:flutter_snappyshop/features/wishlist/providers/favorite_products_provider.dart';
-import 'package:flutter_snappyshop/features/products/widgets/product_card.dart';
+import 'package:flutter_snappyshop/features/products/widgets/product_item.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -70,7 +70,7 @@ class WishlistScreenState extends ConsumerState<WishlistScreen> {
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
                     final product = favoriteState.products[index];
-                    return ProductCard(product: product);
+                    return ProductItem(product: product);
                   },
                   childCount: favoriteState.products.length,
                 ),

@@ -11,7 +11,7 @@ import 'package:flutter_snappyshop/features/wishlist/providers/favorite_products
 import 'package:flutter_snappyshop/features/products/providers/products_provider.dart';
 import 'package:flutter_snappyshop/features/products/services/products_services.dart';
 import 'package:flutter_snappyshop/features/products/widgets/cart_button.dart';
-import 'package:flutter_snappyshop/features/products/widgets/product_card.dart';
+import 'package:flutter_snappyshop/features/products/widgets/product_item.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
@@ -311,7 +311,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                       itemBuilder: (context, index) {
                         return SizedBox(
                           width: 150,
-                          child: ProductCard(
+                          child: ProductItem(
                             product: productsState.products[index],
                           ),
                         );

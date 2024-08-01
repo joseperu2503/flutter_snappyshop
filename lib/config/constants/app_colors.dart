@@ -22,7 +22,7 @@ class AppColors {
 
   static const Color error = Color(0xFFF04438);
   static const Color success = Color(0xFF2AA952);
-  static const Color backgroundColorDark = Color.fromARGB(255, 35, 36, 39);
+  static const Color backgroundColorDark = Color(0xFF232427);
 
   static const Color backgroundColor = Color(0xFFFFFFFF);
 
@@ -30,9 +30,9 @@ class AppColors {
   static const Color primaryCulturedDark = Color(0xFF2b3036);
   static const Color textCulturedDark = primaryCulturedDark;
 
-  static const Color textArsenicDark = Color.fromARGB(255, 181, 184, 189);
+  static const Color textArsenicDark = Color(0xFFB5B8BD);
 
-  static const Color textCoolBlackDark = Color.fromARGB(255, 231, 231, 231);
+  static const Color textCoolBlackDark = Color(0xFFE7E7E7);
   static const Color bgInputDark = primaryCulturedDark;
   static const Color bgInput = primaryCultured;
 }

@@ -5,7 +5,7 @@ import 'package:flutter_snappyshop/features/search/widgets/brand_filter_button.d
 import 'package:flutter_snappyshop/features/search/widgets/category_filter_button.dart';
 import 'package:flutter_snappyshop/features/search/widgets/input_search.dart';
 import 'package:flutter_snappyshop/features/search/widgets/price_filter_button.dart';
-import 'package:flutter_snappyshop/features/products/widgets/product_card.dart';
+import 'package:flutter_snappyshop/features/products/widgets/product_item.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/back_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -254,7 +254,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                     delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) {
                         final product = searchState.products[index];
-                        return ProductCard(product: product);
+                        return ProductItem(product: product);
                       },
                       childCount: searchState.products.length,
                     ),
