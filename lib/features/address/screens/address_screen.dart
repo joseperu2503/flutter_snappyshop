@@ -5,7 +5,6 @@ import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/address/providers/address_provider.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_snappyshop/features/shared/models/form_type.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
@@ -38,7 +37,7 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
       loading: addressState.savingAddress == LoadingStatus.loading,
       child: Layout1(
         title: 'Address',
-        action: addressState.formType == FormType.edit
+        action: addressState.selectedAddress != null
             ? Container(
                 width: 46,
                 height: 46,
@@ -46,7 +45,9 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                   shape: BoxShape.circle,
                 ),
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    ref.read(addressProvider.notifier).deleteAddress();
+                  },
                   child: SvgPicture.asset(
                     'assets/icons/delete.svg',
                     colorFilter: const ColorFilter.mode(
@@ -97,7 +98,7 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                       inputFormatters: [
                         LengthLimitingTextInputFormatter(28),
                       ],
-                      readOnly: addressState.formType == FormType.edit,
+                      readOnly: addressState.selectedAddress != null,
                     ),
                     const SizedBox(
                       height: formInputSpacing,
@@ -115,7 +116,7 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                       inputFormatters: [
                         LengthLimitingTextInputFormatter(28),
                       ],
-                      readOnly: addressState.formType == FormType.edit,
+                      readOnly: addressState.selectedAddress != null,
                     ),
                     const SizedBox(
                       height: formInputSpacing,
@@ -131,7 +132,7 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                       inputFormatters: [
                         LengthLimitingTextInputFormatter(12),
                       ],
-                      readOnly: addressState.formType == FormType.edit,
+                      readOnly: addressState.selectedAddress != null,
                     ),
                     const SizedBox(
                       height: formInputSpacing,
@@ -151,7 +152,7 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                       inputFormatters: [
                         LengthLimitingTextInputFormatter(50),
                       ],
-                      readOnly: addressState.formType == FormType.edit,
+                      readOnly: addressState.selectedAddress != null,
                     ),
                   ],
                 ),
@@ -171,7 +172,7 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
               : AppColors.backgroundColor,
           child: Column(
             children: [
-              if (addressState.formType == FormType.edit)
+              if (addressState.selectedAddress != null)
                 CustomButton(
                   onPressed: () {
                     ref.read(addressProvider.notifier).markAsPrimary();
@@ -179,7 +180,7 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                   text: 'Save as primary address',
                   type: ButtonType.text,
                 ),
-              if (addressState.formType == FormType.create)
+              if (addressState.selectedAddress == null)
                 CustomButton(
                   onPressed: () {
                     ref.read(addressProvider.notifier).saveAddress();

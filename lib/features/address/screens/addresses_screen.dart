@@ -6,7 +6,6 @@ import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
-import 'package:go_router/go_router.dart';
 
 class AddressesScreen extends ConsumerStatefulWidget {
   const AddressesScreen({super.key});
@@ -58,8 +57,7 @@ class AddressesScreenState extends ConsumerState<AddressesScreen> {
             color: AppColors.white,
           ),
           onPressed: () {
-            ref.read(addressProvider.notifier).resetForm();
-            context.push('/search-address');
+            ref.read(addressProvider.notifier).goSearchAddress();
           },
         ),
       ),

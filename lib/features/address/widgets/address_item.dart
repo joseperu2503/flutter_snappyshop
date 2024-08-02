@@ -38,7 +38,7 @@ class AddressItem extends ConsumerWidget {
           ),
         ),
         onPressed: () {
-          ref.read(addressProvider.notifier).selectAddress(address);
+          ref.read(addressProvider.notifier).goConfirm(address: address);
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

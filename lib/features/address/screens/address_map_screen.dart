@@ -9,7 +9,6 @@ import 'package:flutter_snappyshop/features/shared/services/location_service.dar
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 const double sizeMarker = 60;
@@ -242,7 +241,7 @@ class BottomModal extends ConsumerWidget {
             CustomButton(
               width: double.infinity,
               onPressed: () {
-                context.push('/confirm-address');
+                ref.read(addressProvider.notifier).goConfirm();
               },
               text: 'Confirm Address',
             )

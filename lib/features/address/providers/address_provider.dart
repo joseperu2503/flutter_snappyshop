@@ -27,8 +27,6 @@ class AddressNotifier extends StateNotifier<AddressState> {
 
   resetForm() {
     state = state.copyWith(
-      formType: FormType.create,
-      savingAddress: LoadingStatus.none,
       recipientName: FormxInput(
         value: '',
         validators: [Validators.required()],
@@ -55,7 +53,11 @@ class AddressNotifier extends StateNotifier<AddressState> {
         ],
       ),
     );
+  }
+
+  goSearchAddress() {
     changeSearch('');
+    appRouter.push('/search-address');
   }
 
   Future<void> searchLocality() async {
@@ -263,40 +265,26 @@ class AddressNotifier extends StateNotifier<AddressState> {
     await getMyAddresses();
   }
 
-  selectAddress(Address address) {
+  goConfirm({Address? address}) {
     if (state.listType == ListType.list) {
       state = state.copyWith(
-        formType: FormType.edit,
         selectedAddress: () => address,
         savingAddress: LoadingStatus.none,
-        recipientName: FormxInput<String>(
-          value: address.recipientName,
-          validators: [Validators.required()],
-        ),
-        detail: FormxInput<String>(
-          value: address.detail,
-          validators: [
-            Validators.required(errorMessage: 'We need this information.')
-          ],
-        ),
-        references: FormxInput(
-          value: address.references ?? '',
-        ),
-        phone: FormxInput<String>(
-          value: address.phone,
-          validators: [
-            Validators.required(errorMessage: 'We need this information.')
-          ],
-        ),
-        address: FormxInput<String>(
-          value: address.address,
-          validators: [
-            Validators.required(errorMessage: 'We need this information.')
-          ],
-        ),
       );
+      resetForm();
+      if (address != null) {
+        state = state.copyWith(
+          recipientName: state.recipientName.updateValue(address.recipientName),
+          detail: state.detail.updateValue(address.detail),
+          references: state.references.updateValue(address.references ?? ''),
+          phone: state.phone.updateValue(address.phone),
+          address: state.address.updateValue(address.address),
+        );
+      }
+
       appRouter.push('/confirm-address');
     } else {
+      if (address == null) return;
       ref.read(checkoutProvider.notifier).setAddress(address);
       appRouter.pop();
     }
@@ -349,7 +337,6 @@ class AddressState {
   final int totalPages;
   final LoadingStatus loadingAddresses;
   final LoadingStatus savingAddress;
-  final FormType formType;
   final ListType listType;
   final FormxInput<String> recipientName;
   final FormxInput<String> detail;
@@ -365,7 +352,6 @@ class AddressState {
     this.page = 1,
     this.totalPages = 1,
     this.loadingAddresses = LoadingStatus.none,
-    this.formType = FormType.create,
     this.savingAddress = LoadingStatus.none,
     this.selectedAddress,
     this.listType = ListType.list,
@@ -411,7 +397,6 @@ class AddressState {
         page: page ?? this.page,
         totalPages: totalPages ?? this.totalPages,
         loadingAddresses: loadingAddresses ?? this.loadingAddresses,
-        formType: formType ?? this.formType,
         savingAddress: savingAddress ?? this.savingAddress,
         selectedAddress:
             selectedAddress != null ? selectedAddress() : this.selectedAddress,
