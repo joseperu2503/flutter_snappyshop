@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/auth/providers/register_provider.dart';
-import 'package:flutter_snappyshop/features/auth/widgets/input_email.dart';
-import 'package:flutter_snappyshop/features/auth/widgets/input_name.dart';
-import 'package:flutter_snappyshop/features/auth/widgets/input_password.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/checkbox.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
-import 'package:flutter_snappyshop/features/shared/widgets/custom_label.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/custom_text_field.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
@@ -33,6 +31,7 @@ class RegisterScreenState extends ConsumerState<RegisterScreen> {
     final darkMode = ref.watch(darkModeProvider);
 
     return Layout1(
+      loading: registerState.loading,
       body: CustomScrollView(
         slivers: [
           SliverFillRemaining(
@@ -64,59 +63,61 @@ class RegisterScreenState extends ConsumerState<RegisterScreen> {
                   const SizedBox(
                     height: 60,
                   ),
-                  const CustomLabel('Name'),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  InputName(
+                  CustomTextField(
+                    label: 'Name',
+                    hintText: 'Your name',
                     value: registerState.name,
                     onChanged: (value) {
                       ref.read(registerProvider.notifier).changeName(value);
                     },
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.text,
                   ),
                   const SizedBox(
-                    height: 16,
+                    height: formInputSpacing,
                   ),
-                  const CustomLabel('Email'),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  InputEmail(
+                  CustomTextField(
+                    label: 'Email',
+                    hintText: 'Your email',
                     value: registerState.email,
                     onChanged: (value) {
                       ref.read(registerProvider.notifier).changeEmail(value);
                     },
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.emailAddress,
                   ),
                   const SizedBox(
-                    height: 16,
+                    height: formInputSpacing,
                   ),
-                  const CustomLabel('Password'),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  InputPassword(
+                  CustomTextField(
+                    label: 'Password',
+                    hintText: 'Password',
                     value: registerState.password,
                     onChanged: (value) {
                       ref.read(registerProvider.notifier).changePassword(value);
                     },
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.text,
+                    isPassword: true,
                   ),
                   const SizedBox(
-                    height: 16,
+                    height: formInputSpacing,
                   ),
-                  const CustomLabel('Confirm password'),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  InputPassword(
+                  CustomTextField(
+                    label: 'Confirm new Password',
+                    hintText: 'Password',
                     value: registerState.confirmPassword,
                     onChanged: (value) {
                       ref
                           .read(registerProvider.notifier)
                           .changeConfirmPassword(value);
                     },
+                    textInputAction: TextInputAction.done,
+                    keyboardType: TextInputType.text,
+                    isPassword: true,
                   ),
                   const SizedBox(
-                    height: 16,
+                    height: formInputSpacing,
                   ),
                   CustomCheckbox(
                     value: true,

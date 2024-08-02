@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/router/app_router.dart';
 import 'package:flutter_snappyshop/features/auth/services/auth_service.dart';
-import 'package:flutter_snappyshop/features/shared/inputs/email.dart';
-import 'package:flutter_snappyshop/features/shared/inputs/name.dart';
-import 'package:flutter_snappyshop/features/shared/inputs/password.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
+import 'package:flutter_snappyshop/features/shared/plugins/formx/formx.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:formz/formz.dart';
 
 final registerProvider =
     StateNotifierProvider<RegisterNotifier, RegisterState>((ref) {
@@ -20,27 +17,44 @@ class RegisterNotifier extends StateNotifier<RegisterState> {
 
   initData() {
     state = state.copyWith(
-      name: const Name.pure(''),
-      email: const Email.pure(''),
-      password: const Password.pure(''),
-      confirmPassword: const Password.pure(''),
+      name: FormxInput(
+        value: '',
+        validators: [Validators.required()],
+      ),
+      email: FormxInput<String>(
+        value: '',
+        validators: [Validators.required<String>(), Validators.email()],
+      ),
+      password: FormxInput(
+        value: '',
+        validators: [Validators.required()],
+      ),
+      confirmPassword: FormxInput(
+        value: '',
+        validators: [Validators.required()],
+      ),
     );
   }
 
   register() async {
     FocusManager.instance.primaryFocus?.unfocus();
-    final name = Name.dirty(state.name.value);
-    final email = Email.dirty(state.email.value);
-    final password = Password.dirty(state.password.value);
-    final confirmPassword = Password.dirty(state.confirmPassword.value);
+
+    if (state.password.value != state.confirmPassword.value) {
+      ref.read(snackbarProvider.notifier).showSnackbar(
+          'The passwords do not match. Please make sure to enter the same password in both fields.');
+      return;
+    }
 
     state = state.copyWith(
-      email: email,
-      password: password,
-      name: name,
-      confirmPassword: confirmPassword,
+      email: state.email.touch(),
+      password: state.password.touch(),
+      name: state.name.touch(),
+      confirmPassword: state.confirmPassword.touch(),
     );
-    if (!Formz.validate([email, password, name, confirmPassword])) return;
+    if (!Formx.validate(
+        [state.email, state.password, state.name, state.confirmPassword])) {
+      return;
+    }
 
     state = state.copyWith(
       loading: true,
@@ -66,25 +80,25 @@ class RegisterNotifier extends StateNotifier<RegisterState> {
     );
   }
 
-  changeName(Name name) {
+  changeName(FormxInput<String> name) {
     state = state.copyWith(
       name: name,
     );
   }
 
-  changeEmail(Email email) {
+  changeEmail(FormxInput<String> email) {
     state = state.copyWith(
       email: email,
     );
   }
 
-  changePassword(Password password) {
+  changePassword(FormxInput<String> password) {
     state = state.copyWith(
       password: password,
     );
   }
 
-  changeConfirmPassword(Password confirmPassword) {
+  changeConfirmPassword(FormxInput<String> confirmPassword) {
     state = state.copyWith(
       confirmPassword: confirmPassword,
     );
@@ -92,25 +106,25 @@ class RegisterNotifier extends StateNotifier<RegisterState> {
 }
 
 class RegisterState {
-  final Name name;
-  final Email email;
-  final Password password;
-  final Password confirmPassword;
+  final FormxInput<String> name;
+  final FormxInput<String> email;
+  final FormxInput<String> password;
+  final FormxInput<String> confirmPassword;
   final bool loading;
 
   RegisterState({
-    this.name = const Name.pure(''),
-    this.email = const Email.pure(''),
-    this.password = const Password.pure(''),
-    this.confirmPassword = const Password.pure(''),
+    this.name = const FormxInput(value: ''),
+    this.email = const FormxInput(value: ''),
+    this.password = const FormxInput(value: ''),
+    this.confirmPassword = const FormxInput(value: ''),
     this.loading = false,
   });
 
   RegisterState copyWith({
-    Name? name,
-    Email? email,
-    Password? password,
-    Password? confirmPassword,
+    FormxInput<String>? name,
+    FormxInput<String>? email,
+    FormxInput<String>? password,
+    FormxInput<String>? confirmPassword,
     bool? loading,
   }) =>
       RegisterState(
