@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/features/auth/providers/auth_provider.dart';
-import 'package:flutter_snappyshop/features/shared/inputs/email.dart';
-import 'package:flutter_snappyshop/features/shared/inputs/name.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
+import 'package:flutter_snappyshop/features/shared/plugins/formx/formx.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_snappyshop/features/user/services/camera_service.dart';
 import 'package:flutter_snappyshop/features/user/services/user_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:formz/formz.dart';
 
 final accountInformationProvider =
     StateNotifierProvider<AccountInformationNotifier, AccountInformationState>(
@@ -22,8 +20,14 @@ class AccountInformationNotifier
 
   initData() async {
     state = state.copyWith(
-      name: Name.pure(ref.read(authProvider).user?.name ?? ''),
-      email: Email.pure(ref.read(authProvider).user?.email ?? ''),
+      name: FormxInput<String>(
+        value: ref.read(authProvider).user?.name ?? '',
+        validators: [Validators.required<String>()],
+      ),
+      email: FormxInput<String>(
+        value: ref.read(authProvider).user?.email ?? '',
+        validators: [Validators.required<String>(), Validators.email()],
+      ),
       image: () => ref.read(authProvider).user?.profilePhoto,
       temporalImage: () => null,
       showButton: false,
@@ -32,14 +36,12 @@ class AccountInformationNotifier
 
   submit() async {
     FocusManager.instance.primaryFocus?.unfocus();
-    final name = Name.dirty(state.name.value);
-    final email = Email.dirty(state.email.value);
 
     state = state.copyWith(
-      email: email,
-      name: name,
+      email: state.email.touch(),
+      name: state.name.touch(),
     );
-    if (!Formz.validate([email, name])) return;
+    if (!Formx.validate([state.email, state.name])) return;
 
     state = state.copyWith(
       loading: true,
@@ -80,14 +82,14 @@ class AccountInformationNotifier
     );
   }
 
-  changeName(Name name) {
+  changeName(FormxInput<String> name) {
     state = state.copyWith(
       name: name,
       showButton: true,
     );
   }
 
-  changeEmail(Email email) {
+  changeEmail(FormxInput<String> email) {
     state = state.copyWith(
       email: email,
       showButton: true,
@@ -125,16 +127,16 @@ class AccountInformationNotifier
 }
 
 class AccountInformationState {
-  final Name name;
-  final Email email;
+  final FormxInput<String> name;
+  final FormxInput<String> email;
   final String? image;
   final String? temporalImage;
   final bool showButton;
   final bool loading;
 
   AccountInformationState({
-    this.name = const Name.pure(''),
-    this.email = const Email.pure(''),
+    this.name = const FormxInput(value: ''),
+    this.email = const FormxInput(value: ''),
     this.image,
     this.temporalImage,
     this.showButton = false,
@@ -142,8 +144,8 @@ class AccountInformationState {
   });
 
   AccountInformationState copyWith({
-    Name? name,
-    Email? email,
+    FormxInput<String>? name,
+    FormxInput<String>? email,
     bool? showButton,
     ValueGetter<String?>? image,
     ValueGetter<String?>? temporalImage,

@@ -2,12 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
-import 'package:flutter_snappyshop/features/auth/widgets/input_email.dart';
-import 'package:flutter_snappyshop/features/auth/widgets/input_name.dart';
+import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
-import 'package:flutter_snappyshop/features/shared/widgets/custom_label.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/custom_text_field.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/image_viewer.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
 import 'package:flutter_snappyshop/features/user/providers/account_information_provider.dart';
@@ -130,36 +129,32 @@ class AccountInformationScreenState
                     const SizedBox(
                       height: 30,
                     ),
-                    const CustomLabel(
-                      'Name',
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    InputName(
+                    CustomTextField(
+                      label: 'Name',
+                      hintText: 'Your name',
                       value: accountState.name,
                       onChanged: (value) {
                         ref
                             .read(accountInformationProvider.notifier)
                             .changeName(value);
                       },
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.text,
                     ),
                     const SizedBox(
-                      height: 16,
+                      height: formInputSpacing,
                     ),
-                    const CustomLabel(
-                      'Email',
-                    ),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    InputEmail(
+                    CustomTextField(
+                      label: 'Email',
+                      hintText: 'Your email',
                       value: accountState.email,
                       onChanged: (value) {
                         ref
                             .read(accountInformationProvider.notifier)
                             .changeEmail(value);
                       },
+                      textInputAction: TextInputAction.done,
+                      keyboardType: TextInputType.emailAddress,
                     ),
                     const SizedBox(
                       height: 80,
