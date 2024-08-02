@@ -166,7 +166,7 @@ class BottomModal extends ConsumerWidget {
               children: [
                 Expanded(
                   child: Text(
-                    addressState.address.value ?? '',
+                    addressState.address.value,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,

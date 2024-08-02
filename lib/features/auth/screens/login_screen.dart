@@ -99,7 +99,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                       keyboardType: TextInputType.emailAddress,
                     ),
                     const SizedBox(
-                      height: 28,
+                      height: formInputSpacing,
                     ),
                     CustomTextField(
                       label: 'Password',
@@ -109,7 +109,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                         ref.read(loginProvider.notifier).changePassword(value);
                       },
                       textInputAction: TextInputAction.done,
-                      keyboardType: TextInputType.emailAddress,
+                      keyboardType: TextInputType.visiblePassword,
                       isPassword: true,
                       onFieldSubmitted: (value) {
                         ref.read(loginProvider.notifier).login();

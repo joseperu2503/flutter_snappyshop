@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const double formInputSpacing = 20;
+const double formInputSpacing = 28;
 const double labelInputSpacing = 4;
 const double toolbarHeight = 58;
 

@@ -1,6 +1,8 @@
 import './validators/validator.dart';
 import 'package:flutter/services.dart';
 
+export './validators/validators.dart';
+
 // enum ValidatorType {
 //   required,
 //   email,
@@ -36,7 +38,7 @@ class Formx {
 
 class FormxInput<T> {
   const FormxInput({
-    value,
+    required T value,
     List<Validator<T>> validators = const [],
     List<TextInputFormatter> formatters = const [],
     bool touched = false,

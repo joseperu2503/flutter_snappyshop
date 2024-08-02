@@ -9,8 +9,8 @@ import 'package:flutter_snappyshop/features/shared/models/form_type.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
-import 'package:flutter_snappyshop/features/shared/widgets/custom_input.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_label.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/custom_text_field.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_textarea.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
 import 'package:flutter_svg/svg.dart';
@@ -32,7 +32,6 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
   Widget build(BuildContext context) {
     final MediaQueryData screen = MediaQuery.of(context);
     final addressState = ref.watch(addressProvider);
-    final changeForm = ref.read(addressProvider.notifier).changeForm;
     final darkMode = ref.watch(darkModeProvider);
 
     return Loader(
@@ -74,33 +73,25 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const CustomLabel('Address'),
-                    const SizedBox(
-                      height: labelInputSpacing,
-                    ),
-                    CustomInput(
+                    CustomTextField(
+                      label: 'Address',
+                      hintText: 'Your address',
                       value: addressState.address,
                       onChanged: (value) {
-                        changeForm(AddressForm.address, value);
+                        ref.read(addressProvider.notifier).changeAddress(value);
                       },
-                      readOnly: true,
                       textInputAction: TextInputAction.next,
+                      readOnly: true,
                     ),
                     const SizedBox(
                       height: formInputSpacing,
                     ),
-                    const CustomLabel('Detail: apt/flat/house'),
-                    const SizedBox(
-                      height: labelInputSpacing,
-                    ),
-                    CustomInput(
+                    CustomTextField(
+                      label: 'Detail: apt/flat/house',
+                      hintText: 'ex. Rio de oro building apt 201',
                       value: addressState.detail,
                       onChanged: (value) {
-                        changeForm(AddressForm.detail, value);
-                      },
-                      hintText: 'ex. Rio de oro building apt 201',
-                      validationMessages: {
-                        'required': (error) => 'We need this information.'
+                        ref.read(addressProvider.notifier).changeDetail(value);
                       },
                       textInputAction: TextInputAction.next,
                       inputFormatters: [
@@ -111,18 +102,14 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                     const SizedBox(
                       height: formInputSpacing,
                     ),
-                    const CustomLabel('Name'),
-                    const SizedBox(
-                      height: labelInputSpacing,
-                    ),
-                    CustomInput(
+                    CustomTextField(
+                      label: 'Name',
+                      hintText: 'ex. James Hetfield',
                       value: addressState.recipientName,
                       onChanged: (value) {
-                        changeForm(AddressForm.recipientName, value);
-                      },
-                      hintText: 'ex. James Hetfield',
-                      validationMessages: {
-                        'required': (error) => 'We need this information.',
+                        ref
+                            .read(addressProvider.notifier)
+                            .changeRecipientName(value);
                       },
                       textInputAction: TextInputAction.next,
                       inputFormatters: [
@@ -133,20 +120,14 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                     const SizedBox(
                       height: formInputSpacing,
                     ),
-                    const CustomLabel('Phone Number'),
-                    const SizedBox(
-                      height: labelInputSpacing,
-                    ),
-                    CustomInput(
+                    CustomTextField(
+                      label: 'Phone Number',
                       value: addressState.phone,
                       onChanged: (value) {
-                        changeForm(AddressForm.phone, value);
-                      },
-                      validationMessages: {
-                        'required': (error) => 'We need this information.'
+                        ref.read(addressProvider.notifier).changePhone(value);
                       },
                       textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.phone,
+                      keyboardType: TextInputType.number,
                       inputFormatters: [
                         LengthLimitingTextInputFormatter(12),
                       ],
@@ -159,10 +140,12 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                     const SizedBox(
                       height: labelInputSpacing,
                     ),
-                    CustomTexarea(
+                    CustomTextArea(
                       value: addressState.references,
                       onChanged: (value) {
-                        changeForm(AddressForm.references, value);
+                        ref
+                            .read(addressProvider.notifier)
+                            .changeReferences(value);
                       },
                       textInputAction: TextInputAction.done,
                       inputFormatters: [
@@ -201,7 +184,7 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
                   onPressed: () {
                     ref.read(addressProvider.notifier).saveAddress();
                   },
-                  disabled: !addressState.isFormValue,
+                  disabled: !addressState.isFormValid,
                   text: 'Save Address',
                 ),
             ],

@@ -10,9 +10,9 @@ import 'package:flutter_snappyshop/features/checkout/providers/checkout_provider
 import 'package:flutter_snappyshop/features/shared/models/form_type.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
+import 'package:flutter_snappyshop/features/shared/plugins/formx/formx.dart';
 import 'package:flutter_snappyshop/features/shared/providers/map_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
-import 'package:reactive_forms/reactive_forms.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 final addressProvider =
@@ -21,29 +21,39 @@ final addressProvider =
 });
 
 class AddressNotifier extends StateNotifier<AddressState> {
-  AddressNotifier(this.ref)
-      : super(
-          AddressState(
-            form: AddressForm.resetForm(),
-          ),
-        );
+  AddressNotifier(this.ref) : super(AddressState());
 
   final StateNotifierProviderRef ref;
-
-  void changeForm(String key, FormControl<String> formControl) {
-    state = state.copyWith(
-      form: FormGroup({
-        ...state.form.controls,
-        key: formControl,
-      }),
-    );
-  }
 
   resetForm() {
     state = state.copyWith(
       formType: FormType.create,
       savingAddress: LoadingStatus.none,
-      form: AddressForm.resetForm(),
+      recipientName: FormxInput(
+        value: '',
+        validators: [Validators.required()],
+      ),
+      detail: FormxInput(
+        value: '',
+        validators: [
+          Validators.required(errorMessage: 'We need this information.')
+        ],
+      ),
+      references: const FormxInput(
+        value: '',
+      ),
+      phone: FormxInput(
+        value: '',
+        validators: [
+          Validators.required(errorMessage: 'We need this information.')
+        ],
+      ),
+      address: FormxInput(
+        value: '',
+        validators: [
+          Validators.required(errorMessage: 'We need this information.')
+        ],
+      ),
     );
     changeSearch('');
   }
@@ -59,17 +69,22 @@ class AddressNotifier extends StateNotifier<AddressState> {
 
       if (cameraPosition == ref.read(mapProvider).cameraPosition) {
         if (response.features.isNotEmpty &&
-            response.features[0].properties.namePreferred != null &&
-            response.features[0].properties.context.country?.name != null) {
-          changeForm(AddressForm.address,
-              FormControl(value: response.features[0].properties.name));
+            response.features[0].properties.name != null) {
+          state = state.copyWith(
+            address: state.address
+                .updateValue(response.features[0].properties.name!),
+          );
         } else {
-          changeForm(AddressForm.address, FormControl(value: ''));
+          state = state.copyWith(
+            address: state.address.updateValue(''),
+          );
         }
       }
     } on ServiceException catch (_) {
       if (cameraPosition == ref.read(mapProvider).cameraPosition) {
-        changeForm(AddressForm.address, FormControl(value: ''));
+        state = state.copyWith(
+          address: state.address.updateValue(''),
+        );
       }
     }
   }
@@ -168,13 +183,13 @@ class AddressNotifier extends StateNotifier<AddressState> {
         savingAddress: LoadingStatus.loading,
       );
       await AddressService.createAddress(
-        address: state.form.control(AddressForm.address).value,
-        detail: state.form.control(AddressForm.detail).value,
-        recipientName: state.form.control(AddressForm.recipientName).value,
-        phone: state.form.control(AddressForm.phone).value,
+        address: state.address.value,
+        detail: state.detail.value,
+        recipientName: state.recipientName.value,
+        phone: state.phone.value,
         latitude: cameraPosition.latitude,
         longitude: cameraPosition.longitude,
-        references: state.form.control(AddressForm.references).value,
+        references: state.references.value,
       );
       state = state.copyWith(
         savingAddress: LoadingStatus.success,
@@ -254,9 +269,32 @@ class AddressNotifier extends StateNotifier<AddressState> {
         formType: FormType.edit,
         selectedAddress: () => address,
         savingAddress: LoadingStatus.none,
-        form: AddressForm.resetForm(),
+        recipientName: FormxInput<String>(
+          value: address.recipientName,
+          validators: [Validators.required()],
+        ),
+        detail: FormxInput<String>(
+          value: address.detail,
+          validators: [
+            Validators.required(errorMessage: 'We need this information.')
+          ],
+        ),
+        references: FormxInput(
+          value: address.references ?? '',
+        ),
+        phone: FormxInput<String>(
+          value: address.phone,
+          validators: [
+            Validators.required(errorMessage: 'We need this information.')
+          ],
+        ),
+        address: FormxInput<String>(
+          value: address.address,
+          validators: [
+            Validators.required(errorMessage: 'We need this information.')
+          ],
+        ),
       );
-      state.form.patchValue(address.toJson());
       appRouter.push('/confirm-address');
     } else {
       ref.read(checkoutProvider.notifier).setAddress(address);
@@ -269,13 +307,42 @@ class AddressNotifier extends StateNotifier<AddressState> {
       listType: listType,
     );
   }
+
+  void changeRecipientName(FormxInput<String> recipientName) {
+    state = state.copyWith(
+      recipientName: recipientName,
+    );
+  }
+
+  void changeDetail(FormxInput<String> detail) {
+    state = state.copyWith(
+      detail: detail,
+    );
+  }
+
+  void changeReferences(FormxInput<String> references) {
+    state = state.copyWith(
+      references: references,
+    );
+  }
+
+  void changePhone(FormxInput<String> phone) {
+    state = state.copyWith(
+      phone: phone,
+    );
+  }
+
+  void changeAddress(FormxInput<String> address) {
+    state = state.copyWith(
+      address: address,
+    );
+  }
 }
 
 class AddressState {
   final List<Feature> addressResults;
   final String search;
   final LoadingStatus searchingAddresses;
-  final FormGroup form;
   final List<Address> addresses;
   final Address? selectedAddress;
   final int page;
@@ -284,12 +351,16 @@ class AddressState {
   final LoadingStatus savingAddress;
   final FormType formType;
   final ListType listType;
+  final FormxInput<String> recipientName;
+  final FormxInput<String> detail;
+  final FormxInput<String> references;
+  final FormxInput<String> phone;
+  final FormxInput<String> address;
 
   AddressState({
     this.addressResults = const [],
     this.search = '',
     this.searchingAddresses = LoadingStatus.none,
-    required this.form,
     this.addresses = const [],
     this.page = 1,
     this.totalPages = 1,
@@ -298,27 +369,26 @@ class AddressState {
     this.savingAddress = LoadingStatus.none,
     this.selectedAddress,
     this.listType = ListType.list,
+    this.recipientName = const FormxInput(value: ''),
+    this.detail = const FormxInput(value: ''),
+    this.references = const FormxInput(value: ''),
+    this.phone = const FormxInput(value: ''),
+    this.address = const FormxInput(value: ''),
   });
 
-  FormControl<String> get recipientName =>
-      form.control(AddressForm.recipientName) as FormControl<String>;
-  FormControl<String> get detail =>
-      form.control(AddressForm.detail) as FormControl<String>;
-  FormControl<String> get references =>
-      form.control(AddressForm.references) as FormControl<String>;
-  FormControl<String> get phone =>
-      form.control(AddressForm.phone) as FormControl<String>;
-  FormControl<String> get address =>
-      form.control(AddressForm.address) as FormControl<String>;
+  bool get isFormValid =>
+      recipientName.isValid &&
+      detail.isValid &&
+      references.isValid &&
+      phone.isValid &&
+      address.isValid;
 
-  bool get isFormValue => form.valid;
   bool get firstLoad => loadingAddresses == LoadingStatus.loading && page == 1;
 
   AddressState copyWith({
     List<Feature>? addressResults,
     String? search,
     LoadingStatus? searchingAddresses,
-    FormGroup? form,
     List<Address>? addresses,
     int? page,
     int? totalPages,
@@ -327,12 +397,16 @@ class AddressState {
     LoadingStatus? savingAddress,
     ValueGetter<Address?>? selectedAddress,
     ListType? listType,
+    FormxInput<String>? recipientName,
+    FormxInput<String>? detail,
+    FormxInput<String>? references,
+    FormxInput<String>? phone,
+    FormxInput<String>? address,
   }) =>
       AddressState(
         addressResults: addressResults ?? this.addressResults,
         search: search ?? this.search,
         searchingAddresses: searchingAddresses ?? this.searchingAddresses,
-        form: form ?? this.form,
         addresses: addresses ?? this.addresses,
         page: page ?? this.page,
         totalPages: totalPages ?? this.totalPages,
@@ -342,30 +416,10 @@ class AddressState {
         selectedAddress:
             selectedAddress != null ? selectedAddress() : this.selectedAddress,
         listType: listType ?? this.listType,
+        recipientName: recipientName ?? this.recipientName,
+        detail: detail ?? this.detail,
+        references: references ?? this.references,
+        phone: phone ?? this.phone,
+        address: address ?? this.address,
       );
-}
-
-class AddressForm {
-  static String address = 'address';
-  static String detail = 'detail';
-  static String recipientName = 'recipient_name';
-  static String phone = 'phone';
-  static String references = 'references';
-
-  static FormGroup resetForm() {
-    return FormGroup({
-      address:
-          FormControl<String>(value: '', validators: [Validators.required]),
-      detail: FormControl<String>(value: '', validators: [Validators.required]),
-      recipientName: FormControl<String>(
-        value: '',
-        validators: [Validators.required],
-      ),
-      phone: FormControl<String>(value: '', validators: [
-        Validators.required,
-        Validators.number(),
-      ]),
-      references: FormControl<String>(value: ''),
-    });
-  }
 }
