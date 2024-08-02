@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/auth/providers/forgot_password_provider.dart';
-import 'package:flutter_snappyshop/features/auth/widgets/input_password.dart';
-import 'package:flutter_snappyshop/features/shared/inputs/password.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
-import 'package:flutter_snappyshop/features/shared/widgets/custom_label.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/custom_text_field.dart';
 
 class ChangePasswordExternalScreen extends ConsumerStatefulWidget {
   const ChangePasswordExternalScreen({super.key});
@@ -22,14 +21,6 @@ class ChangePasswordExternalScreenState
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      ref
-          .read(forgotPasswordProvider.notifier)
-          .changePassword(const Password.pure(''));
-      ref
-          .read(forgotPasswordProvider.notifier)
-          .changeConfirmPassword(const Password.pure(''));
-    });
   }
 
   @override
@@ -88,31 +79,38 @@ class ChangePasswordExternalScreenState
                   const SizedBox(
                     height: 40,
                   ),
-                  const CustomLabel('New Password'),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  InputPassword(
+                  CustomTextField(
+                    label: 'New Password',
+                    hintText: 'Password',
                     value: forgotState.password,
                     onChanged: (value) {
                       ref
                           .read(forgotPasswordProvider.notifier)
                           .changePassword(value);
                     },
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.visiblePassword,
+                    isPassword: true,
                   ),
                   const SizedBox(
-                    height: 16,
+                    height: formInputSpacing,
                   ),
-                  const CustomLabel('Confirm new password'),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  InputPassword(
+                  CustomTextField(
+                    label: 'Confirm new Password',
+                    hintText: 'Password',
                     value: forgotState.confirmPassword,
                     onChanged: (value) {
                       ref
                           .read(forgotPasswordProvider.notifier)
                           .changeConfirmPassword(value);
+                    },
+                    textInputAction: TextInputAction.done,
+                    keyboardType: TextInputType.visiblePassword,
+                    isPassword: true,
+                    onFieldSubmitted: (value) {
+                      ref
+                          .read(forgotPasswordProvider.notifier)
+                          .submitChangePassword();
                     },
                   ),
                   const SizedBox(

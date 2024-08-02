@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/router/app_router.dart';
 import 'package:flutter_snappyshop/features/auth/services/change_password_external_service.dart';
-import 'package:flutter_snappyshop/features/shared/inputs/email.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_snappyshop/features/shared/inputs/password.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
+import 'package:flutter_snappyshop/features/shared/plugins/formx/formx.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/timer_provider.dart';
-import 'package:formz/formz.dart';
 
 final forgotPasswordProvider =
     StateNotifierProvider<ForgotPasswordNotifier, ForgotPasswordState>((ref) {
@@ -20,10 +18,19 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState> {
 
   initData() {
     state = state.copyWith(
-      email: const Email.pure(''),
-      confirmPassword: const Password.pure(''),
+      email: FormxInput<String>(
+        value: '',
+        validators: [Validators.required<String>(), Validators.email()],
+      ),
+      password: FormxInput(
+        value: '',
+        validators: [Validators.required()],
+      ),
+      confirmPassword: FormxInput(
+        value: '',
+        validators: [Validators.required()],
+      ),
       loading: false,
-      password: const Password.pure(''),
       uuid: '',
       verifyCode: '',
       expirationDate: () => null,
@@ -33,11 +40,10 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState> {
   sendVerifyCode({bool withPushRoute = true}) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
-    final email = Email.dirty(state.email.value);
     state = state.copyWith(
-      email: email,
+      email: state.email.touch(),
     );
-    if (!Formz.validate([email])) return;
+    if (!Formx.validate([state.email])) return;
 
     state = state.copyWith(
       loading: true,
@@ -98,14 +104,17 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState> {
   submitChangePassword() async {
     FocusManager.instance.primaryFocus?.unfocus();
 
-    final password = Password.dirty(state.password.value);
-    final confirmPassword = Password.dirty(state.confirmPassword.value);
+    if (state.password.value != state.confirmPassword.value) {
+      ref.read(snackbarProvider.notifier).showSnackbar(
+          'The passwords do not match. Please make sure to enter the same password in both fields.');
+      return;
+    }
 
     state = state.copyWith(
-      password: password,
-      confirmPassword: confirmPassword,
+      password: state.password.touch(),
+      confirmPassword: state.confirmPassword.touch(),
     );
-    if (!Formz.validate([password, confirmPassword])) return;
+    if (!Formx.validate([state.password, state.confirmPassword])) return;
 
     state = state.copyWith(
       loading: true,
@@ -132,7 +141,7 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState> {
     );
   }
 
-  changeEmail(Email email) {
+  changeEmail(FormxInput<String> email) {
     state = state.copyWith(
       email: email,
     );
@@ -144,13 +153,13 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState> {
     );
   }
 
-  changePassword(Password password) {
+  changePassword(FormxInput<String> password) {
     state = state.copyWith(
       password: password,
     );
   }
 
-  changeConfirmPassword(Password confirmPassword) {
+  changeConfirmPassword(FormxInput<String> confirmPassword) {
     state = state.copyWith(
       confirmPassword: confirmPassword,
     );
@@ -158,31 +167,32 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState> {
 }
 
 class ForgotPasswordState {
-  final Email email;
+  final FormxInput<String> email;
+  final FormxInput<String> password;
+  final FormxInput<String> confirmPassword;
   final bool loading;
   final String verifyCode;
   final String uuid;
-  final Password password;
-  final Password confirmPassword;
+
   final DateTime? expirationDate;
 
   ForgotPasswordState({
-    this.email = const Email.pure(''),
+    this.email = const FormxInput(value: ''),
+    this.password = const FormxInput(value: ''),
+    this.confirmPassword = const FormxInput(value: ''),
     this.loading = false,
     this.verifyCode = '',
     this.uuid = '',
-    this.password = const Password.pure(''),
-    this.confirmPassword = const Password.pure(''),
     this.expirationDate,
   });
 
   ForgotPasswordState copyWith({
-    Email? email,
+    FormxInput<String>? email,
     bool? loading,
     String? verifyCode,
     String? uuid,
-    Password? password,
-    Password? confirmPassword,
+    FormxInput<String>? password,
+    FormxInput<String>? confirmPassword,
     ValueGetter<DateTime?>? expirationDate,
   }) =>
       ForgotPasswordState(
