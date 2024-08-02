@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
-import 'package:flutter_snappyshop/features/auth/widgets/input_password.dart';
+import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
-import 'package:flutter_snappyshop/features/shared/widgets/custom_label.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/custom_text_field.dart';
 import 'package:flutter_snappyshop/features/user/providers/change_password_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -70,31 +70,36 @@ class ChangePasswordInternalScreenState
                   const SizedBox(
                     height: 40,
                   ),
-                  const CustomLabel('New Password'),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  InputPassword(
+                  CustomTextField(
+                    label: 'New Password',
+                    hintText: 'Password',
                     value: passwordState.password,
                     onChanged: (value) {
                       ref
                           .read(changePasswordProvider.notifier)
                           .changePassword(value);
                     },
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.visiblePassword,
+                    isPassword: true,
                   ),
                   const SizedBox(
-                    height: 16,
+                    height: formInputSpacing,
                   ),
-                  const CustomLabel('Confirm new Password'),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  InputPassword(
+                  CustomTextField(
+                    label: 'Confirm new Password',
+                    hintText: 'Password',
                     value: passwordState.confirmPassword,
                     onChanged: (value) {
                       ref
                           .read(changePasswordProvider.notifier)
                           .changeConfirmPassword(value);
+                    },
+                    textInputAction: TextInputAction.done,
+                    keyboardType: TextInputType.visiblePassword,
+                    isPassword: true,
+                    onFieldSubmitted: (value) {
+                      ref.read(changePasswordProvider.notifier).submit();
                     },
                   ),
                   const SizedBox(

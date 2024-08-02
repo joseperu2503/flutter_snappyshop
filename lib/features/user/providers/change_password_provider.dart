@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/router/app_router.dart';
-import 'package:flutter_snappyshop/features/shared/inputs/password.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
+import 'package:flutter_snappyshop/features/shared/plugins/formx/formx.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_snappyshop/features/user/services/user_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:formz/formz.dart';
 
 final changePasswordProvider =
     StateNotifierProvider<ChangePasswordNotifier, ChangePasswordState>((ref) {
@@ -20,27 +19,31 @@ class ChangePasswordNotifier extends StateNotifier<ChangePasswordState> {
   initData() {
     state = state.copyWith(
       loading: LoadingStatus.none,
-      password: const Password.pure(''),
-      confirmPassword: const Password.pure(''),
+      password: FormxInput(
+        value: '',
+        validators: [Validators.required()],
+      ),
+      confirmPassword: FormxInput(
+        value: '',
+        validators: [Validators.required()],
+      ),
     );
   }
 
   submit() async {
     FocusManager.instance.primaryFocus?.unfocus();
 
-    final password = Password.dirty(state.password.value);
-    final confirmPassword = Password.dirty(state.confirmPassword.value);
-
-    if (password.value != confirmPassword.value) {
+    if (state.password.value != state.confirmPassword.value) {
       ref.read(snackbarProvider.notifier).showSnackbar(
           'The passwords do not match. Please make sure to enter the same password in both fields.');
       return;
     }
+
     state = state.copyWith(
-      password: password,
-      confirmPassword: confirmPassword,
+      password: state.password.touch(),
+      confirmPassword: state.confirmPassword.touch(),
     );
-    if (!Formz.validate([password, confirmPassword])) return;
+    if (!Formx.validate([state.password, state.confirmPassword])) return;
 
     state = state.copyWith(
       loading: LoadingStatus.loading,
@@ -65,13 +68,13 @@ class ChangePasswordNotifier extends StateNotifier<ChangePasswordState> {
     }
   }
 
-  changePassword(Password password) {
+  changePassword(FormxInput<String> password) {
     state = state.copyWith(
       password: password,
     );
   }
 
-  changeConfirmPassword(Password confirmPassword) {
+  changeConfirmPassword(FormxInput<String> confirmPassword) {
     state = state.copyWith(
       confirmPassword: confirmPassword,
     );
@@ -79,19 +82,19 @@ class ChangePasswordNotifier extends StateNotifier<ChangePasswordState> {
 }
 
 class ChangePasswordState {
-  final Password password;
-  final Password confirmPassword;
+  final FormxInput<String> password;
+  final FormxInput<String> confirmPassword;
   final LoadingStatus loading;
 
   ChangePasswordState({
-    this.password = const Password.pure(''),
-    this.confirmPassword = const Password.pure(''),
+    this.password = const FormxInput(value: ''),
+    this.confirmPassword = const FormxInput(value: ''),
     this.loading = LoadingStatus.none,
   });
 
   ChangePasswordState copyWith({
-    Password? password,
-    Password? confirmPassword,
+    FormxInput<String>? password,
+    FormxInput<String>? confirmPassword,
     LoadingStatus? loading,
   }) =>
       ChangePasswordState(
