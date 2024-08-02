@@ -29,7 +29,6 @@ dependencies:
   intl: ^0.19.0
   jwt_decoder: ^2.0.1
   mask_input_formatter: ^0.0.3
-  reactive_forms: ^17.0.0
   shared_preferences: ^2.2.2
   visibility_detector: ^0.4.0+2
 
