@@ -7,13 +7,12 @@ import 'package:flutter_snappyshop/features/auth/models/login_response.dart';
 import 'package:flutter_snappyshop/features/auth/providers/auth_provider.dart';
 import 'package:flutter_snappyshop/features/auth/services/auth_service.dart';
 import 'package:flutter_snappyshop/features/core/services/storage_service.dart';
-import 'package:flutter_snappyshop/features/shared/inputs/email.dart';
-import 'package:flutter_snappyshop/features/shared/inputs/password.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/settings/providers/notification_provider.dart';
+import 'package:flutter_snappyshop/features/shared/plugins/formx/formx.dart';
+import 'package:flutter_snappyshop/features/shared/plugins/formx/validators/validators.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:formz/formz.dart';
 import 'package:flutter_snappyshop/config/constants/environment.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -31,22 +30,32 @@ class LoginNotifier extends StateNotifier<LoginState> {
         await StorageService.get<bool>(StorageKeys.rememberMe) ?? false;
 
     state = state.copyWith(
-      email: rememberMe ? Email.pure(email) : const Email.pure(''),
-      password: const Password.pure(''),
+      email: FormxInput<String>(
+        value: '',
+        validators: [Validators.required<String>(), Validators.email()],
+      ),
+      password: FormxInput(
+        value: '',
+        validators: [Validators.required()],
+      ),
       rememberMe: rememberMe,
     );
+
+    if (rememberMe) {
+      state = state.copyWith(
+        email: state.email.updateValue(email),
+      );
+    }
   }
 
   login() async {
     FocusManager.instance.primaryFocus?.unfocus();
 
-    final email = Email.dirty(state.email.value);
-    final password = Password.dirty(state.password.value);
     state = state.copyWith(
-      email: email,
-      password: password,
+      email: state.email.touch(),
+      password: state.password.touch(),
     );
-    if (!Formz.validate([email, password])) return;
+    if (!Formx.validate([state.email, state.password])) return;
 
     state = state.copyWith(
       loading: true,
@@ -139,13 +148,13 @@ class LoginNotifier extends StateNotifier<LoginState> {
     await StorageService.set<bool>(StorageKeys.rememberMe, state.rememberMe);
   }
 
-  changeEmail(Email email) {
+  changeEmail(FormxInput<String> email) {
     state = state.copyWith(
       email: email,
     );
   }
 
-  changePassword(Password password) {
+  changePassword(FormxInput<String> password) {
     state = state.copyWith(
       password: password,
     );
@@ -159,21 +168,21 @@ class LoginNotifier extends StateNotifier<LoginState> {
 }
 
 class LoginState {
-  final Email email;
-  final Password password;
+  final FormxInput<String> email;
+  final FormxInput<String> password;
   final bool loading;
   final bool rememberMe;
 
   LoginState({
-    this.email = const Email.pure(''),
-    this.password = const Password.pure(''),
+    this.email = const FormxInput(value: ''),
+    this.password = const FormxInput(value: ''),
     this.loading = false,
     this.rememberMe = false,
   });
 
   LoginState copyWith({
-    Email? email,
-    Password? password,
+    FormxInput<String>? email,
+    FormxInput<String>? password,
     bool? loading,
     bool? rememberMe,
   }) =>

@@ -12,14 +12,17 @@ class CustomLabel extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final darkMode = ref.watch(darkModeProvider);
 
-    return Text(
-      label,
-      style: TextStyle(
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
-        color: darkMode ? AppColors.textArsenicDark : AppColors.textArsenic,
-        height: 22 / 14,
-        leadingDistribution: TextLeadingDistribution.even,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w500,
+          color: darkMode ? AppColors.textArsenicDark : AppColors.textArsenic,
+          height: 22 / 14,
+          leadingDistribution: TextLeadingDistribution.even,
+        ),
       ),
     );
   }

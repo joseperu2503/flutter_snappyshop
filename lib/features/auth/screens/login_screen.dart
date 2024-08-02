@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/auth/providers/login_provider.dart';
-import 'package:flutter_snappyshop/features/auth/widgets/input_email.dart';
-import 'package:flutter_snappyshop/features/auth/widgets/input_password.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/checkbox.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
-import 'package:flutter_snappyshop/features/shared/widgets/custom_label.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/custom_text_field.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -90,31 +88,35 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                     const SizedBox(
                       height: 60,
                     ),
-                    const CustomLabel('Email'),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    InputEmail(
+                    CustomTextField(
+                      label: 'Email',
+                      hintText: 'Your email',
                       value: loginState.email,
                       onChanged: (value) {
                         ref.read(loginProvider.notifier).changeEmail(value);
                       },
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.emailAddress,
                     ),
                     const SizedBox(
-                      height: 16,
+                      height: 28,
                     ),
-                    const CustomLabel('Password'),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    InputPassword(
+                    CustomTextField(
+                      label: 'Password',
+                      hintText: 'Password',
                       value: loginState.password,
                       onChanged: (value) {
                         ref.read(loginProvider.notifier).changePassword(value);
                       },
+                      textInputAction: TextInputAction.done,
+                      keyboardType: TextInputType.emailAddress,
+                      isPassword: true,
+                      onFieldSubmitted: (value) {
+                        ref.read(loginProvider.notifier).login();
+                      },
                     ),
                     const SizedBox(
-                      height: 16,
+                      height: 24,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -130,6 +132,7 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                           onTap: () {
                             context.push('/forgot-password');
                           },
+                          behavior: HitTestBehavior.translucent,
                           child: Text(
                             'Forgot Password',
                             style: TextStyle(

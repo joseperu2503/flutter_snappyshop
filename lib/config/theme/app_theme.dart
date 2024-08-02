@@ -23,5 +23,8 @@ class AppTheme {
             foregroundColor: AppColors.textArsenic,
           ),
         ),
+        textSelectionTheme: const TextSelectionThemeData(
+          cursorColor: AppColors.primaryPearlAqua,
+        ),
       );
 }
