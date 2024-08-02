@@ -6,10 +6,8 @@ import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/cards/providers/card_provider.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_snappyshop/features/shared/models/form_type.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
-import 'package:flutter_snappyshop/features/shared/widgets/custom_input.dart';
-import 'package:flutter_snappyshop/features/shared/widgets/custom_label.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/custom_text_field.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mask_input_formatter/mask_input_formatter.dart';
@@ -47,13 +45,12 @@ class CardScreenState extends ConsumerState<CardScreen> {
   Widget build(BuildContext context) {
     final MediaQueryData screen = MediaQuery.of(context);
     final cardState = ref.watch(cardProvider);
-    final changeForm = ref.read(cardProvider.notifier).changeForm;
 
     return Loader(
       loading: false,
       child: Layout1(
         title: 'Card',
-        action: cardState.formType == FormType.edit
+        action: cardState.selectedCard != null
             ? Container(
                 width: 46,
                 height: 46,
@@ -91,10 +88,10 @@ class CardScreenState extends ConsumerState<CardScreen> {
                   children: [
                     CreditCardWidget(
                       height: screen.size.width * 0.5,
-                      cardNumber: cardState.cardNumber.value ?? '',
-                      expiryDate: cardState.expired.value ?? '',
-                      cardHolderName: cardState.cardHolderName.value ?? '',
-                      cvvCode: cardState.ccv.value ?? '',
+                      cardNumber: cardState.cardNumber.value,
+                      expiryDate: cardState.expired.value,
+                      cardHolderName: cardState.cardHolderName.value,
+                      cvvCode: cardState.ccv.value,
                       showBackView: showBackView,
                       isHolderNameVisible: true,
                       onCreditCardWidgetChange: (CreditCardBrand brand) {
@@ -121,48 +118,36 @@ class CardScreenState extends ConsumerState<CardScreen> {
                     const SizedBox(
                       height: 40,
                     ),
-                    const CustomLabel('Card Number'),
-                    const SizedBox(
-                      height: labelInputSpacing,
-                    ),
-                    CustomInput(
+                    CustomTextField(
+                      label: 'Card Number',
+                      hintText: 'XXXX XXXX XXXX XXXX',
                       value: cardState.cardNumber,
                       onChanged: (value) {
-                        changeForm(CardForm.cardNumber, value);
+                        ref.read(cardProvider.notifier).changeCardNumber(value);
                       },
-                      hintText: 'XXXX XXXX XXXX XXXX',
                       inputFormatters: [
                         cardNumberFormatter,
                       ],
                       textInputAction: TextInputAction.next,
-                      autofocus: cardState.formType == FormType.create,
-                      validationMessages: {
-                        'required': (error) => 'We need this information.',
-                        'minLength': (error) => 'Incomplete card number.',
-                        'invalidCard': (error) => 'Invalid card number.'
-                      },
+                      autofocus: cardState.selectedCard == null,
                       keyboardType: TextInputType.number,
-                      readOnly: cardState.formType == FormType.edit,
+                      readOnly: cardState.selectedCard != null,
                     ),
                     const SizedBox(
                       height: formInputSpacing,
                     ),
-                    const CustomLabel('Card Holder Name'),
-                    const SizedBox(
-                      height: labelInputSpacing,
-                    ),
-                    CustomInput(
+                    CustomTextField(
+                      label: 'Card Holder Name',
+                      hintText: 'Enter Holder Name',
                       value: cardState.cardHolderName,
                       onChanged: (value) {
-                        changeForm(CardForm.cardHolderName, value);
+                        ref
+                            .read(cardProvider.notifier)
+                            .changeCardHolderName(value);
                       },
-                      hintText: 'Enter Holder Name',
                       keyboardType: TextInputType.name,
                       textInputAction: TextInputAction.next,
-                      validationMessages: {
-                        'required': (error) => 'We need this information.'
-                      },
-                      readOnly: cardState.formType == FormType.edit,
+                      readOnly: cardState.selectedCard != null,
                       inputFormatters: [
                         LengthLimitingTextInputFormatter(40),
                       ],
@@ -177,28 +162,21 @@ class CardScreenState extends ConsumerState<CardScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              const CustomLabel('Expired'),
-                              const SizedBox(
-                                height: labelInputSpacing,
-                              ),
-                              CustomInput(
+                              CustomTextField(
+                                label: 'Expired',
+                                hintText: 'MM/YY',
                                 value: cardState.expired,
                                 onChanged: (value) {
-                                  changeForm(CardForm.expired, value);
+                                  ref
+                                      .read(cardProvider.notifier)
+                                      .changeExpired(value);
                                 },
-                                hintText: 'MM/YY',
                                 textInputAction: TextInputAction.next,
                                 keyboardType: TextInputType.number,
                                 inputFormatters: [
                                   expiredFormatter,
                                 ],
-                                readOnly: cardState.formType == FormType.edit,
-                                validationMessages: {
-                                  'required': (error) =>
-                                      'We need this information.',
-                                  'minLength': (error) => 'Incomplete date.',
-                                  'invalid': (error) => 'Invalid date.'
-                                },
+                                readOnly: cardState.selectedCard != null,
                               ),
                             ],
                           ),
@@ -210,29 +188,23 @@ class CardScreenState extends ConsumerState<CardScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              const CustomLabel('CVC/CCV'),
-                              const SizedBox(
-                                height: labelInputSpacing,
-                              ),
-                              CustomInput(
+                              CustomTextField(
+                                label: 'CVC/CCV',
+                                hintText: 'XXX',
                                 value: cardState.ccv,
                                 onChanged: (value) {
-                                  changeForm(CardForm.ccv, value);
+                                  ref
+                                      .read(cardProvider.notifier)
+                                      .changeCcv(value);
                                 },
-                                hintText: 'XXX',
                                 focusNode: _focusNodeCcv,
                                 textInputAction: TextInputAction.done,
                                 onFieldSubmitted: (value) {},
-                                validationMessages: {
-                                  'required': (error) =>
-                                      'We need this information.',
-                                  'minLength': (error) => 'Incomplete CVC/CCV. '
-                                },
                                 keyboardType: TextInputType.number,
                                 inputFormatters: [
                                   ccvFormatter,
                                 ],
-                                readOnly: cardState.formType == FormType.edit,
+                                readOnly: cardState.selectedCard != null,
                               ),
                             ],
                           ),
@@ -242,7 +214,7 @@ class CardScreenState extends ConsumerState<CardScreen> {
                     const SizedBox(
                       height: 80,
                     ),
-                    if (cardState.formType == FormType.create)
+                    if (cardState.selectedCard == null)
                       CustomButton(
                         onPressed: () {
                           ref.read(cardProvider.notifier).saveCard();

@@ -1,3 +1,5 @@
+import 'package:flutter_snappyshop/features/shared/plugins/formx/validators/max_length_validator.dart';
+
 import '../validators/compose_or_validator.dart';
 import '../validators/email_validator.dart';
 import '../validators/min_length_validator.dart';
@@ -22,6 +24,9 @@ class Validators {
 
   static Validator<T> minLenth<T>(int minLenth, {String? errorMessage}) =>
       MinLengthValidator<T>(minLenth, errorMessage: errorMessage);
+
+  static Validator<T> maxLenth<T>(int maxLength, {String? errorMessage}) =>
+      MaxLengthValidator<T>(maxLength, errorMessage: errorMessage);
 
   static Validator<T> composeOR<T>(List<Validator<T>> validators) {
     return ComposeOrValidator<T>(validators);

@@ -1,23 +1,26 @@
-import 'package:reactive_forms/reactive_forms.dart';
+import 'package:flutter_snappyshop/features/shared/plugins/formx/formx.dart';
 
-class VisaValidator extends Validator<dynamic> {
+class VisaValidator<T> extends Validator<T> {
   const VisaValidator() : super();
+  final String error = 'Invalid card.';
 
   @override
-  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
-    String? value = control.value;
+  String? validate(T value) {
+    if (value is! String) {
+      return null;
+    }
 
     // Eliminar espacios en blanco y guiones del número de tarjeta
-    String numeroTarjeta = value?.replaceAll(RegExp(r'\s+|-'), '') ?? '';
+    String numeroTarjeta = value.replaceAll(RegExp(r'\s+|-'), '');
 
     // Verificar si el número de tarjeta comienza con '4' (prefijo de Visa)
     if (!numeroTarjeta.startsWith('4')) {
-      return {'invalidCard': true};
+      return error;
     }
 
     // Verificar la longitud del número de tarjeta (13 o 16 dígitos)
     if (numeroTarjeta.length != 13 && numeroTarjeta.length != 16) {
-      return {'invalidCard': true};
+      return error;
     }
 
     // Aplicar el algoritmo de Luhn
@@ -37,32 +40,35 @@ class VisaValidator extends Validator<dynamic> {
 
     // Verificar si la suma total es divisible por 10
     if (suma % 10 != 0) {
-      return {'invalidCard': true};
+      return error;
     }
 
     return null;
   }
 }
 
-class MasterCardValidator extends Validator<dynamic> {
+class MasterCardValidator<T> extends Validator<T> {
   const MasterCardValidator() : super();
+  final String error = 'Invalid card.';
 
   @override
-  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
-    String? value = control.value;
+  String? validate(T value) {
+    if (value is! String) {
+      return null;
+    }
 
     // Eliminar espacios en blanco y guiones del número de tarjeta
-    String numeroTarjeta = value?.replaceAll(RegExp(r'\s+|-'), '') ?? '';
+    String numeroTarjeta = value.replaceAll(RegExp(r'\s+|-'), '');
 
     // Verificar si el número de tarjeta comienza con '51'-'55' o '2221'-'2720' (prefijo de Mastercard)
     if (!RegExp(r'^5[1-5]|^(2(?:2[2-9][^0]|2[3-9]|[3-6]|22[1-9]|7[0-1]|72[0]))')
         .hasMatch(numeroTarjeta)) {
-      return {'invalidCard': true};
+      return error;
     }
 
     // Verificar la longitud del número de tarjeta (16 dígitos)
     if (numeroTarjeta.length != 16) {
-      return {'invalidCard': true};
+      return error;
     }
 
     // Aplicar el algoritmo de Luhn
@@ -82,31 +88,34 @@ class MasterCardValidator extends Validator<dynamic> {
 
     // Verificar si la suma total es divisible por 10
     if (suma % 10 != 0) {
-      return {'invalidCard': true};
+      return error;
     }
 
     return null;
   }
 }
 
-class AmexValidator extends Validator<dynamic> {
+class AmexValidator<T> extends Validator<T> {
   const AmexValidator() : super();
+  final String error = 'Invalid card.';
 
   @override
-  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
-    String? value = control.value;
+  String? validate(T value) {
+    if (value is! String) {
+      return null;
+    }
 
     // Eliminar espacios en blanco y guiones del número de tarjeta
-    String numeroTarjeta = value?.replaceAll(RegExp(r'\s+|-'), '') ?? '';
+    String numeroTarjeta = value.replaceAll(RegExp(r'\s+|-'), '');
 
     // Verificar si el número de tarjeta comienza con '34' o '37' (prefijos de Amex)
     if (!numeroTarjeta.startsWith('34') && !numeroTarjeta.startsWith('37')) {
-      return {'invalidCard': true};
+      return error;
     }
 
     // Verificar la longitud del número de tarjeta (15 dígitos)
     if (numeroTarjeta.length != 15) {
-      return {'invalidCard': true};
+      return error;
     }
 
     // Aplicar el algoritmo de Luhn
@@ -126,26 +135,25 @@ class AmexValidator extends Validator<dynamic> {
 
     // Verificar si la suma total es divisible por 10
     if (suma % 10 != 0) {
-      return {'invalidCard': true};
+      return error;
     }
 
     return null;
   }
 }
 
-class ExpiredValidator extends Validator<dynamic> {
+class ExpiredValidator<T> extends Validator<T> {
   const ExpiredValidator() : super();
+  final String error = 'Invalid date.';
 
   @override
-  Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
-    String? value = control.value;
-
-    if (value?.isEmpty ?? true) {
+  String? validate(T value) {
+    if (value is! String) {
       return null;
     }
 
     final DateTime now = DateTime.now();
-    final List<String> date = value!.split(RegExp(r'/'));
+    final List<String> date = value.split(RegExp(r'/'));
 
     final int month = int.parse(date.first);
     final int year = int.parse('20${date.last}');
@@ -158,7 +166,7 @@ class ExpiredValidator extends Validator<dynamic> {
         DateTime(year, month, lastDayOfMonth, 23, 59, 59, 999);
 
     if (cardDate.isBefore(now) || month > 12 || month == 0) {
-      return {'invalid': true};
+      return error;
     }
 
     return null;

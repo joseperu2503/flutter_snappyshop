@@ -10,7 +10,6 @@ import 'package:flutter_snappyshop/features/core/services/storage_service.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/settings/providers/notification_provider.dart';
 import 'package:flutter_snappyshop/features/shared/plugins/formx/formx.dart';
-import 'package:flutter_snappyshop/features/shared/plugins/formx/validators/validators.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/environment.dart';

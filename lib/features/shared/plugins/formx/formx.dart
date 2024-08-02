@@ -2,6 +2,7 @@ import './validators/validator.dart';
 import 'package:flutter/services.dart';
 
 export './validators/validators.dart';
+export './validators/validator.dart';
 
 // enum ValidatorType {
 //   required,

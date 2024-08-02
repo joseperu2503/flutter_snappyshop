@@ -69,7 +69,7 @@ class AddressItem extends ConsumerWidget {
                   width: 16,
                   height: 16,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 4,
                 ),
                 Text(
