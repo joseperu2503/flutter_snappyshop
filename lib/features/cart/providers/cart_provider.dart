@@ -164,6 +164,20 @@ class CartState {
     this.loading = false,
   });
 
+  int get numProducts {
+    if (cart != null) {
+      if (cart!.products.isNotEmpty) {
+        return cart!.products
+            .map((product) => product.quantity)
+            .reduce((sum, quantity) => sum + quantity);
+      } else {
+        return 0;
+      }
+    } else {
+      return 0;
+    }
+  }
+
   CartState copyWith({
     ValueGetter<Cart?>? cart,
     bool? showUpdateBtn,

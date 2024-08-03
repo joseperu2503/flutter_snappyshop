@@ -23,20 +23,7 @@ class CustomDrawer extends ConsumerWidget {
     final MediaQueryData screen = MediaQuery.of(context);
     final darkMode = ref.watch(darkModeProvider);
 
-    int numProducts = 0;
     final authState = ref.watch(authProvider);
-
-    if (cartState.cart != null) {
-      if (cartState.cart!.products.isNotEmpty) {
-        numProducts = cartState.cart!.products
-            .map((product) => product.quantity)
-            .reduce((sum, quantity) => sum + quantity);
-      } else {
-        numProducts = 0;
-      }
-    } else {
-      numProducts = 0;
-    }
 
     final textLabelStyle = TextStyle(
       fontSize: 16,
@@ -194,7 +181,7 @@ class CustomDrawer extends ConsumerWidget {
                       width: 24,
                       height: 24,
                     ),
-                    trailing: numProducts > 0
+                    trailing: cartState.numProducts > 0
                         ? Container(
                             width: 30,
                             height: 30,
@@ -204,7 +191,7 @@ class CustomDrawer extends ConsumerWidget {
                             ),
                             child: Center(
                               child: Text(
-                                numProducts.toString(),
+                                cartState.numProducts.toString(),
                                 style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500,

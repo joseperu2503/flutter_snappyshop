@@ -13,19 +13,7 @@ class CartButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cartState = ref.watch(cartProvider);
-    int numProducts = 0;
 
-    if (cartState.cart != null) {
-      if (cartState.cart!.products.isNotEmpty) {
-        numProducts = cartState.cart!.products
-            .map((product) => product.quantity)
-            .reduce((sum, quantity) => sum + quantity);
-      } else {
-        numProducts = 0;
-      }
-    } else {
-      numProducts = 0;
-    }
     final darkMode = ref.watch(darkModeProvider);
 
     return Container(
@@ -47,7 +35,7 @@ class CartButton extends ConsumerWidget {
             width: 12,
             child: Center(
               child: Text(
-                numProducts.toString(),
+                cartState.numProducts.toString(),
                 style: const TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.w500,
@@ -57,7 +45,7 @@ class CartButton extends ConsumerWidget {
               ),
             ),
           ),
-          showBadge: numProducts != 0,
+          showBadge: cartState.numProducts != 0,
           badgeAnimation: const badges.BadgeAnimation.fade(),
           badgeStyle: const badges.BadgeStyle(
             badgeGradient: badges.BadgeGradient.linear(
