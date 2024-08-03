@@ -202,13 +202,15 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                                   fontSize: 20,
                                   fontWeight: FontWeight.w400,
                                   color: darkMode
-                                      ? AppColors.textCultured
-                                      : AppColors.gray,
+                                      ? AppColors.textArsenicDark
+                                          .withOpacity(0.5)
+                                      : AppColors.textArsenic.withOpacity(0.5),
                                   height: 1.6,
                                   decoration: TextDecoration.lineThrough,
                                   decorationColor: darkMode
-                                      ? AppColors.textCultured
-                                      : AppColors.gray,
+                                      ? AppColors.textArsenicDark
+                                          .withOpacity(0.5)
+                                      : AppColors.textArsenic.withOpacity(0.5),
                                   leadingDistribution:
                                       TextLeadingDistribution.even,
                                 ),

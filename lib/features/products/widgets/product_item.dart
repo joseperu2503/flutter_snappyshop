@@ -182,12 +182,17 @@ class ProductCardState extends ConsumerState<ProductItem> {
                     if (widget.product.discount != null)
                       Text(
                         '\$${widget.product.price.toStringAsFixed(2)}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
-                          color: AppColors.gray,
+                          color: darkMode
+                              ? AppColors.textArsenicDark.withOpacity(0.5)
+                              : AppColors.textArsenic.withOpacity(0.5),
                           height: 1.1,
                           decoration: TextDecoration.lineThrough,
+                          decorationColor: darkMode
+                              ? AppColors.textArsenicDark.withOpacity(0.5)
+                              : AppColors.textArsenic.withOpacity(0.5),
                           leadingDistribution: TextLeadingDistribution.even,
                         ),
                       ),
