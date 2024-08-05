@@ -18,7 +18,7 @@ import 'package:flutter_snappyshop/features/auth/screens/home_screen.dart';
 import 'package:flutter_snappyshop/features/auth/screens/login_screen.dart';
 import 'package:flutter_snappyshop/features/auth/screens/register_screen.dart';
 import 'package:flutter_snappyshop/features/auth/services/auth_service.dart';
-import 'package:flutter_snappyshop/features/brand/screens/brand_screen.dart';
+import 'package:flutter_snappyshop/features/store/screens/store_screen.dart';
 import 'package:flutter_snappyshop/features/cart/screens/cart_screen.dart';
 import 'package:flutter_snappyshop/features/checkout/screens/order_confirmed_screen.dart';
 import 'package:flutter_snappyshop/features/products/screens/product_screen.dart';
@@ -137,10 +137,10 @@ final appRouter = GoRouter(
       },
     ),
     GoRoute(
-      path: '/brand/:id',
+      path: '/store/:id',
       builder: (context, state) {
-        return BrandScreen(
-          brandId: state.pathParameters['id'] ?? 'no-id',
+        return StoreScreen(
+          storeId: state.pathParameters['id'] ?? 'no-id',
         );
       },
     ),

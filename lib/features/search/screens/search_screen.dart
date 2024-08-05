@@ -159,7 +159,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                           SizedBox(
                             width: 10,
                           ),
-                          BrandFilterButton(),
+                          StoreFilterButton(),
                           SizedBox(
                             width: 10,
                           ),

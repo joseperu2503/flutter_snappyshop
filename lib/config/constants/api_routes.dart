@@ -3,7 +3,7 @@ class ApiRoutes {
   static const register = '/auth/register';
   static const loginGoogle = '/auth/login-google';
 
-  static const brands = '/brands';
+  static const stores = '/stores';
   static const categories = '/categories';
 
   static const productsFilterData = '/products/filter-data';

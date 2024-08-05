@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class ProductsResponse {
   final List<Product> results;
   final Info info;
@@ -46,14 +47,13 @@ class Product {
   final double price;
   final int stock;
   final List<String> images;
-  final _Brand? brand;
-  final _Category? category;
-  final List<String> colors;
-  final List<Size> sizes;
-  final List<Gender> genders;
-  final User user;
-  final DateTime createdAt;
+  final ProductStore store;
+  final ProductCategory category;
+  final List<dynamic> colors;
+  final List<dynamic> sizes;
+  final List<dynamic> genders;
   final int? discount;
+  final DateTime createdAt;
   final bool isFavorite;
 
   Product({
@@ -63,14 +63,13 @@ class Product {
     required this.price,
     required this.stock,
     required this.images,
-    required this.brand,
+    required this.store,
     required this.category,
     required this.colors,
     required this.sizes,
     required this.genders,
-    required this.user,
-    required this.createdAt,
     required this.discount,
+    required this.createdAt,
     required this.isFavorite,
   });
 
@@ -81,17 +80,13 @@ class Product {
         price: json["price"]?.toDouble(),
         stock: json["stock"],
         images: List<String>.from(json["images"].map((x) => x)),
-        brand: json["brand"] == null ? null : _Brand.fromJson(json["brand"]),
-        category: json["category"] == null
-            ? null
-            : _Category.fromJson(json["category"]),
-        colors: List<String>.from(json["colors"].map((x) => x)),
-        sizes: List<Size>.from(json["sizes"].map((x) => Size.fromJson(x))),
-        genders:
-            List<Gender>.from(json["genders"].map((x) => Gender.fromJson(x))),
-        user: User.fromJson(json["user"]),
-        createdAt: DateTime.parse(json["created_at"]),
+        store: ProductStore.fromJson(json["store"]),
+        category: ProductCategory.fromJson(json["category"]),
+        colors: List<dynamic>.from(json["colors"].map((x) => x)),
+        sizes: List<dynamic>.from(json["sizes"].map((x) => x)),
+        genders: List<dynamic>.from(json["genders"].map((x) => x)),
         discount: json["discount"],
+        createdAt: DateTime.parse(json["created_at"]),
         isFavorite: json["is_favorite"],
       );
 
@@ -102,15 +97,13 @@ class Product {
     double? price,
     int? stock,
     List<String>? images,
-    _Brand? brand,
-    _Category? category,
-    List<String>? colors,
-    List<Size>? sizes,
-    List<Gender>? genders,
-    bool? freeShipping,
-    User? user,
-    DateTime? createdAt,
+    ProductStore? store,
+    ProductCategory? category,
+    List<dynamic>? colors,
+    List<dynamic>? sizes,
+    List<dynamic>? genders,
     int? discount,
+    DateTime? createdAt,
     bool? isFavorite,
   }) {
     return Product(
@@ -120,61 +113,44 @@ class Product {
       price: price ?? this.price,
       stock: stock ?? this.stock,
       images: images ?? this.images,
-      brand: brand ?? this.brand,
+      store: store ?? this.store,
       category: category ?? this.category,
       colors: colors ?? this.colors,
       sizes: sizes ?? this.sizes,
       genders: genders ?? this.genders,
-      user: user ?? this.user,
-      createdAt: createdAt ?? this.createdAt,
       discount: discount ?? this.discount,
+      createdAt: createdAt ?? this.createdAt,
       isFavorite: isFavorite ?? this.isFavorite,
     );
   }
 }
 
-class User {
-  final int id;
-  final String name;
-  final String email;
-  User({
-    required this.id,
-    required this.name,
-    required this.email,
-  });
-
-  factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json["id"],
-        name: json["name"],
-        email: json["email"],
-      );
-}
-
-class _Brand {
+class ProductCategory {
   final int id;
   final String name;
 
-  _Brand({
+  ProductCategory({
     required this.id,
     required this.name,
   });
 
-  factory _Brand.fromJson(Map<String, dynamic> json) => _Brand(
+  factory ProductCategory.fromJson(Map<String, dynamic> json) =>
+      ProductCategory(
         id: json["id"],
         name: json["name"],
       );
 }
 
-class _Category {
+class ProductStore {
   final int id;
   final String name;
 
-  _Category({
+  ProductStore({
     required this.id,
     required this.name,
   });
 
-  factory _Category.fromJson(Map<String, dynamic> json) => _Category(
+  factory ProductStore.fromJson(Map<String, dynamic> json) => ProductStore(
         id: json["id"],
         name: json["name"],
       );

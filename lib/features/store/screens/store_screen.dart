@@ -11,18 +11,18 @@ import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.d
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
 
-class BrandScreen extends ConsumerStatefulWidget {
-  const BrandScreen({
+class StoreScreen extends ConsumerStatefulWidget {
+  const StoreScreen({
     super.key,
-    required this.brandId,
+    required this.storeId,
   });
 
-  final String brandId;
+  final String storeId;
   @override
-  BrandScreenState createState() => BrandScreenState();
+  StoreScreenState createState() => StoreScreenState();
 }
 
-class BrandScreenState extends ConsumerState<BrandScreen> {
+class StoreScreenState extends ConsumerState<StoreScreen> {
   List<Product> products = [];
   int page = 1;
   int totalPages = 1;
@@ -39,7 +39,7 @@ class BrandScreenState extends ConsumerState<BrandScreen> {
     try {
       final ProductsResponse response = await ProductsService.getProducts(
         page: page,
-        brandId: int.parse(widget.brandId),
+        storeId: int.parse(widget.storeId),
       );
 
       setState(() {
@@ -84,13 +84,13 @@ class BrandScreenState extends ConsumerState<BrandScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final brand = ref
+    final store = ref
         .watch(productsProvider)
-        .brands
-        .firstWhere((element) => element.id.toString() == widget.brandId);
+        .stores
+        .firstWhere((element) => element.id.toString() == widget.storeId);
 
     return Layout1(
-      title: brand.name,
+      title: store.name,
       loading: firstLoad,
       body: CustomScrollView(
         slivers: [

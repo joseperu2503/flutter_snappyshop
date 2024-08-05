@@ -7,16 +7,16 @@ import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-class BrandFilterButton extends ConsumerWidget {
-  const BrandFilterButton({super.key});
+class StoreFilterButton extends ConsumerWidget {
+  const StoreFilterButton({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final searchState = ref.watch(searchProvider);
-    final BrandFilter brandFilter = searchState.brands
-        .firstWhere((brand) => brand.id == searchState.filter?.brandId);
+    final StoreFilter storeFilter = searchState.stores
+        .firstWhere((store) => store.id == searchState.filter?.storeId);
     final darkMode = ref.watch(darkModeProvider);
-    final color = brandFilter.id != null
+    final color = storeFilter.id != null
         ? AppColors.secondaryMangoTango
         : darkMode
             ? AppColors.textCoolBlackDark.withOpacity(0.7)
@@ -34,7 +34,7 @@ class BrandFilterButton extends ConsumerWidget {
             showDragHandle: false,
             context: context,
             builder: (context) {
-              return const _BrandBottomSheet();
+              return const _StoreBottomSheet();
             },
           );
         },
@@ -54,7 +54,7 @@ class BrandFilterButton extends ConsumerWidget {
         child: Row(
           children: [
             Text(
-              brandFilter.name,
+              storeFilter.name,
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
@@ -82,14 +82,14 @@ class BrandFilterButton extends ConsumerWidget {
   }
 }
 
-class _BrandBottomSheet extends ConsumerStatefulWidget {
-  const _BrandBottomSheet();
+class _StoreBottomSheet extends ConsumerStatefulWidget {
+  const _StoreBottomSheet();
 
   @override
-  BrandBottomSheetState createState() => BrandBottomSheetState();
+  StoreBottomSheetState createState() => StoreBottomSheetState();
 }
 
-class BrandBottomSheetState extends ConsumerState<_BrandBottomSheet> {
+class StoreBottomSheetState extends ConsumerState<_StoreBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final searchState = ref.watch(searchProvider);
@@ -111,7 +111,7 @@ class BrandBottomSheetState extends ConsumerState<_BrandBottomSheet> {
                   Container(
                     padding: const EdgeInsets.only(top: 15),
                     child: Text(
-                      'Brands',
+                      'stores',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
@@ -145,8 +145,8 @@ class BrandBottomSheetState extends ConsumerState<_BrandBottomSheet> {
                   top: 5,
                 ),
                 itemBuilder: (context, index) {
-                  final brand = searchState.brands[index];
-                  final selected = brand.id == searchState.filter?.brandId;
+                  final store = searchState.stores[index];
+                  final selected = store.id == searchState.filter?.storeId;
 
                   return ListTile(
                     visualDensity: const VisualDensity(vertical: 0),
@@ -155,7 +155,7 @@ class BrandBottomSheetState extends ConsumerState<_BrandBottomSheet> {
                       right: 24,
                     ),
                     title: Text(
-                      brand.name,
+                      store.name,
                       style: TextStyle(
                         color: selected
                             ? AppColors.primaryPearlAqua
@@ -170,7 +170,7 @@ class BrandBottomSheetState extends ConsumerState<_BrandBottomSheet> {
                     onTap: () {
                       ref.read(searchProvider.notifier).changeFilter(
                             searchState.filter
-                                ?.copyWith(brandId: () => brand.id),
+                                ?.copyWith(storeId: () => store.id),
                           );
                       context.pop();
                     },
@@ -184,7 +184,7 @@ class BrandBottomSheetState extends ConsumerState<_BrandBottomSheet> {
                     height: 0,
                   );
                 },
-                itemCount: searchState.brands.length,
+                itemCount: searchState.stores.length,
               ),
             ),
           ],

@@ -199,7 +199,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                               height: 20,
                             ),
                             Text(
-                              'Choose Brand',
+                              'Choose Store',
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
@@ -229,10 +229,10 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                                   const EdgeInsets.symmetric(horizontal: 24),
                               scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
-                                final brand = productsState.brands[index];
+                                final store = productsState.stores[index];
                                 return GestureDetector(
                                   onTap: () {
-                                    context.push('/brand/${brand.id}');
+                                    context.push('/store/${store.id}');
                                   },
                                   child: Container(
                                     decoration: BoxDecoration(
@@ -246,7 +246,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                                     ),
                                     child: Center(
                                       child: Text(
-                                        brand.name,
+                                        store.name,
                                         style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500,
@@ -267,7 +267,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                                   width: 10,
                                 );
                               },
-                              itemCount: productsState.brands.length,
+                              itemCount: productsState.stores.length,
                             ),
                           ),
                           Container(

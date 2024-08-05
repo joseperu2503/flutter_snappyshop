@@ -1,12 +1,12 @@
 class FilterResponse {
   final List<GenderFilter> genders;
-  final List<BrandFilter> brands;
+  final List<StoreFilter> stores;
   final List<CategoryFilter> categories;
   final List<SizeFilter> sizes;
 
   FilterResponse({
     required this.genders,
-    required this.brands,
+    required this.stores,
     required this.categories,
     required this.sizes,
   });
@@ -14,8 +14,8 @@ class FilterResponse {
   factory FilterResponse.fromJson(Map<String, dynamic> json) => FilterResponse(
         genders: List<GenderFilter>.from(
             json["genders"].map((x) => GenderFilter.fromJson(x))),
-        brands: List<BrandFilter>.from(
-            json["brands"].map((x) => BrandFilter.fromJson(x))),
+        stores: List<StoreFilter>.from(
+            json["stores"].map((x) => StoreFilter.fromJson(x))),
         categories: List<CategoryFilter>.from(
             json["categories"].map((x) => CategoryFilter.fromJson(x))),
         sizes: List<SizeFilter>.from(
@@ -23,16 +23,16 @@ class FilterResponse {
       );
 }
 
-class BrandFilter {
+class StoreFilter {
   final int? id;
   final String name;
 
-  BrandFilter({
+  StoreFilter({
     required this.id,
     required this.name,
   });
 
-  factory BrandFilter.fromJson(Map<String, dynamic> json) => BrandFilter(
+  factory StoreFilter.fromJson(Map<String, dynamic> json) => StoreFilter(
         id: json["id"],
         name: json["name"],
       );

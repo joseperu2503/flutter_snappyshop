@@ -24,7 +24,7 @@ class SearchNotifier extends StateNotifier<SearchState> {
     state = state.copyWith(
       filter: () => Filter(
         categoryId: null,
-        brandId: null,
+        storeId: null,
         minPrice: '',
         maxPrice: '',
         search: '',
@@ -46,7 +46,7 @@ class SearchNotifier extends StateNotifier<SearchState> {
       final ProductsResponse response = await ProductsService.getProducts(
         page: state.page,
         categoryId: state.filter?.categoryId,
-        brandId: state.filter?.brandId,
+        storeId: state.filter?.storeId,
         minPrice: state.filter?.minPrice,
         maxPrice: state.filter?.maxPrice,
         search: state.filter?.search,
@@ -113,7 +113,7 @@ class SearchNotifier extends StateNotifier<SearchState> {
     try {
       final response = await ProductsService.getFilterData();
       state = state.copyWith(
-        brands: response.brands,
+        stores: response.stores,
         categories: response.categories,
       );
     } on ServiceException catch (e) {
@@ -141,7 +141,7 @@ class SearchState {
   final int page;
   final int totalPages;
   final bool loadingProducts;
-  final List<BrandFilter> brands;
+  final List<StoreFilter> stores;
   final List<CategoryFilter> categories;
 
   SearchState({
@@ -150,7 +150,7 @@ class SearchState {
     this.page = 1,
     this.totalPages = 1,
     this.loadingProducts = false,
-    this.brands = const [],
+    this.stores = const [],
     this.categories = const [],
   });
 
@@ -160,7 +160,7 @@ class SearchState {
     int? page,
     int? totalPages,
     bool? loadingProducts,
-    List<BrandFilter>? brands,
+    List<StoreFilter>? stores,
     List<CategoryFilter>? categories,
   }) =>
       SearchState(
@@ -169,7 +169,7 @@ class SearchState {
         page: page ?? this.page,
         totalPages: totalPages ?? this.totalPages,
         loadingProducts: loadingProducts ?? this.loadingProducts,
-        brands: brands ?? this.brands,
+        stores: stores ?? this.stores,
         categories: categories ?? this.categories,
       );
 }

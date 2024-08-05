@@ -1,5 +1,5 @@
 import 'package:flutter_snappyshop/features/auth/providers/auth_provider.dart';
-import 'package:flutter_snappyshop/features/products/models/brand.dart';
+import 'package:flutter_snappyshop/features/products/models/store.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
 import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
 import 'package:flutter_snappyshop/features/search/providers/search_provider.dart';
@@ -20,7 +20,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
 
   initData() {
     state = state.copyWith(
-      brands: [],
+      stores: [],
       products: [],
       page: 1,
       totalPages: 1,
@@ -84,9 +84,9 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
 
   Future<void> getBrands() async {
     try {
-      final response = await ProductsService.getBrands();
+      final response = await ProductsService.getStores();
       state = state.copyWith(
-        brands: response,
+        stores: response,
       );
     } on ServiceException catch (e) {
       throw ServiceException(null, e.message);
@@ -148,7 +148,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
 
 class ProductsState {
   final List<Product> products;
-  final List<Brand> brands;
+  final List<Store> stores;
   final Map<String, Product> productDetails;
   final int page;
   final int totalPages;
@@ -157,7 +157,7 @@ class ProductsState {
 
   ProductsState({
     this.products = const [],
-    this.brands = const [],
+    this.stores = const [],
     this.productDetails = const {},
     this.page = 1,
     this.totalPages = 1,
@@ -167,7 +167,7 @@ class ProductsState {
 
   ProductsState copyWith({
     List<Product>? products,
-    List<Brand>? brands,
+    List<Store>? stores,
     Map<String, Product>? productDetails,
     int? page,
     int? totalPages,
@@ -176,7 +176,7 @@ class ProductsState {
   }) =>
       ProductsState(
         products: products ?? this.products,
-        brands: brands ?? this.brands,
+        stores: stores ?? this.stores,
         productDetails: productDetails ?? this.productDetails,
         page: page ?? this.page,
         totalPages: totalPages ?? this.totalPages,

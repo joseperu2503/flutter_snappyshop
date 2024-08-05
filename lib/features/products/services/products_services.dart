@@ -1,7 +1,7 @@
 import 'package:flutter_snappyshop/config/api/api.dart';
 import 'package:flutter_snappyshop/config/constants/api_routes.dart';
-import 'package:flutter_snappyshop/features/products/models/brand.dart';
 import 'package:flutter_snappyshop/features/products/models/category.dart';
+import 'package:flutter_snappyshop/features/products/models/store.dart';
 import 'package:flutter_snappyshop/features/search/models/filter_response.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
 import 'package:flutter_snappyshop/features/wishlist/models/toggle_favorite_response.dart';
@@ -13,7 +13,7 @@ class ProductsService {
   static Future<ProductsResponse> getProducts({
     int page = 1,
     int? categoryId,
-    int? brandId,
+    int? storeId,
     String? minPrice,
     String? maxPrice,
     String? search,
@@ -21,7 +21,7 @@ class ProductsService {
     Map<String, dynamic> queryParameters = {
       "page": page,
       "category_id": categoryId,
-      "brand_id": brandId,
+      "store_id": storeId,
       "min_price": minPrice,
       "max_price": maxPrice,
       "search": search,
@@ -48,16 +48,6 @@ class ProductsService {
     }
   }
 
-  static Future<List<Brand>> getBrands() async {
-    try {
-      final response = await api.get(ApiRoutes.brands);
-
-      return List<Brand>.from(response.data.map((x) => Brand.fromJson(x)));
-    } catch (e) {
-      throw ServiceException(e, 'An error occurred while loading the brands.');
-    }
-  }
-
   static Future<List<Category>> getCategories() async {
     try {
       final response = await api.get(ApiRoutes.categories);
@@ -65,7 +55,18 @@ class ProductsService {
       return List<Category>.from(
           response.data.map((x) => Category.fromJson(x)));
     } catch (e) {
-      throw ServiceException(e, 'An error occurred while loading the brands.');
+      throw ServiceException(
+          e, 'An error occurred while loading the categories.');
+    }
+  }
+
+  static Future<List<Store>> getStores() async {
+    try {
+      final response = await api.get(ApiRoutes.stores);
+
+      return List<Store>.from(response.data.map((x) => Store.fromJson(x)));
+    } catch (e) {
+      throw ServiceException(e, 'An error occurred while loading the stores.');
     }
   }
 
