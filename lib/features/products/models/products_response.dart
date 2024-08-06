@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 class ProductsResponse {
   final List<Product> results;
   final Info info;
@@ -49,11 +48,10 @@ class Product {
   final List<String> images;
   final ProductStore store;
   final ProductCategory category;
-  final List<dynamic> colors;
-  final List<dynamic> sizes;
-  final List<dynamic> genders;
+  final List<String> colors;
+  final List<Size> sizes;
+  final List<Gender> genders;
   final int? discount;
-  final DateTime createdAt;
   final bool isFavorite;
 
   Product({
@@ -69,7 +67,6 @@ class Product {
     required this.sizes,
     required this.genders,
     required this.discount,
-    required this.createdAt,
     required this.isFavorite,
   });
 
@@ -82,11 +79,10 @@ class Product {
         images: List<String>.from(json["images"].map((x) => x)),
         store: ProductStore.fromJson(json["store"]),
         category: ProductCategory.fromJson(json["category"]),
-        colors: List<dynamic>.from(json["colors"].map((x) => x)),
-        sizes: List<dynamic>.from(json["sizes"].map((x) => x)),
-        genders: List<dynamic>.from(json["genders"].map((x) => x)),
+        colors: List<String>.from(json["colors"].map((x) => x)),
+        sizes: List<Size>.from(json["sizes"].map((x) => x)),
+        genders: List<Gender>.from(json["genders"].map((x) => x)),
         discount: json["discount"],
-        createdAt: DateTime.parse(json["created_at"]),
         isFavorite: json["is_favorite"],
       );
 
@@ -99,9 +95,9 @@ class Product {
     List<String>? images,
     ProductStore? store,
     ProductCategory? category,
-    List<dynamic>? colors,
-    List<dynamic>? sizes,
-    List<dynamic>? genders,
+    List<String>? colors,
+    List<Size>? sizes,
+    List<Gender>? genders,
     int? discount,
     DateTime? createdAt,
     bool? isFavorite,
@@ -119,7 +115,6 @@ class Product {
       sizes: sizes ?? this.sizes,
       genders: genders ?? this.genders,
       discount: discount ?? this.discount,
-      createdAt: createdAt ?? this.createdAt,
       isFavorite: isFavorite ?? this.isFavorite,
     );
   }

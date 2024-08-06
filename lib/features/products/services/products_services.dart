@@ -1,9 +1,10 @@
 import 'package:flutter_snappyshop/config/api/api.dart';
 import 'package:flutter_snappyshop/config/constants/api_routes.dart';
 import 'package:flutter_snappyshop/features/products/models/category.dart';
-import 'package:flutter_snappyshop/features/products/models/store.dart';
+import 'package:flutter_snappyshop/features/products/models/product_detail.dart';
 import 'package:flutter_snappyshop/features/search/models/filter_response.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
+import 'package:flutter_snappyshop/features/store/models/stores_response.dart';
 import 'package:flutter_snappyshop/features/wishlist/models/toggle_favorite_response.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 
@@ -38,11 +39,12 @@ class ProductsService {
     }
   }
 
-  static Future<Product> getProductDetail({required String productId}) async {
+  static Future<ProductDetail> getProductDetail(
+      {required String productId}) async {
     try {
       final response = await api.get('${ApiRoutes.getProduct}/$productId');
 
-      return Product.fromJson(response.data);
+      return ProductDetail.fromJson(response.data);
     } catch (e) {
       throw ServiceException(e, 'An error occurred while loading the product.');
     }
@@ -60,11 +62,11 @@ class ProductsService {
     }
   }
 
-  static Future<List<Store>> getStores() async {
+  static Future<StoresResponse> getStores() async {
     try {
       final response = await api.get(ApiRoutes.stores);
 
-      return List<Store>.from(response.data.map((x) => Store.fromJson(x)));
+      return StoresResponse.fromJson(response.data);
     } catch (e) {
       throw ServiceException(e, 'An error occurred while loading the stores.');
     }

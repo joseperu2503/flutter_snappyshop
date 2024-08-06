@@ -1,5 +1,5 @@
 import 'package:flutter_snappyshop/features/auth/providers/auth_provider.dart';
-import 'package:flutter_snappyshop/features/products/models/store.dart';
+import 'package:flutter_snappyshop/features/products/models/product_detail.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
 import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
 import 'package:flutter_snappyshop/features/search/providers/search_provider.dart';
@@ -8,6 +8,7 @@ import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_snappyshop/features/store/models/stores_response.dart';
 
 final productsProvider =
     StateNotifierProvider<ProductsNotifier, ProductsState>((ref) {
@@ -40,7 +41,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
       ref.read(authProvider.notifier).setuser(null);
       await Future.wait([
         getProducts(),
-        getBrands(),
+        getStores(),
         ref.read(searchProvider.notifier).getFilterData(),
         ref.read(authProvider.notifier).getUser(),
         ref.read(cartProvider.notifier).getCartService(),
@@ -82,25 +83,14 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
     );
   }
 
-  Future<void> getBrands() async {
+  Future<void> getStores() async {
     try {
       final response = await ProductsService.getStores();
       state = state.copyWith(
-        stores: response,
+        stores: response.results,
       );
     } on ServiceException catch (e) {
       throw ServiceException(null, e.message);
-    }
-  }
-
-  setProduct(Product product) {
-    if (state.productDetails[product.id.toString()] == null) {
-      state = state.copyWith(
-        productDetails: {
-          ...state.productDetails,
-          product.id.toString(): product
-        },
-      );
     }
   }
 
@@ -130,11 +120,17 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
     }).toList();
 
     if (state.productDetails[productId.toString()] != null) {
-      final productDetails = state.productDetails.map((key, product) {
+      final productDetails = state.productDetails.map((key, productDetail) {
         if (key == productId.toString()) {
-          return MapEntry(key, product.copyWith(isFavorite: isFavorite));
+          return MapEntry(
+              key,
+              productDetail.copyWith(
+                product: productDetail.product.copyWith(
+                  isFavorite: isFavorite,
+                ),
+              ));
         }
-        return MapEntry(key, product);
+        return MapEntry(key, productDetail);
       });
 
       state = state.copyWith(
@@ -149,7 +145,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
 class ProductsState {
   final List<Product> products;
   final List<Store> stores;
-  final Map<String, Product> productDetails;
+  final Map<String, ProductDetail> productDetails;
   final int page;
   final int totalPages;
   final bool loadingProducts;
@@ -168,7 +164,7 @@ class ProductsState {
   ProductsState copyWith({
     List<Product>? products,
     List<Store>? stores,
-    Map<String, Product>? productDetails,
+    Map<String, ProductDetail>? productDetails,
     int? page,
     int? totalPages,
     bool? loadingProducts,

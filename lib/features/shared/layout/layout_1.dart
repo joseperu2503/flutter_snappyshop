@@ -39,36 +39,40 @@ class Layout1 extends ConsumerWidget {
         appBar: AppBar(
           toolbarHeight: toolbarHeight,
           automaticallyImplyLeading: false,
+          scrolledUnderElevation: 0,
           backgroundColor: darkMode
               ? AppColors.backgroundColorDark
               : AppColors.backgroundColor,
-          forceMaterialTransparency: true,
-          titleSpacing: 0,
-          title: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Row(
-              children: [
-                const CustomBackButton(),
-                const Spacer(),
-                if (title != null)
-                  Text(
-                    title!,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: darkMode
-                          ? AppColors.textYankeesBlueDark
-                          : AppColors.textYankeesBlue,
-                      leadingDistribution: TextLeadingDistribution.even,
+          flexibleSpace: SafeArea(
+            child: Container(
+              height: toolbarHeight,
+              padding: const EdgeInsets.symmetric(
+                horizontal: horizontalPaddinAppBargMobile,
+              ),
+              child: Row(
+                children: [
+                  const CustomBackButton(),
+                  const Spacer(),
+                  if (title != null)
+                    Text(
+                      title!,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: darkMode
+                            ? AppColors.textYankeesBlueDark
+                            : AppColors.textYankeesBlue,
+                        leadingDistribution: TextLeadingDistribution.even,
+                      ),
                     ),
-                  ),
-                const Spacer(),
-                action ??
-                    const SizedBox(
-                      width: 46,
-                      height: 46,
-                    )
-              ],
+                  const Spacer(),
+                  action ??
+                      const SizedBox(
+                        width: 46,
+                        height: 46,
+                      )
+                ],
+              ),
             ),
           ),
         ),

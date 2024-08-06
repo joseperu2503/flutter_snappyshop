@@ -12,3 +12,6 @@ const LinearGradient primaryGradient = LinearGradient(
   begin: Alignment(-0.9, -0.5),
   end: Alignment(0.3, 1.0),
 );
+
+const double horizontalPaddingMobile = 24;
+const double horizontalPaddinAppBargMobile = 24;

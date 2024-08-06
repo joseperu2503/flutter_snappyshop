@@ -2,6 +2,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/config/constants/styles.dart';
+import 'package:flutter_snappyshop/features/products/models/product_detail.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
 import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
@@ -90,73 +91,98 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
   Widget build(BuildContext context) {
     final productsState = ref.watch(productsProvider);
 
-    final Product? product = productsState.productDetails[widget.productId];
-    final size = MediaQuery.of(context).size;
+    final ProductDetail? productDetail =
+        productsState.productDetails[widget.productId];
+    final Product? product = productDetail?.product;
+
     final double price = product?.discount == null
         ? product?.price ?? 1
         : ((product?.price ?? 1) * (1 - (product?.discount ?? 1) / 100));
     final darkMode = ref.watch(darkModeProvider);
 
+    final screen = MediaQuery.of(context);
+    final width = screen.size.width;
+
+    final widthImage = width - 2 * horizontalPaddingMobile;
+
     return loadingProduct == LoadingStatus.success && product != null
         ? Scaffold(
-            body: CustomScrollView(
-              physics: const ClampingScrollPhysics(),
-              slivers: [
-                SliverAppBar(
-                  titleSpacing: 0,
-                  title: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                    ),
-                    child: const Row(
-                      children: [
-                        CustomBackButton(),
-                        Spacer(),
-                        CartButton(),
-                      ],
-                    ),
+            appBar: AppBar(
+              toolbarHeight: toolbarHeight,
+              automaticallyImplyLeading: false,
+              backgroundColor: darkMode
+                  ? AppColors.backgroundColorDark
+                  : AppColors.backgroundColor,
+              scrolledUnderElevation: 0,
+              flexibleSpace: SafeArea(
+                child: Container(
+                  height: toolbarHeight,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: horizontalPaddinAppBargMobile,
                   ),
-                  scrolledUnderElevation: 0,
-                  automaticallyImplyLeading: false,
-                  pinned: true,
-                  backgroundColor: darkMode
-                      ? AppColors.backgroundColorDark
-                      : AppColors.backgroundColor,
-                  expandedHeight: size.width,
-                  foregroundColor: darkMode
-                      ? AppColors.backgroundColorDark
-                      : AppColors.backgroundColor,
-                  flexibleSpace: FlexibleSpaceBar(
-                    background: Container(
-                      color: darkMode
-                          ? AppColors.primaryCulturedDark
-                          : AppColors.primaryCultured,
-                      child: Swiper(
-                        itemBuilder: (BuildContext context, int index) {
-                          return CustomImage(
-                            path: product.images[index],
-                          );
-                        },
-                        scale: 1,
-                        viewportFraction: 0.8,
-                        scrollDirection: Axis.vertical,
-                        itemCount: product.images.length,
-                        pagination: const SwiperPagination(
-                          margin: EdgeInsets.only(top: 0),
-                          builder: DotSwiperPaginationBuilder(
-                            activeColor: AppColors.primaryPearlAqua,
-                            color: AppColors.textArsenicDark,
-                          ),
+                  child: Row(
+                    children: [
+                      const CustomBackButton(),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      CustomImage(
+                        width: 32,
+                        height: 32,
+                        fit: BoxFit.contain,
+                        path: productDetail?.store.isotype,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        productDetail?.store.name ?? '',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: darkMode
+                              ? AppColors.textYankeesBlueDark
+                              : AppColors.textYankeesBlue,
+                          leadingDistribution: TextLeadingDistribution.even,
                         ),
                       ),
+                      const Spacer(),
+                      const CartButton(),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            body: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: widthImage,
+                    child: Swiper(
+                      itemBuilder: (BuildContext context, int index) {
+                        final image = product.images[index];
+                        return Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: CustomImage(
+                            borderRadius: BorderRadius.circular(15),
+                            fit: BoxFit.contain,
+                            path: image,
+                          ),
+                        );
+                      },
+                      scale: 1,
+                      viewportFraction: widthImage / width,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: product.images.length,
                     ),
                   ),
                 ),
                 SliverToBoxAdapter(
                   child: Container(
                     padding: const EdgeInsets.only(
-                      left: 24,
-                      right: 24,
+                      left: horizontalPaddingMobile,
+                      right: horizontalPaddingMobile,
                       top: 20,
                       bottom: 0,
                     ),
@@ -286,7 +312,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                           height: 20,
                         ),
                         Text(
-                          'You might also like',
+                          'More from ${productDetail!.store.name}',
                           style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
@@ -311,10 +337,12 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                       scrollDirection: Axis.horizontal,
                       padding: const EdgeInsets.symmetric(horizontal: 24),
                       itemBuilder: (context, index) {
+                        final product =
+                            productDetail.storeRelatedProducts[index];
                         return SizedBox(
                           width: 150,
                           child: ProductItem(
-                            product: productsState.products[index],
+                            product: product,
                           ),
                         );
                       },
@@ -323,7 +351,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                           width: 14,
                         );
                       },
-                      itemCount: productsState.products.length,
+                      itemCount: productDetail.storeRelatedProducts.length,
                     ),
                   ),
                 )

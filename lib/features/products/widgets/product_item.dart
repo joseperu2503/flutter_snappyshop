@@ -5,7 +5,6 @@ import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.
 import 'package:flutter_snappyshop/features/shared/widgets/custom_image.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
 import 'package:flutter_snappyshop/features/wishlist/providers/favorite_products_provider.dart';
-import 'package:flutter_snappyshop/features/products/providers/products_provider.dart';
 import 'package:flutter_snappyshop/features/products/services/products_services.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
@@ -64,7 +63,6 @@ class ProductCardState extends ConsumerState<ProductItem> {
 
     return GestureDetector(
       onTap: () {
-        ref.read(productsProvider.notifier).setProduct(widget.product);
         context.push('/product/${widget.product.id}');
       },
       child: Column(

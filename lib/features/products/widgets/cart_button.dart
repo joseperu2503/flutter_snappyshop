@@ -17,8 +17,8 @@ class CartButton extends ConsumerWidget {
     final darkMode = ref.watch(darkModeProvider);
 
     return Container(
-      width: 46,
-      height: 46,
+      width: 42,
+      height: 42,
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
       ),
@@ -26,6 +26,9 @@ class CartButton extends ConsumerWidget {
         onPressed: () {
           context.push('/cart');
         },
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.zero,
+        ),
         child: badges.Badge(
           position: badges.BadgePosition.custom(
             end: -12,
