@@ -83,7 +83,7 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
                               .read(addressProvider.notifier)
                               .changeSearch(value);
                         },
-                        hintText: 'Enter address...',
+                        hintText: 'Search address...',
                       ),
                     ),
                   ),

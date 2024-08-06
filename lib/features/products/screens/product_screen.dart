@@ -2,6 +2,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/config/constants/styles.dart';
+import 'package:flutter_snappyshop/features/cart/widgets/button_stepper.dart';
 import 'package:flutter_snappyshop/features/products/models/product_detail.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
 import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
@@ -189,17 +190,120 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Text(
-                          product.name,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            color: darkMode
-                                ? AppColors.textYankeesBlueDark
-                                : AppColors.textYankeesBlue,
-                            height: 1.1,
-                            leadingDistribution: TextLeadingDistribution.even,
-                          ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 8),
+                                child: Text(
+                                  product.name,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                    color: darkMode
+                                        ? AppColors.textYankeesBlueDark
+                                        : AppColors.textYankeesBlue,
+                                    height: 1.1,
+                                    leadingDistribution:
+                                        TextLeadingDistribution.even,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 16,
+                            ),
+                            Container(
+                              height: 42,
+                              width: 42,
+                              decoration: BoxDecoration(
+                                color: product.isFavorite
+                                    ? AppColors.primaryPearlAqua
+                                    : Colors.transparent,
+                                borderRadius:
+                                    BorderRadius.circular(radiusButton),
+                                border: Border.all(
+                                  color: product.isFavorite
+                                      ? Colors.transparent
+                                      : AppColors.textYankeesBlue
+                                          .withOpacity(0.3),
+                                ),
+                              ),
+                              child: TextButton(
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(radiusButton),
+                                  ),
+                                  padding: EdgeInsets.zero,
+                                ),
+                                onPressed: loadingFavorite
+                                    ? null
+                                    : () {
+                                        toggleFavorite(product);
+                                      },
+                                child: loadingFavorite
+                                    ? Center(
+                                        child: CustomProgressIndicator(
+                                          size: 20,
+                                          strokeWidth: 2,
+                                          color: product.isFavorite
+                                              ? AppColors.white
+                                              : AppColors.textYankeesBlue,
+                                        ),
+                                      )
+                                    : SvgPicture.asset(
+                                        product.isFavorite
+                                            ? 'assets/icons/heart_solid.svg'
+                                            : 'assets/icons/heart_outlined.svg',
+                                        colorFilter: ColorFilter.mode(
+                                          product.isFavorite
+                                              ? AppColors.white
+                                              : AppColors.textYankeesBlue,
+                                          BlendMode.srcIn,
+                                        ),
+                                        width: 18,
+                                        height: 18,
+                                      ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            Container(
+                              height: 42,
+                              width: 42,
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius:
+                                    BorderRadius.circular(radiusButton),
+                                border: Border.all(
+                                  color: AppColors.textYankeesBlue
+                                      .withOpacity(0.3),
+                                ),
+                              ),
+                              child: TextButton(
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(radiusButton),
+                                  ),
+                                  padding: EdgeInsets.zero,
+                                ),
+                                onPressed: () {},
+                                child: SvgPicture.asset(
+                                  'assets/icons/share.svg',
+                                  colorFilter: const ColorFilter.mode(
+                                    AppColors.textYankeesBlue,
+                                    BlendMode.srcIn,
+                                  ),
+                                  width: 18,
+                                  height: 18,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(
                           height: 8,
@@ -242,44 +346,100 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                                 ),
                               ),
                             const Spacer(),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: darkMode
-                                    ? AppColors.primaryCulturedDark
-                                    : AppColors.primaryCultured,
-                                borderRadius:
-                                    BorderRadiusDirectional.circular(50),
-                              ),
-                              child: Row(
-                                children: [
-                                  const Icon(
-                                    Icons.star_rounded,
-                                    color: AppColors.star,
-                                  ),
-                                  Text(
-                                    '4,2',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                      color: darkMode
-                                          ? AppColors.textArsenicDark
-                                          : AppColors.textArsenic,
-                                      height: 22 / 14,
-                                      leadingDistribution:
-                                          TextLeadingDistribution.even,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            // Container(
+                            //   padding: const EdgeInsets.symmetric(
+                            //     horizontal: 10,
+                            //     vertical: 6,
+                            //   ),
+                            //   decoration: BoxDecoration(
+                            //     color: darkMode
+                            //         ? AppColors.primaryCulturedDark
+                            //         : AppColors.primaryCultured,
+                            //     borderRadius:
+                            //         BorderRadiusDirectional.circular(50),
+                            //   ),
+                            //   child: Row(
+                            //     children: [
+                            //       const Icon(
+                            //         Icons.star_rounded,
+                            //         color: AppColors.star,
+                            //       ),
+                            //       Text(
+                            //         '4,2',
+                            //         style: TextStyle(
+                            //           fontSize: 14,
+                            //           fontWeight: FontWeight.w400,
+                            //           color: darkMode
+                            //               ? AppColors.textArsenicDark
+                            //               : AppColors.textArsenic,
+                            //           height: 22 / 14,
+                            //           leadingDistribution:
+                            //               TextLeadingDistribution.even,
+                            //         ),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                           ],
                         ),
                         const SizedBox(
+                          height: 16,
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(top: 12),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              top: BorderSide(
+                                color: AppColors.textCoolBlackDark
+                                    .withOpacity(0.9),
+                                width: 1,
+                              ),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  'Quantity',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: darkMode
+                                        ? AppColors.textYankeesBlueDark
+                                        : AppColors.textYankeesBlue,
+                                    height: 1.1,
+                                    leadingDistribution:
+                                        TextLeadingDistribution.even,
+                                  ),
+                                ),
+                              ),
+                              ButtonStepper(
+                                value: 2,
+                                onAdd: () {},
+                                onRemove: () {},
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
                           height: 26,
+                        ),
+                        CustomButton(
+                          text: 'Add to cart',
+                          onPressed: () {
+                            ref.read(cartProvider.notifier).addToCart(product);
+                          },
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        CustomButton(
+                          text: 'Buy now',
+                          type: ButtonType.secondary,
+                          onPressed: () {},
+                        ),
+                        const SizedBox(
+                          height: 32,
                         ),
                         Text(
                           'Description',
@@ -324,7 +484,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                           ),
                         ),
                         const SizedBox(
-                          height: 30,
+                          height: 12,
                         ),
                       ],
                     ),
@@ -354,74 +514,79 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                       itemCount: productDetail.storeRelatedProducts.length,
                     ),
                   ),
+                ),
+                SliverPadding(
+                  padding: EdgeInsets.only(
+                    bottom: screen.padding.bottom,
+                  ),
                 )
               ],
             ),
-            bottomNavigationBar: SafeArea(
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 16,
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      height: 52,
-                      width: 52,
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(radiusButton),
-                        border: Border.all(
-                          color: AppColors.secondaryPastelRed,
-                        ),
-                      ),
-                      child: TextButton(
-                        style: TextButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(radiusButton),
-                          ),
-                        ),
-                        onPressed: loadingFavorite
-                            ? null
-                            : () {
-                                toggleFavorite(product);
-                              },
-                        child: loadingFavorite
-                            ? const Center(
-                                child: CustomProgressIndicator(
-                                  size: 20,
-                                  strokeWidth: 2,
-                                  color: AppColors.secondaryPastelRed,
-                                ),
-                              )
-                            : SvgPicture.asset(
-                                product.isFavorite
-                                    ? 'assets/icons/heart_solid.svg'
-                                    : 'assets/icons/heart_outlined.svg',
-                                colorFilter: const ColorFilter.mode(
-                                  AppColors.secondaryPastelRed,
-                                  BlendMode.srcIn,
-                                ),
-                                width: 24,
-                                height: 24,
-                              ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      child: CustomButton(
-                        text: 'Add to cart',
-                        onPressed: () {
-                          ref.read(cartProvider.notifier).addToCart(product);
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            // bottomNavigationBar: SafeArea(
+            //   child: Container(
+            //     padding: const EdgeInsets.symmetric(
+            //       horizontal: 16,
+            //       vertical: 16,
+            //     ),
+            //     child: Row(
+            //       children: [
+            //         Container(
+            //           height: 52,
+            //           width: 52,
+            //           decoration: BoxDecoration(
+            //             color: Colors.transparent,
+            //             borderRadius: BorderRadius.circular(radiusButton),
+            //             border: Border.all(
+            //               color: AppColors.secondaryPastelRed,
+            //             ),
+            //           ),
+            //           child: TextButton(
+            //             style: TextButton.styleFrom(
+            //               shape: RoundedRectangleBorder(
+            //                 borderRadius: BorderRadius.circular(radiusButton),
+            //               ),
+            //             ),
+            //             onPressed: loadingFavorite
+            //                 ? null
+            //                 : () {
+            //                     toggleFavorite(product);
+            //                   },
+            //             child: loadingFavorite
+            //                 ? const Center(
+            //                     child: CustomProgressIndicator(
+            //                       size: 20,
+            //                       strokeWidth: 2,
+            //                       color: AppColors.secondaryPastelRed,
+            //                     ),
+            //                   )
+            //                 : SvgPicture.asset(
+            //                     product.isFavorite
+            //                         ? 'assets/icons/heart_solid.svg'
+            //                         : 'assets/icons/heart_outlined.svg',
+            //                     colorFilter: const ColorFilter.mode(
+            //                       AppColors.secondaryPastelRed,
+            //                       BlendMode.srcIn,
+            //                     ),
+            //                     width: 24,
+            //                     height: 24,
+            //                   ),
+            //           ),
+            //         ),
+            //         const SizedBox(
+            //           width: 10,
+            //         ),
+            //         Expanded(
+            //           child: CustomButton(
+            //             text: 'Add to cart',
+            //             onPressed: () {
+            //               ref.read(cartProvider.notifier).addToCart(product);
+            //             },
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
           )
         : Layout1(
             body: Container(

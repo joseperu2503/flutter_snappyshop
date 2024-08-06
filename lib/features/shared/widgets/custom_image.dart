@@ -65,8 +65,8 @@ class CustomImage extends ConsumerWidget {
                   image: DecorationImage(
                     image: NetworkImage(path!),
                     fit: fit,
-                    colorFilter: ColorFilter.mode(
-                      AppColors.primaryCultured.withOpacity(1),
+                    colorFilter: const ColorFilter.mode(
+                      AppColors.primaryCultured,
                       BlendMode.modulate,
                     ),
                   ),

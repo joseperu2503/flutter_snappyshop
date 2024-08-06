@@ -63,7 +63,7 @@ class InputSearchState extends ConsumerState<InputSearch> {
                       : AppColors.textYankeesBlue,
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
-                  height: 22 / 14,
+                  height: 1,
                 ),
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(borderSide: BorderSide.none),
@@ -73,9 +73,9 @@ class InputSearchState extends ConsumerState<InputSearch> {
                     color: darkMode
                         ? AppColors.textArsenicDark.withOpacity(0.5)
                         : AppColors.textArsenic.withOpacity(0.5),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    height: 22 / 14,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    height: 1,
                   ),
                   contentPadding: const EdgeInsets.only(
                     top: 15,

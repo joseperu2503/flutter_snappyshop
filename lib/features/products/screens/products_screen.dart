@@ -174,16 +174,16 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                                             width: 8,
                                           ),
                                           Text(
-                                            'Search...',
+                                            'Search',
                                             style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500,
                                               color: darkMode
                                                   ? AppColors.textArsenicDark
                                                       .withOpacity(0.5)
                                                   : AppColors.textArsenic
                                                       .withOpacity(0.5),
-                                              height: 22 / 14,
+                                              height: 1,
                                               leadingDistribution:
                                                   TextLeadingDistribution.even,
                                             ),
