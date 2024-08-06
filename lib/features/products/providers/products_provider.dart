@@ -8,7 +8,7 @@ import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_snappyshop/features/store/models/stores_response.dart';
+import 'package:flutter_snappyshop/features/store/providers/store_provider.dart';
 
 final productsProvider =
     StateNotifierProvider<ProductsNotifier, ProductsState>((ref) {
@@ -21,7 +21,6 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
 
   initData() {
     state = state.copyWith(
-      stores: [],
       products: [],
       page: 1,
       totalPages: 1,
@@ -31,17 +30,19 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
   }
 
   getDashboardData() async {
-    state = state.copyWith(
-      dashboardStatus: LoadingStatus.loading,
-    );
-    ref.read(cartProvider.notifier).initData();
-    initData();
-
     try {
+      state = state.copyWith(
+        dashboardStatus: LoadingStatus.loading,
+      );
+      ref.read(cartProvider.notifier).initData();
+      ref.read(storeProvider.notifier).initData();
+
+      initData();
+
       ref.read(authProvider.notifier).setuser(null);
       await Future.wait([
         getProducts(),
-        getStores(),
+        ref.read(storeProvider.notifier).getStores(),
         ref.read(searchProvider.notifier).getFilterData(),
         ref.read(authProvider.notifier).getUser(),
         ref.read(cartProvider.notifier).getCartService(),
@@ -80,17 +81,6 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
       state = state.copyWith(
         loadingProducts: LoadingStatus.error,
       );
-      throw ServiceException(null, e.message);
-    }
-  }
-
-  Future<void> getStores() async {
-    try {
-      final response = await ProductsService.getStores();
-      state = state.copyWith(
-        stores: response.results,
-      );
-    } on ServiceException catch (e) {
       throw ServiceException(null, e.message);
     }
   }
@@ -145,7 +135,6 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
 
 class ProductsState {
   final List<Product> products;
-  final List<Store> stores;
   final Map<String, ProductDetail> productDetails;
   final int page;
   final int totalPages;
@@ -154,7 +143,6 @@ class ProductsState {
 
   ProductsState({
     this.products = const [],
-    this.stores = const [],
     this.productDetails = const {},
     this.page = 1,
     this.totalPages = 1,
@@ -164,7 +152,6 @@ class ProductsState {
 
   ProductsState copyWith({
     List<Product>? products,
-    List<Store>? stores,
     Map<String, ProductDetail>? productDetails,
     int? page,
     int? totalPages,
@@ -173,7 +160,6 @@ class ProductsState {
   }) =>
       ProductsState(
         products: products ?? this.products,
-        stores: stores ?? this.stores,
         productDetails: productDetails ?? this.productDetails,
         page: page ?? this.page,
         totalPages: totalPages ?? this.totalPages,

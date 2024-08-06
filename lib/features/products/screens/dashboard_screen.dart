@@ -12,21 +12,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/settings/services/notification_service.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
+import 'package:flutter_snappyshop/features/store/providers/store_provider.dart';
+import 'package:flutter_snappyshop/features/store/widgets/store_item.dart';
+import 'package:flutter_snappyshop/features/store/widgets/store_skeleton.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 
-class ProductsScreen extends ConsumerStatefulWidget {
-  const ProductsScreen({super.key});
+class DashboardScreen extends ConsumerStatefulWidget {
+  const DashboardScreen({super.key});
 
   @override
   ProductsScreenState createState() => ProductsScreenState();
 }
 
-class ProductsScreenState extends ConsumerState<ProductsScreen> {
+class ProductsScreenState extends ConsumerState<DashboardScreen> {
   @override
   void initState() {
     scrollController.addListener(() {
-      if (scrollController.position.pixels + 400 >=
+      if (scrollController.position.pixels + 300 >=
           scrollController.position.maxScrollExtent) {
         ref.read(productsProvider.notifier).getProducts();
       }
@@ -56,6 +58,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
     final productsState = ref.watch(productsProvider);
     final darkMode = ref.watch(darkModeProvider);
     final MediaQueryData screen = MediaQuery.of(context);
+    final storeState = ref.watch(storeProvider);
 
     return Scaffold(
       key: scaffoldKey,
@@ -154,53 +157,45 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        SizedBox(
-                          height: 40,
-                          child: ListView.separated(
-                            padding: const EdgeInsets.symmetric(horizontal: 24),
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (context, index) {
-                              final store = productsState.stores[index];
-                              return GestureDetector(
-                                onTap: () {
-                                  context.push('/store/${store.id}');
-                                },
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: darkMode
-                                        ? AppColors.primaryCulturedDark
-                                        : AppColors.primaryCultured,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      store.name,
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        color: darkMode
-                                            ? AppColors.textCultured
-                                            : AppColors.textCoolBlack,
-                                        height: 22 / 16,
-                                        leadingDistribution:
-                                            TextLeadingDistribution.even,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return const SizedBox(
-                                width: 10,
-                              );
-                            },
-                            itemCount: productsState.stores.length,
+                        if (storeState.storesStatues == LoadingStatus.success)
+                          SizedBox(
+                            height: 40,
+                            child: ListView.separated(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: horizontalPaddingMobile,
+                              ),
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                final store = storeState.stores[index];
+                                return StoreItem(store: store);
+                              },
+                              separatorBuilder: (context, index) {
+                                return const SizedBox(
+                                  width: 6,
+                                );
+                              },
+                              itemCount: storeState.stores.length,
+                            ),
                           ),
-                        ),
+                        if (storeState.storesStatues == LoadingStatus.loading)
+                          SizedBox(
+                            height: 40,
+                            child: ListView.separated(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: horizontalPaddingMobile,
+                              ),
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                return const StoreSkeleton();
+                              },
+                              separatorBuilder: (context, index) {
+                                return const SizedBox(
+                                  width: 6,
+                                );
+                              },
+                              itemCount: 5,
+                            ),
+                          ),
                         Container(
                           padding: const EdgeInsets.only(
                             top: 24,
@@ -216,7 +211,7 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                       ],
                     ),
                   ),
-                  if (productsState.loadingProducts == LoadingStatus.success)
+                  if (productsState.products.isNotEmpty)
                     SliverPadding(
                       padding: const EdgeInsets.only(
                         top: 16,

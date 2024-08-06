@@ -74,7 +74,7 @@ class LoginNotifier extends StateNotifier<LoginState> {
       ref.read(notificationProvider.notifier).enableNotifications();
       ref.read(authProvider.notifier).initAutoLogout();
 
-      appRouter.go('/products');
+      appRouter.go('/dashboard');
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
     }
@@ -130,7 +130,7 @@ class LoginNotifier extends StateNotifier<LoginState> {
       ref.read(notificationProvider.notifier).enableNotifications();
       ref.read(authProvider.notifier).initAutoLogout();
 
-      appRouter.go('/products');
+      appRouter.go('/dashboard');
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
     }

@@ -107,7 +107,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
                       child: CustomButton(
                         text: 'Start shopping',
                         onPressed: () {
-                          context.go('/products');
+                          context.go('/dashboard');
                         },
                       ),
                     ),

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
-import 'package:flutter_snappyshop/features/products/providers/products_provider.dart';
 import 'package:flutter_snappyshop/features/products/services/products_services.dart';
 import 'package:flutter_snappyshop/features/products/widgets/product_item.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
@@ -11,6 +10,7 @@ import 'package:flutter_snappyshop/features/shared/models/service_exception.dart
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
+import 'package:flutter_snappyshop/features/store/providers/store_provider.dart';
 
 class StoreScreen extends ConsumerStatefulWidget {
   const StoreScreen({
@@ -80,7 +80,7 @@ class StoreScreenState extends ConsumerState<StoreScreen> {
   @override
   Widget build(BuildContext context) {
     final store = ref
-        .watch(productsProvider)
+        .watch(storeProvider)
         .stores
         .firstWhere((element) => element.id.toString() == widget.storeId);
 

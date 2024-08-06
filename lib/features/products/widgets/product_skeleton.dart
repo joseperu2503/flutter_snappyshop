@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:animated_shimmer/animated_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
@@ -37,7 +36,7 @@ class ProductSkeleton extends StatelessWidget {
                 child: AnimatedShimmer(
                   height: 12,
                   width: 80.0 + Random().nextInt(41),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(4),
                 ),
               ),
               const SizedBox(
@@ -48,7 +47,7 @@ class ProductSkeleton extends StatelessWidget {
                 child: AnimatedShimmer(
                   height: 12,
                   width: 80.0,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(4),
                 ),
               ),
             ],

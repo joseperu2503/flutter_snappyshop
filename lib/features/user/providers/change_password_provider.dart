@@ -59,7 +59,7 @@ class ChangePasswordNotifier extends StateNotifier<ChangePasswordState> {
       );
       ref.read(snackbarProvider.notifier).showSnackbar(response.message);
 
-      appRouter.go('/products');
+      appRouter.go('/dashboard');
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
       state = state.copyWith(

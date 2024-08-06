@@ -4,7 +4,6 @@ import 'package:flutter_snappyshop/features/products/models/category.dart';
 import 'package:flutter_snappyshop/features/products/models/product_detail.dart';
 import 'package:flutter_snappyshop/features/search/models/filter_response.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
-import 'package:flutter_snappyshop/features/store/models/stores_response.dart';
 import 'package:flutter_snappyshop/features/wishlist/models/toggle_favorite_response.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 
@@ -59,16 +58,6 @@ class ProductsService {
     } catch (e) {
       throw ServiceException(
           e, 'An error occurred while loading the categories.');
-    }
-  }
-
-  static Future<StoresResponse> getStores() async {
-    try {
-      final response = await api.get(ApiRoutes.stores);
-
-      return StoresResponse.fromJson(response.data);
-    } catch (e) {
-      throw ServiceException(e, 'An error occurred while loading the stores.');
     }
   }
 

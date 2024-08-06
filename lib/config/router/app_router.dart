@@ -22,7 +22,7 @@ import 'package:flutter_snappyshop/features/store/screens/store_screen.dart';
 import 'package:flutter_snappyshop/features/cart/screens/cart_screen.dart';
 import 'package:flutter_snappyshop/features/checkout/screens/order_confirmed_screen.dart';
 import 'package:flutter_snappyshop/features/products/screens/product_screen.dart';
-import 'package:flutter_snappyshop/features/products/screens/products_screen.dart';
+import 'package:flutter_snappyshop/features/products/screens/dashboard_screen.dart';
 import 'package:flutter_snappyshop/features/search/screens/search_screen.dart';
 import 'package:go_router/go_router.dart';
 
@@ -30,7 +30,7 @@ Future<String?> externalRedirect(
     BuildContext context, GoRouterState state) async {
   final (token, _) = await AuthService.verifyToken();
   if (token) {
-    return '/products';
+    return '/dashboard';
   }
   return null;
 }
@@ -99,9 +99,9 @@ final appRouter = GoRouter(
     ),
     // Product Routes
     GoRoute(
-      path: '/products',
+      path: '/dashboard',
       builder: (context, state) {
-        return const ProductsScreen();
+        return const DashboardScreen();
       },
     ),
     GoRoute(

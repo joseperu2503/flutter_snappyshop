@@ -135,7 +135,7 @@ class WishlistScreenState extends ConsumerState<WishlistScreen> {
                       child: CustomButton(
                         text: 'Start shopping',
                         onPressed: () {
-                          context.go('/products');
+                          context.go('/dashboard');
                         },
                       ),
                     ),
