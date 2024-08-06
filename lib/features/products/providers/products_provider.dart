@@ -26,7 +26,7 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
       page: 1,
       totalPages: 1,
       productDetails: {},
-      loadingProducts: false,
+      loadingProducts: LoadingStatus.none,
     );
   }
 
@@ -58,10 +58,11 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
   }
 
   Future<void> getProducts() async {
-    if (state.page > state.totalPages || state.loadingProducts) return;
+    if (state.page > state.totalPages ||
+        state.loadingProducts == LoadingStatus.loading) return;
 
     state = state.copyWith(
-      loadingProducts: true,
+      loadingProducts: LoadingStatus.loading,
     );
 
     try {
@@ -72,15 +73,15 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
         products: [...state.products, ...response.results],
         totalPages: response.info.lastPage,
         page: state.page + 1,
+        loadingProducts: LoadingStatus.success,
       );
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
+      state = state.copyWith(
+        loadingProducts: LoadingStatus.error,
+      );
       throw ServiceException(null, e.message);
     }
-
-    state = state.copyWith(
-      loadingProducts: false,
-    );
   }
 
   Future<void> getStores() async {
@@ -148,7 +149,7 @@ class ProductsState {
   final Map<String, ProductDetail> productDetails;
   final int page;
   final int totalPages;
-  final bool loadingProducts;
+  final LoadingStatus loadingProducts;
   final LoadingStatus dashboardStatus;
 
   ProductsState({
@@ -157,7 +158,7 @@ class ProductsState {
     this.productDetails = const {},
     this.page = 1,
     this.totalPages = 1,
-    this.loadingProducts = false,
+    this.loadingProducts = LoadingStatus.none,
     this.dashboardStatus = LoadingStatus.none,
   });
 
@@ -167,7 +168,7 @@ class ProductsState {
     Map<String, ProductDetail>? productDetails,
     int? page,
     int? totalPages,
-    bool? loadingProducts,
+    LoadingStatus? loadingProducts,
     LoadingStatus? dashboardStatus,
   }) =>
       ProductsState(

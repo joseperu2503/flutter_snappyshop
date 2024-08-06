@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/config/constants/styles.dart';
@@ -183,7 +181,7 @@ class ProductCardState extends ConsumerState<ProductItem> {
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                         color: AppColors.secondaryPastelRed,
-                        height: 1.1,
+                        height: 14 / 12,
                         leadingDistribution: TextLeadingDistribution.even,
                       ),
                     ),
