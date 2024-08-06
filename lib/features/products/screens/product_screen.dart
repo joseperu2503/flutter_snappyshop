@@ -386,13 +386,17 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                           height: 16,
                         ),
                         Container(
-                          padding: const EdgeInsets.only(top: 12),
-                          decoration: BoxDecoration(
+                          padding: const EdgeInsets.only(
+                            top: 12,
+                            bottom: 12,
+                          ),
+                          decoration: const BoxDecoration(
                             border: Border(
                               top: BorderSide(
-                                color: AppColors.textCoolBlackDark
-                                    .withOpacity(0.9),
-                                width: 1,
+                                color: AppColors.textCoolBlackDark,
+                              ),
+                              bottom: BorderSide(
+                                color: AppColors.textCoolBlackDark,
                               ),
                             ),
                           ),
@@ -443,15 +447,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                         ),
                         Text(
                           'Description',
-                          style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w600,
-                            color: darkMode
-                                ? AppColors.textYankeesBlueDark
-                                : AppColors.textYankeesBlue,
-                            height: 1.1,
-                            leadingDistribution: TextLeadingDistribution.even,
-                          ),
+                          style: subtitle(darkMode),
                         ),
                         const SizedBox(
                           height: 10,
@@ -473,15 +469,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                         ),
                         Text(
                           'More from ${productDetail!.store.name}',
-                          style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w600,
-                            color: darkMode
-                                ? AppColors.textYankeesBlueDark
-                                : AppColors.textYankeesBlue,
-                            height: 1.1,
-                            leadingDistribution: TextLeadingDistribution.even,
-                          ),
+                          style: subtitle(darkMode),
                         ),
                         const SizedBox(
                           height: 12,

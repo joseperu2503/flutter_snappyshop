@@ -33,6 +33,6 @@ class AppColors {
   static const Color textArsenicDark = Color(0xFFB5B8BD);
 
   static const Color textCoolBlackDark = Color(0xFFE7E7E7);
-  static const Color bgInputDark = Color.fromARGB(255, 47, 51, 55);
-  static const Color bgInput = Color.fromARGB(255, 240, 243, 249);
+  static const Color bgInputDark = Color(0xFF2F3337);
+  static const Color bgInput = Color(0xFFF0F3F9);
 }

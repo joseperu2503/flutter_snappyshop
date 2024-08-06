@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 
 const double formInputSpacing = 28;
 const double labelInputSpacing = 4;
@@ -15,3 +16,13 @@ const LinearGradient primaryGradient = LinearGradient(
 
 const double horizontalPaddingMobile = 24;
 const double horizontalPaddinAppBargMobile = 24;
+
+TextStyle subtitle(bool darkMode) {
+  return TextStyle(
+    fontSize: 17,
+    fontWeight: FontWeight.w600,
+    color: darkMode ? AppColors.textYankeesBlueDark : AppColors.textYankeesBlue,
+    height: 1.1,
+    leadingDistribution: TextLeadingDistribution.even,
+  );
+}

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
@@ -104,36 +106,46 @@ class ProductCardState extends ConsumerState<ProductItem> {
                   ),
                 ),
               Positioned(
-                right: 0,
+                right: 8,
+                bottom: 8,
                 child: SizedBox(
-                  width: 40,
-                  height: 40,
-                  child: loadingFavorite
-                      ? const Center(
-                          child: CustomProgressIndicator(
-                            size: 20,
-                            color: AppColors.secondaryPastelRed,
-                            strokeWidth: 2,
-                          ),
-                        )
-                      : TextButton(
-                          onPressed: loadingFavorite
-                              ? null
-                              : () {
-                                  toggleFavorite();
-                                },
-                          child: SvgPicture.asset(
-                            widget.product.isFavorite
-                                ? 'assets/icons/heart_solid.svg'
-                                : 'assets/icons/heart_outlined.svg',
-                            colorFilter: ColorFilter.mode(
-                              AppColors.secondaryPastelRed.withOpacity(0.8),
-                              BlendMode.srcIn,
+                  width: 32,
+                  height: 32,
+                  child: TextButton(
+                    onPressed: loadingFavorite
+                        ? null
+                        : () {
+                            toggleFavorite();
+                          },
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      backgroundColor: widget.product.isFavorite
+                          ? AppColors.primaryPearlAqua
+                          : AppColors.textArsenic.withOpacity(0.3),
+                    ),
+                    child: Center(
+                      child: loadingFavorite
+                          ? const CustomProgressIndicator(
+                              size: 18,
+                              color: AppColors.white,
+                              strokeWidth: 2,
+                            )
+                          : SvgPicture.asset(
+                              widget.product.isFavorite
+                                  ? 'assets/icons/heart_solid.svg'
+                                  : 'assets/icons/heart_outlined.svg',
+                              colorFilter: const ColorFilter.mode(
+                                AppColors.white,
+                                BlendMode.srcIn,
+                              ),
+                              width: 18,
+                              height: 18,
                             ),
-                            width: 24,
-                            height: 24,
-                          ),
-                        ),
+                    ),
+                  ),
                 ),
               )
             ],

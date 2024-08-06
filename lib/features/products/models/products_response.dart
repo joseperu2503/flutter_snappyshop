@@ -49,7 +49,7 @@ class Product {
   final ProductStore store;
   final ProductCategory category;
   final List<String> colors;
-  final List<Size> sizes;
+  final List<ProductSize> sizes;
   final List<Gender> genders;
   final int? discount;
   final bool isFavorite;
@@ -80,7 +80,7 @@ class Product {
         store: ProductStore.fromJson(json["store"]),
         category: ProductCategory.fromJson(json["category"]),
         colors: List<String>.from(json["colors"].map((x) => x)),
-        sizes: List<Size>.from(json["sizes"].map((x) => x)),
+        sizes: List<ProductSize>.from(json["sizes"].map((x) => x)),
         genders: List<Gender>.from(json["genders"].map((x) => x)),
         discount: json["discount"],
         isFavorite: json["is_favorite"],
@@ -96,7 +96,7 @@ class Product {
     ProductStore? store,
     ProductCategory? category,
     List<String>? colors,
-    List<Size>? sizes,
+    List<ProductSize>? sizes,
     List<Gender>? genders,
     int? discount,
     DateTime? createdAt,
@@ -151,16 +151,16 @@ class ProductStore {
       );
 }
 
-class Size {
+class ProductSize {
   final int id;
   final String name;
 
-  Size({
+  ProductSize({
     required this.id,
     required this.name,
   });
 
-  factory Size.fromJson(Map<String, dynamic> json) => Size(
+  factory ProductSize.fromJson(Map<String, dynamic> json) => ProductSize(
         id: json["id"],
         name: json["name"],
       );
