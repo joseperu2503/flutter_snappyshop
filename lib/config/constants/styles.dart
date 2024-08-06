@@ -26,3 +26,21 @@ TextStyle subtitle(bool darkMode) {
     leadingDistribution: TextLeadingDistribution.even,
   );
 }
+
+const double _crossAxisSpacing = 16;
+const double _mainAxisSpacing = 6;
+const double productItemInfoHeight = 60;
+
+SliverGridDelegateWithFixedCrossAxisCount productSliverGridDelegate(
+  double width,
+) {
+  final double widthProductCard =
+      (width - 2 * horizontalPaddingMobile - _crossAxisSpacing) / 2;
+
+  return SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 2,
+    crossAxisSpacing: _crossAxisSpacing,
+    mainAxisSpacing: _mainAxisSpacing,
+    mainAxisExtent: widthProductCard + productItemInfoHeight,
+  );
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/search/providers/search_provider.dart';
 import 'package:flutter_snappyshop/features/search/widgets/brand_filter_button.dart';
 import 'package:flutter_snappyshop/features/search/widgets/category_filter_button.dart';
@@ -47,12 +48,6 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
     super.dispose();
   }
 
-  double get widthProductCard {
-    final MediaQueryData screen = MediaQuery.of(context);
-
-    return (screen.size.width - 2 * 24 - 16) / 2;
-  }
-
   @override
   Widget build(BuildContext context) {
     final searchState = ref.watch(searchProvider);
@@ -61,6 +56,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
     final noResults =
         !searchState.loadingProducts && searchState.products.isEmpty;
     final darkMode = ref.watch(darkModeProvider);
+    final MediaQueryData screen = MediaQuery.of(context);
 
     return VisibilityDetector(
       key: const Key('myWidgetKey'),
@@ -258,12 +254,7 @@ class SearchScreenState extends ConsumerState<SearchScreen> {
                       },
                       childCount: searchState.products.length,
                     ),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 12,
-                      mainAxisExtent: widthProductCard + 80,
-                    ),
+                    gridDelegate: productSliverGridDelegate(screen.size.width),
                   ),
                 ),
               if (searchState.loadingProducts && searchState.products.isEmpty)

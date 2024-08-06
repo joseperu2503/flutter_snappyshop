@@ -52,16 +52,11 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
   final ScrollController scrollController = ScrollController();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  double get widthProductCard {
-    final MediaQueryData screen = MediaQuery.of(context);
-
-    return (screen.size.width - 2 * 24 - 16) / 2;
-  }
-
   @override
   Widget build(BuildContext context) {
     final productsState = ref.watch(productsProvider);
     final darkMode = ref.watch(darkModeProvider);
+    final MediaQueryData screen = MediaQuery.of(context);
 
     return Loader(
       loading: productsState.dashboardStatus == LoadingStatus.loading,
@@ -240,12 +235,8 @@ class ProductsScreenState extends ConsumerState<ProductsScreen> {
                           },
                           childCount: productsState.products.length,
                         ),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 16,
-                          mainAxisSpacing: 12,
-                          mainAxisExtent: widthProductCard + 80,
-                        ),
+                        gridDelegate:
+                            productSliverGridDelegate(screen.size.width),
                       ),
                     ),
                     SliverToBoxAdapter(

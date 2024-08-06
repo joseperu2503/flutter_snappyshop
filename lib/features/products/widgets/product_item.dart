@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_image.dart';
@@ -155,7 +156,7 @@ class ProductCardState extends ConsumerState<ProductItem> {
               top: 8,
               bottom: 8,
             ),
-            height: 80,
+            height: productItemInfoHeight,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -165,14 +166,14 @@ class ProductCardState extends ConsumerState<ProductItem> {
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
                     color: darkMode ? AppColors.white : AppColors.textCoolBlack,
-                    height: 1.4,
+                    height: 14 / 12,
                     leadingDistribution: TextLeadingDistribution.even,
                   ),
-                  maxLines: 2,
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(
-                  height: 8,
+                  height: 6,
                 ),
                 Row(
                   children: [

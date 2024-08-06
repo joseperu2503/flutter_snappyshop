@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
 import 'package:flutter_snappyshop/features/products/providers/products_provider.dart';
 import 'package:flutter_snappyshop/features/products/services/products_services.dart';
@@ -76,18 +77,14 @@ class StoreScreenState extends ConsumerState<StoreScreen> {
     super.dispose();
   }
 
-  double get widthProductCard {
-    final MediaQueryData screen = MediaQuery.of(context);
-
-    return (screen.size.width - 2 * 24 - 16) / 2;
-  }
-
   @override
   Widget build(BuildContext context) {
     final store = ref
         .watch(productsProvider)
         .stores
         .firstWhere((element) => element.id.toString() == widget.storeId);
+
+    final MediaQueryData screen = MediaQuery.of(context);
 
     return Layout1(
       title: store.name,
@@ -109,12 +106,7 @@ class StoreScreenState extends ConsumerState<StoreScreen> {
                 },
                 childCount: products.length,
               ),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 12,
-                mainAxisExtent: widthProductCard + 80,
-              ),
+              gridDelegate: productSliverGridDelegate(screen.size.width),
             ),
           ),
           if (loadingProducts == LoadingStatus.loading && products.isNotEmpty)
