@@ -226,8 +226,11 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                                 border: Border.all(
                                   color: product.isFavorite
                                       ? Colors.transparent
-                                      : AppColors.textYankeesBlue
-                                          .withOpacity(0.3),
+                                      : darkMode
+                                          ? AppColors.textYankeesBlueDark
+                                              .withOpacity(0.3)
+                                          : AppColors.textYankeesBlue
+                                              .withOpacity(0.3),
                                 ),
                               ),
                               child: TextButton(
@@ -260,7 +263,10 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                                         colorFilter: ColorFilter.mode(
                                           product.isFavorite
                                               ? AppColors.white
-                                              : AppColors.textYankeesBlue,
+                                              : darkMode
+                                                  ? AppColors
+                                                      .textYankeesBlueDark
+                                                  : AppColors.textYankeesBlue,
                                           BlendMode.srcIn,
                                         ),
                                         width: 18,
@@ -279,8 +285,11 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                                 borderRadius:
                                     BorderRadius.circular(radiusButton),
                                 border: Border.all(
-                                  color: AppColors.textYankeesBlue
-                                      .withOpacity(0.3),
+                                  color: darkMode
+                                      ? AppColors.textYankeesBlueDark
+                                          .withOpacity(0.3)
+                                      : AppColors.textYankeesBlue
+                                          .withOpacity(0.3),
                                 ),
                               ),
                               child: TextButton(
@@ -294,8 +303,10 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                                 onPressed: () {},
                                 child: SvgPicture.asset(
                                   'assets/icons/share.svg',
-                                  colorFilter: const ColorFilter.mode(
-                                    AppColors.textYankeesBlue,
+                                  colorFilter: ColorFilter.mode(
+                                    darkMode
+                                        ? AppColors.textYankeesBlueDark
+                                        : AppColors.textYankeesBlue,
                                     BlendMode.srcIn,
                                   ),
                                   width: 18,
@@ -510,71 +521,6 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                 )
               ],
             ),
-            // bottomNavigationBar: SafeArea(
-            //   child: Container(
-            //     padding: const EdgeInsets.symmetric(
-            //       horizontal: 16,
-            //       vertical: 16,
-            //     ),
-            //     child: Row(
-            //       children: [
-            //         Container(
-            //           height: 52,
-            //           width: 52,
-            //           decoration: BoxDecoration(
-            //             color: Colors.transparent,
-            //             borderRadius: BorderRadius.circular(radiusButton),
-            //             border: Border.all(
-            //               color: AppColors.secondaryPastelRed,
-            //             ),
-            //           ),
-            //           child: TextButton(
-            //             style: TextButton.styleFrom(
-            //               shape: RoundedRectangleBorder(
-            //                 borderRadius: BorderRadius.circular(radiusButton),
-            //               ),
-            //             ),
-            //             onPressed: loadingFavorite
-            //                 ? null
-            //                 : () {
-            //                     toggleFavorite(product);
-            //                   },
-            //             child: loadingFavorite
-            //                 ? const Center(
-            //                     child: CustomProgressIndicator(
-            //                       size: 20,
-            //                       strokeWidth: 2,
-            //                       color: AppColors.secondaryPastelRed,
-            //                     ),
-            //                   )
-            //                 : SvgPicture.asset(
-            //                     product.isFavorite
-            //                         ? 'assets/icons/heart_solid.svg'
-            //                         : 'assets/icons/heart_outlined.svg',
-            //                     colorFilter: const ColorFilter.mode(
-            //                       AppColors.secondaryPastelRed,
-            //                       BlendMode.srcIn,
-            //                     ),
-            //                     width: 24,
-            //                     height: 24,
-            //                   ),
-            //           ),
-            //         ),
-            //         const SizedBox(
-            //           width: 10,
-            //         ),
-            //         Expanded(
-            //           child: CustomButton(
-            //             text: 'Add to cart',
-            //             onPressed: () {
-            //               ref.read(cartProvider.notifier).addToCart(product);
-            //             },
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
           )
         : Layout1(
             body: Container(
