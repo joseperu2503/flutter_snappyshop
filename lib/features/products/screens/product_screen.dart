@@ -328,7 +328,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.secondaryPastelRed,
-                                height: 1.6,
+                                height: 32,
                                 leadingDistribution:
                                     TextLeadingDistribution.even,
                               ),
@@ -346,7 +346,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                                       ? AppColors.textArsenicDark
                                           .withOpacity(0.5)
                                       : AppColors.textArsenic.withOpacity(0.5),
-                                  height: 1.6,
+                                  height: 32 / 20,
                                   decoration: TextDecoration.lineThrough,
                                   decorationColor: darkMode
                                       ? AppColors.textArsenicDark

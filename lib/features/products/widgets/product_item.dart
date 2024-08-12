@@ -197,7 +197,7 @@ class ProductCardState extends ConsumerState<ProductItem> {
                           color: darkMode
                               ? AppColors.textArsenicDark.withOpacity(0.5)
                               : AppColors.textArsenic.withOpacity(0.5),
-                          height: 1.1,
+                          height: 14 / 12,
                           decoration: TextDecoration.lineThrough,
                           decorationColor: darkMode
                               ? AppColors.textArsenicDark.withOpacity(0.5)
