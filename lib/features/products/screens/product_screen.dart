@@ -328,7 +328,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.secondaryPastelRed,
-                                height: 32,
+                                height: 32 / 20,
                                 leadingDistribution:
                                     TextLeadingDistribution.even,
                               ),
