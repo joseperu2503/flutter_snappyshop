@@ -3,7 +3,7 @@ import 'package:flutter_snappyshop/features/auth/models/auth_user.dart';
 class ChangePersonalDataResponse {
   final bool success;
   final String message;
-  final AuthUser data;
+  final User data;
 
   ChangePersonalDataResponse({
     required this.success,
@@ -15,6 +15,6 @@ class ChangePersonalDataResponse {
       ChangePersonalDataResponse(
         success: json["success"],
         message: json["message"],
-        data: AuthUser.fromJson(json["data"]),
+        data: User.fromJson(json["data"]),
       );
 }

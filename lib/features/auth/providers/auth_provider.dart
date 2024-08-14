@@ -19,7 +19,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<void> getUser() async {
     try {
-      final AuthUser user = await AuthService.getUser();
+      final User user = await AuthService.getUser();
 
       setuser(user);
     } on ServiceException catch (e) {
@@ -27,7 +27,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  setuser(AuthUser? user) {
+  setuser(User? user) {
     state = state.copyWith(
       user: () => user,
     );
@@ -61,14 +61,14 @@ class AuthNotifier extends StateNotifier<AuthState> {
 }
 
 class AuthState {
-  final AuthUser? user;
+  final User? user;
 
   AuthState({
     this.user,
   });
 
   AuthState copyWith({
-    ValueGetter<AuthUser?>? user,
+    ValueGetter<User?>? user,
   }) =>
       AuthState(
         user: user != null ? user() : this.user,

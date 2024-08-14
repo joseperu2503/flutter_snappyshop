@@ -74,11 +74,11 @@ class AuthService {
     return (true, timeRemainingInSeconds);
   }
 
-  static Future<AuthUser> getUser() async {
+  static Future<User> getUser() async {
     try {
       final response = await api.get(ApiRoutes.me);
 
-      return AuthUser.fromJson(response.data);
+      return User.fromJson(response.data);
     } catch (e) {
       throw ServiceException(e, 'An error occurred while loading the user.');
     }
