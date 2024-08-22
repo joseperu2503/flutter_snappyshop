@@ -17,8 +17,8 @@ class UserService {
         "password_confirmation": confirmPassword,
       };
 
-      final response = await api.post(
-        ApiRoutes.changePasswordInternal,
+      final response = await api.put(
+        ApiRoutes.updatePassword,
         data: form,
       );
 
@@ -29,7 +29,7 @@ class UserService {
     }
   }
 
-  static Future<ChangePersonalDataResponse> changePersonalData({
+  static Future<ChangePersonalDataResponse> updateAccountInformation({
     required int? userId,
     required String name,
     required String email,
@@ -43,15 +43,15 @@ class UserService {
         'profile_photo': photo,
       };
 
-      final response = await api.post(
-        ApiRoutes.changePersonalData,
+      final response = await api.put(
+        ApiRoutes.updateProfile,
         data: form,
       );
 
       return ChangePersonalDataResponse.fromJson(response.data);
     } catch (e) {
       throw ServiceException(
-          e, 'An error occurred while changing the personal data.');
+          e, 'An error occurred while updating your account information.');
     }
   }
 }

@@ -64,7 +64,7 @@ class AccountInformationNotifier
         );
       }
 
-      final response = await UserService.changePersonalData(
+      final response = await UserService.updateAccountInformation(
         email: state.email.value,
         name: state.name.value,
         userId: ref.read(authProvider).user?.id,

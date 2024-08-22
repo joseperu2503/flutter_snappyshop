@@ -31,7 +31,7 @@ class ApiRoutes {
   static const sendVerifyCode = '/user/send-verify-code';
   static const validateVerifyCode = '/user/validate-verify-code';
   static const changePassword = '/user/change-password-external';
-  static const me = '/user/me';
-  static const changePasswordInternal = '/user/change-password-internal';
-  static const changePersonalData = '/user/change-personal-data';
+  static const profile = '/account/profile';
+  static const updatePassword = '/account/password';
+  static const updateProfile = '/account/profile';
 }

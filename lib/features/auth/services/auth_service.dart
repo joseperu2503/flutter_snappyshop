@@ -76,7 +76,7 @@ class AuthService {
 
   static Future<User> getUser() async {
     try {
-      final response = await api.get(ApiRoutes.me);
+      final response = await api.get(ApiRoutes.profile);
 
       return User.fromJson(response.data);
     } catch (e) {
