@@ -43,7 +43,7 @@ class OrderScreenState extends ConsumerState<AddressMapScreen> {
                           clipBehavior: Clip.none,
                           children: [
                             Positioned(
-                              top: -sizeMarker,
+                              top: -sizeMarker + 12,
                               left: -sizeMarker / 2,
                               child: SvgPicture.asset(
                                 'assets/icons/map_pin_solid.svg',
