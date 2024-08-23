@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/address/providers/address_provider.dart';
+import 'package:flutter_snappyshop/features/address/widgets/no_results.dart';
 import 'package:flutter_snappyshop/features/search/widgets/input_search.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
@@ -10,7 +11,6 @@ import 'package:flutter_snappyshop/features/shared/providers/map_provider.dart';
 import 'package:flutter_snappyshop/features/shared/services/location_service.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -39,6 +39,26 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
 
   final FocusNode _focusNode = FocusNode();
   bool loadingPosition = false;
+
+  searchAddressOverMap() async {
+    FocusManager.instance.primaryFocus?.unfocus();
+
+    setState(() {
+      loadingPosition = true;
+    });
+    Position? location = await LocationService.getCurrentPosition();
+    setState(() {
+      loadingPosition = false;
+    });
+    if (location == null) return;
+
+    ref.read(mapProvider.notifier).changeCameraPosition(LatLng(
+          location.latitude,
+          location.longitude,
+        ));
+    if (!context.mounted) return;
+    context.push('/address-map');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,21 +126,20 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
               padding: const EdgeInsets.only(),
               sliver: SliverList.separated(
                 itemBuilder: (context, index) {
-                  final result = addressState.addressResults[index];
+                  final addressResult = addressState.addressResults[index];
                   return SizedBox(
                     height: 80,
                     child: TextButton(
-                      onPressed: () {
-                        if (result.properties.coordinates?.latitude != null &&
-                            result.properties.coordinates?.longitude != null) {
-                          ref
-                              .read(mapProvider.notifier)
-                              .changeCameraPosition(LatLng(
-                                result.properties.coordinates!.latitude!,
-                                result.properties.coordinates!.longitude!,
-                              ));
-                          context.push('/address-map');
-                        }
+                      onPressed: () async {
+                        setState(() {
+                          loadingPosition = true;
+                        });
+                        await ref
+                            .read(addressProvider.notifier)
+                            .selectAddressResult(addressResult);
+                        setState(() {
+                          loadingPosition = false;
+                        });
                       },
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
@@ -138,7 +157,7 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  result.properties.name ?? '',
+                                  addressResult.structuredFormatting.mainText,
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
@@ -150,7 +169,8 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
                                   ),
                                 ),
                                 Text(
-                                  result.properties.placeFormatted ?? '',
+                                  addressResult
+                                      .structuredFormatting.secondaryText,
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400,
@@ -184,44 +204,7 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
                 itemCount: addressState.addressResults.length,
               ),
             ),
-          if (noResults)
-            SliverToBoxAdapter(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  SvgPicture.asset(
-                    'assets/icons/search.svg',
-                    colorFilter: ColorFilter.mode(
-                      darkMode
-                          ? AppColors.textArsenicDark
-                          : AppColors.textArsenic,
-                      BlendMode.srcIn,
-                    ),
-                    width: 80,
-                    height: 80,
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  const Text(
-                    'No Results',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textArsenic,
-                      height: 1.1,
-                      leadingDistribution: TextLeadingDistribution.even,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                ],
-              ),
-            ),
+          if (noResults) const NoResults(),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.only(
@@ -231,25 +214,8 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
                 bottom: 40,
               ),
               child: CustomButton(
-                onPressed: () async {
-                  FocusManager.instance.primaryFocus?.unfocus();
-
-                  setState(() {
-                    loadingPosition = true;
-                  });
-                  Position? location =
-                      await LocationService.getCurrentPosition();
-                  setState(() {
-                    loadingPosition = false;
-                  });
-                  if (location == null) return;
-
-                  ref.read(mapProvider.notifier).changeCameraPosition(LatLng(
-                        location.latitude,
-                        location.longitude,
-                      ));
-                  if (!context.mounted) return;
-                  context.push('/address-map');
+                onPressed: () {
+                  searchAddressOverMap();
                 },
                 text: 'Search address over the map',
               ),

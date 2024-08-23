@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/router/app_router.dart';
 import 'package:flutter_snappyshop/features/address/models/addresses_response.dart';
+import 'package:flutter_snappyshop/features/address/models/autocomplete_response.dart';
 import 'package:flutter_snappyshop/features/address/models/mapbox_response.dart';
 import 'package:flutter_snappyshop/features/address/services/address_services.dart';
 import 'package:flutter_snappyshop/features/address/services/mapbox_service.dart';
@@ -93,6 +94,7 @@ class AddressNotifier extends StateNotifier<AddressState> {
 
   Timer? _debounceTimer;
 
+  //** Metodo que se ejecuta cuando se escribe el input de busqueda */
   changeSearch(String newSearch) {
     state = state.copyWith(
       addressResults: [],
@@ -114,6 +116,7 @@ class AddressNotifier extends StateNotifier<AddressState> {
     );
   }
 
+  //** Metodo para buscar resultados de direcciones */
   Future<void> searchAddress() async {
     state = state.copyWith(
       searchingAddresses: LoadingStatus.loading,
@@ -121,13 +124,13 @@ class AddressNotifier extends StateNotifier<AddressState> {
 
     final search = state.search;
     try {
-      final MapboxResponse response = await MapBoxService.searchbox(
+      final AutocompleteResponse response = await AddressService.autocomplete(
         query: state.search,
       );
 
       if (search == state.search) {
         state = state.copyWith(
-          addressResults: response.features,
+          addressResults: response.predictions,
           searchingAddresses: LoadingStatus.success,
         );
       }
@@ -138,6 +141,26 @@ class AddressNotifier extends StateNotifier<AddressState> {
           searchingAddresses: LoadingStatus.error,
         );
       }
+    }
+  }
+
+  //** Metodo para seleccionar un resultado y buscar sus coordenadas */
+  Future<void> selectAddressResult(AddressResult addressResult) async {
+    FocusManager.instance.primaryFocus?.unfocus();
+
+    try {
+      final addressResultDetails = await AddressService.addressResultDetail(
+        placeId: addressResult.placeId,
+      );
+
+      ref.read(mapProvider.notifier).changeCameraPosition(LatLng(
+            addressResultDetails.result.geometry.location.lat,
+            addressResultDetails.result.geometry.location.lng,
+          ));
+
+      appRouter.push('/address-map');
+    } on ServiceException catch (e) {
+      ref.read(snackbarProvider.notifier).showSnackbar(e.message);
     }
   }
 
@@ -328,7 +351,7 @@ class AddressNotifier extends StateNotifier<AddressState> {
 }
 
 class AddressState {
-  final List<Feature> addressResults;
+  final List<AddressResult> addressResults;
   final String search;
   final LoadingStatus searchingAddresses;
   final List<Address> addresses;
@@ -372,7 +395,7 @@ class AddressState {
   bool get firstLoad => loadingAddresses == LoadingStatus.loading && page == 1;
 
   AddressState copyWith({
-    List<Feature>? addressResults,
+    List<AddressResult>? addressResults,
     String? search,
     LoadingStatus? searchingAddresses,
     List<Address>? addresses,

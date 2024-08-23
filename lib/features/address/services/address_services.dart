@@ -1,6 +1,8 @@
 import 'package:flutter_snappyshop/config/api/api.dart';
 import 'package:flutter_snappyshop/config/constants/api_routes.dart';
+import 'package:flutter_snappyshop/features/address/models/address_result_details_response.dart';
 import 'package:flutter_snappyshop/features/address/models/addresses_response.dart';
+import 'package:flutter_snappyshop/features/address/models/autocomplete_response.dart';
 import 'package:flutter_snappyshop/features/address/models/create_address_response.dart';
 import 'package:flutter_snappyshop/features/address/models/delete_address_response.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
@@ -86,6 +88,45 @@ class AddressService {
     } catch (e) {
       throw ServiceException(
           e, 'An error occurred while registering the address.');
+    }
+  }
+
+  static Future<AutocompleteResponse> autocomplete(
+      {required String query}) async {
+    try {
+      Map<String, dynamic> queryParameters = {
+        "query": query,
+      };
+
+      final response = await api.get(
+        '/addresses/autocomplete',
+        queryParameters: queryParameters,
+      );
+
+      return AutocompleteResponse.fromJson(response.data);
+    } catch (e) {
+      throw ServiceException(
+          e, 'An error occurred while searching the address.');
+    }
+  }
+
+  static Future<AddressResultDetailsResponse> addressResultDetail({
+    required String placeId,
+  }) async {
+    try {
+      Map<String, dynamic> queryParameters = {
+        "place_id": placeId,
+      };
+
+      final response = await api.get(
+        '/addresses/details',
+        queryParameters: queryParameters,
+      );
+
+      return AddressResultDetailsResponse.fromJson(response.data);
+    } catch (e) {
+      throw ServiceException(
+          e, 'An error occurred while searching the address.');
     }
   }
 }
