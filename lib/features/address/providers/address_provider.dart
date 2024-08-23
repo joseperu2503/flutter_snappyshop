@@ -4,9 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/router/app_router.dart';
 import 'package:flutter_snappyshop/features/address/models/addresses_response.dart';
 import 'package:flutter_snappyshop/features/address/models/autocomplete_response.dart';
-import 'package:flutter_snappyshop/features/address/models/mapbox_response.dart';
+import 'package:flutter_snappyshop/features/address/models/geocode_response.dart';
 import 'package:flutter_snappyshop/features/address/services/address_services.dart';
-import 'package:flutter_snappyshop/features/address/services/mapbox_service.dart';
 import 'package:flutter_snappyshop/features/checkout/providers/checkout_provider.dart';
 import 'package:flutter_snappyshop/features/shared/models/form_type.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
@@ -61,27 +60,19 @@ class AddressNotifier extends StateNotifier<AddressState> {
     appRouter.push('/search-address');
   }
 
-  Future<void> searchLocality() async {
+  Future<void> onCameraPositionChange() async {
     LatLng? cameraPosition = ref.read(mapProvider).cameraPosition;
     if (cameraPosition == null) return;
     try {
-      final MapboxResponse response = await MapBoxService.geocode(
+      final GeocodeResponse response = await AddressService.geocode(
         latitude: cameraPosition.latitude,
         longitude: cameraPosition.longitude,
       );
 
       if (cameraPosition == ref.read(mapProvider).cameraPosition) {
-        if (response.features.isNotEmpty &&
-            response.features[0].properties.name != null) {
-          state = state.copyWith(
-            address: state.address
-                .updateValue(response.features[0].properties.name!),
-          );
-        } else {
-          state = state.copyWith(
-            address: state.address.updateValue(''),
-          );
-        }
+        state = state.copyWith(
+          address: state.address.updateValue(response.address),
+        );
       }
     } on ServiceException catch (_) {
       if (cameraPosition == ref.read(mapProvider).cameraPosition) {
@@ -294,7 +285,7 @@ class AddressNotifier extends StateNotifier<AddressState> {
         selectedAddress: () => address,
         savingAddress: LoadingStatus.none,
       );
-      resetForm();
+      // resetForm();
       if (address != null) {
         state = state.copyWith(
           recipientName: state.recipientName.updateValue(address.recipientName),

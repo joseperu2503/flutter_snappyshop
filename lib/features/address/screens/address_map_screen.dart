@@ -107,7 +107,7 @@ class MapViewState extends ConsumerState<MapView> {
             ));
       },
       onCameraIdle: () {
-        ref.read(addressProvider.notifier).searchLocality();
+        ref.read(addressProvider.notifier).onCameraPositionChange();
       },
       onMapCreated: (GoogleMapController controller) {
         ref.read(mapProvider.notifier).setMapController(controller);

@@ -5,6 +5,7 @@ import 'package:flutter_snappyshop/features/address/models/addresses_response.da
 import 'package:flutter_snappyshop/features/address/models/autocomplete_response.dart';
 import 'package:flutter_snappyshop/features/address/models/create_address_response.dart';
 import 'package:flutter_snappyshop/features/address/models/delete_address_response.dart';
+import 'package:flutter_snappyshop/features/address/models/geocode_response.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 
 final api = Api();
@@ -124,6 +125,28 @@ class AddressService {
       );
 
       return AddressResultDetailsResponse.fromJson(response.data);
+    } catch (e) {
+      throw ServiceException(
+          e, 'An error occurred while searching the address.');
+    }
+  }
+
+  static Future<GeocodeResponse> geocode({
+    required double latitude,
+    required double longitude,
+  }) async {
+    try {
+      Map<String, dynamic> queryParameters = {
+        "latitude": latitude,
+        "longitude": longitude,
+      };
+
+      final response = await api.get(
+        '/addresses/geocode',
+        queryParameters: queryParameters,
+      );
+
+      return GeocodeResponse.fromJson(response.data);
     } catch (e) {
       throw ServiceException(
           e, 'An error occurred while searching the address.');
