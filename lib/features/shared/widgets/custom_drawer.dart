@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/config/constants/styles.dart';
-import 'package:flutter_snappyshop/features/address/providers/address_provider.dart';
 import 'package:flutter_snappyshop/features/auth/providers/auth_provider.dart';
 import 'package:flutter_snappyshop/features/cards/providers/card_provider.dart';
 import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
@@ -305,9 +304,7 @@ class CustomDrawer extends ConsumerWidget {
                     ),
                     onTap: () {
                       context.pop();
-                      ref
-                          .read(addressProvider.notifier)
-                          .changeListType(ListType.list);
+
                       context.push('/my-addresses');
                     },
                   ),

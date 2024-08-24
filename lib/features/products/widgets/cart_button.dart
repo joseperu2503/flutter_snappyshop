@@ -35,10 +35,13 @@ class CartButton extends ConsumerWidget {
             top: -12,
           ),
           badgeContent: SizedBox(
-            width: 12,
+            width: 14,
+            height: 14,
             child: Center(
               child: Text(
-                cartState.numProducts.toString(),
+                cartState.numProducts > 9
+                    ? '9+'
+                    : cartState.numProducts.toString(),
                 style: const TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.w500,

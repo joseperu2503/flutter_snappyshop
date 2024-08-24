@@ -6,7 +6,6 @@ import 'package:flutter_snappyshop/features/address/models/addresses_response.da
 import 'package:flutter_snappyshop/features/address/models/autocomplete_response.dart';
 import 'package:flutter_snappyshop/features/address/models/geocode_response.dart';
 import 'package:flutter_snappyshop/features/address/services/address_services.dart';
-import 'package:flutter_snappyshop/features/checkout/providers/checkout_provider.dart';
 import 'package:flutter_snappyshop/features/shared/models/form_type.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
@@ -217,18 +216,6 @@ class AddressNotifier extends StateNotifier<AddressState> {
 
       resetMyAddresses();
       await getMyAddresses();
-
-      if (state.listType == ListType.select) {
-        appRouter.pop();
-        int selectedIndex = state.addresses.indexWhere((element) =>
-            element.latitude == cameraPosition.latitude &&
-            element.longitude == cameraPosition.longitude);
-        if (selectedIndex >= 0) {
-          ref
-              .read(checkoutProvider.notifier)
-              .setAddress(state.addresses[selectedIndex]);
-        }
-      }
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
       state = state.copyWith(
@@ -279,35 +266,31 @@ class AddressNotifier extends StateNotifier<AddressState> {
     await getMyAddresses();
   }
 
-  goConfirm({Address? address}) {
-    if (state.listType == ListType.list) {
-      state = state.copyWith(
-        selectedAddress: () => address,
-        savingAddress: LoadingStatus.none,
-      );
-      // resetForm();
-      if (address != null) {
-        state = state.copyWith(
-          recipientName: state.recipientName.updateValue(address.recipientName),
-          detail: state.detail.updateValue(address.detail),
-          references: state.references.updateValue(address.references ?? ''),
-          phone: state.phone.updateValue(address.phone),
-          address: state.address.updateValue(address.address),
-        );
-      }
+  goConfirm() {
+    state = state.copyWith(
+      savingAddress: LoadingStatus.none,
+    );
 
-      appRouter.push('/confirm-address');
-    } else {
-      if (address == null) return;
-      ref.read(checkoutProvider.notifier).setAddress(address);
-      appRouter.pop();
-    }
+    appRouter.push('/confirm-address');
   }
 
-  changeListType(listType) {
+  viewAddress({required Address address}) {
     state = state.copyWith(
-      listType: listType,
+      selectedAddress: () => address,
+      savingAddress: LoadingStatus.none,
     );
+
+    resetForm();
+
+    state = state.copyWith(
+      recipientName: state.recipientName.updateValue(address.recipientName),
+      detail: state.detail.updateValue(address.detail),
+      references: state.references.updateValue(address.references ?? ''),
+      phone: state.phone.updateValue(address.phone),
+      address: state.address.updateValue(address.address),
+    );
+
+    appRouter.push('/confirm-address');
   }
 
   void changeRecipientName(FormxInput<String> recipientName) {
@@ -351,7 +334,6 @@ class AddressState {
   final int totalPages;
   final LoadingStatus loadingAddresses;
   final LoadingStatus savingAddress;
-  final ListType listType;
   final FormxInput<String> recipientName;
   final FormxInput<String> detail;
   final FormxInput<String> references;
@@ -368,7 +350,6 @@ class AddressState {
     this.loadingAddresses = LoadingStatus.none,
     this.savingAddress = LoadingStatus.none,
     this.selectedAddress,
-    this.listType = ListType.list,
     this.recipientName = const FormxInput(value: ''),
     this.detail = const FormxInput(value: ''),
     this.references = const FormxInput(value: ''),
@@ -396,7 +377,6 @@ class AddressState {
     FormType? formType,
     LoadingStatus? savingAddress,
     ValueGetter<Address?>? selectedAddress,
-    ListType? listType,
     FormxInput<String>? recipientName,
     FormxInput<String>? detail,
     FormxInput<String>? references,
@@ -414,7 +394,6 @@ class AddressState {
         savingAddress: savingAddress ?? this.savingAddress,
         selectedAddress:
             selectedAddress != null ? selectedAddress() : this.selectedAddress,
-        listType: listType ?? this.listType,
         recipientName: recipientName ?? this.recipientName,
         detail: detail ?? this.detail,
         references: references ?? this.references,

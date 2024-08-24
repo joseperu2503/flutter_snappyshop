@@ -86,8 +86,8 @@ class CustomTextFieldState extends ConsumerState<CustomTextField> {
   Widget build(BuildContext context) {
     final darkMode = ref.watch(darkModeProvider);
 
-    return Stack(
-      clipBehavior: Clip.none,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -98,7 +98,6 @@ class CustomTextFieldState extends ConsumerState<CustomTextField> {
               ),
             Container(
               decoration: BoxDecoration(
-                color: darkMode ? AppColors.bgInputDark : AppColors.bgInput,
                 borderRadius: BorderRadius.circular(10),
               ),
               height: 52,
@@ -115,8 +114,23 @@ class CustomTextFieldState extends ConsumerState<CustomTextField> {
                         height: 22 / 14,
                       ),
                       decoration: InputDecoration(
-                        border: const OutlineInputBorder(
-                            borderSide: BorderSide.none),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: darkMode
+                                ? AppColors.textArsenic.withOpacity(0.5)
+                                : AppColors.textArsenicDark.withOpacity(0.5),
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: AppColors.primaryPearlAqua,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                         isDense: true,
                         hintText: widget.hintText,
                         hintStyle: TextStyle(
@@ -131,6 +145,30 @@ class CustomTextFieldState extends ConsumerState<CustomTextField> {
                           horizontal: 20,
                           vertical: 15,
                         ),
+                        suffixIcon: (widget.isPassword)
+                            ? IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    showPassword = !showPassword;
+                                  });
+                                },
+                                icon: SvgPicture.asset(
+                                  showPassword
+                                      ? 'assets/icons/eye.svg'
+                                      : 'assets/icons/eye_closed.svg',
+                                  colorFilter: ColorFilter.mode(
+                                    darkMode
+                                        ? AppColors.textArsenicDark
+                                            .withOpacity(0.5)
+                                        : AppColors.textArsenic
+                                            .withOpacity(0.5),
+                                    BlendMode.srcIn,
+                                  ),
+                                  width: 22,
+                                  height: 22,
+                                ),
+                              )
+                            : null,
                       ),
                       controller: _controller,
                       onChanged: (value) {
@@ -151,49 +189,25 @@ class CustomTextFieldState extends ConsumerState<CustomTextField> {
                       obscureText: widget.isPassword && !showPassword,
                     ),
                   ),
-                  if (widget.isPassword)
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          showPassword = !showPassword;
-                        });
-                      },
-                      icon: SvgPicture.asset(
-                        showPassword
-                            ? 'assets/icons/eye.svg'
-                            : 'assets/icons/eye_closed.svg',
-                        colorFilter: ColorFilter.mode(
-                          darkMode
-                              ? AppColors.textArsenicDark.withOpacity(0.5)
-                              : AppColors.textArsenic.withOpacity(0.5),
-                          BlendMode.srcIn,
-                        ),
-                        width: 22,
-                        height: 22,
-                      ),
-                    )
                 ],
               ),
             ),
           ],
         ),
         if (widget.value.errorMessage != null && widget.value.touched)
-          Positioned(
-            bottom: -20,
-            child: Container(
-              padding: const EdgeInsets.only(left: 6),
-              child: Text(
-                '${widget.value.errorMessage}',
-                style: const TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w400,
-                  height: 1.5,
-                  color: AppColors.error,
-                  leadingDistribution: TextLeadingDistribution.even,
-                ),
+          Container(
+            padding: const EdgeInsets.only(left: 6, top: 1),
+            child: Text(
+              '${widget.value.errorMessage}',
+              style: const TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w400,
+                height: 1.5,
+                color: AppColors.error,
+                leadingDistribution: TextLeadingDistribution.even,
               ),
             ),
-          ),
+          )
       ],
     );
   }

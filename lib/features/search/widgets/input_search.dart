@@ -37,6 +37,7 @@ class InputSearchState extends ConsumerState<InputSearch> {
     final darkMode = ref.watch(darkModeProvider);
 
     return TextFieldContainer(
+      height: 44,
       child: Container(
         padding: const EdgeInsets.only(left: 15),
         child: Row(
@@ -78,8 +79,6 @@ class InputSearchState extends ConsumerState<InputSearch> {
                     height: 22 / 15,
                   ),
                   contentPadding: const EdgeInsets.only(
-                    top: 15,
-                    bottom: 15,
                     right: 20,
                     left: 0,
                   ),

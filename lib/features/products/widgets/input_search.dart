@@ -22,6 +22,7 @@ class InputSearch extends ConsumerWidget {
             context.push('/search');
           },
           child: TextFieldContainer(
+            height: 44,
             child: Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: 15,

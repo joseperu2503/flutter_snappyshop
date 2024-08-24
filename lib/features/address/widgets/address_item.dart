@@ -38,25 +38,13 @@ class AddressItem extends ConsumerWidget {
           ),
         ),
         onPressed: () {
-          ref.read(addressProvider.notifier).goConfirm(address: address);
+          ref.read(addressProvider.notifier).viewAddress(address: address);
         },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: Row(
           children: [
-            if (address.primary)
-              const Text(
-                'Primary address',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.secondaryMangoTango,
-                  height: 16 / 12,
-                  leadingDistribution: TextLeadingDistribution.even,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            Row(
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
               children: [
                 SvgPicture.asset(
                   'assets/icons/map_pin.svg',
@@ -66,135 +54,92 @@ class AddressItem extends ConsumerWidget {
                         : AppColors.textCoolBlack,
                     BlendMode.srcIn,
                   ),
-                  width: 16,
-                  height: 16,
-                ),
-                const SizedBox(
-                  width: 4,
-                ),
-                Text(
-                  address.address,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: darkMode
-                        ? AppColors.textYankeesBlueDark
-                        : AppColors.textYankeesBlue,
-                    height: 2,
-                    leadingDistribution: TextLeadingDistribution.even,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                  width: 18,
+                  height: 18,
                 ),
               ],
             ),
-            Text(
-              address.detail,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                color: darkMode
-                    ? AppColors.textArsenicDark
-                    : AppColors.textArsenic,
-                height: 22 / 14,
-                leadingDistribution: TextLeadingDistribution.even,
+            const SizedBox(
+              width: 16,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          address.address,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: darkMode
+                                ? AppColors.textYankeesBlueDark
+                                : AppColors.textYankeesBlue,
+                            height: 2,
+                            leadingDistribution: TextLeadingDistribution.even,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      if (address.primary)
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 6,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            color:
+                                AppColors.secondaryMangoTango.withOpacity(0.1),
+                          ),
+                          child: const Text(
+                            'Default',
+                            style: TextStyle(
+                              fontSize: 9,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.secondaryMangoTango,
+                              height: 1.2,
+                              leadingDistribution: TextLeadingDistribution.even,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                    ],
+                  ),
+                  Text(
+                    address.detail,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      color: darkMode
+                          ? AppColors.textArsenicDark
+                          : AppColors.textArsenic,
+                      height: 22 / 14,
+                      leadingDistribution: TextLeadingDistribution.even,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(
-              height: 19,
+              width: 12,
             ),
-            Row(
-              children: [
-                Container(
-                  width: 24,
-                  height: 24,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: darkMode
-                        ? AppColors.backgroundColorDark
-                        : AppColors.backgroundColor,
-                  ),
-                  child: Center(
-                    child: SvgPicture.asset(
-                      'assets/icons/phone.svg',
-                      colorFilter: ColorFilter.mode(
-                        darkMode
-                            ? AppColors.textCoolBlackDark
-                            : AppColors.textCoolBlack,
-                        BlendMode.srcIn,
-                      ),
-                      width: 16,
-                      height: 16,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  address.phone,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: darkMode
-                        ? AppColors.textArsenicDark
-                        : AppColors.textArsenic,
-                    height: 22 / 14,
-                    leadingDistribution: TextLeadingDistribution.even,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            Row(
-              children: [
-                Container(
-                  width: 24,
-                  height: 24,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: darkMode
-                        ? AppColors.backgroundColorDark
-                        : AppColors.backgroundColor,
-                  ),
-                  child: Center(
-                    child: SvgPicture.asset(
-                      'assets/icons/profile.svg',
-                      colorFilter: ColorFilter.mode(
-                        darkMode
-                            ? AppColors.textCoolBlackDark
-                            : AppColors.textCoolBlack,
-                        BlendMode.srcIn,
-                      ),
-                      width: 16,
-                      height: 16,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  address.recipientName,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: darkMode
-                        ? AppColors.textArsenicDark
-                        : AppColors.textArsenic,
-                    height: 22 / 14,
-                    leadingDistribution: TextLeadingDistribution.even,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+            SvgPicture.asset(
+              'assets/icons/arrow_forward.svg',
+              colorFilter: ColorFilter.mode(
+                darkMode
+                    ? AppColors.textCoolBlackDark
+                    : AppColors.textCoolBlack,
+                BlendMode.srcIn,
+              ),
+              width: 16,
+              height: 16,
             ),
           ],
         ),

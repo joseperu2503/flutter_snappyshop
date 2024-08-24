@@ -330,9 +330,6 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                       const Spacer(),
                       GestureDetector(
                         onTap: () {
-                          ref
-                              .read(addressProvider.notifier)
-                              .changeListType(ListType.select);
                           context.push('/my-addresses');
                         },
                         child: const Row(
