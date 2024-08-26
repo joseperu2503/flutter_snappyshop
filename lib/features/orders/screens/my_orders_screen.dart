@@ -31,7 +31,7 @@ class MyOrdersScreenState extends ConsumerState<MyOrdersScreen> {
 
     return Loader(
       loading: orderState.loading,
-      child: Layout1(
+      child: Layout(
         title: 'My Orders',
         body: Column(
           children: [

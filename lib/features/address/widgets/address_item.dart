@@ -19,6 +19,7 @@ class AddressItem extends ConsumerWidget {
     final darkMode = ref.watch(darkModeProvider);
 
     return Container(
+      height: 70,
       decoration: BoxDecoration(
         color: darkMode
             ? AppColors.primaryCulturedDark
@@ -41,26 +42,21 @@ class AddressItem extends ConsumerWidget {
           ref.read(addressProvider.notifier).viewAddress(address: address);
         },
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                SvgPicture.asset(
-                  'assets/icons/map_pin.svg',
-                  colorFilter: ColorFilter.mode(
-                    darkMode
-                        ? AppColors.textCoolBlackDark
-                        : AppColors.textCoolBlack,
-                    BlendMode.srcIn,
-                  ),
-                  width: 18,
-                  height: 18,
-                ),
-              ],
+            SvgPicture.asset(
+              'assets/icons/map_pin_outlined.svg',
+              colorFilter: ColorFilter.mode(
+                darkMode
+                    ? AppColors.textCoolBlackDark
+                    : AppColors.textCoolBlack,
+                BlendMode.srcIn,
+              ),
+              width: 16,
+              height: 16,
             ),
             const SizedBox(
-              width: 16,
+              width: 8,
             ),
             Expanded(
               child: Column(
@@ -77,14 +73,14 @@ class AddressItem extends ConsumerWidget {
                             color: darkMode
                                 ? AppColors.textYankeesBlueDark
                                 : AppColors.textYankeesBlue,
-                            height: 2,
+                            height: 1.2,
                             leadingDistribution: TextLeadingDistribution.even,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      if (address.primary)
+                      if (address.adressDefault)
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 6,
@@ -101,11 +97,9 @@ class AddressItem extends ConsumerWidget {
                               fontSize: 9,
                               fontWeight: FontWeight.w500,
                               color: AppColors.secondaryMangoTango,
-                              height: 1.2,
+                              height: 1,
                               leadingDistribution: TextLeadingDistribution.even,
                             ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                     ],
@@ -118,7 +112,7 @@ class AddressItem extends ConsumerWidget {
                       color: darkMode
                           ? AppColors.textArsenicDark
                           : AppColors.textArsenic,
-                      height: 22 / 14,
+                      height: 16 / 12,
                       leadingDistribution: TextLeadingDistribution.even,
                     ),
                     maxLines: 1,
@@ -130,16 +124,18 @@ class AddressItem extends ConsumerWidget {
             const SizedBox(
               width: 12,
             ),
-            SvgPicture.asset(
-              'assets/icons/arrow_forward.svg',
-              colorFilter: ColorFilter.mode(
-                darkMode
-                    ? AppColors.textCoolBlackDark
-                    : AppColors.textCoolBlack,
-                BlendMode.srcIn,
+            Center(
+              child: SvgPicture.asset(
+                'assets/icons/arrow_forward.svg',
+                colorFilter: ColorFilter.mode(
+                  darkMode
+                      ? AppColors.textCoolBlackDark
+                      : AppColors.textCoolBlack,
+                  BlendMode.srcIn,
+                ),
+                width: 16,
+                height: 16,
               ),
-              width: 16,
-              height: 16,
             ),
           ],
         ),

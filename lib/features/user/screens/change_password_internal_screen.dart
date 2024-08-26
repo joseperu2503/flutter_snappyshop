@@ -32,7 +32,7 @@ class ChangePasswordInternalScreenState
     final passwordState = ref.watch(changePasswordProvider);
     final darkMode = ref.watch(darkModeProvider);
 
-    return Layout1(
+    return Layout(
       loading: passwordState.loading == LoadingStatus.loading,
       title: 'Change password',
       body: CustomScrollView(

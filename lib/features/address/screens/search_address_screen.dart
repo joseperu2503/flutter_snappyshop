@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/config/router/app_router.dart';
 import 'package:flutter_snappyshop/features/address/providers/address_provider.dart';
+import 'package:flutter_snappyshop/features/address/widgets/address_result_item.dart';
 import 'package:flutter_snappyshop/features/address/widgets/no_results.dart';
 import 'package:flutter_snappyshop/features/search/widgets/input_search.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
@@ -12,7 +14,6 @@ import 'package:flutter_snappyshop/features/shared/services/location_service.dar
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class SearchAddressScreen extends ConsumerStatefulWidget {
@@ -47,17 +48,22 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
       loadingPosition = true;
     });
     Position? location = await LocationService.getCurrentPosition();
-    setState(() {
-      loadingPosition = false;
-    });
-    if (location == null) return;
+
+    if (location == null) {
+      setState(() {
+        loadingPosition = false;
+      });
+      return;
+    }
 
     ref.read(mapProvider.notifier).changeCameraPosition(LatLng(
           location.latitude,
           location.longitude,
         ));
-    if (!context.mounted) return;
-    context.push('/address-map');
+    appRouter.push('/address-map');
+    setState(() {
+      loadingPosition = false;
+    });
   }
 
   @override
@@ -69,7 +75,7 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
             addressState.addressResults.isEmpty;
     final darkMode = ref.watch(darkModeProvider);
 
-    return Layout1(
+    return Layout(
       loading: loadingPosition,
       title: 'Search address',
       body: CustomScrollView(
@@ -127,67 +133,20 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
               sliver: SliverList.separated(
                 itemBuilder: (context, index) {
                   final addressResult = addressState.addressResults[index];
-                  return SizedBox(
-                    height: 80,
-                    child: TextButton(
-                      onPressed: () async {
-                        setState(() {
-                          loadingPosition = true;
-                        });
-                        await ref
-                            .read(addressProvider.notifier)
-                            .selectAddressResult(addressResult);
-                        setState(() {
-                          loadingPosition = false;
-                        });
-                      },
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  addressResult.structuredFormatting.mainText,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    color: darkMode
-                                        ? AppColors.textCoolBlackDark
-                                        : AppColors.textCoolBlack,
-                                    leadingDistribution:
-                                        TextLeadingDistribution.even,
-                                  ),
-                                ),
-                                Text(
-                                  addressResult
-                                      .structuredFormatting.secondaryText,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: darkMode
-                                        ? AppColors.textArsenicDark
-                                        : AppColors.textArsenic,
-                                    height: 1,
-                                    leadingDistribution:
-                                        TextLeadingDistribution.even,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+
+                  return AddressResultItem(
+                    addressResult: addressResult,
+                    onPressed: () async {
+                      setState(() {
+                        loadingPosition = true;
+                      });
+                      await ref
+                          .read(addressProvider.notifier)
+                          .selectAddressResult(addressResult);
+                      setState(() {
+                        loadingPosition = false;
+                      });
+                    },
                   );
                 },
                 separatorBuilder: (context, index) {

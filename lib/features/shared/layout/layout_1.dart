@@ -6,8 +6,8 @@ import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.
 import 'package:flutter_snappyshop/features/shared/widgets/back_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
 
-class Layout1 extends ConsumerWidget {
-  const Layout1({
+class Layout extends ConsumerWidget {
+  const Layout({
     super.key,
     required this.body,
     this.bottomNavigationBar,

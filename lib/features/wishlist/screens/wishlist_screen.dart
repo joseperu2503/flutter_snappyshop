@@ -48,7 +48,7 @@ class WishlistScreenState extends ConsumerState<WishlistScreen> {
     final favoriteState = ref.watch(favoriteProductsProvider);
     final MediaQueryData screen = MediaQuery.of(context);
 
-    return Layout1(
+    return Layout(
       loading: favoriteState.firstLoad,
       title: 'Wishslit',
       body: SafeArea(

@@ -114,13 +114,13 @@ class AddressNotifier extends StateNotifier<AddressState> {
 
     final search = state.search;
     try {
-      final AutocompleteResponse response = await AddressService.autocomplete(
-        query: state.search,
+      final response = await AddressService.autocomplete(
+        input: state.search,
       );
 
       if (search == state.search) {
         state = state.copyWith(
-          addressResults: response.predictions,
+          addressResults: response,
           searchingAddresses: LoadingStatus.success,
         );
       }
@@ -144,8 +144,8 @@ class AddressNotifier extends StateNotifier<AddressState> {
       );
 
       ref.read(mapProvider.notifier).changeCameraPosition(LatLng(
-            addressResultDetails.result.geometry.location.lat,
-            addressResultDetails.result.geometry.location.lng,
+            addressResultDetails.location.lat,
+            addressResultDetails.location.lng,
           ));
 
       appRouter.push('/address-map');
@@ -164,21 +164,16 @@ class AddressNotifier extends StateNotifier<AddressState> {
   }
 
   Future<void> getMyAddresses() async {
-    if (state.page > state.totalPages ||
-        state.loadingAddresses == LoadingStatus.loading) return;
+    if (state.loadingAddresses == LoadingStatus.loading) return;
 
     state = state.copyWith(
       loadingAddresses: LoadingStatus.loading,
     );
 
     try {
-      final AddressesResponse response = await AddressService.getMyAddresses(
-        page: state.page,
-      );
+      final response = await AddressService.getMyAddresses();
       state = state.copyWith(
-        addresses: [...state.addresses, ...response.results],
-        totalPages: response.info.lastPage,
-        page: state.page + 1,
+        addresses: response,
         loadingAddresses: LoadingStatus.success,
       );
     } on ServiceException catch (e) {
@@ -330,8 +325,6 @@ class AddressState {
   final LoadingStatus searchingAddresses;
   final List<Address> addresses;
   final Address? selectedAddress;
-  final int page;
-  final int totalPages;
   final LoadingStatus loadingAddresses;
   final LoadingStatus savingAddress;
   final FormxInput<String> recipientName;
@@ -345,8 +338,6 @@ class AddressState {
     this.search = '',
     this.searchingAddresses = LoadingStatus.none,
     this.addresses = const [],
-    this.page = 1,
-    this.totalPages = 1,
     this.loadingAddresses = LoadingStatus.none,
     this.savingAddress = LoadingStatus.none,
     this.selectedAddress,
@@ -363,8 +354,6 @@ class AddressState {
       references.isValid &&
       phone.isValid &&
       address.isValid;
-
-  bool get firstLoad => loadingAddresses == LoadingStatus.loading && page == 1;
 
   AddressState copyWith({
     List<AddressResult>? addressResults,
@@ -388,8 +377,6 @@ class AddressState {
         search: search ?? this.search,
         searchingAddresses: searchingAddresses ?? this.searchingAddresses,
         addresses: addresses ?? this.addresses,
-        page: page ?? this.page,
-        totalPages: totalPages ?? this.totalPages,
         loadingAddresses: loadingAddresses ?? this.loadingAddresses,
         savingAddress: savingAddress ?? this.savingAddress,
         selectedAddress:

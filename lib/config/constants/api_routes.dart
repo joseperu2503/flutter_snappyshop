@@ -17,7 +17,7 @@ class ApiRoutes {
   static const getCart = '/cart/my-cart';
   static const updateCart = '/cart';
 
-  static const getMyAddresses = '/addresses/my-addresses';
+  static const getMyAddresses = '/addresses';
   static const getAddress = '/addresses';
   static const deleteAddress = '/addresses';
   static const markAsPrimary = '/addresses/mark-as-primary';

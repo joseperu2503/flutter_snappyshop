@@ -52,7 +52,8 @@ class CheckoutNotifier extends StateNotifier<CheckoutState> {
 
     if (addresses.isNotEmpty) {
       setAddress(addresses[0]);
-      int primaryIndex = addresses.indexWhere((element) => element.primary);
+      int primaryIndex =
+          addresses.indexWhere((element) => element.adressDefault);
       if (primaryIndex >= 0) {
         setAddress(addresses[primaryIndex]);
       }

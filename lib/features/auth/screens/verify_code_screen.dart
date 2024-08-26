@@ -28,7 +28,7 @@ class VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
     final timerState = ref.watch(timerProvider);
     final darkMode = ref.watch(darkModeProvider);
 
-    return Layout1(
+    return Layout(
       loading: forgotState.loading,
       body: CustomScrollView(
         slivers: [

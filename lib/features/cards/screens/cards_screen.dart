@@ -31,7 +31,7 @@ class CardsScreenState extends ConsumerState<CardsScreen> {
 
     return Loader(
       loading: false,
-      child: Layout1(
+      child: Layout(
         title: cardState.listType == ListType.list ? 'My Cards' : 'Select Card',
         floatingActionButton: SizedBox(
           width: 60,

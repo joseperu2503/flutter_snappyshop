@@ -26,7 +26,7 @@ class SettingsScreenState extends ConsumerState<SettingsScreen> {
     final notificationState = ref.watch(notificationProvider);
     final darkMode = ref.watch(darkModeProvider);
 
-    return Layout1(
+    return Layout(
       title: 'Settings',
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),

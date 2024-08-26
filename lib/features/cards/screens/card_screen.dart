@@ -48,7 +48,7 @@ class CardScreenState extends ConsumerState<CardScreen> {
 
     return Loader(
       loading: false,
-      child: Layout1(
+      child: Layout(
         title: 'Card',
         action: cardState.selectedCard != null
             ? Container(

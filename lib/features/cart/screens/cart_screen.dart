@@ -32,7 +32,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
 
     return Loader(
       loading: cartState.loading,
-      child: Layout1(
+      child: Layout(
         title: 'Cart',
         body: CustomScrollView(
           slivers: [

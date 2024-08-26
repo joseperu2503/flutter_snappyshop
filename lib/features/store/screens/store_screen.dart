@@ -86,7 +86,7 @@ class StoreScreenState extends ConsumerState<StoreScreen> {
 
     final MediaQueryData screen = MediaQuery.of(context);
 
-    return Layout1(
+    return Layout(
       title: store.name,
       loading: firstLoad,
       body: CustomScrollView(

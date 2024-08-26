@@ -25,7 +25,7 @@ class OrderScreenState extends ConsumerState<AddressMapScreen> {
   Widget build(BuildContext context) {
     final MediaQueryData screen = MediaQuery.of(context);
 
-    return Layout1(
+    return Layout(
       title: 'Address Confirmation',
       body: Stack(
         children: [
@@ -168,6 +168,7 @@ class BottomModal extends ConsumerWidget {
                     addressState.address.value,
                     style: TextStyle(
                       fontSize: 16,
+                      height: 22 / 16,
                       fontWeight: FontWeight.w500,
                       color: darkMode
                           ? AppColors.textArsenicDark

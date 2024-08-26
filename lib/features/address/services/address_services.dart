@@ -1,6 +1,6 @@
 import 'package:flutter_snappyshop/config/api/api.dart';
 import 'package:flutter_snappyshop/config/constants/api_routes.dart';
-import 'package:flutter_snappyshop/features/address/models/address_result_details_response.dart';
+import 'package:flutter_snappyshop/features/address/models/place_details_response.dart';
 import 'package:flutter_snappyshop/features/address/models/addresses_response.dart';
 import 'package:flutter_snappyshop/features/address/models/autocomplete_response.dart';
 import 'package:flutter_snappyshop/features/address/models/create_address_response.dart';
@@ -11,17 +11,11 @@ import 'package:flutter_snappyshop/features/shared/models/service_exception.dart
 final api = Api();
 
 class AddressService {
-  static Future<AddressesResponse> getMyAddresses({
-    int page = 1,
-  }) async {
-    Map<String, dynamic> queryParameters = {
-      "page": page,
-    };
+  static Future<List<Address>> getMyAddresses() async {
     try {
-      final response = await api.get(ApiRoutes.getMyAddresses,
-          queryParameters: queryParameters);
+      final response = await api.get(ApiRoutes.getMyAddresses);
 
-      return AddressesResponse.fromJson(response.data);
+      return List<Address>.from(response.data.map((x) => Address.fromJson(x)));
     } catch (e) {
       throw ServiceException(
           e, 'An error occurred while loading the addresses.');
@@ -92,11 +86,12 @@ class AddressService {
     }
   }
 
-  static Future<AutocompleteResponse> autocomplete(
-      {required String query}) async {
+  static Future<List<AddressResult>> autocomplete({
+    required String input,
+  }) async {
     try {
       Map<String, dynamic> queryParameters = {
-        "query": query,
+        "input": input,
       };
 
       final response = await api.get(
@@ -104,14 +99,15 @@ class AddressService {
         queryParameters: queryParameters,
       );
 
-      return AutocompleteResponse.fromJson(response.data);
+      return List<AddressResult>.from(
+          response.data.map((x) => AddressResult.fromJson(x)));
     } catch (e) {
       throw ServiceException(
           e, 'An error occurred while searching the address.');
     }
   }
 
-  static Future<AddressResultDetailsResponse> addressResultDetail({
+  static Future<PlaceDetailsResponse> addressResultDetail({
     required String placeId,
   }) async {
     try {
@@ -120,11 +116,11 @@ class AddressService {
       };
 
       final response = await api.get(
-        '/addresses/details',
+        '/addresses/place-details',
         queryParameters: queryParameters,
       );
 
-      return AddressResultDetailsResponse.fromJson(response.data);
+      return PlaceDetailsResponse.fromJson(response.data);
     } catch (e) {
       throw ServiceException(
           e, 'An error occurred while searching the address.');
@@ -137,8 +133,8 @@ class AddressService {
   }) async {
     try {
       Map<String, dynamic> queryParameters = {
-        "latitude": latitude,
-        "longitude": longitude,
+        "lat": latitude,
+        "lng": longitude,
       };
 
       final response = await api.get(

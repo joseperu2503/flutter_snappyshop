@@ -43,7 +43,7 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     final MediaQueryData screen = MediaQuery.of(context);
     final darkMode = ref.watch(darkModeProvider);
 
-    return Layout1(
+    return Layout(
       loading: addressState.loadingAddresses == LoadingStatus.loading ||
           checkoutState.creatingOrder == LoadingStatus.loading,
       title: 'Checkout',

@@ -42,8 +42,8 @@ class AddressesScreenState extends ConsumerState<AddressesScreen> {
   @override
   Widget build(BuildContext context) {
     final addressState = ref.watch(addressProvider);
-    return Layout1(
-      loading: addressState.firstLoad,
+    return Layout(
+      loading: addressState.loadingAddresses == LoadingStatus.loading,
       title: 'My Addresses',
       floatingActionButton: SizedBox(
         width: 60,

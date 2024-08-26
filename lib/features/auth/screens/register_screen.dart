@@ -30,7 +30,7 @@ class RegisterScreenState extends ConsumerState<RegisterScreen> {
     final registerState = ref.watch(registerProvider);
     final darkMode = ref.watch(darkModeProvider);
 
-    return Layout1(
+    return Layout(
       loading: registerState.loading,
       body: CustomScrollView(
         slivers: [

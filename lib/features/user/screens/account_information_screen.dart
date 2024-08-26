@@ -40,7 +40,7 @@ class AccountInformationScreenState
 
     return Loader(
       loading: accountState.loading,
-      child: Layout1(
+      child: Layout(
         title: 'Account Information',
         body: CustomScrollView(
           slivers: [

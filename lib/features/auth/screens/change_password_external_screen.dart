@@ -28,7 +28,7 @@ class ChangePasswordExternalScreenState
     final forgotState = ref.watch(forgotPasswordProvider);
     final darkMode = ref.watch(darkModeProvider);
 
-    return Layout1(
+    return Layout(
       loading: forgotState.loading,
       body: CustomScrollView(
         slivers: [
