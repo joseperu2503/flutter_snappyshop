@@ -15,27 +15,17 @@ class AddressesScreen extends ConsumerStatefulWidget {
 }
 
 class AddressesScreenState extends ConsumerState<AddressesScreen> {
-  final ScrollController scrollController = ScrollController();
-
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      ref.read(addressProvider.notifier).resetMyAddresses();
-      ref.read(addressProvider.notifier).getMyAddresses();
-
-      scrollController.addListener(() {
-        if (scrollController.position.pixels + 400 >=
-            scrollController.position.maxScrollExtent) {
-          ref.read(addressProvider.notifier).getMyAddresses();
-        }
-      });
+      ref.invalidate(addressProvider);
+      ref.read(addressProvider.notifier).getAddresses();
     });
   }
 
   @override
   void dispose() {
-    scrollController.dispose();
     super.dispose();
   }
 
@@ -62,7 +52,6 @@ class AddressesScreenState extends ConsumerState<AddressesScreen> {
         ),
       ),
       body: CustomScrollView(
-        controller: scrollController,
         slivers: [
           SliverPadding(
             padding: const EdgeInsets.all(24),

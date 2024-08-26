@@ -6,7 +6,6 @@ import 'package:flutter_snappyshop/features/address/models/addresses_response.da
 import 'package:flutter_snappyshop/features/address/models/autocomplete_response.dart';
 import 'package:flutter_snappyshop/features/address/models/geocode_response.dart';
 import 'package:flutter_snappyshop/features/address/services/address_services.dart';
-import 'package:flutter_snappyshop/features/shared/models/form_type.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/plugins/formx/formx.dart';
@@ -51,17 +50,43 @@ class AddressNotifier extends StateNotifier<AddressState> {
           Validators.required(errorMessage: 'We need this information.')
         ],
       ),
+      country: FormxInput(
+        value: '',
+        validators: [Validators.required()],
+      ),
+      locality: FormxInput(
+        value: '',
+        validators: [Validators.required()],
+      ),
+      plusCode: FormxInput(
+        value: '',
+        validators: [Validators.required()],
+      ),
+      postalCode: FormxInput(
+        value: '',
+        validators: [Validators.required()],
+      ),
     );
   }
 
   goSearchAddress() {
     changeSearch('');
+    state = state.copyWith(
+      selectedAddress: () => null,
+      savingAddress: LoadingStatus.none,
+    );
+    resetForm();
     appRouter.push('/search-address');
   }
 
   Future<void> onCameraPositionChange() async {
     LatLng? cameraPosition = ref.read(mapProvider).cameraPosition;
     if (cameraPosition == null) return;
+
+    state = state.copyWith(
+      geocodeStatus: LoadingStatus.loading,
+    );
+
     try {
       final GeocodeResponse response = await AddressService.geocode(
         latitude: cameraPosition.latitude,
@@ -71,12 +96,22 @@ class AddressNotifier extends StateNotifier<AddressState> {
       if (cameraPosition == ref.read(mapProvider).cameraPosition) {
         state = state.copyWith(
           address: state.address.updateValue(response.address),
+          country: state.country.updateValue(response.country),
+          locality: state.locality.updateValue(response.locality),
+          plusCode: state.plusCode.updateValue(response.plusCode),
+          postalCode: state.postalCode.updateValue(response.postalCode),
+          geocodeStatus: LoadingStatus.success,
         );
       }
     } on ServiceException catch (_) {
       if (cameraPosition == ref.read(mapProvider).cameraPosition) {
         state = state.copyWith(
           address: state.address.updateValue(''),
+          country: state.country.updateValue(''),
+          locality: state.locality.updateValue(''),
+          plusCode: state.plusCode.updateValue(''),
+          postalCode: state.postalCode.updateValue(''),
+          geocodeStatus: LoadingStatus.error,
         );
       }
     }
@@ -154,24 +189,16 @@ class AddressNotifier extends StateNotifier<AddressState> {
     }
   }
 
-  resetMyAddresses() {
-    state = state.copyWith(
-      addresses: [],
-      page: 1,
-      totalPages: 1,
-      loadingAddresses: LoadingStatus.none,
-    );
-  }
-
-  Future<void> getMyAddresses() async {
+  Future<void> getAddresses() async {
     if (state.loadingAddresses == LoadingStatus.loading) return;
 
     state = state.copyWith(
       loadingAddresses: LoadingStatus.loading,
+      addresses: [],
     );
 
     try {
-      final response = await AddressService.getMyAddresses();
+      final response = await AddressService.getAddresses();
       state = state.copyWith(
         addresses: response,
         loadingAddresses: LoadingStatus.success,
@@ -184,7 +211,7 @@ class AddressNotifier extends StateNotifier<AddressState> {
     }
   }
 
-  saveAddress() async {
+  createAddress() async {
     LatLng? cameraPosition = ref.read(mapProvider).cameraPosition;
     if (cameraPosition == null) return;
 
@@ -200,6 +227,10 @@ class AddressNotifier extends StateNotifier<AddressState> {
         latitude: cameraPosition.latitude,
         longitude: cameraPosition.longitude,
         references: state.references.value,
+        country: state.country.value,
+        locality: state.locality.value,
+        plusCode: state.plusCode.value,
+        postalCode: state.postalCode.value,
       );
       state = state.copyWith(
         savingAddress: LoadingStatus.success,
@@ -209,8 +240,7 @@ class AddressNotifier extends StateNotifier<AddressState> {
       appRouter.pop();
       appRouter.pop();
 
-      resetMyAddresses();
-      await getMyAddresses();
+      await getAddresses();
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
       state = state.copyWith(
@@ -222,7 +252,6 @@ class AddressNotifier extends StateNotifier<AddressState> {
   deleteAddress() async {
     if (state.selectedAddress == null) return;
 
-    resetMyAddresses();
     try {
       state = state.copyWith(
         savingAddress: LoadingStatus.loading,
@@ -237,28 +266,7 @@ class AddressNotifier extends StateNotifier<AddressState> {
       savingAddress: LoadingStatus.none,
     );
     appRouter.pop();
-    await getMyAddresses();
-  }
-
-  markAsPrimary() async {
-    if (state.selectedAddress == null) return;
-
-    resetMyAddresses();
-    try {
-      state = state.copyWith(
-        savingAddress: LoadingStatus.loading,
-      );
-      await AddressService.markAsPrimary(
-        addressId: state.selectedAddress!.id,
-      );
-    } on ServiceException catch (e) {
-      ref.read(snackbarProvider.notifier).showSnackbar(e.message);
-    }
-    state = state.copyWith(
-      savingAddress: LoadingStatus.none,
-    );
-    appRouter.pop();
-    await getMyAddresses();
+    await getAddresses();
   }
 
   goConfirm() {
@@ -269,20 +277,19 @@ class AddressNotifier extends StateNotifier<AddressState> {
     appRouter.push('/confirm-address');
   }
 
-  viewAddress({required Address address}) {
+  editAddress({required Address address}) {
     state = state.copyWith(
       selectedAddress: () => address,
       savingAddress: LoadingStatus.none,
-    );
-
-    resetForm();
-
-    state = state.copyWith(
       recipientName: state.recipientName.updateValue(address.recipientName),
       detail: state.detail.updateValue(address.detail),
       references: state.references.updateValue(address.references ?? ''),
       phone: state.phone.updateValue(address.phone),
       address: state.address.updateValue(address.address),
+      country: state.country.updateValue(address.country),
+      locality: state.locality.updateValue(address.locality),
+      plusCode: state.plusCode.updateValue(address.plusCode),
+      postalCode: state.postalCode.updateValue(address.postalCode),
     );
 
     appRouter.push('/confirm-address');
@@ -323,6 +330,7 @@ class AddressState {
   final List<AddressResult> addressResults;
   final String search;
   final LoadingStatus searchingAddresses;
+  final LoadingStatus geocodeStatus;
   final List<Address> addresses;
   final Address? selectedAddress;
   final LoadingStatus loadingAddresses;
@@ -332,11 +340,16 @@ class AddressState {
   final FormxInput<String> references;
   final FormxInput<String> phone;
   final FormxInput<String> address;
+  final FormxInput<String> country;
+  final FormxInput<String> locality;
+  final FormxInput<String> postalCode;
+  final FormxInput<String> plusCode;
 
   AddressState({
     this.addressResults = const [],
     this.search = '',
     this.searchingAddresses = LoadingStatus.none,
+    this.geocodeStatus = LoadingStatus.none,
     this.addresses = const [],
     this.loadingAddresses = LoadingStatus.none,
     this.savingAddress = LoadingStatus.none,
@@ -346,6 +359,10 @@ class AddressState {
     this.references = const FormxInput(value: ''),
     this.phone = const FormxInput(value: ''),
     this.address = const FormxInput(value: ''),
+    this.country = const FormxInput(value: ''),
+    this.locality = const FormxInput(value: ''),
+    this.postalCode = const FormxInput(value: ''),
+    this.plusCode = const FormxInput(value: ''),
   });
 
   bool get isFormValid =>
@@ -353,17 +370,19 @@ class AddressState {
       detail.isValid &&
       references.isValid &&
       phone.isValid &&
-      address.isValid;
+      address.isValid &&
+      country.isValid &&
+      locality.isValid &&
+      postalCode.isValid &&
+      plusCode.isValid;
 
   AddressState copyWith({
     List<AddressResult>? addressResults,
     String? search,
     LoadingStatus? searchingAddresses,
     List<Address>? addresses,
-    int? page,
-    int? totalPages,
     LoadingStatus? loadingAddresses,
-    FormType? formType,
+    LoadingStatus? geocodeStatus,
     LoadingStatus? savingAddress,
     ValueGetter<Address?>? selectedAddress,
     FormxInput<String>? recipientName,
@@ -371,11 +390,16 @@ class AddressState {
     FormxInput<String>? references,
     FormxInput<String>? phone,
     FormxInput<String>? address,
+    FormxInput<String>? country,
+    FormxInput<String>? locality,
+    FormxInput<String>? postalCode,
+    FormxInput<String>? plusCode,
   }) =>
       AddressState(
         addressResults: addressResults ?? this.addressResults,
         search: search ?? this.search,
         searchingAddresses: searchingAddresses ?? this.searchingAddresses,
+        geocodeStatus: geocodeStatus ?? this.geocodeStatus,
         addresses: addresses ?? this.addresses,
         loadingAddresses: loadingAddresses ?? this.loadingAddresses,
         savingAddress: savingAddress ?? this.savingAddress,
@@ -386,5 +410,9 @@ class AddressState {
         references: references ?? this.references,
         phone: phone ?? this.phone,
         address: address ?? this.address,
+        country: country ?? this.country,
+        locality: locality ?? this.locality,
+        postalCode: postalCode ?? this.postalCode,
+        plusCode: plusCode ?? this.plusCode,
       );
 }

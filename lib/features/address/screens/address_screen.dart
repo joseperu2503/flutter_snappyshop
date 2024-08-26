@@ -166,18 +166,10 @@ class AddressScreenState extends ConsumerState<AddressScreen> {
             : AppColors.backgroundColor,
         child: Column(
           children: [
-            if (addressState.selectedAddress != null)
-              CustomButton(
-                onPressed: () {
-                  ref.read(addressProvider.notifier).markAsPrimary();
-                },
-                text: 'Save as primary address',
-                type: ButtonType.text,
-              ),
             if (addressState.selectedAddress == null)
               CustomButton(
                 onPressed: () {
-                  ref.read(addressProvider.notifier).saveAddress();
+                  ref.read(addressProvider.notifier).createAddress();
                 },
                 disabled: !addressState.isFormValid,
                 text: 'Save Address',

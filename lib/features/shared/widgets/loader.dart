@@ -25,8 +25,8 @@ class Loader extends ConsumerWidget {
           if (loading)
             Scaffold(
               backgroundColor: darkMode
-                  ? AppColors.backgroundColorDark
-                  : AppColors.backgroundColor,
+                  ? AppColors.backgroundColorDark.withOpacity(0.7)
+                  : AppColors.backgroundColor.withOpacity(0.7),
               body: const Center(
                 child: CustomProgressIndicator(),
               ),

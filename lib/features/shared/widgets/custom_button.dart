@@ -4,9 +4,7 @@ import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 
-enum ButtonType { primary, secondary, delete, text, outlined }
-
-enum ButtonColor { primary, secondary, terti, outlined }
+enum ButtonType { primary, secondary, text }
 
 List<ButtonTypeStyle> buttonTypes = [
   ButtonTypeStyle(
@@ -36,29 +34,11 @@ List<ButtonTypeStyle> buttonTypes = [
     textColorDisabledDark: AppColors.textArsenic,
   ),
   ButtonTypeStyle(
-    buttonType: ButtonType.outlined,
-    color: Colors.transparent,
-    colorDisabled: AppColors.textArsenic.withOpacity(0.2),
-    textColor: AppColors.primaryPearlAqua,
-    textColorDisabled: AppColors.textCultured,
-    foregroundColor: AppColors.primaryPearlAqua,
-    borderColor: AppColors.primaryPearlAqua,
-  ),
-  ButtonTypeStyle(
     buttonType: ButtonType.text,
     color: Colors.transparent,
     colorDisabled: AppColors.textArsenic.withOpacity(0.2),
     textColor: AppColors.secondaryPastelRed,
     textColorDisabled: AppColors.primaryPearlAqua,
-    borderColor: Colors.transparent,
-  ),
-  ButtonTypeStyle(
-    buttonType: ButtonType.delete,
-    color: Colors.transparent,
-    colorDisabled: AppColors.textArsenic.withOpacity(0.2),
-    textColor: AppColors.error,
-    textColorDisabled: AppColors.error,
-    foregroundColor: AppColors.error,
     borderColor: Colors.transparent,
   ),
 ];

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/address/providers/address_provider.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
+import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/map_provider.dart';
 import 'package:flutter_snappyshop/features/shared/services/location_service.dart';
@@ -244,6 +245,7 @@ class BottomModal extends ConsumerWidget {
               onPressed: () {
                 ref.read(addressProvider.notifier).goConfirm();
               },
+              disabled: addressState.geocodeStatus == LoadingStatus.loading,
               text: 'Confirm Address',
             )
           ],

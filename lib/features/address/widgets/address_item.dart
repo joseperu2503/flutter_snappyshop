@@ -39,7 +39,7 @@ class AddressItem extends ConsumerWidget {
           ),
         ),
         onPressed: () {
-          ref.read(addressProvider.notifier).viewAddress(address: address);
+          ref.read(addressProvider.notifier).editAddress(address: address);
         },
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -11,7 +11,7 @@ import 'package:flutter_snappyshop/features/shared/models/service_exception.dart
 final api = Api();
 
 class AddressService {
-  static Future<List<Address>> getMyAddresses() async {
+  static Future<List<Address>> getAddresses() async {
     try {
       final response = await api.get(ApiRoutes.getMyAddresses);
 
@@ -45,26 +45,18 @@ class AddressService {
     }
   }
 
-  static Future<CreateAddressResponse> markAsPrimary(
-      {required int addressId}) async {
-    try {
-      final response = await api.put('${ApiRoutes.markAsPrimary}/$addressId');
-
-      return CreateAddressResponse.fromJson(response.data);
-    } catch (e) {
-      throw ServiceException(
-          e, 'An error occurred while updating the address.');
-    }
-  }
-
   static Future<CreateAddressResponse> createAddress({
-    required String? address,
-    required String? detail,
-    required String? recipientName,
-    required String? phone,
+    required String address,
+    required String detail,
+    required String recipientName,
+    required String phone,
     required String? references,
-    required double? latitude,
-    required double? longitude,
+    required double latitude,
+    required double longitude,
+    required String country,
+    required String locality,
+    required String postalCode,
+    required String plusCode,
   }) async {
     Map<String, dynamic> form = {
       "address": address,
@@ -74,6 +66,10 @@ class AddressService {
       "references": references,
       "latitude": latitude,
       "longitude": longitude,
+      "country": country,
+      "locality": locality,
+      "postal_code": postalCode,
+      "plus_code": plusCode,
     };
 
     try {

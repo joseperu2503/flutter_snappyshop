@@ -41,8 +41,7 @@ class CheckoutNotifier extends StateNotifier<CheckoutState> {
       creatingOrder: LoadingStatus.none,
     );
     await ref.read(cardProvider.notifier).getCards();
-    ref.read(addressProvider.notifier).resetMyAddresses();
-    await ref.read(addressProvider.notifier).getMyAddresses();
+    await ref.read(addressProvider.notifier).getAddresses();
     final cards = ref.read(cardProvider).cards;
     final addresses = ref.read(addressProvider).addresses;
 
