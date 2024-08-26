@@ -37,6 +37,8 @@ class ProductSkeleton extends StatelessWidget {
                   height: 12,
                   width: 80.0 + Random().nextInt(41),
                   borderRadius: BorderRadius.circular(4),
+                  startColor: AppColors.primaryCultured,
+                  endColor: AppColors.primaryCultured.withOpacity(0.5),
                 ),
               ),
               const SizedBox(
@@ -48,6 +50,8 @@ class ProductSkeleton extends StatelessWidget {
                   height: 12,
                   width: 80.0,
                   borderRadius: BorderRadius.circular(4),
+                  startColor: AppColors.primaryCultured,
+                  endColor: AppColors.primaryCultured.withOpacity(0.5),
                 ),
               ),
             ],
