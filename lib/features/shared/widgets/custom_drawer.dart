@@ -292,7 +292,7 @@ class CustomDrawer extends ConsumerWidget {
                       style: textLabelStyle,
                     ),
                     leading: SvgPicture.asset(
-                      'assets/icons/box.svg',
+                      'assets/icons/map_pin_outlined.svg',
                       colorFilter: ColorFilter.mode(
                         darkMode
                             ? AppColors.textYankeesBlueDark
