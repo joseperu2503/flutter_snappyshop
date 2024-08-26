@@ -28,10 +28,12 @@ class ApiRoutes {
   static const createOrder = '/orders';
   static const myOrders = '/orders/my-orders';
 
-  static const sendVerifyCode = '/user/send-verify-code';
-  static const validateVerifyCode = '/user/validate-verify-code';
-  static const changePassword = '/user/change-password-external';
   static const profile = '/account/profile';
-  static const updatePassword = '/account/password';
+
   static const updateProfile = '/account/profile';
+
+  static const updatePassword = '/password';
+  static const sendCode = '/password/reset/send-code';
+  static const validateCode = '/password/reset/validate-code';
+  static const resetPassword = '/password/reset';
 }

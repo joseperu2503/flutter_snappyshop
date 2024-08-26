@@ -5,7 +5,8 @@ const double formInputSpacing = 16;
 const double labelInputSpacing = 4;
 const double toolbarHeight = 58;
 
-const double radiusButton = 32;
+const double radiusButton = 12;
+const double radiusInput = 12;
 
 const LinearGradient primaryGradient = LinearGradient(
   colors: [Color(0xff905bd2), Color(0xff8034da)],

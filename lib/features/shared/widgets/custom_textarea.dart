@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/shared/plugins/formx/formx.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_label.dart';
@@ -98,7 +99,7 @@ class CustomTextFieldState extends ConsumerState<CustomTextArea> {
               ),
             Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(radiusInput),
               ),
               height: 100,
               child: Row(
@@ -116,21 +117,21 @@ class CustomTextFieldState extends ConsumerState<CustomTextArea> {
                       ),
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(radiusInput),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: darkMode
-                                ? AppColors.textArsenic.withOpacity(0.5)
-                                : AppColors.textArsenicDark.withOpacity(0.5),
+                                ? AppColors.textArsenic.withOpacity(0.7)
+                                : AppColors.textArsenicDark.withOpacity(0.7),
                           ),
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(radiusInput),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderSide: const BorderSide(
                             color: AppColors.primaryPearlAqua,
                           ),
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(radiusInput),
                         ),
                         isDense: true,
                         hintText: widget.hintText,

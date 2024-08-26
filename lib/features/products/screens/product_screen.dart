@@ -221,8 +221,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                                 color: product.isFavorite
                                     ? AppColors.primaryPearlAqua
                                     : Colors.transparent,
-                                borderRadius:
-                                    BorderRadius.circular(radiusButton),
+                                shape: BoxShape.circle,
                                 border: Border.all(
                                   color: product.isFavorite
                                       ? Colors.transparent
@@ -235,10 +234,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                               ),
                               child: TextButton(
                                 style: TextButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(radiusButton),
-                                  ),
+                                  shape: const CircleBorder(),
                                   padding: EdgeInsets.zero,
                                 ),
                                 onPressed: loadingFavorite
@@ -282,8 +278,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                               width: 42,
                               decoration: BoxDecoration(
                                 color: Colors.transparent,
-                                borderRadius:
-                                    BorderRadius.circular(radiusButton),
+                                shape: BoxShape.circle,
                                 border: Border.all(
                                   color: darkMode
                                       ? AppColors.textYankeesBlueDark
@@ -294,10 +289,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                               ),
                               child: TextButton(
                                 style: TextButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(radiusButton),
-                                  ),
+                                  shape: const CircleBorder(),
                                   padding: EdgeInsets.zero,
                                 ),
                                 onPressed: () {},

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/config/constants/styles.dart';
-import 'package:flutter_snappyshop/features/auth/providers/forgot_password_provider.dart';
+import 'package:flutter_snappyshop/features/auth/providers/reset_password_provider.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
@@ -25,11 +25,11 @@ class ChangePasswordExternalScreenState
 
   @override
   Widget build(BuildContext context) {
-    final forgotState = ref.watch(forgotPasswordProvider);
+    final resetPasswordState = ref.watch(resetPasswordProvider);
     final darkMode = ref.watch(darkModeProvider);
 
     return Layout(
-      loading: forgotState.loading,
+      loading: resetPasswordState.loading,
       body: CustomScrollView(
         slivers: [
           SliverFillRemaining(
@@ -82,10 +82,10 @@ class ChangePasswordExternalScreenState
                   CustomTextField(
                     label: 'New Password',
                     hintText: 'Password',
-                    value: forgotState.password,
+                    value: resetPasswordState.password,
                     onChanged: (value) {
                       ref
-                          .read(forgotPasswordProvider.notifier)
+                          .read(resetPasswordProvider.notifier)
                           .changePassword(value);
                     },
                     textInputAction: TextInputAction.next,
@@ -98,19 +98,17 @@ class ChangePasswordExternalScreenState
                   CustomTextField(
                     label: 'Confirm new Password',
                     hintText: 'Password',
-                    value: forgotState.confirmPassword,
+                    value: resetPasswordState.confirmPassword,
                     onChanged: (value) {
                       ref
-                          .read(forgotPasswordProvider.notifier)
+                          .read(resetPasswordProvider.notifier)
                           .changeConfirmPassword(value);
                     },
                     textInputAction: TextInputAction.done,
                     keyboardType: TextInputType.visiblePassword,
                     isPassword: true,
                     onFieldSubmitted: (value) {
-                      ref
-                          .read(forgotPasswordProvider.notifier)
-                          .submitChangePassword();
+                      ref.read(resetPasswordProvider.notifier).resetPassword();
                     },
                   ),
                   const SizedBox(
@@ -118,9 +116,7 @@ class ChangePasswordExternalScreenState
                   ),
                   CustomButton(
                     onPressed: () {
-                      ref
-                          .read(forgotPasswordProvider.notifier)
-                          .submitChangePassword();
+                      ref.read(resetPasswordProvider.notifier).resetPassword();
                     },
                     text: 'Change password',
                   ),

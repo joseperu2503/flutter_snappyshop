@@ -7,8 +7,8 @@ import 'package:flutter_snappyshop/features/user/models/change_password_response
 
 final api = Api();
 
-class ChangePasswordExternalService {
-  static Future<SendVerifyCodeResponse> sendVerifyCode({
+class ResetPasswordService {
+  static Future<SendVerifyCodeResponse> sendCode({
     required String email,
   }) async {
     try {
@@ -16,7 +16,7 @@ class ChangePasswordExternalService {
         "email": email,
       };
 
-      final response = await api.post(ApiRoutes.sendVerifyCode, data: form);
+      final response = await api.post(ApiRoutes.sendCode, data: form);
 
       return SendVerifyCodeResponse.fromJson(response.data);
     } catch (e) {
@@ -25,7 +25,7 @@ class ChangePasswordExternalService {
     }
   }
 
-  static Future<ValidateVerifyCodeResponse> validateVerifyCode({
+  static Future<ValidateVerifyCodeResponse> validateCode({
     required String email,
     required String uuid,
     required String code,
@@ -37,7 +37,7 @@ class ChangePasswordExternalService {
         "code": code,
       };
 
-      final response = await api.post(ApiRoutes.validateVerifyCode, data: form);
+      final response = await api.post(ApiRoutes.validateCode, data: form);
 
       return ValidateVerifyCodeResponse.fromJson(response.data);
     } catch (e) {
@@ -46,7 +46,7 @@ class ChangePasswordExternalService {
     }
   }
 
-  static Future<ChangePasswordResponse> changePassword({
+  static Future<ChangePasswordResponse> resetPassword({
     required String password,
     required String confirmPassword,
     required String email,
@@ -62,7 +62,7 @@ class ChangePasswordExternalService {
         "code": code,
       };
 
-      final response = await api.post(ApiRoutes.changePassword, data: form);
+      final response = await api.post(ApiRoutes.resetPassword, data: form);
 
       return ChangePasswordResponse.fromJson(response.data);
     } catch (e) {

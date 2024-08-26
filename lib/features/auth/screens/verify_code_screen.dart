@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
-import 'package:flutter_snappyshop/features/auth/providers/forgot_password_provider.dart';
+import 'package:flutter_snappyshop/features/auth/providers/reset_password_provider.dart';
 import 'package:flutter_snappyshop/features/auth/widgets/otp.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,12 +24,12 @@ class VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final forgotState = ref.watch(forgotPasswordProvider);
+    final resetPasswordState = ref.watch(resetPasswordProvider);
     final timerState = ref.watch(timerProvider);
     final darkMode = ref.watch(darkModeProvider);
 
     return Layout(
-      loading: forgotState.loading,
+      loading: resetPasswordState.loading,
       body: CustomScrollView(
         slivers: [
           SliverFillRemaining(
@@ -82,10 +82,10 @@ class VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
                   Otp(
                     onChanged: (value) {
                       ref
-                          .read(forgotPasswordProvider.notifier)
+                          .read(resetPasswordProvider.notifier)
                           .changeVerifyCode(value);
                     },
-                    value: forgotState.verifyCode,
+                    value: resetPasswordState.verifyCode,
                   ),
                   const SizedBox(
                     height: 50,
@@ -129,18 +129,16 @@ class VerifyCodeScreenState extends ConsumerState<VerifyCodeScreen> {
                   CustomButton(
                     onPressed: () {
                       if (timerState.timerOn) {
-                        ref
-                            .read(forgotPasswordProvider.notifier)
-                            .validateVerifyCode();
+                        ref.read(resetPasswordProvider.notifier).validateCode();
                       } else {
                         ref
-                            .read(forgotPasswordProvider.notifier)
-                            .sendVerifyCode(withPushRoute: false);
+                            .read(resetPasswordProvider.notifier)
+                            .sendCode(withPushRoute: false);
                       }
                     },
                     text: timerState.timerOn ? 'Verify' : 'Resend verify code',
                     disabled: timerState.timerOn &&
-                        forgotState.verifyCode.length != 4,
+                        resetPasswordState.verifyCode.length != 4,
                   ),
                 ],
               ),

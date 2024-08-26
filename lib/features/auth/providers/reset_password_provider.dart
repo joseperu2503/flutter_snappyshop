@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/router/app_router.dart';
-import 'package:flutter_snappyshop/features/auth/services/change_password_external_service.dart';
+import 'package:flutter_snappyshop/features/auth/services/reset_password_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/plugins/formx/formx.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/timer_provider.dart';
 
-final forgotPasswordProvider =
-    StateNotifierProvider<ForgotPasswordNotifier, ForgotPasswordState>((ref) {
-  return ForgotPasswordNotifier(ref);
+final resetPasswordProvider =
+    StateNotifierProvider<ResetPasswordNotifier, ResetPasswordState>((ref) {
+  return ResetPasswordNotifier(ref);
 });
 
-class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState> {
-  ForgotPasswordNotifier(this.ref) : super(ForgotPasswordState());
+class ResetPasswordNotifier extends StateNotifier<ResetPasswordState> {
+  ResetPasswordNotifier(this.ref) : super(ResetPasswordState());
   final StateNotifierProviderRef ref;
 
   initData() {
@@ -37,7 +37,7 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState> {
     );
   }
 
-  sendVerifyCode({bool withPushRoute = true}) async {
+  sendCode({bool withPushRoute = true}) async {
     FocusManager.instance.primaryFocus?.unfocus();
 
     state = state.copyWith(
@@ -50,7 +50,7 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState> {
     );
 
     try {
-      final response = await ChangePasswordExternalService.sendVerifyCode(
+      final response = await ResetPasswordService.sendCode(
         email: state.email.value,
       );
 
@@ -75,7 +75,7 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState> {
     );
   }
 
-  validateVerifyCode() async {
+  validateCode() async {
     FocusManager.instance.primaryFocus?.unfocus();
 
     ref.read(timerProvider.notifier).cancelTimer();
@@ -85,7 +85,7 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState> {
     );
 
     try {
-      await ChangePasswordExternalService.validateVerifyCode(
+      await ResetPasswordService.validateCode(
         email: state.email.value,
         code: state.verifyCode,
         uuid: state.uuid,
@@ -101,7 +101,7 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState> {
     );
   }
 
-  submitChangePassword() async {
+  resetPassword() async {
     FocusManager.instance.primaryFocus?.unfocus();
 
     if (state.password.value != state.confirmPassword.value) {
@@ -121,7 +121,7 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState> {
     );
 
     try {
-      final response = await ChangePasswordExternalService.changePassword(
+      final response = await ResetPasswordService.resetPassword(
         email: state.email.value,
         code: state.verifyCode,
         uuid: state.uuid,
@@ -166,7 +166,7 @@ class ForgotPasswordNotifier extends StateNotifier<ForgotPasswordState> {
   }
 }
 
-class ForgotPasswordState {
+class ResetPasswordState {
   final FormxInput<String> email;
   final FormxInput<String> password;
   final FormxInput<String> confirmPassword;
@@ -176,7 +176,7 @@ class ForgotPasswordState {
 
   final DateTime? expirationDate;
 
-  ForgotPasswordState({
+  ResetPasswordState({
     this.email = const FormxInput(value: ''),
     this.password = const FormxInput(value: ''),
     this.confirmPassword = const FormxInput(value: ''),
@@ -186,7 +186,7 @@ class ForgotPasswordState {
     this.expirationDate,
   });
 
-  ForgotPasswordState copyWith({
+  ResetPasswordState copyWith({
     FormxInput<String>? email,
     bool? loading,
     String? verifyCode,
@@ -195,7 +195,7 @@ class ForgotPasswordState {
     FormxInput<String>? confirmPassword,
     ValueGetter<DateTime?>? expirationDate,
   }) =>
-      ForgotPasswordState(
+      ResetPasswordState(
         email: email ?? this.email,
         loading: loading ?? this.loading,
         verifyCode: verifyCode ?? this.verifyCode,

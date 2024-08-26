@@ -49,7 +49,7 @@ class CustomButton extends ConsumerWidget {
     this.onPressed,
     this.text,
     this.width = double.infinity,
-    this.height = 52,
+    this.height = 48,
     this.disabled = false,
     this.iconLeft,
     this.type = ButtonType.primary,
