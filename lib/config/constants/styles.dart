@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 
-const double formInputSpacing = 16;
+const double formInputSpacing = 20;
 const double labelInputSpacing = 4;
 const double toolbarHeight = 58;
 
