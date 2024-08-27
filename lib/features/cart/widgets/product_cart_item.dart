@@ -21,11 +21,7 @@ class ProductCartItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final darkMode = ref.watch(darkModeProvider);
-
     final product = productCart.productDetail;
-    final double price = product.discount == null
-        ? product.price
-        : (product.price * (1 - product.discount! / 100));
 
     return Stack(
       children: [
@@ -101,7 +97,7 @@ class ProductCartItem extends ConsumerWidget {
                         Row(
                           children: [
                             Text(
-                              '\$${price.toStringAsFixed(2)}',
+                              '\$${product.salePrice.toStringAsFixed(2)}',
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,

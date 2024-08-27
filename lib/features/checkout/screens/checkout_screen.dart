@@ -56,9 +56,7 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 itemBuilder: (context, index) {
                   final productCart = cartState.cart!.products[index];
                   final product = productCart.productDetail;
-                  final double price = product.discount == null
-                      ? product.price
-                      : (product.price * (1 - product.discount! / 100));
+
                   BorderRadius borderRadius =
                       const BorderRadius.all(Radius.circular(0));
                   borderRadius = BorderRadius.only(
@@ -149,7 +147,7 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                                   ),
                                   const Spacer(),
                                   Text(
-                                    '\$${price.toStringAsFixed(2)}',
+                                    '\$${product.salePrice.toStringAsFixed(2)}',
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,

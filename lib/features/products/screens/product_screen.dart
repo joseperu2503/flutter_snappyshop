@@ -96,9 +96,6 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
         productsState.productDetails[widget.productId];
     final Product? product = productDetail?.product;
 
-    final double price = product?.discount == null
-        ? product?.price ?? 1
-        : ((product?.price ?? 1) * (1 - (product?.discount ?? 1) / 100));
     final darkMode = ref.watch(darkModeProvider);
 
     final screen = MediaQuery.of(context);
@@ -315,7 +312,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              '\$${price.toStringAsFixed(2)}',
+                              '\$${product.salePrice.toStringAsFixed(2)}',
                               style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,

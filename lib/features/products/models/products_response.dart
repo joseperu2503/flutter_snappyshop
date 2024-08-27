@@ -44,6 +44,7 @@ class Product {
   final String name;
   final String description;
   final double price;
+  final double salePrice;
   final int stock;
   final List<String> images;
   final ProductStore store;
@@ -59,6 +60,7 @@ class Product {
     required this.name,
     required this.description,
     required this.price,
+    required this.salePrice,
     required this.stock,
     required this.images,
     required this.store,
@@ -75,6 +77,7 @@ class Product {
         name: json["name"],
         description: json["description"],
         price: json["price"]?.toDouble(),
+        salePrice: json["sale_price"]?.toDouble(),
         stock: json["stock"],
         images: List<String>.from(json["images"].map((x) => x)),
         store: ProductStore.fromJson(json["store"]),
@@ -91,6 +94,7 @@ class Product {
     String? name,
     String? description,
     double? price,
+    double? salePrice,
     int? stock,
     List<String>? images,
     ProductStore? store,
@@ -107,6 +111,7 @@ class Product {
       name: name ?? this.name,
       description: description ?? this.description,
       price: price ?? this.price,
+      salePrice: salePrice ?? this.salePrice,
       stock: stock ?? this.stock,
       images: images ?? this.images,
       store: store ?? this.store,

@@ -1,16 +1,22 @@
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
 
 class Cart {
-  final double totalAmount;
+  final double total;
+  final double subtotal;
+  final double shippingFee;
   final List<ProductCart> products;
 
   Cart({
-    required this.totalAmount,
+    required this.total,
+    required this.subtotal,
+    required this.shippingFee,
     required this.products,
   });
 
   factory Cart.fromJson(Map<String, dynamic> json) => Cart(
-        totalAmount: json["total_amount"]?.toDouble(),
+        total: json["total"]?.toDouble(),
+        subtotal: json["subtotal"]?.toDouble(),
+        shippingFee: json["shipping_fee"]?.toDouble(),
         products: List<ProductCart>.from(
             json["products"].map((x) => ProductCart.fromJson(x))),
       );
@@ -19,7 +25,9 @@ class Cart {
     products[index].quantity = newQuantity;
     return Cart(
       products: products,
-      totalAmount: totalAmount,
+      total: total,
+      subtotal: subtotal,
+      shippingFee: shippingFee,
     );
   }
 
@@ -30,7 +38,9 @@ class Cart {
     }
     return Cart(
       products: updatedProducts,
-      totalAmount: totalAmount,
+      total: total,
+      subtotal: subtotal,
+      shippingFee: shippingFee,
     );
   }
 }

@@ -143,7 +143,7 @@ class CartScreenState extends ConsumerState<CartScreen> {
                           ),
                           const Spacer(),
                           Text(
-                            '\$${cartState.cart?.totalAmount.toStringAsFixed(2)}',
+                            '\$${cartState.cart?.total.toStringAsFixed(2)}',
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,

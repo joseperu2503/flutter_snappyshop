@@ -57,9 +57,6 @@ class ProductCardState extends ConsumerState<ProductItem> {
 
   @override
   Widget build(BuildContext context) {
-    final double price = widget.product.discount == null
-        ? widget.product.price
-        : (widget.product.price * (1 - widget.product.discount! / 100));
     final darkMode = ref.watch(darkModeProvider);
 
     return GestureDetector(
@@ -176,7 +173,7 @@ class ProductCardState extends ConsumerState<ProductItem> {
                 Row(
                   children: [
                     Text(
-                      '\$${price.toStringAsFixed(2)}',
+                      '\$${widget.product.salePrice.toStringAsFixed(2)}',
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
