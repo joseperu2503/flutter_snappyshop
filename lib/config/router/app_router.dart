@@ -13,7 +13,7 @@ import 'package:flutter_snappyshop/features/orders/screens/my_orders_screen.dart
 import 'package:flutter_snappyshop/features/wishlist/screens/wishlist_screen.dart';
 import 'package:flutter_snappyshop/features/settings/screens/settings_screen.dart';
 import 'package:flutter_snappyshop/features/user/screens/account_information_screen.dart';
-import 'package:flutter_snappyshop/features/user/screens/change_password_internal_screen.dart';
+import 'package:flutter_snappyshop/features/user/screens/change_password_screen.dart';
 import 'package:flutter_snappyshop/features/auth/screens/home_screen.dart';
 import 'package:flutter_snappyshop/features/auth/screens/login_screen.dart';
 import 'package:flutter_snappyshop/features/auth/screens/register_screen.dart';
@@ -147,7 +147,7 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/change-password-internal',
       builder: (context, state) {
-        return const ChangePasswordInternalScreen();
+        return const ChangePasswordScreen();
       },
     ),
     GoRoute(

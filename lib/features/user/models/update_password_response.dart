@@ -1,14 +1,14 @@
-class ChangePasswordResponse {
+class UpadatePasswordResponse {
   final bool success;
   final String message;
 
-  ChangePasswordResponse({
+  UpadatePasswordResponse({
     required this.success,
     required this.message,
   });
 
-  factory ChangePasswordResponse.fromJson(Map<String, dynamic> json) =>
-      ChangePasswordResponse(
+  factory UpadatePasswordResponse.fromJson(Map<String, dynamic> json) =>
+      UpadatePasswordResponse(
         success: json["success"],
         message: json["message"],
       );

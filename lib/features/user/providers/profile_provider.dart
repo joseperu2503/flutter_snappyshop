@@ -4,18 +4,16 @@ import 'package:flutter_snappyshop/features/shared/models/service_exception.dart
 import 'package:flutter_snappyshop/features/shared/plugins/formx/formx.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
 import 'package:flutter_snappyshop/features/user/services/camera_service.dart';
-import 'package:flutter_snappyshop/features/user/services/user_service.dart';
+import 'package:flutter_snappyshop/features/user/services/profile_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final accountInformationProvider =
-    StateNotifierProvider<AccountInformationNotifier, AccountInformationState>(
-        (ref) {
-  return AccountInformationNotifier(ref);
+final profileProvider =
+    StateNotifierProvider<ProfileNotifier, ProfileState>((ref) {
+  return ProfileNotifier(ref);
 });
 
-class AccountInformationNotifier
-    extends StateNotifier<AccountInformationState> {
-  AccountInformationNotifier(this.ref) : super(AccountInformationState());
+class ProfileNotifier extends StateNotifier<ProfileState> {
+  ProfileNotifier(this.ref) : super(ProfileState());
   final StateNotifierProviderRef ref;
 
   initData() async {
@@ -64,7 +62,7 @@ class AccountInformationNotifier
         );
       }
 
-      final response = await UserService.updateAccountInformation(
+      final response = await ProfileService.updateProfile(
         email: state.email.value,
         name: state.name.value,
         userId: ref.read(authProvider).user?.id,
@@ -126,7 +124,7 @@ class AccountInformationNotifier
   }
 }
 
-class AccountInformationState {
+class ProfileState {
   final FormxInput<String> name;
   final FormxInput<String> email;
   final String? image;
@@ -134,7 +132,7 @@ class AccountInformationState {
   final bool showButton;
   final bool loading;
 
-  AccountInformationState({
+  ProfileState({
     this.name = const FormxInput(value: ''),
     this.email = const FormxInput(value: ''),
     this.image,
@@ -143,7 +141,7 @@ class AccountInformationState {
     this.loading = false,
   });
 
-  AccountInformationState copyWith({
+  ProfileState copyWith({
     FormxInput<String>? name,
     FormxInput<String>? email,
     bool? showButton,
@@ -151,7 +149,7 @@ class AccountInformationState {
     ValueGetter<String?>? temporalImage,
     bool? loading,
   }) =>
-      AccountInformationState(
+      ProfileState(
         name: name ?? this.name,
         email: email ?? this.email,
         showButton: showButton ?? this.showButton,

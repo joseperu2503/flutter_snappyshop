@@ -1,18 +1,18 @@
 import 'package:flutter_snappyshop/features/auth/models/auth_user.dart';
 
-class ChangePersonalDataResponse {
+class UpdateProfileResponse {
   final bool success;
   final String message;
   final User data;
 
-  ChangePersonalDataResponse({
+  UpdateProfileResponse({
     required this.success,
     required this.message,
     required this.data,
   });
 
-  factory ChangePersonalDataResponse.fromJson(Map<String, dynamic> json) =>
-      ChangePersonalDataResponse(
+  factory UpdateProfileResponse.fromJson(Map<String, dynamic> json) =>
+      UpdateProfileResponse(
         success: json["success"],
         message: json["message"],
         data: User.fromJson(json["data"]),

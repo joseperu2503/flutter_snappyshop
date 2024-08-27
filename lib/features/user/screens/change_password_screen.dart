@@ -6,30 +6,28 @@ import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_text_field.dart';
-import 'package:flutter_snappyshop/features/user/providers/change_password_provider.dart';
+import 'package:flutter_snappyshop/features/user/providers/password_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ChangePasswordInternalScreen extends ConsumerStatefulWidget {
-  const ChangePasswordInternalScreen({super.key});
+class ChangePasswordScreen extends ConsumerStatefulWidget {
+  const ChangePasswordScreen({super.key});
 
   @override
-  ChangePasswordInternalScreenState createState() =>
-      ChangePasswordInternalScreenState();
+  ChangePasswordScreenState createState() => ChangePasswordScreenState();
 }
 
-class ChangePasswordInternalScreenState
-    extends ConsumerState<ChangePasswordInternalScreen> {
+class ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      ref.read(changePasswordProvider.notifier).initData();
+      ref.read(passwordProvider.notifier).initData();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final passwordState = ref.watch(changePasswordProvider);
+    final passwordState = ref.watch(passwordProvider);
     final darkMode = ref.watch(darkModeProvider);
 
     return Layout(
@@ -71,13 +69,11 @@ class ChangePasswordInternalScreenState
                     height: 40,
                   ),
                   CustomTextField(
-                    label: 'New Password',
+                    label: 'New password',
                     hintText: 'Password',
                     value: passwordState.password,
                     onChanged: (value) {
-                      ref
-                          .read(changePasswordProvider.notifier)
-                          .changePassword(value);
+                      ref.read(passwordProvider.notifier).changePassword(value);
                     },
                     textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.visiblePassword,
@@ -92,14 +88,14 @@ class ChangePasswordInternalScreenState
                     value: passwordState.confirmPassword,
                     onChanged: (value) {
                       ref
-                          .read(changePasswordProvider.notifier)
+                          .read(passwordProvider.notifier)
                           .changeConfirmPassword(value);
                     },
                     textInputAction: TextInputAction.done,
                     keyboardType: TextInputType.visiblePassword,
                     isPassword: true,
                     onFieldSubmitted: (value) {
-                      ref.read(changePasswordProvider.notifier).submit();
+                      ref.read(passwordProvider.notifier).submit();
                     },
                   ),
                   const SizedBox(
@@ -108,7 +104,7 @@ class ChangePasswordInternalScreenState
                   CustomButton(
                     text: 'Change password',
                     onPressed: () {
-                      ref.read(changePasswordProvider.notifier).submit();
+                      ref.read(passwordProvider.notifier).submit();
                     },
                   )
                 ],

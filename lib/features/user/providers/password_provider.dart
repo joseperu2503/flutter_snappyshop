@@ -4,16 +4,16 @@ import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
 import 'package:flutter_snappyshop/features/shared/plugins/formx/formx.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
-import 'package:flutter_snappyshop/features/user/services/user_service.dart';
+import 'package:flutter_snappyshop/features/user/services/password_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final changePasswordProvider =
-    StateNotifierProvider<ChangePasswordNotifier, ChangePasswordState>((ref) {
-  return ChangePasswordNotifier(ref);
+final passwordProvider =
+    StateNotifierProvider<PasswordNotifier, PasswordState>((ref) {
+  return PasswordNotifier(ref);
 });
 
-class ChangePasswordNotifier extends StateNotifier<ChangePasswordState> {
-  ChangePasswordNotifier(this.ref) : super(ChangePasswordState());
+class PasswordNotifier extends StateNotifier<PasswordState> {
+  PasswordNotifier(this.ref) : super(PasswordState());
   final StateNotifierProviderRef ref;
 
   initData() {
@@ -50,7 +50,7 @@ class ChangePasswordNotifier extends StateNotifier<ChangePasswordState> {
     );
 
     try {
-      final response = await UserService.changePasswordInternal(
+      final response = await PasswordService.updatePassword(
         password: state.password.value,
         confirmPassword: state.confirmPassword.value,
       );
@@ -81,23 +81,23 @@ class ChangePasswordNotifier extends StateNotifier<ChangePasswordState> {
   }
 }
 
-class ChangePasswordState {
+class PasswordState {
   final FormxInput<String> password;
   final FormxInput<String> confirmPassword;
   final LoadingStatus loading;
 
-  ChangePasswordState({
+  PasswordState({
     this.password = const FormxInput(value: ''),
     this.confirmPassword = const FormxInput(value: ''),
     this.loading = LoadingStatus.none,
   });
 
-  ChangePasswordState copyWith({
+  PasswordState copyWith({
     FormxInput<String>? password,
     FormxInput<String>? confirmPassword,
     LoadingStatus? loading,
   }) =>
-      ChangePasswordState(
+      PasswordState(
         password: password ?? this.password,
         confirmPassword: confirmPassword ?? this.confirmPassword,
         loading: loading ?? this.loading,

@@ -9,7 +9,7 @@ import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_text_field.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/image_viewer.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
-import 'package:flutter_snappyshop/features/user/providers/account_information_provider.dart';
+import 'package:flutter_snappyshop/features/user/providers/profile_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -29,17 +29,17 @@ class AccountInformationScreenState
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      ref.read(accountInformationProvider.notifier).initData();
+      ref.read(profileProvider.notifier).initData();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final accountState = ref.watch(accountInformationProvider);
+    final profileState = ref.watch(profileProvider);
     final darkMode = ref.watch(darkModeProvider);
 
     return Loader(
-      loading: accountState.loading,
+      loading: profileState.loading,
       child: Layout(
         title: 'Account Information',
         body: CustomScrollView(
@@ -75,26 +75,26 @@ class AccountInformationScreenState
                             },
                           );
                         },
-                        child: accountState.temporalImage != null
+                        child: profileState.temporalImage != null
                             ? ClipRRect(
                                 borderRadius: BorderRadius.circular(90),
                                 child: Image(
                                   width: 180,
                                   height: 180,
                                   image: FileImage(
-                                    File(accountState.temporalImage!),
+                                    File(profileState.temporalImage!),
                                   ),
                                   fit: BoxFit.cover,
                                 ),
                               )
-                            : accountState.image != null
+                            : profileState.image != null
                                 ? ClipRRect(
                                     borderRadius: BorderRadius.circular(90),
                                     child: SizedBox(
                                       width: 180,
                                       height: 180,
                                       child: ImageViewer(
-                                        images: [accountState.image!],
+                                        images: [profileState.image!],
                                         radius: 90,
                                       ),
                                     ),
@@ -132,11 +132,9 @@ class AccountInformationScreenState
                     CustomTextField(
                       label: 'Name',
                       hintText: 'Your name',
-                      value: accountState.name,
+                      value: profileState.name,
                       onChanged: (value) {
-                        ref
-                            .read(accountInformationProvider.notifier)
-                            .changeName(value);
+                        ref.read(profileProvider.notifier).changeName(value);
                       },
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.text,
@@ -147,11 +145,9 @@ class AccountInformationScreenState
                     CustomTextField(
                       label: 'Email',
                       hintText: 'Your email',
-                      value: accountState.email,
+                      value: profileState.email,
                       onChanged: (value) {
-                        ref
-                            .read(accountInformationProvider.notifier)
-                            .changeEmail(value);
+                        ref.read(profileProvider.notifier).changeEmail(value);
                       },
                       textInputAction: TextInputAction.done,
                       keyboardType: TextInputType.emailAddress,
@@ -160,13 +156,11 @@ class AccountInformationScreenState
                       height: 80,
                     ),
                     FadeIn(
-                      animate: accountState.showButton,
+                      animate: profileState.showButton,
                       duration: const Duration(milliseconds: 150),
                       child: CustomButton(
                         onPressed: () {
-                          ref
-                              .read(accountInformationProvider.notifier)
-                              .submit();
+                          ref.read(profileProvider.notifier).submit();
                         },
                         text: 'Save Changes',
                       ),
@@ -259,7 +253,7 @@ class _PhotoBottomSheet extends ConsumerWidget {
               ),
               onTap: () {
                 context.pop();
-                ref.read(accountInformationProvider.notifier).takePhoto();
+                ref.read(profileProvider.notifier).takePhoto();
               },
             ),
             ListTile(
@@ -289,7 +283,7 @@ class _PhotoBottomSheet extends ConsumerWidget {
               ),
               onTap: () {
                 context.pop();
-                ref.read(accountInformationProvider.notifier).selectPhoto();
+                ref.read(profileProvider.notifier).selectPhoto();
               },
             ),
             ListTile(
@@ -317,7 +311,7 @@ class _PhotoBottomSheet extends ConsumerWidget {
               ),
               onTap: () {
                 context.pop();
-                ref.read(accountInformationProvider.notifier).deletePhoto();
+                ref.read(profileProvider.notifier).deletePhoto();
               },
             )
           ],

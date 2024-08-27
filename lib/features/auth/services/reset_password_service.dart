@@ -3,7 +3,7 @@ import 'package:flutter_snappyshop/config/constants/api_routes.dart';
 import 'package:flutter_snappyshop/features/auth/models/send_verify_code_response.dart';
 import 'package:flutter_snappyshop/features/auth/models/validate_verify_code_response.dart';
 import 'package:flutter_snappyshop/features/shared/models/service_exception.dart';
-import 'package:flutter_snappyshop/features/user/models/change_password_response.dart';
+import 'package:flutter_snappyshop/features/user/models/update_password_response.dart';
 
 final api = Api();
 
@@ -46,7 +46,7 @@ class ResetPasswordService {
     }
   }
 
-  static Future<ChangePasswordResponse> resetPassword({
+  static Future<UpadatePasswordResponse> resetPassword({
     required String password,
     required String confirmPassword,
     required String email,
@@ -64,7 +64,7 @@ class ResetPasswordService {
 
       final response = await api.post(ApiRoutes.resetPassword, data: form);
 
-      return ChangePasswordResponse.fromJson(response.data);
+      return UpadatePasswordResponse.fromJson(response.data);
     } catch (e) {
       throw ServiceException(
           e, 'An error occurred while changing the password.');
