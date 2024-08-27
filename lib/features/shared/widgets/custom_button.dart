@@ -49,7 +49,6 @@ class CustomButton extends ConsumerWidget {
     this.onPressed,
     this.text,
     this.width = double.infinity,
-    this.height = 48,
     this.disabled = false,
     this.iconLeft,
     this.type = ButtonType.primary,
@@ -58,7 +57,6 @@ class CustomButton extends ConsumerWidget {
   final void Function()? onPressed;
   final String? text;
   final double width;
-  final double height;
   final bool disabled;
   final Widget? iconLeft;
   final ButtonType type;
@@ -69,7 +67,7 @@ class CustomButton extends ConsumerWidget {
     final darkMode = ref.watch(darkModeProvider);
 
     return Container(
-      height: height,
+      height: buttonHeight,
       width: width,
       decoration: BoxDecoration(
         color: disabled
@@ -79,7 +77,7 @@ class CustomButton extends ConsumerWidget {
             : darkMode
                 ? buttonStyle.colorDark
                 : buttonStyle.color,
-        borderRadius: BorderRadius.circular(radiusButton),
+        borderRadius: BorderRadius.circular(buttonBorderRadius),
         border: Border.all(
           color: buttonStyle.borderColor,
         ),
@@ -89,7 +87,7 @@ class CustomButton extends ConsumerWidget {
       child: TextButton(
         style: TextButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(radiusButton),
+            borderRadius: BorderRadius.circular(buttonBorderRadius),
           ),
           foregroundColor: buttonStyle.foregroundColor,
         ),

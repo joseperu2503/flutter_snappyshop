@@ -9,7 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_text_field.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/loader.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/social_button.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -158,54 +158,29 @@ class LoginScreenState extends ConsumerState<LoginScreen> {
                       },
                     ),
                     const SizedBox(
-                      height: 40,
+                      height: 24,
                     ),
-                    Container(
-                      height: 52,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(radiusButton),
+                    Text(
+                      'Or using other method',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: darkMode
+                            ? AppColors.textArsenicDark
+                            : AppColors.textArsenic,
+                        height: 22 / 14,
+                        leadingDistribution: TextLeadingDistribution.even,
                       ),
-                      child: TextButton(
-                        onPressed: () {
-                          ref.read(loginProvider.notifier).loginGoogle();
-                        },
-                        style: TextButton.styleFrom(
-                          backgroundColor: darkMode
-                              ? AppColors.primaryCulturedDark
-                              : AppColors.primaryCultured,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(radiusButton),
-                          ),
-                          elevation: 3,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              'assets/icons/google.svg',
-                              width: 24,
-                            ),
-                            const SizedBox(
-                              width: 8,
-                            ),
-                            Text(
-                              'Log In with Google',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: darkMode
-                                    ? AppColors.textCoolBlackDark
-                                    : AppColors.textCoolBlack,
-                                height: 22 / 16,
-                                leadingDistribution:
-                                    TextLeadingDistribution.even,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    SocialButton(
+                      onPressed: () {
+                        ref.read(loginProvider.notifier).loginGoogle();
+                      },
+                    ),
                   ],
                 ),
               ),

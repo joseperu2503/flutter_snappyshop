@@ -5,7 +5,9 @@ const double formInputSpacing = 20;
 const double labelInputSpacing = 4;
 const double toolbarHeight = 58;
 
-const double radiusButton = 12;
+const double buttonBorderRadius = 12;
+const double buttonHeight = 48;
+
 const double radiusInput = 12;
 
 const LinearGradient primaryGradient = LinearGradient(

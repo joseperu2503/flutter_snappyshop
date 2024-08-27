@@ -102,7 +102,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                       height: 52,
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(radiusButton),
+                        borderRadius: BorderRadius.circular(buttonBorderRadius),
                       ),
                       child: TextButton(
                         onPressed: () {
@@ -110,7 +110,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                         },
                         style: TextButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(radiusButton),
+                            borderRadius: BorderRadius.circular(buttonBorderRadius),
                           ),
                         ),
                         child: RichText(
