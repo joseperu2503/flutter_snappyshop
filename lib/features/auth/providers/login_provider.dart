@@ -86,7 +86,9 @@ class LoginNotifier extends StateNotifier<LoginState> {
 
   loginGoogle() async {
     FocusManager.instance.primaryFocus?.unfocus();
-
+    state = state.copyWith(
+      loading: true,
+    );
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn(
       clientId: Platform.isIOS
@@ -97,12 +99,11 @@ class LoginNotifier extends StateNotifier<LoginState> {
 
     if (googleUser == null) {
       ref.read(snackbarProvider.notifier).showSnackbar('Cancelled by user.');
+      state = state.copyWith(
+        loading: false,
+      );
       return;
     }
-
-    state = state.copyWith(
-      loading: true,
-    );
 
     // Obtain the auth details from the request
     final GoogleSignInAuthentication googleAuth =
@@ -124,7 +125,9 @@ class LoginNotifier extends StateNotifier<LoginState> {
       );
 
       await StorageService.set<String>(
-          StorageKeys.token, loginResponse.accessToken);
+        StorageKeys.token,
+        loginResponse.accessToken,
+      );
 
       //cada vez que inicia sesion habilita las notificaciones
       ref.read(notificationProvider.notifier).enableNotifications();
