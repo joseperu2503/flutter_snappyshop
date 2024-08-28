@@ -43,6 +43,8 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
     loadProduct();
   }
 
+  int quantity = 1;
+
   loadProduct() async {
     setState(() {
       loadingProduct = LoadingStatus.loading;
@@ -418,9 +420,18 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                                 ),
                               ),
                               ButtonStepper(
-                                value: 2,
-                                onAdd: () {},
-                                onRemove: () {},
+                                value: quantity,
+                                type: ButtonStepperType.productDetail,
+                                onAdd: () {
+                                  setState(() {
+                                    quantity = quantity + 1;
+                                  });
+                                },
+                                onRemove: () {
+                                  setState(() {
+                                    quantity = quantity - 1;
+                                  });
+                                },
                               ),
                             ],
                           ),
@@ -431,9 +442,13 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                         CustomButton(
                           text: 'Add to cart',
                           onPressed: () {
-                            ref
-                                .read(cartProvider.notifier)
-                                .addUnit(product: product, quantity: 1);
+                            ref.read(cartProvider.notifier).addUnit(
+                                  product: product,
+                                  quantity: quantity,
+                                );
+                            setState(() {
+                              quantity = 1;
+                            });
                           },
                         ),
                         const SizedBox(

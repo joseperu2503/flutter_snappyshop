@@ -4,17 +4,21 @@ import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+enum ButtonStepperType { productDetail, cart }
+
 class ButtonStepper extends ConsumerWidget {
   const ButtonStepper({
     super.key,
     required this.value,
     required this.onAdd,
     required this.onRemove,
+    required this.type,
   });
 
   final int value;
   final void Function() onAdd;
   final void Function() onRemove;
+  final ButtonStepperType type;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -38,11 +42,13 @@ class ButtonStepper extends ConsumerWidget {
               shape: BoxShape.circle,
             ),
             child: TextButton(
-              onPressed: value > 1
-                  ? () {
-                      onRemove();
-                    }
-                  : null,
+              onPressed:
+                  (value == 1 && type == ButtonStepperType.productDetail) ||
+                          value == 0
+                      ? null
+                      : () {
+                          onRemove();
+                        },
               style: TextButton.styleFrom(
                 padding: EdgeInsets.zero,
                 shape: RoundedRectangleBorder(
@@ -50,16 +56,18 @@ class ButtonStepper extends ConsumerWidget {
                 ),
               ),
               child: SvgPicture.asset(
-                'assets/icons/minus.svg',
+                value == 1 && type == ButtonStepperType.cart
+                    ? 'assets/icons/delete.svg'
+                    : 'assets/icons/minus.svg',
                 height: 20,
                 colorFilter: ColorFilter.mode(
-                  value > 1
+                  value == 1 && type == ButtonStepperType.productDetail
                       ? darkMode
-                          ? AppColors.textYankeesBlueDark
-                          : AppColors.textYankeesBlue
+                          ? AppColors.textYankeesBlueDark.withOpacity(0.25)
+                          : AppColors.textYankeesBlue.withOpacity(0.25)
                       : darkMode
-                          ? AppColors.textArsenic
-                          : AppColors.textArsenicDark,
+                          ? AppColors.textYankeesBlueDark
+                          : AppColors.textYankeesBlue,
                   BlendMode.srcIn,
                 ),
               ),

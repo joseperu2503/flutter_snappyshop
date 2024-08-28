@@ -83,6 +83,7 @@ class ProductCartItem extends ConsumerWidget {
                       children: [
                         ButtonStepper(
                           value: productCart.quantity,
+                          type: ButtonStepperType.cart,
                           onAdd: () {
                             ref
                                 .read(cartProvider.notifier)
