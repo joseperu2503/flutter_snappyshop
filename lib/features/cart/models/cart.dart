@@ -21,26 +21,17 @@ class Cart {
             json["products"].map((x) => ProductCart.fromJson(x))),
       );
 
-  Cart updateProductQuantity(int index, int newQuantity) {
-    products[index].quantity = newQuantity;
+  Cart copyWith({
+    double? total,
+    double? subtotal,
+    double? shippingFee,
+    List<ProductCart>? products,
+  }) {
     return Cart(
-      products: products,
-      total: total,
-      subtotal: subtotal,
-      shippingFee: shippingFee,
-    );
-  }
-
-  Cart removeProductAtIndex(int index) {
-    List<ProductCart> updatedProducts = List.of(products);
-    if (index >= 0 && index < updatedProducts.length) {
-      updatedProducts.removeAt(index);
-    }
-    return Cart(
-      products: updatedProducts,
-      total: total,
-      subtotal: subtotal,
-      shippingFee: shippingFee,
+      total: total ?? this.total,
+      subtotal: subtotal ?? this.subtotal,
+      shippingFee: shippingFee ?? this.shippingFee,
+      products: products ?? this.products,
     );
   }
 }
@@ -58,4 +49,14 @@ class ProductCart {
         productDetail: Product.fromJson(json["product_detail"]),
         quantity: json["quantity"],
       );
+
+  ProductCart copyWith({
+    Product? productDetail,
+    int? quantity,
+  }) {
+    return ProductCart(
+      productDetail: productDetail ?? this.productDetail,
+      quantity: quantity ?? this.quantity,
+    );
+  }
 }

@@ -86,12 +86,12 @@ class ProductCartItem extends ConsumerWidget {
                           onAdd: () {
                             ref
                                 .read(cartProvider.notifier)
-                                .addUnitProduct(index);
+                                .addUnit(product: product, quantity: 1);
                           },
                           onRemove: () {
                             ref
                                 .read(cartProvider.notifier)
-                                .removeUnitProduct(index);
+                                .addUnit(product: product, quantity: -1);
                           },
                         ),
                         Row(

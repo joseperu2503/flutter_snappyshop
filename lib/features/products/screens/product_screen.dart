@@ -431,7 +431,9 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                         CustomButton(
                           text: 'Add to cart',
                           onPressed: () {
-                            ref.read(cartProvider.notifier).addToCart(product);
+                            ref
+                                .read(cartProvider.notifier)
+                                .addUnit(product: product, quantity: 1);
                           },
                         ),
                         const SizedBox(

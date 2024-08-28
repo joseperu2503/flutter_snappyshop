@@ -131,7 +131,7 @@ class AddressNotifier extends StateNotifier<AddressState> {
 
     final search = state.search;
 
-    if (_debounceTimer?.isActive ?? false) _debounceTimer?.cancel();
+    _debounceTimer?.cancel();
     _debounceTimer = Timer(
       const Duration(milliseconds: 1000),
       () {

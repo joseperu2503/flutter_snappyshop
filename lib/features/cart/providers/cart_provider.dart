@@ -21,7 +21,6 @@ class CartNotifier extends StateNotifier<CartState> {
   initData() {
     state = state.copyWith(
       cart: () => null,
-      showUpdateBtn: false,
     );
   }
 
@@ -45,122 +44,95 @@ class CartNotifier extends StateNotifier<CartState> {
 
       state = state.copyWith(
         cart: () => response,
-        showUpdateBtn: false,
       );
     } on ServiceException catch (e) {
       throw ServiceException(null, e.message);
     }
   }
 
-  addUnitProduct(int index) async {
-    //metodo solo se llamar por el stepper de la vista de cart
+  addUnit({
+    required Product product,
+    required int quantity,
+    bool withDobuncer = true,
+  }) async {
     if (state.cart == null) return;
-    state = state.copyWith(
-      cart: () => state.cart?.updateProductQuantity(
-          index, state.cart!.products[index].quantity + 1),
-      showUpdateBtn: true,
-    );
-  }
 
-  removeUnitProduct(int index) async {
-    //metodo solo se llamar por el stepper de la vista de cart
-    if (state.cart == null) return;
-    if (state.cart!.products[index].quantity == 1) return;
-    state = state.copyWith(
-      cart: () => state.cart?.updateProductQuantity(
-          index, state.cart!.products[index].quantity - 1),
-      showUpdateBtn: true,
-    );
-  }
+    int index = state.cart!.products
+        .map((e) => e.productDetail.id)
+        .toList()
+        .indexOf(product.id);
 
-  deleteProduct(int index) async {
-    //metodo solo se llamar por el stepper de la vista de cart
-    if (state.cart == null) return;
-    state = state.copyWith(
-      cart: () => state.cart?.removeProductAtIndex(index),
-    );
-    updateCart();
-  }
-
-  updateCart() async {
-    if (state.cart == null) return;
-    state = state.copyWith(
-      loading: true,
-    );
-    try {
-      await updateCartService();
-    } on ServiceException catch (e) {
-      ref.read(snackbarProvider.notifier).showSnackbar(e.message);
-    }
-    state = state.copyWith(
-      loading: false,
-    );
-  }
-
-  updateCartService() async {
-    if (state.cart == null) return;
-    try {
-      final List<CreateCart> products = state.cart!.products
-          .map((product) => CreateCart(
-                id: product.productDetail.id,
-                quantity: product.quantity,
-              ))
-          .toList();
-
-      final response = await CartService.updateCart(products: products);
-
+    if (index != -1) {
       state = state.copyWith(
-        cart: () => response.data,
-        showUpdateBtn: false,
-      );
-    } on ServiceException catch (e) {
-      throw ServiceException(null, e.message);
-    }
-  }
+        cart: () => state.cart!.copyWith(
+          products: state.cart!.products
+              .map((pc) {
+                if (pc.productDetail.id == product.id) {
+                  return pc.copyWith(
+                    quantity: pc.quantity + quantity,
+                  );
+                }
 
-  addToCart(Product product) async {
+                return pc;
+              })
+              .where((pc) => pc.quantity != 0)
+              .toList(),
+        ),
+      );
+    } else {
+      state = state.copyWith(
+        cart: () => state.cart!.copyWith(
+          products: [
+            ...state.cart!.products,
+            ProductCart(
+              productDetail: product,
+              quantity: quantity,
+            )
+          ],
+        ),
+      );
+    }
+    _debounceTimer?.cancel();
+
     state = state.copyWith(
       loading: true,
     );
-    try {
-      await getCartService();
-      if (state.cart == null) return;
 
-      int index = state.cart!.products
-          .map((e) => e.productDetail.id)
-          .toList()
-          .indexOf(product.id);
-      if (index != -1) {
-        addUnitProduct(index);
-      } else {
-        state.cart!.products.add(ProductCart(
-          productDetail: product,
-          quantity: 1,
-        ));
-      }
+    _debounceTimer = Timer(
+      Duration(milliseconds: withDobuncer ? 1000 : 0),
+      () async {
+        try {
+          final List<CreateCart> products = state.cart!.products
+              .map((product) => CreateCart(
+                    id: product.productDetail.id,
+                    quantity: product.quantity,
+                  ))
+              .toList();
 
-      await updateCartService();
-    } on ServiceException catch (e) {
-      ref.read(snackbarProvider.notifier).showSnackbar(e.message);
-    } catch (e) {
-      ref
-          .read(snackbarProvider.notifier)
-          .showSnackbar('An error occurred while updating the cart.');
-    }
-    state = state.copyWith(
-      loading: false,
+          final response = await CartService.updateCart(products: products);
+
+          state = state.copyWith(
+            cart: () => response.data,
+          );
+        } on ServiceException catch (e) {
+          ref.read(snackbarProvider.notifier).showSnackbar(e.message);
+        }
+        state = state.copyWith(
+          loading: false,
+        );
+      },
     );
   }
+
+  Timer? _debounceTimer;
 }
 
 class CartState {
   final Cart? cart;
-  final bool showUpdateBtn;
   final bool loading;
 
   CartState({
     this.cart,
-    this.showUpdateBtn = false,
     this.loading = false,
   });
 
@@ -180,12 +152,10 @@ class CartState {
 
   CartState copyWith({
     ValueGetter<Cart?>? cart,
-    bool? showUpdateBtn,
     bool? loading,
   }) =>
       CartState(
         cart: cart != null ? cart() : this.cart,
-        showUpdateBtn: showUpdateBtn ?? this.showUpdateBtn,
         loading: loading ?? this.loading,
       );
 }
