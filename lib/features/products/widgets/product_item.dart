@@ -3,6 +3,7 @@ import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
+import 'package:flutter_snappyshop/features/shared/utils/utils.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_image.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
 import 'package:flutter_snappyshop/features/wishlist/providers/favorite_products_provider.dart';
@@ -173,7 +174,7 @@ class ProductCardState extends ConsumerState<ProductItem> {
                 Row(
                   children: [
                     Text(
-                      '\$${widget.product.salePrice.toStringAsFixed(2)}',
+                      Utils.formatCurrency(widget.product.salePrice),
                       style: const TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
@@ -187,7 +188,7 @@ class ProductCardState extends ConsumerState<ProductItem> {
                     ),
                     if (widget.product.discount != null)
                       Text(
-                        '\$${widget.product.price.toStringAsFixed(2)}',
+                        Utils.formatCurrency(widget.product.price),
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,

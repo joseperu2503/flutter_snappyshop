@@ -5,8 +5,8 @@ import 'package:flutter_snappyshop/features/cart/models/cart.dart';
 import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
 import 'package:flutter_snappyshop/features/cart/widgets/button_stepper.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
+import 'package:flutter_snappyshop/features/shared/utils/utils.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_image.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class ProductCartItem extends ConsumerWidget {
   const ProductCartItem({
@@ -23,128 +23,116 @@ class ProductCartItem extends ConsumerWidget {
     final darkMode = ref.watch(darkModeProvider);
     final product = productCart.productDetail;
 
-    return Stack(
-      children: [
-        Container(
-          height: 110,
-          padding: const EdgeInsets.only(
-            left: 12,
-            top: 16,
-            bottom: 12,
-            right: 16,
+    return Container(
+      height: 112,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(14),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 112,
+            height: 112,
+            child: CustomImage(
+              path: product.images[0],
+              borderRadius: BorderRadius.circular(13),
+            ),
           ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14),
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 80,
-                height: 80,
-                child: CustomImage(
-                  path: product.images[0],
-                  borderRadius: BorderRadius.circular(13),
-                ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 8,
+                bottom: 8,
+                left: 24,
+                right: 0,
               ),
-              const SizedBox(
-                width: 14,
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            product.name,
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: darkMode
-                                  ? AppColors.textYankeesBlueDark
-                                  : AppColors.textYankeesBlue,
-                              height: 16 / 12,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          product.name,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: darkMode
+                                ? AppColors.textYankeesBlueDark
+                                : AppColors.textYankeesBlue,
+                            height: 1.2,
+                            leadingDistribution: TextLeadingDistribution.even,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 16,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            Utils.formatCurrency(product.salePrice),
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.secondaryPastelRed,
+                              height: 22 / 16,
                               leadingDistribution: TextLeadingDistribution.even,
                             ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
                           ),
-                        ),
-                        const SizedBox(
-                          width: 30,
-                        ),
-                      ],
-                    ),
-                    const Spacer(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ButtonStepper(
-                          value: productCart.quantity,
-                          type: ButtonStepperType.cart,
-                          onAdd: () {
-                            ref
-                                .read(cartProvider.notifier)
-                                .addUnit(product: product, quantity: 1);
-                          },
-                          onRemove: () {
-                            ref
-                                .read(cartProvider.notifier)
-                                .addUnit(product: product, quantity: -1);
-                          },
-                        ),
-                        Row(
-                          children: [
+                          if (product.discount != null)
                             Text(
-                              '\$${product.salePrice.toStringAsFixed(2)}',
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.secondaryPastelRed,
-                                height: 22 / 16,
+                              Utils.formatCurrency(product.price),
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: darkMode
+                                    ? AppColors.textArsenicDark.withOpacity(0.5)
+                                    : AppColors.textArsenic.withOpacity(0.5),
+                                height: 22 / 14,
+                                decoration: TextDecoration.lineThrough,
+                                decorationColor: darkMode
+                                    ? AppColors.textArsenicDark.withOpacity(0.5)
+                                    : AppColors.textArsenic.withOpacity(0.5),
                                 leadingDistribution:
                                     TextLeadingDistribution.even,
                               ),
                             ),
-                          ],
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-        Positioned(
-          right: 8,
-          top: 8,
-          child: Container(
-            width: 30,
-            height: 30,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-            ),
-            child: TextButton(
-              onPressed: () {},
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.zero,
-              ),
-              child: SvgPicture.asset(
-                'assets/icons/delete.svg',
-                colorFilter: ColorFilter.mode(
-                  darkMode ? AppColors.textArsenicDark : AppColors.textArsenic,
-                  BlendMode.srcIn,
-                ),
-                width: 20,
-                height: 20,
+                        ],
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ButtonStepper(
+                        value: productCart.quantity,
+                        type: ButtonStepperType.cart,
+                        onAdd: () {
+                          ref
+                              .read(cartProvider.notifier)
+                              .addUnit(product: product, quantity: 1);
+                        },
+                        onRemove: () {
+                          ref
+                              .read(cartProvider.notifier)
+                              .addUnit(product: product, quantity: -1);
+                        },
+                      ),
+                    ],
+                  )
+                ],
               ),
             ),
-          ),
-        ),
-      ],
+          )
+        ],
+      ),
     );
   }
 }

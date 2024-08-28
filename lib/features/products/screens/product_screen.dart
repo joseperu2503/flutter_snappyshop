@@ -7,6 +7,7 @@ import 'package:flutter_snappyshop/features/products/models/product_detail.dart'
 import 'package:flutter_snappyshop/features/products/models/products_response.dart';
 import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
+import 'package:flutter_snappyshop/features/shared/utils/utils.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_image.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
 import 'package:flutter_snappyshop/features/wishlist/providers/favorite_products_provider.dart';
@@ -314,7 +315,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              '\$${product.salePrice.toStringAsFixed(2)}',
+                              Utils.formatCurrency(product.salePrice),
                               style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
@@ -329,7 +330,7 @@ class ProductScreenState extends ConsumerState<ProductScreen> {
                             ),
                             if (product.discount != null)
                               Text(
-                                '\$${product.price.toStringAsFixed(2)}',
+                                Utils.formatCurrency(product.price),
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w400,

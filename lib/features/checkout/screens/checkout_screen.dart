@@ -10,6 +10,7 @@ import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_snappyshop/features/shared/models/form_type.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
+import 'package:flutter_snappyshop/features/shared/utils/utils.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/image_viewer.dart';
@@ -147,7 +148,7 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                                   ),
                                   const Spacer(),
                                   Text(
-                                    '\$${product.salePrice.toStringAsFixed(2)}',
+                                    Utils.formatCurrency(product.salePrice),
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
