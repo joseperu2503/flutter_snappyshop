@@ -13,7 +13,9 @@ import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/utils/utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/image_viewer.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pay/pay.dart';
 
 class CheckoutScreen extends ConsumerStatefulWidget {
@@ -105,19 +107,31 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   const SizedBox(
                     height: 16,
                   ),
-                  Row(
-                    children: [
-                      Text(
-                        'Ship to',
-                        style: subtitle(darkMode),
-                      ),
-                      const Spacer(),
-                    ],
+                  Text(
+                    'Ship to',
+                    style: subtitle(darkMode),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
                   if (address != null) AddressItem(address: address),
+                  if (address == null)
+                    CustomButton(
+                      text: 'Add address',
+                      iconLeft: SvgPicture.asset(
+                        'assets/icons/plus.svg',
+                        height: 20,
+                        colorFilter: ColorFilter.mode(
+                          darkMode
+                              ? AppColors.textArsenicDark
+                              : AppColors.textArsenic,
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                      disabled: cartState.loading,
+                      onPressed: () {},
+                      type: ButtonType.outlined,
+                    ),
                   const SizedBox(
                     height: 24,
                   ),
@@ -164,6 +178,7 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
                                     child: Text(
@@ -174,13 +189,16 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                                         color: darkMode
                                             ? AppColors.textArsenicDark
                                             : AppColors.textArsenic,
-                                        height: 22 / 14,
+                                        height: 1.2,
                                         leadingDistribution:
                                             TextLeadingDistribution.even,
                                       ),
-                                      maxLines: 1,
+                                      maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                     ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
                                   ),
                                   Text(
                                     Utils.formatCurrency(product.salePrice),
@@ -203,7 +221,7 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                                   Text(
                                     'Quantity: ',
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.w400,
                                       color: darkMode
                                           ? AppColors.textArsenicDark

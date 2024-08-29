@@ -4,46 +4,9 @@ import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 
-enum ButtonType { primary, secondary, text }
+enum ButtonType { primary, secondary, text, outlined }
 
-List<ButtonTypeStyle> buttonTypes = [
-  ButtonTypeStyle(
-    buttonType: ButtonType.primary,
-    color: AppColors.primaryPearlAqua,
-    textColorDisabled: AppColors.textArsenicDark,
-    foregroundColor: Colors.white60,
-    borderColor: Colors.transparent,
-    gradient: primaryGradient,
-    colorDisabled: AppColors.textArsenicDark.withOpacity(0.5),
-    textColor: AppColors.textCultured,
-    colorDisabledDark: AppColors.textArsenic.withOpacity(0.5),
-    textColorDisabledDark: AppColors.textArsenic,
-  ),
-  ButtonTypeStyle(
-    buttonType: ButtonType.secondary,
-    color: AppColors.textYankeesBlue,
-    colorDark: AppColors.textYankeesBlueDark,
-    textColorDisabled: AppColors.textArsenicDark,
-    foregroundColor: Colors.white60,
-    borderColor: Colors.transparent,
-    gradient: null,
-    colorDisabled: AppColors.textArsenicDark.withOpacity(0.5),
-    textColor: AppColors.textYankeesBlueDark,
-    textColorDark: AppColors.textYankeesBlue,
-    colorDisabledDark: AppColors.textArsenic.withOpacity(0.5),
-    textColorDisabledDark: AppColors.textArsenic,
-  ),
-  ButtonTypeStyle(
-    buttonType: ButtonType.text,
-    color: Colors.transparent,
-    colorDisabled: AppColors.textArsenic.withOpacity(0.2),
-    textColor: AppColors.secondaryPastelRed,
-    textColorDisabled: AppColors.primaryPearlAqua,
-    borderColor: Colors.transparent,
-  ),
-];
-
-class CustomButton extends ConsumerWidget {
+class CustomButton extends ConsumerStatefulWidget {
   const CustomButton({
     super.key,
     this.onPressed,
@@ -62,15 +25,73 @@ class CustomButton extends ConsumerWidget {
   final ButtonType type;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final buttonStyle = buttonTypes.firstWhere((b) => b.buttonType == type);
+  CustomButtonState createState() => CustomButtonState();
+}
+
+class CustomButtonState extends ConsumerState<CustomButton> {
+  List<ButtonTypeStyle> get buttonTypes {
+    return [
+      ButtonTypeStyle(
+        buttonType: ButtonType.primary,
+        color: AppColors.primaryPearlAqua,
+        textColorDisabled: AppColors.textArsenicDark,
+        foregroundColor: Colors.white60,
+        borderColor: Colors.transparent,
+        gradient: primaryGradient,
+        colorDisabled: AppColors.textArsenicDark.withOpacity(0.5),
+        textColor: AppColors.textCultured,
+        colorDisabledDark: AppColors.textArsenic.withOpacity(0.5),
+        textColorDisabledDark: AppColors.textArsenic,
+      ),
+      ButtonTypeStyle(
+        buttonType: ButtonType.outlined,
+        color: Colors.transparent,
+        foregroundColor: AppColors.textArsenicDark,
+        borderColor: AppColors.textArsenicDark,
+        borderColorDark: AppColors.textArsenic,
+        colorDisabled: AppColors.textArsenicDark.withOpacity(0.5),
+        textColor: AppColors.textArsenic,
+        textColorDark: AppColors.textArsenicDark,
+        textColorDisabled: AppColors.textArsenicDark,
+        textColorDisabledDark: AppColors.textArsenic,
+        colorDisabledDark: AppColors.textArsenic.withOpacity(0.5),
+      ),
+      ButtonTypeStyle(
+        buttonType: ButtonType.secondary,
+        color: AppColors.textYankeesBlue,
+        colorDark: AppColors.textYankeesBlueDark,
+        textColorDisabled: AppColors.textArsenicDark,
+        foregroundColor: Colors.white60,
+        borderColor: Colors.transparent,
+        gradient: null,
+        colorDisabled: AppColors.textArsenicDark.withOpacity(0.5),
+        textColor: AppColors.textYankeesBlueDark,
+        textColorDark: AppColors.textYankeesBlue,
+        colorDisabledDark: AppColors.textArsenic.withOpacity(0.5),
+        textColorDisabledDark: AppColors.textArsenic,
+      ),
+      ButtonTypeStyle(
+        buttonType: ButtonType.text,
+        color: Colors.transparent,
+        colorDisabled: AppColors.textArsenic.withOpacity(0.2),
+        textColor: AppColors.secondaryPastelRed,
+        textColorDisabled: AppColors.primaryPearlAqua,
+        borderColor: Colors.transparent,
+      ),
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final buttonStyle =
+        buttonTypes.firstWhere((b) => b.buttonType == widget.type);
     final darkMode = ref.watch(darkModeProvider);
 
     return Container(
       height: buttonHeight,
-      width: width,
+      width: widget.width,
       decoration: BoxDecoration(
-        color: disabled
+        color: widget.disabled
             ? darkMode
                 ? buttonStyle.colorDisabledDark
                 : buttonStyle.colorDisabled
@@ -79,10 +100,12 @@ class CustomButton extends ConsumerWidget {
                 : buttonStyle.color,
         borderRadius: BorderRadius.circular(buttonBorderRadius),
         border: Border.all(
-          color: buttonStyle.borderColor,
+          color:
+              darkMode ? buttonStyle.borderColorDark : buttonStyle.borderColor,
         ),
-        gradient:
-            disabled ? buttonStyle.gradientDisabled : buttonStyle.gradient,
+        gradient: widget.disabled
+            ? buttonStyle.gradientDisabled
+            : buttonStyle.gradient,
       ),
       child: TextButton(
         style: TextButton.styleFrom(
@@ -91,28 +114,28 @@ class CustomButton extends ConsumerWidget {
           ),
           foregroundColor: buttonStyle.foregroundColor,
         ),
-        onPressed: disabled
+        onPressed: widget.disabled
             ? null
             : () {
-                if (onPressed != null) {
-                  onPressed!();
+                if (widget.onPressed != null) {
+                  widget.onPressed!();
                 }
               },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (iconLeft != null) iconLeft!,
-            if (text != null && iconLeft != null)
+            if (widget.iconLeft != null) widget.iconLeft!,
+            if (widget.text != null && widget.iconLeft != null)
               const SizedBox(
                 width: 10,
               ),
-            if (text != null)
+            if (widget.text != null)
               Text(
-                text!,
+                widget.text!,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: disabled
+                  color: widget.disabled
                       ? darkMode
                           ? buttonStyle.textColorDisabledDark
                           : buttonStyle.textColorDisabled
@@ -142,6 +165,7 @@ class ButtonTypeStyle {
   final Color textColorDisabledDark;
   final Color? foregroundColor;
   final Color borderColor;
+  final Color borderColorDark;
   final Gradient? gradient;
   final Gradient? gradientDisabled;
 
@@ -159,8 +183,10 @@ class ButtonTypeStyle {
     Color? colorDisabledDark,
     Color? textColorDark,
     Color? textColorDisabledDark,
+    Color? borderColorDark,
   })  : colorDark = colorDark ?? color,
         colorDisabledDark = colorDisabledDark ?? colorDisabled,
         textColorDark = textColorDark ?? textColor,
-        textColorDisabledDark = textColorDisabledDark ?? textColorDisabled;
+        textColorDisabledDark = textColorDisabledDark ?? textColorDisabled,
+        borderColorDark = borderColorDark ?? borderColor;
 }
