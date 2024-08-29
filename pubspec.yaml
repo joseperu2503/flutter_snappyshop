@@ -16,7 +16,6 @@ dependencies:
   firebase_messaging: ^14.7.10
   flutter:
     sdk: flutter
-  flutter_credit_card: ^4.0.1
   flutter_dotenv: ^5.1.0
   flutter_native_splash: ^2.3.9
   flutter_riverpod: ^2.4.9
@@ -28,7 +27,6 @@ dependencies:
   image_picker: ^1.0.7
   intl: ^0.19.0
   jwt_decoder: ^2.0.1
-  mask_input_formatter: ^0.0.3
   shared_preferences: ^2.2.2
   visibility_detector: ^0.4.0+2
 

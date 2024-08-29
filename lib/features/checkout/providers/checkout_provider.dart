@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/router/app_router.dart';
 import 'package:flutter_snappyshop/features/address/models/addresses_response.dart';
 import 'package:flutter_snappyshop/features/address/providers/address_provider.dart';
-import 'package:flutter_snappyshop/features/cards/models/bank_card.dart';
-import 'package:flutter_snappyshop/features/cards/providers/card_provider.dart';
 import 'package:flutter_snappyshop/features/cart/models/cart.dart';
 import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
 import 'package:flutter_snappyshop/features/checkout/services/checkout_service.dart';
@@ -22,12 +20,6 @@ class CheckoutNotifier extends StateNotifier<CheckoutState> {
   CheckoutNotifier(this.ref) : super(CheckoutState());
   final StateNotifierProviderRef ref;
 
-  setCard(BankCard card) {
-    state = state.copyWith(
-      card: () => card,
-    );
-  }
-
   setAddress(Address address) {
     state = state.copyWith(
       address: () => address,
@@ -36,18 +28,11 @@ class CheckoutNotifier extends StateNotifier<CheckoutState> {
 
   initData() async {
     state = state.copyWith(
-      card: () => null,
       address: () => null,
       creatingOrder: LoadingStatus.none,
     );
-    await ref.read(cardProvider.notifier).getCards();
     await ref.read(addressProvider.notifier).getAddresses();
-    final cards = ref.read(cardProvider).cards;
     final addresses = ref.read(addressProvider).addresses;
-
-    if (cards.isNotEmpty) {
-      setCard(cards[0]);
-    }
 
     if (addresses.isNotEmpty) {
       setAddress(addresses[0]);
@@ -76,9 +61,9 @@ class CheckoutNotifier extends StateNotifier<CheckoutState> {
 
       await CheckoutService.createOrder(
         products: products,
-        cardNumber: state.card?.cardNumber,
-        paymentMethod: state.card?.paymenthMethod,
-        cardHolderName: state.card?.cardHolderName,
+        cardNumber: '123456',
+        paymentMethod: 1,
+        cardHolderName: 'Jose Perez',
         addresId: state.address?.id,
       );
       state = state.copyWith(
@@ -96,23 +81,19 @@ class CheckoutNotifier extends StateNotifier<CheckoutState> {
 
 class CheckoutState {
   final Address? address;
-  final BankCard? card;
   final LoadingStatus creatingOrder;
 
   CheckoutState({
     this.address,
-    this.card,
     this.creatingOrder = LoadingStatus.none,
   });
 
   CheckoutState copyWith({
     ValueGetter<Address?>? address,
-    ValueGetter<BankCard?>? card,
     LoadingStatus? creatingOrder,
   }) =>
       CheckoutState(
         address: address != null ? address() : this.address,
-        card: card != null ? card() : this.card,
         creatingOrder: creatingOrder ?? this.creatingOrder,
       );
 }

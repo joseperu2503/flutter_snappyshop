@@ -286,14 +286,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_credit_card:
-    dependency: "direct main"
-    description:
-      name: flutter_credit_card
-      sha256: dffaee369b0e64fb81e63e78d6410762f73b67346692bd2ae7bdcc6d911452e3
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.0.1"
   flutter_dotenv:
     dependency: "direct main"
     description:
@@ -680,14 +672,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
-  mask_input_formatter:
-    dependency: "direct main"
-    description:
-      name: mask_input_formatter
-      sha256: c3543db896e8e24e15c49733650301e495fef4f82853bcb387b29ac1d4ae07ae
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.3"
   matcher:
     dependency: transitive
     description:

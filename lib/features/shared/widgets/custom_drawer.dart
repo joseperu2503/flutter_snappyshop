@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/auth/providers/auth_provider.dart';
-import 'package:flutter_snappyshop/features/cards/providers/card_provider.dart';
 import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
-import 'package:flutter_snappyshop/features/shared/models/form_type.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -205,34 +203,6 @@ class CustomDrawer extends ConsumerWidget {
                     onTap: () {
                       context.pop();
                       context.push('/cart');
-                    },
-                  ),
-                  ListTile(
-                    contentPadding:
-                        const EdgeInsetsDirectional.symmetric(horizontal: 24),
-                    title: Text(
-                      'My Cards',
-                      style: textLabelStyle,
-                    ),
-                    leading: SvgPicture.asset(
-                      'assets/icons/card.svg',
-                      colorFilter: ColorFilter.mode(
-                        darkMode
-                            ? AppColors.textYankeesBlueDark
-                            : AppColors.textYankeesBlue,
-                        BlendMode.srcIn,
-                      ),
-                      width: 24,
-                      height: 24,
-                    ),
-                    onTap: () {
-                      context.pop();
-
-                      ref
-                          .read(cardProvider.notifier)
-                          .changeListType(ListType.list);
-
-                      context.push('/my-cards');
                     },
                   ),
                   ListTile(

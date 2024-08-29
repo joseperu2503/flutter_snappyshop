@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/address/models/addresses_response.dart';
 import 'package:flutter_snappyshop/features/address/providers/address_provider.dart';
-import 'package:flutter_snappyshop/features/cards/providers/card_provider.dart';
 import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
 import 'package:flutter_snappyshop/features/checkout/providers/checkout_provider.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
-import 'package:flutter_snappyshop/features/shared/models/form_type.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/utils/utils.dart';
@@ -41,7 +38,6 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
     final emptyCart = !(cartState.cart != null &&
         (cartState.cart?.products ?? []).isNotEmpty);
-    final MediaQueryData screen = MediaQuery.of(context);
     final darkMode = ref.watch(darkModeProvider);
 
     return Layout(
@@ -561,82 +557,6 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   const SizedBox(
                     height: 24,
                   ),
-                  Row(
-                    children: [
-                      Text(
-                        'Payment Method',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: darkMode
-                              ? AppColors.textYankeesBlueDark
-                              : AppColors.textYankeesBlue,
-                          height: 22 / 18,
-                          leadingDistribution: TextLeadingDistribution.even,
-                        ),
-                      ),
-                      const Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          ref
-                              .read(cardProvider.notifier)
-                              .changeListType(ListType.select);
-                          context.push('/my-cards');
-                        },
-                        child: const Row(
-                          children: [
-                            Text(
-                              'Change',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.secondaryPastelRed,
-                                height: 22 / 14,
-                                leadingDistribution:
-                                    TextLeadingDistribution.even,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 4,
-                            ),
-                            Icon(
-                              Icons.arrow_forward_ios,
-                              size: 16,
-                              color: AppColors.secondaryPastelRed,
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      ref
-                          .read(cardProvider.notifier)
-                          .changeListType(ListType.select);
-                      context.push('/my-cards');
-                    },
-                    child: SizedBox(
-                      height: screen.size.width * 0.5,
-                      child: CreditCardWidget(
-                        height: screen.size.width * 0.5,
-                        padding: 0,
-                        cardNumber: checkoutState.card?.cardNumber ?? '',
-                        expiryDate: checkoutState.card?.expired ?? '',
-                        cardHolderName:
-                            checkoutState.card?.cardHolderName ?? '',
-                        cvvCode: '',
-                        showBackView: false,
-                        isHolderNameVisible: true,
-                        isSwipeGestureEnabled: false,
-                        onCreditCardWidgetChange: (CreditCardBrand brand) {},
-                        cardBgColor: AppColors.textCoolBlack,
-                      ),
-                    ),
-                  )
                 ],
               ),
             ),
