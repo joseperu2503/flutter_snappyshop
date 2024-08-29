@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
 import 'package:flutter_snappyshop/features/cart/widgets/product_cart_item.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
@@ -54,126 +55,139 @@ class CartScreenState extends ConsumerState<CartScreen> {
               ),
             ),
           if (!emptyCart)
-            SliverToBoxAdapter(
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 24),
-                decoration: BoxDecoration(
-                  color: darkMode
-                      ? AppColors.primaryCulturedDark
-                      : AppColors.primaryCultured,
-                  borderRadius: BorderRadius.circular(14),
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
                 ),
-                padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    const Spacer(),
                     Text(
-                      'Order Summary',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
+                      'Order summary',
+                      style: subtitle(darkMode),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
                         color: darkMode
-                            ? AppColors.textYankeesBlueDark
-                            : AppColors.textYankeesBlue,
-                        height: 22 / 18,
-                        leadingDistribution: TextLeadingDistribution.even,
+                            ? AppColors.primaryCulturedDark
+                            : AppColors.primaryCultured,
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                'Subtotal',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: darkMode
+                                      ? AppColors.textYankeesBlueDark
+                                      : AppColors.textYankeesBlue,
+                                  height: 22 / 14,
+                                  leadingDistribution:
+                                      TextLeadingDistribution.even,
+                                ),
+                              ),
+                              const Spacer(),
+                              Text(
+                                Utils.formatCurrency(cartState.cart!.subtotal),
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: darkMode
+                                      ? AppColors.textYankeesBlueDark
+                                      : AppColors.textYankeesBlue,
+                                  height: 22 / 14,
+                                  leadingDistribution:
+                                      TextLeadingDistribution.even,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                'Shipping Fee',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: darkMode
+                                      ? AppColors.textYankeesBlueDark
+                                      : AppColors.textYankeesBlue,
+                                  height: 22 / 14,
+                                  leadingDistribution:
+                                      TextLeadingDistribution.even,
+                                ),
+                              ),
+                              const Spacer(),
+                              Text(
+                                Utils.formatCurrency(
+                                    cartState.cart!.shippingFee),
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: darkMode
+                                      ? AppColors.textYankeesBlueDark
+                                      : AppColors.textYankeesBlue,
+                                  height: 22 / 14,
+                                  leadingDistribution:
+                                      TextLeadingDistribution.even,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 16,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                ' Total',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: darkMode
+                                      ? AppColors.textYankeesBlueDark
+                                      : AppColors.textYankeesBlue,
+                                  height: 22 / 14,
+                                  leadingDistribution:
+                                      TextLeadingDistribution.even,
+                                ),
+                              ),
+                              const Spacer(),
+                              Text(
+                                Utils.formatCurrency(cartState.cart!.total),
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: darkMode
+                                      ? AppColors.textYankeesBlueDark
+                                      : AppColors.textYankeesBlue,
+                                  height: 22 / 16,
+                                  leadingDistribution:
+                                      TextLeadingDistribution.even,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(
-                      height: 16,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          'Subtotal',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: darkMode
-                                ? AppColors.textArsenicDark
-                                : AppColors.textArsenic,
-                            height: 22 / 14,
-                            leadingDistribution: TextLeadingDistribution.even,
-                          ),
-                        ),
-                        const Spacer(),
-                        Text(
-                          Utils.formatCurrency(cartState.cart!.subtotal),
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: darkMode
-                                ? AppColors.textArsenicDark
-                                : AppColors.textArsenic,
-                            height: 22 / 14,
-                            leadingDistribution: TextLeadingDistribution.even,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          'Shipping Fee',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: darkMode
-                                ? AppColors.textArsenicDark
-                                : AppColors.textArsenic,
-                            height: 22 / 14,
-                            leadingDistribution: TextLeadingDistribution.even,
-                          ),
-                        ),
-                        const Spacer(),
-                        Text(
-                          Utils.formatCurrency(cartState.cart!.shippingFee),
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: darkMode
-                                ? AppColors.textArsenicDark
-                                : AppColors.textArsenic,
-                            height: 22 / 14,
-                            leadingDistribution: TextLeadingDistribution.even,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          'Total',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: darkMode
-                                ? AppColors.textArsenicDark
-                                : AppColors.textArsenic,
-                            height: 22 / 14,
-                            leadingDistribution: TextLeadingDistribution.even,
-                          ),
-                        ),
-                        const Spacer(),
-                        Text(
-                          Utils.formatCurrency(cartState.cart!.total),
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: darkMode
-                                ? AppColors.textArsenicDark
-                                : AppColors.textArsenic,
-                            height: 22 / 14,
-                            leadingDistribution: TextLeadingDistribution.even,
-                          ),
-                        ),
-                      ],
+                      height: 24,
                     ),
                   ],
                 ),

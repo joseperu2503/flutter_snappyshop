@@ -1,9 +1,10 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
+import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/address/models/addresses_response.dart';
 import 'package:flutter_snappyshop/features/address/providers/address_provider.dart';
+import 'package:flutter_snappyshop/features/address/widgets/address_item.dart';
 import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
 import 'package:flutter_snappyshop/features/checkout/providers/checkout_provider.dart';
 import 'package:flutter_snappyshop/features/checkout/screens/payment_config.dart';
@@ -11,10 +12,8 @@ import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
 import 'package:flutter_snappyshop/features/shared/utils/utils.dart';
-import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/image_viewer.dart';
-import 'package:go_router/go_router.dart';
 import 'package:pay/pay.dart';
 
 class CheckoutScreen extends ConsumerStatefulWidget {
@@ -95,70 +94,106 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       title: 'Checkout',
       body: CustomScrollView(
         slivers: [
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        'Ship to',
+                        style: subtitle(darkMode),
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  if (address != null) AddressItem(address: address),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  Text(
+                    'Order summary',
+                    style: subtitle(darkMode),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                ],
+              ),
+            ),
+          ),
           if (!emptyCart)
             SliverPadding(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               sliver: SliverList.builder(
                 itemBuilder: (context, index) {
                   final productCart = cartState.cart!.products[index];
                   final product = productCart.productDetail;
 
-                  BorderRadius borderRadius =
-                      const BorderRadius.all(Radius.circular(0));
-                  borderRadius = BorderRadius.only(
-                    topLeft: Radius.circular(index == 0 ? 14 : 0),
-                    topRight: Radius.circular(index == 0 ? 14 : 0),
-                    bottomLeft: Radius.circular(
-                        index == cartState.cart!.products.length - 1 ? 14 : 0),
-                    bottomRight: Radius.circular(
-                        index == cartState.cart!.products.length - 1 ? 14 : 0),
-                  );
-
                   return Container(
                     padding: const EdgeInsets.only(
-                      left: 16,
                       top: 16,
                       bottom: 16,
-                      right: 16,
-                    ),
-                    decoration: BoxDecoration(
-                      color: darkMode
-                          ? AppColors.primaryCulturedDark
-                          : AppColors.primaryCultured,
-                      borderRadius: borderRadius,
                     ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          width: 60,
-                          height: 60,
+                          width: 68,
+                          height: 68,
                           child: ImageViewer(
                             images: product.images,
                             radius: 13,
                           ),
                         ),
                         const SizedBox(
-                          width: 14,
+                          width: 8,
                         ),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                product.name,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: darkMode
-                                      ? AppColors.textArsenicDark
-                                      : AppColors.textArsenic,
-                                  height: 22 / 14,
-                                  leadingDistribution:
-                                      TextLeadingDistribution.even,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      product.name,
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                        color: darkMode
+                                            ? AppColors.textArsenicDark
+                                            : AppColors.textArsenic,
+                                        height: 22 / 14,
+                                        leadingDistribution:
+                                            TextLeadingDistribution.even,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  Text(
+                                    Utils.formatCurrency(product.salePrice),
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.secondaryPastelRed,
+                                      height: 22 / 16,
+                                      leadingDistribution:
+                                          TextLeadingDistribution.even,
+                                    ),
+                                  ),
+                                ],
                               ),
                               const SizedBox(
                                 height: 10,
@@ -168,12 +203,12 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                                   Text(
                                     'Quantity: ',
                                     style: TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w400,
                                       color: darkMode
                                           ? AppColors.textArsenicDark
                                           : AppColors.textArsenic,
-                                      height: 16 / 12,
+                                      height: 1.2,
                                       leadingDistribution:
                                           TextLeadingDistribution.even,
                                     ),
@@ -181,26 +216,12 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                                   Text(
                                     '2',
                                     style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w600,
                                       color: darkMode
                                           ? AppColors.textArsenicDark
                                           : AppColors.textArsenic,
-                                      height: 22 / 16,
-                                      leadingDistribution:
-                                          TextLeadingDistribution.even,
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  Text(
-                                    Utils.formatCurrency(product.salePrice),
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                      color: darkMode
-                                          ? AppColors.textYankeesBlueDark
-                                          : AppColors.textYankeesBlue,
-                                      height: 22 / 16,
+                                      height: 1.2,
                                       leadingDistribution:
                                           TextLeadingDistribution.even,
                                     ),
@@ -217,15 +238,18 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 itemCount: cartState.cart?.products.length,
               ),
             ),
-          SliverToBoxAdapter(
+          SliverFillRemaining(
+            hasScrollBody: false,
             child: Container(
               padding: const EdgeInsets.symmetric(
-                vertical: 16,
                 horizontal: 24,
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  const Spacer(),
+                  const SizedBox(
+                    height: 16,
+                  ),
                   Container(
                     decoration: BoxDecoration(
                       color: darkMode
@@ -237,21 +261,6 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Text(
-                          'Order Info',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: darkMode
-                                ? AppColors.textYankeesBlueDark
-                                : AppColors.textYankeesBlue,
-                            height: 22 / 18,
-                            leadingDistribution: TextLeadingDistribution.even,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
                         Row(
                           children: [
                             Text(
@@ -260,8 +269,8 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                                 color: darkMode
-                                    ? AppColors.textArsenicDark
-                                    : AppColors.textArsenic,
+                                    ? AppColors.textYankeesBlueDark
+                                    : AppColors.textYankeesBlue,
                                 height: 22 / 14,
                                 leadingDistribution:
                                     TextLeadingDistribution.even,
@@ -269,13 +278,13 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                             ),
                             const Spacer(),
                             Text(
-                              '\$2744.00',
+                              Utils.formatCurrency(cartState.cart!.subtotal),
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
                                 color: darkMode
-                                    ? AppColors.textArsenicDark
-                                    : AppColors.textArsenic,
+                                    ? AppColors.textYankeesBlueDark
+                                    : AppColors.textYankeesBlue,
                                 height: 22 / 14,
                                 leadingDistribution:
                                     TextLeadingDistribution.even,
@@ -294,8 +303,8 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                                 color: darkMode
-                                    ? AppColors.textArsenicDark
-                                    : AppColors.textArsenic,
+                                    ? AppColors.textYankeesBlueDark
+                                    : AppColors.textYankeesBlue,
                                 height: 22 / 14,
                                 leadingDistribution:
                                     TextLeadingDistribution.even,
@@ -303,13 +312,13 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                             ),
                             const Spacer(),
                             Text(
-                              '\$10.00',
+                              Utils.formatCurrency(cartState.cart!.shippingFee),
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
                                 color: darkMode
-                                    ? AppColors.textArsenicDark
-                                    : AppColors.textArsenic,
+                                    ? AppColors.textYankeesBlueDark
+                                    : AppColors.textYankeesBlue,
                                 height: 22 / 14,
                                 leadingDistribution:
                                     TextLeadingDistribution.even,
@@ -323,13 +332,13 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                         Row(
                           children: [
                             Text(
-                              'Order Total',
+                              ' Total',
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                                 color: darkMode
-                                    ? AppColors.textArsenicDark
-                                    : AppColors.textArsenic,
+                                    ? AppColors.textYankeesBlueDark
+                                    : AppColors.textYankeesBlue,
                                 height: 22 / 14,
                                 leadingDistribution:
                                     TextLeadingDistribution.even,
@@ -337,268 +346,19 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                             ),
                             const Spacer(),
                             Text(
-                              '\$2754.00',
+                              Utils.formatCurrency(cartState.cart!.total),
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 16,
                                 fontWeight: FontWeight.w600,
                                 color: darkMode
                                     ? AppColors.textYankeesBlueDark
                                     : AppColors.textYankeesBlue,
-                                height: 32 / 20,
+                                height: 22 / 16,
                                 leadingDistribution:
                                     TextLeadingDistribution.even,
                               ),
                             ),
                           ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 24,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Shipping Details',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: darkMode
-                              ? AppColors.textYankeesBlueDark
-                              : AppColors.textYankeesBlue,
-                          height: 22 / 18,
-                          leadingDistribution: TextLeadingDistribution.even,
-                        ),
-                      ),
-                      const Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          context.push('/my-addresses');
-                        },
-                        child: const Row(
-                          children: [
-                            Text(
-                              'Change',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.secondaryPastelRed,
-                                height: 22 / 14,
-                                leadingDistribution:
-                                    TextLeadingDistribution.even,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 4,
-                            ),
-                            Icon(
-                              Icons.arrow_forward_ios,
-                              size: 16,
-                              color: AppColors.secondaryPastelRed,
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: darkMode
-                          ? AppColors.primaryCulturedDark
-                          : AppColors.primaryCultured,
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              'Address',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: darkMode
-                                    ? AppColors.textArsenicDark
-                                    : AppColors.textArsenic,
-                                height: 22 / 14,
-                                leadingDistribution:
-                                    TextLeadingDistribution.even,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 16,
-                            ),
-                            Expanded(
-                              child: Text(
-                                address?.address ?? '',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: darkMode
-                                      ? AppColors.textArsenicDark
-                                      : AppColors.textArsenic,
-                                  height: 22 / 14,
-                                  leadingDistribution:
-                                      TextLeadingDistribution.even,
-                                ),
-                                textAlign: TextAlign.end,
-                              ),
-                            ),
-                          ],
-                        ),
-                        if (address?.detail != null)
-                          const SizedBox(
-                            height: 4,
-                          ),
-                        if (address?.detail != null)
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  address?.detail ?? '',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: darkMode
-                                        ? AppColors.textArsenicDark
-                                        : AppColors.textArsenic,
-                                    height: 22 / 14,
-                                    leadingDistribution:
-                                        TextLeadingDistribution.even,
-                                  ),
-                                  textAlign: TextAlign.end,
-                                ),
-                              ),
-                            ],
-                          ),
-                        if (address?.references != null)
-                          const SizedBox(
-                            height: 4,
-                          ),
-                        if (address?.references != null)
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'References',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: darkMode
-                                      ? AppColors.textArsenicDark
-                                      : AppColors.textArsenic,
-                                  height: 22 / 14,
-                                  leadingDistribution:
-                                      TextLeadingDistribution.even,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 16,
-                              ),
-                              Expanded(
-                                child: Text(
-                                  address?.references ?? '',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: darkMode
-                                        ? AppColors.textArsenicDark
-                                        : AppColors.textArsenic,
-                                    height: 22 / 14,
-                                    leadingDistribution:
-                                        TextLeadingDistribution.even,
-                                  ),
-                                  textAlign: TextAlign.end,
-                                ),
-                              ),
-                            ],
-                          ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'Recipient',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: darkMode
-                                    ? AppColors.textArsenicDark
-                                    : AppColors.textArsenic,
-                                height: 22 / 14,
-                                leadingDistribution:
-                                    TextLeadingDistribution.even,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 16,
-                            ),
-                            Expanded(
-                              child: Text(
-                                address?.recipientName ?? '',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: darkMode
-                                      ? AppColors.textArsenicDark
-                                      : AppColors.textArsenic,
-                                  height: 22 / 14,
-                                  leadingDistribution:
-                                      TextLeadingDistribution.even,
-                                ),
-                                textAlign: TextAlign.end,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'Phone',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: darkMode
-                                    ? AppColors.textArsenicDark
-                                    : AppColors.textArsenic,
-                                height: 22 / 14,
-                                leadingDistribution:
-                                    TextLeadingDistribution.even,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 16,
-                            ),
-                            Expanded(
-                              child: Text(
-                                address?.phone ?? '',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: darkMode
-                                      ? AppColors.textArsenicDark
-                                      : AppColors.textArsenic,
-                                  height: 22 / 14,
-                                  leadingDistribution:
-                                      TextLeadingDistribution.even,
-                                ),
-                                textAlign: TextAlign.end,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 16,
                         ),
                       ],
                     ),
@@ -619,17 +379,6 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             vertical: 8,
           ),
           child: Platform.isIOS ? applePayButton : googlePayButton,
-          // child: Column(
-          //   mainAxisSize: MainAxisSize.min,
-          //   children: [
-          //     CustomButton(
-          //       text: 'Confirm',
-          //       onPressed: () {
-          //         ref.read(checkoutProvider.notifier).createOrder();
-          //       },
-          //     ),
-          //   ],
-          // ),
         ),
       ),
     );

@@ -48,8 +48,8 @@ class AddressItem extends ConsumerWidget {
               'assets/icons/map_pin_outlined.svg',
               colorFilter: ColorFilter.mode(
                 darkMode
-                    ? AppColors.textCoolBlackDark
-                    : AppColors.textCoolBlack,
+                    ? AppColors.textYankeesBlueDark
+                    : AppColors.textYankeesBlue,
                 BlendMode.srcIn,
               ),
               width: 16,
@@ -105,7 +105,7 @@ class AddressItem extends ConsumerWidget {
                     ],
                   ),
                   Text(
-                    address.detail,
+                    '${address.country}, ${address.locality}',
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
