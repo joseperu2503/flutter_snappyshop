@@ -126,7 +126,7 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                     style: subtitle(darkMode),
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 16,
                   ),
                 ],
               ),
@@ -142,8 +142,8 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
                   return Container(
                     padding: const EdgeInsets.only(
-                      top: 16,
-                      bottom: 16,
+                      top: 8,
+                      bottom: 8,
                     ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
