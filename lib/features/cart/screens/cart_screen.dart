@@ -246,19 +246,14 @@ class CartScreenState extends ConsumerState<CartScreen> {
               child: Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
-                  vertical: 16,
+                  vertical: 8,
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CustomButton(
-                      text: 'Checkout',
-                      disabled: cartState.loading,
-                      onPressed: () {
-                        context.push('/checkout');
-                      },
-                    ),
-                  ],
+                child: CustomButton(
+                  text: 'Checkout',
+                  disabled: cartState.loading,
+                  onPressed: () {
+                    context.push('/checkout');
+                  },
                 ),
               ),
             )

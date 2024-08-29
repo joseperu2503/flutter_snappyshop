@@ -1,9 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/features/address/models/addresses_response.dart';
 import 'package:flutter_snappyshop/features/address/providers/address_provider.dart';
 import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
 import 'package:flutter_snappyshop/features/checkout/providers/checkout_provider.dart';
+import 'package:flutter_snappyshop/features/checkout/screens/payment_config.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
@@ -12,6 +15,7 @@ import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/image_viewer.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pay/pay.dart';
 
 class CheckoutScreen extends ConsumerStatefulWidget {
   const CheckoutScreen({super.key});
@@ -27,7 +31,52 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       ref.read(checkoutProvider.notifier).initData();
     });
     super.initState();
+
+    _paymentItems = [
+      const PaymentItem(
+        label: 'Total',
+        amount: '99.99',
+        status: PaymentItemStatus.final_price,
+      )
+    ];
+
+    applePayButton = ApplePayButton(
+      paymentConfiguration:
+          PaymentConfiguration.fromJsonString(defaultApplePay),
+      paymentItems: _paymentItems,
+      style: ApplePayButtonStyle.black,
+      type: ApplePayButtonType.buy,
+      onPaymentResult: (result) {
+        print('result $result');
+      },
+      loadingIndicator: const Center(
+        child: CircularProgressIndicator(),
+      ),
+      height: 48,
+      cornerRadius: 12,
+      onError: (error) {},
+    );
+
+    googlePayButton = GooglePayButton(
+      paymentConfiguration:
+          PaymentConfiguration.fromJsonString(defaultGooglePay),
+      paymentItems: _paymentItems,
+      type: GooglePayButtonType.pay,
+      onPaymentResult: (result) {
+        print('result $result');
+      },
+      loadingIndicator: const Center(
+        child: CircularProgressIndicator(),
+      ),
+      height: 48,
+      cornerRadius: 12,
+      theme: GooglePayButtonTheme.dark,
+    );
   }
+
+  List<PaymentItem> _paymentItems = [];
+  late ApplePayButton applePayButton;
+  late GooglePayButton googlePayButton;
 
   @override
   Widget build(BuildContext context) {
@@ -566,20 +615,21 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       bottomNavigationBar: SafeArea(
         child: Container(
           padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 16,
+            horizontal: 24,
+            vertical: 8,
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CustomButton(
-                text: 'Confirm',
-                onPressed: () {
-                  ref.read(checkoutProvider.notifier).createOrder();
-                },
-              ),
-            ],
-          ),
+          child: Platform.isIOS ? applePayButton : googlePayButton,
+          // child: Column(
+          //   mainAxisSize: MainAxisSize.min,
+          //   children: [
+          //     CustomButton(
+          //       text: 'Confirm',
+          //       onPressed: () {
+          //         ref.read(checkoutProvider.notifier).createOrder();
+          //       },
+          //     ),
+          //   ],
+          // ),
         ),
       ),
     );
