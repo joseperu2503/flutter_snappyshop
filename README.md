@@ -6,15 +6,21 @@
 
 ## Compilar android
 
-    flutter build apk --release
+```bash
+flutter build apk --release
+```
 
 ## Compilar ios
 
-    flutter build ios --release
+```bash
+flutter build ios --release
+```
 
 ## Cambiar icono de la app
 
-    flutter pub run flutter_launcher_icons
+```bash
+flutter pub run flutter_launcher_icons
+```
 
 ## Cambiar splashscreen
 
@@ -26,12 +32,18 @@ los cambios del splashscreen no se ven reflejados cuando se lanza la aplicacion 
 
 ## Cambiar nombre de la app
 
-    flutter pub run rename_app:main all="SnappyShop"
+```bash
+flutter pub run rename_app:main all="SnappyShop"
+```
 
 ## Cambiar bundle Id
 
-    flutter pub run change_app_package_name:main com.joseperezgil.snappyshop
+```bash
+flutter pub run change_app_package_name:main com.joseperezgil.snappyshop
+```
 
 ## Firebase
 
-    flutterfire configure
+```bash
+flutterfire configure
+```
