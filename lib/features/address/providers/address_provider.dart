@@ -11,6 +11,8 @@ import 'package:flutter_snappyshop/features/shared/models/service_exception.dart
 import 'package:flutter_snappyshop/features/shared/plugins/formx/formx.dart';
 import 'package:flutter_snappyshop/features/shared/providers/map_provider.dart';
 import 'package:flutter_snappyshop/features/shared/providers/snackbar_provider.dart';
+import 'package:flutter_snappyshop/features/shared/services/location_service.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 final addressProvider =
@@ -69,16 +71,7 @@ class AddressNotifier extends StateNotifier<AddressState> {
     );
   }
 
-  goSearchAddress() {
-    changeSearch('');
-    state = state.copyWith(
-      selectedAddress: () => null,
-      savingAddress: LoadingStatus.none,
-    );
-    resetForm();
-    appRouter.push('/search-address');
-  }
-
+  //** Metodo que se ejecuta cuando se desplaza el mapa */
   Future<void> onCameraPositionChange() async {
     LatLng? cameraPosition = ref.read(mapProvider).cameraPosition;
     if (cameraPosition == null) return;
@@ -169,26 +162,6 @@ class AddressNotifier extends StateNotifier<AddressState> {
     }
   }
 
-  //** Metodo para seleccionar un resultado y buscar sus coordenadas */
-  Future<void> selectAddressResult(AddressResult addressResult) async {
-    FocusManager.instance.primaryFocus?.unfocus();
-
-    try {
-      final addressResultDetails = await AddressService.addressResultDetail(
-        placeId: addressResult.placeId,
-      );
-
-      ref.read(mapProvider.notifier).changeCameraPosition(LatLng(
-            addressResultDetails.location.lat,
-            addressResultDetails.location.lng,
-          ));
-
-      appRouter.push('/address-map');
-    } on ServiceException catch (e) {
-      ref.read(snackbarProvider.notifier).showSnackbar(e.message);
-    }
-  }
-
   Future<void> getAddresses() async {
     if (state.loadingAddresses == LoadingStatus.loading) return;
 
@@ -235,12 +208,9 @@ class AddressNotifier extends StateNotifier<AddressState> {
       state = state.copyWith(
         savingAddress: LoadingStatus.success,
       );
-
-      appRouter.pop();
-      appRouter.pop();
-      appRouter.pop();
-
       await getAddresses();
+
+      appRouter.pop(true);
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
       state = state.copyWith(
@@ -269,12 +239,61 @@ class AddressNotifier extends StateNotifier<AddressState> {
     await getAddresses();
   }
 
-  goConfirm() {
+  goSearchAddress() async {
+    changeSearch('');
+    state = state.copyWith(
+      selectedAddress: () => null,
+      savingAddress: LoadingStatus.none,
+    );
+    resetForm();
+    await appRouter.push<bool>('/search-address');
+  }
+
+  //** Metodo para seleccionar un resultado y buscar sus coordenadas */
+  Future<void> goMap(AddressResult? addressResult) async {
+    FocusManager.instance.primaryFocus?.unfocus();
+
+    try {
+      if (addressResult != null) {
+        final addressResultDetails = await AddressService.addressResultDetail(
+          placeId: addressResult.placeId,
+        );
+
+        ref.read(mapProvider.notifier).changeCameraPosition(LatLng(
+              addressResultDetails.location.lat,
+              addressResultDetails.location.lng,
+            ));
+      } else {
+        Position? location = await LocationService.getCurrentPosition();
+
+        if (location == null) {
+          return;
+        }
+
+        ref.read(mapProvider.notifier).changeCameraPosition(LatLng(
+              location.latitude,
+              location.longitude,
+            ));
+      }
+
+      final bool? response = await appRouter.push<bool>('/address-map');
+      if (response == true) {
+        appRouter.pop(true);
+      }
+    } on ServiceException catch (e) {
+      ref.read(snackbarProvider.notifier).showSnackbar(e.message);
+    }
+  }
+
+  goConfirm() async {
     state = state.copyWith(
       savingAddress: LoadingStatus.none,
     );
 
-    appRouter.push('/confirm-address');
+    final bool? response = await appRouter.push<bool>('/confirm-address');
+    if (response == true) {
+      appRouter.pop(true);
+    }
   }
 
   editAddress({required Address address}) {

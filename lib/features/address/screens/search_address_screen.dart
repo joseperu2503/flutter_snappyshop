@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_snappyshop/config/constants/app_colors.dart';
-import 'package:flutter_snappyshop/config/router/app_router.dart';
+import 'package:flutter_snappyshop/features/address/models/autocomplete_response.dart';
 import 'package:flutter_snappyshop/features/address/providers/address_provider.dart';
 import 'package:flutter_snappyshop/features/address/widgets/address_result_item.dart';
 import 'package:flutter_snappyshop/features/address/widgets/no_results.dart';
@@ -9,12 +9,8 @@ import 'package:flutter_snappyshop/features/search/widgets/input_search.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
 import 'package:flutter_snappyshop/features/shared/models/loading_status.dart';
 import 'package:flutter_snappyshop/features/shared/providers/dark_mode_provider.dart';
-import 'package:flutter_snappyshop/features/shared/providers/map_provider.dart';
-import 'package:flutter_snappyshop/features/shared/services/location_service.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/custom_button.dart';
 import 'package:flutter_snappyshop/features/shared/widgets/progress_indicator.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class SearchAddressScreen extends ConsumerStatefulWidget {
   const SearchAddressScreen({super.key});
@@ -41,26 +37,11 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
   final FocusNode _focusNode = FocusNode();
   bool loadingPosition = false;
 
-  searchAddressOverMap() async {
-    FocusManager.instance.primaryFocus?.unfocus();
-
+  goMap(AddressResult? addressResult) async {
     setState(() {
       loadingPosition = true;
     });
-    Position? location = await LocationService.getCurrentPosition();
-
-    if (location == null) {
-      setState(() {
-        loadingPosition = false;
-      });
-      return;
-    }
-
-    ref.read(mapProvider.notifier).changeCameraPosition(LatLng(
-          location.latitude,
-          location.longitude,
-        ));
-    appRouter.push('/address-map');
+    await ref.read(addressProvider.notifier).goMap(addressResult);
     setState(() {
       loadingPosition = false;
     });
@@ -137,15 +118,7 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
                   return AddressResultItem(
                     addressResult: addressResult,
                     onPressed: () async {
-                      setState(() {
-                        loadingPosition = true;
-                      });
-                      await ref
-                          .read(addressProvider.notifier)
-                          .selectAddressResult(addressResult);
-                      setState(() {
-                        loadingPosition = false;
-                      });
+                      goMap(addressResult);
                     },
                   );
                 },
@@ -174,7 +147,7 @@ class SearchAddressScreenState extends ConsumerState<SearchAddressScreen> {
               ),
               child: CustomButton(
                 onPressed: () {
-                  searchAddressOverMap();
+                  goMap(null);
                 },
                 text: 'Search address over the map',
               ),
