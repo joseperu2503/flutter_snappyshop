@@ -6,6 +6,7 @@ import 'package:flutter_snappyshop/features/address/models/addresses_response.da
 import 'package:flutter_snappyshop/features/address/providers/address_provider.dart';
 import 'package:flutter_snappyshop/features/address/widgets/select_address.dart';
 import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
+import 'package:flutter_snappyshop/features/cart/widgets/order_summary.dart';
 import 'package:flutter_snappyshop/features/checkout/providers/checkout_provider.dart';
 import 'package:flutter_snappyshop/features/checkout/screens/payment_config.dart';
 import 'package:flutter_snappyshop/features/shared/layout/layout_1.dart';
@@ -55,7 +56,13 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       ),
       height: 48,
       cornerRadius: 12,
-      onError: (error) {},
+      onError: (error) {
+        print('error $error');
+      },
+      childOnError: CustomButton(
+        text: 'Pay',
+        onPressed: () {},
+      ),
     );
 
     googlePayButton = GooglePayButton(
@@ -379,126 +386,14 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               padding: const EdgeInsets.symmetric(
                 horizontal: 24,
               ),
-              child: Column(
+              child: const Column(
                 children: [
-                  const Spacer(),
-                  const SizedBox(
+                  Spacer(),
+                  SizedBox(
                     height: 16,
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: darkMode
-                          ? AppColors.primaryCulturedDark
-                          : AppColors.primaryCultured,
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              'Subtotal',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: darkMode
-                                    ? AppColors.textYankeesBlueDark
-                                    : AppColors.textYankeesBlue,
-                                height: 22 / 14,
-                                leadingDistribution:
-                                    TextLeadingDistribution.even,
-                              ),
-                            ),
-                            const Spacer(),
-                            Text(
-                              Utils.formatCurrency(cartState.cart!.subtotal),
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: darkMode
-                                    ? AppColors.textYankeesBlueDark
-                                    : AppColors.textYankeesBlue,
-                                height: 22 / 14,
-                                leadingDistribution:
-                                    TextLeadingDistribution.even,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              'Shipping Fee',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: darkMode
-                                    ? AppColors.textYankeesBlueDark
-                                    : AppColors.textYankeesBlue,
-                                height: 22 / 14,
-                                leadingDistribution:
-                                    TextLeadingDistribution.even,
-                              ),
-                            ),
-                            const Spacer(),
-                            Text(
-                              Utils.formatCurrency(cartState.cart!.shippingFee),
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: darkMode
-                                    ? AppColors.textYankeesBlueDark
-                                    : AppColors.textYankeesBlue,
-                                height: 22 / 14,
-                                leadingDistribution:
-                                    TextLeadingDistribution.even,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              ' Total',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: darkMode
-                                    ? AppColors.textYankeesBlueDark
-                                    : AppColors.textYankeesBlue,
-                                height: 22 / 14,
-                                leadingDistribution:
-                                    TextLeadingDistribution.even,
-                              ),
-                            ),
-                            const Spacer(),
-                            Text(
-                              Utils.formatCurrency(cartState.cart!.total),
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: darkMode
-                                    ? AppColors.textYankeesBlueDark
-                                    : AppColors.textYankeesBlue,
-                                height: 22 / 16,
-                                leadingDistribution:
-                                    TextLeadingDistribution.even,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
+                  OrderSummary(),
+                  SizedBox(
                     height: 24,
                   ),
                 ],

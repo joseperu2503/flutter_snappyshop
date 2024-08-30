@@ -56,9 +56,6 @@ class SelectAddressState extends ConsumerState<SelectAddress> {
           },
           style: TextButton.styleFrom(
             padding: EdgeInsetsDirectional.zero,
-            backgroundColor: darkMode
-                ? AppColors.textCoolBlack
-                : AppColors.textCoolBlackDark,
           ),
           child: SvgPicture.asset(
             'assets/icons/close.svg',
