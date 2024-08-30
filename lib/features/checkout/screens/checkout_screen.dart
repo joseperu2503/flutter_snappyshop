@@ -4,7 +4,7 @@ import 'package:flutter_snappyshop/config/constants/app_colors.dart';
 import 'package:flutter_snappyshop/config/constants/styles.dart';
 import 'package:flutter_snappyshop/features/address/models/addresses_response.dart';
 import 'package:flutter_snappyshop/features/address/providers/address_provider.dart';
-import 'package:flutter_snappyshop/features/address/widgets/address_item.dart';
+import 'package:flutter_snappyshop/features/address/widgets/select_address.dart';
 import 'package:flutter_snappyshop/features/cart/providers/cart_provider.dart';
 import 'package:flutter_snappyshop/features/checkout/providers/checkout_provider.dart';
 import 'package:flutter_snappyshop/features/checkout/screens/payment_config.dart';
@@ -107,14 +107,125 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                   const SizedBox(
                     height: 16,
                   ),
-                  Text(
-                    'Ship to',
-                    style: subtitle(darkMode),
+                  GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () async {
+                      final Address? newSelectedAddress = await Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) {
+                            return SelectAddress(
+                              selectedAddress: address!,
+                            ); // Tu widget de destino
+                          },
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            const begin = Offset(0.0, 1.0);
+                            const end = Offset(0.0, 0.0);
+                            const curve = Curves.ease;
+
+                            var tween = Tween(begin: begin, end: end)
+                                .chain(CurveTween(curve: curve));
+                            var opacityTween =
+                                Tween<double>(begin: 0.0, end: 1.0)
+                                    .chain(CurveTween(curve: curve));
+
+                            return SlideTransition(
+                              position: animation.drive(tween),
+                              child: FadeTransition(
+                                opacity: animation.drive(opacityTween),
+                                child: child,
+                              ),
+                            );
+                          },
+                        ),
+                      );
+
+                      if (newSelectedAddress != null) {
+                        ref
+                            .read(checkoutProvider.notifier)
+                            .setAddress(newSelectedAddress);
+                      }
+                    },
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'Ship to',
+                              style: subtitle(darkMode),
+                            ),
+                            const Spacer(),
+                            SvgPicture.asset(
+                              'assets/icons/arrow_down.svg',
+                              height: 16,
+                              colorFilter: ColorFilter.mode(
+                                darkMode
+                                    ? AppColors.secondaryPastelRed
+                                    : AppColors.secondaryPastelRed,
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        if (address != null)
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            address.address,
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                              color: darkMode
+                                                  ? AppColors
+                                                      .textYankeesBlueDark
+                                                  : AppColors.textYankeesBlue,
+                                              height: 1.2,
+                                              leadingDistribution:
+                                                  TextLeadingDistribution.even,
+                                            ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Text(
+                                      '${address.country}, ${address.locality}',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                        color: darkMode
+                                            ? AppColors.textArsenicDark
+                                            : AppColors.textArsenic,
+                                        height: 16 / 12,
+                                        leadingDistribution:
+                                            TextLeadingDistribution.even,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  if (address != null) AddressItem(address: address),
                   if (address == null)
                     CustomButton(
                       text: 'Add address',
@@ -133,7 +244,13 @@ class CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                       type: ButtonType.outlined,
                     ),
                   const SizedBox(
-                    height: 24,
+                    height: 18,
+                  ),
+                  Divider(
+                    color: AppColors.textArsenicDark.withOpacity(0.5),
+                  ),
+                  const SizedBox(
+                    height: 18,
                   ),
                   Text(
                     'Order summary',

@@ -78,6 +78,11 @@ class AddressNotifier extends StateNotifier<AddressState> {
 
     state = state.copyWith(
       geocodeStatus: LoadingStatus.loading,
+      address: state.address.updateValue(''),
+      country: state.country.updateValue(''),
+      locality: state.locality.updateValue(''),
+      plusCode: state.plusCode.updateValue(''),
+      postalCode: state.postalCode.updateValue(''),
     );
 
     try {
@@ -99,11 +104,6 @@ class AddressNotifier extends StateNotifier<AddressState> {
     } on ServiceException catch (_) {
       if (cameraPosition == ref.read(mapProvider).cameraPosition) {
         state = state.copyWith(
-          address: state.address.updateValue(''),
-          country: state.country.updateValue(''),
-          locality: state.locality.updateValue(''),
-          plusCode: state.plusCode.updateValue(''),
-          postalCode: state.postalCode.updateValue(''),
           geocodeStatus: LoadingStatus.error,
         );
       }
@@ -192,7 +192,7 @@ class AddressNotifier extends StateNotifier<AddressState> {
       state = state.copyWith(
         savingAddress: LoadingStatus.loading,
       );
-      await AddressService.createAddress(
+      final response = await AddressService.createAddress(
         address: state.address.value,
         detail: state.detail.value,
         recipientName: state.recipientName.value,
@@ -210,7 +210,7 @@ class AddressNotifier extends StateNotifier<AddressState> {
       );
       await getAddresses();
 
-      appRouter.pop(true);
+      appRouter.pop(response.data);
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
       state = state.copyWith(
@@ -239,14 +239,17 @@ class AddressNotifier extends StateNotifier<AddressState> {
     await getAddresses();
   }
 
-  goSearchAddress() async {
+  goSearchAddress({void Function(Address address)? onSubmit}) async {
     changeSearch('');
     state = state.copyWith(
       selectedAddress: () => null,
       savingAddress: LoadingStatus.none,
     );
     resetForm();
-    await appRouter.push<bool>('/search-address');
+    final Address? address = await appRouter.push<Address>('/search-address');
+    if (address != null && onSubmit != null) {
+      onSubmit(address);
+    }
   }
 
   //** Metodo para seleccionar un resultado y buscar sus coordenadas */
@@ -276,9 +279,9 @@ class AddressNotifier extends StateNotifier<AddressState> {
             ));
       }
 
-      final bool? response = await appRouter.push<bool>('/address-map');
-      if (response == true) {
-        appRouter.pop(true);
+      final Address? address = await appRouter.push<Address>('/address-map');
+      if (address != null) {
+        appRouter.pop(address);
       }
     } on ServiceException catch (e) {
       ref.read(snackbarProvider.notifier).showSnackbar(e.message);
@@ -290,9 +293,9 @@ class AddressNotifier extends StateNotifier<AddressState> {
       savingAddress: LoadingStatus.none,
     );
 
-    final bool? response = await appRouter.push<bool>('/confirm-address');
-    if (response == true) {
-      appRouter.pop(true);
+    final Address? address = await appRouter.push<Address>('/confirm-address');
+    if (address != null) {
+      appRouter.pop(address);
     }
   }
 

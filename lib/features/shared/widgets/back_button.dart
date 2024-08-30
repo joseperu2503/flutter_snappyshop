@@ -18,11 +18,8 @@ class CustomBackButton extends ConsumerWidget {
     return Container(
       width: 42,
       height: 42,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         shape: BoxShape.circle,
-        // color: darkMode
-        //     ? AppColors.primaryCulturedDark
-        //     : AppColors.primaryCultured,
         color: Colors.transparent,
       ),
       child: TextButton(

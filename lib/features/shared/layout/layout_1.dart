@@ -16,6 +16,7 @@ class Layout extends ConsumerWidget {
     this.bottomSheet,
     this.loading = false,
     this.action,
+    this.leading = const CustomBackButton(),
   });
 
   final Widget body;
@@ -25,6 +26,7 @@ class Layout extends ConsumerWidget {
   final Widget? bottomSheet;
   final bool loading;
   final Widget? action;
+  final Widget? leading;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -47,11 +49,15 @@ class Layout extends ConsumerWidget {
             child: Container(
               height: toolbarHeight,
               padding: const EdgeInsets.symmetric(
-                horizontal: horizontalPaddinAppBargMobile,
+                horizontal: horizontalPaddinAppBargMobile - 8,
               ),
               child: Row(
                 children: [
-                  const CustomBackButton(),
+                  SizedBox(
+                    width: 42,
+                    height: 42,
+                    child: leading,
+                  ),
                   const Spacer(),
                   if (title != null)
                     Text(
@@ -66,11 +72,11 @@ class Layout extends ConsumerWidget {
                       ),
                     ),
                   const Spacer(),
-                  action ??
-                      const SizedBox(
-                        width: 46,
-                        height: 46,
-                      )
+                  SizedBox(
+                    width: 42,
+                    height: 42,
+                    child: action,
+                  )
                 ],
               ),
             ),
