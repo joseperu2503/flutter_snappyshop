@@ -1,5 +1,5 @@
 <p align="center">
-<img src="assets/app/icon.png" width="150"  alt="logo">
+<img src="assets/images/logo.png" width="150"  alt="logo">
 </p>
 
 # SnappyShop App
