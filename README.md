@@ -4,6 +4,8 @@
 
 # SnappyShop App
 
+Flutter 3.24.1
+
 ## Compilar android
 
 ```bash
