@@ -54,7 +54,7 @@ class DefaultFirebaseOptions {
     appId: '1:267778652600:android:f82821484e8e781727b74d',
     messagingSenderId: '267778652600',
     projectId: 'snappyshop-727fd',
-    storageBucket: 'snappyshop-727fd.appspot.com',
+    storageBucket: 'snappyshop-727fd.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -62,9 +62,10 @@ class DefaultFirebaseOptions {
     appId: '1:267778652600:ios:6a5fcdc09d5c9dc527b74d',
     messagingSenderId: '267778652600',
     projectId: 'snappyshop-727fd',
-    storageBucket: 'snappyshop-727fd.appspot.com',
+    storageBucket: 'snappyshop-727fd.firebasestorage.app',
     androidClientId: '267778652600-g07cl4d4r7grkfochuf6qpaovi2rcfca.apps.googleusercontent.com',
     iosClientId: '267778652600-726isguq13lj75bgb4pruesvkcmsau88.apps.googleusercontent.com',
     iosBundleId: 'com.joseperezgil.snappyshop',
   );
+
 }
